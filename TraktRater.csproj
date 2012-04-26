@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{541A3011-3B1F-4D7F-B4D4-C06430DBB403}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TraktRater</RootNamespace>
+    <AssemblyName>TraktRater</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>trakt.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extensions\JsonExtensions.cs" />
+    <Compile Include="Extensions\SecurityExtensions.cs" />
+    <Compile Include="Extensions\XmlExtensions.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Sites\API\TVDb\TVDbAPI.cs" />
+    <Compile Include="Sites\API\TVDb\TVDbCache.cs" />
+    <Compile Include="Sites\API\TVDb\TVDbEpisodeRatings.cs" />
+    <Compile Include="Sites\API\TVDb\TVDbShow.cs" />
+    <Compile Include="Sites\API\TVDb\TVDbShowRatings.cs" />
+    <Compile Include="Sites\TVDb.cs" />
+    <Compile Include="Sites\IRateSite.cs" />
+    <Compile Include="Sites\API\TVDb\TVDbURIs.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktAuthentication.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktEpisode.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktMovie.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktRateEpisodes.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktRateMovies.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktRateShows.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktShow.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktRatingsResponse.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktResponse.cs" />
+    <Compile Include="TraktAPI\TraktAPI.cs" />
+    <Compile Include="TraktAPI\TraktURIs.cs" />
+    <Compile Include="TraktRater.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TraktRater.Designer.cs">
+      <DependentUpon>TraktRater.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\UIUtils.cs" />
+    <Compile Include="Web\TraktWeb.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="TraktRater.resx">
+      <DependentUpon>TraktRater.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="trakt.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
