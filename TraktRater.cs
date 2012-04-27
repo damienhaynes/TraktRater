@@ -93,6 +93,7 @@ namespace TraktRater
 
             // add import sites for processing
             sites.Add(new TVDb(Settings.TVDbAccountIdentifier));
+            sites.Add(new IMDb(txtImdbFilename.Text));
 
             if (sites.Where(s => s.Enabled).Count() == 0)
             {

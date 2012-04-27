@@ -60,7 +60,7 @@ namespace TraktRater.Sites
             if (response == null || response.Status != "success")
             {
                 UIUtils.UpdateStatus("Error importing show ratings to trakt.tv.", true);
-                return;
+                Thread.Sleep(2000);
             }
             #endregion
 

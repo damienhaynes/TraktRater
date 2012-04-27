@@ -10,7 +10,7 @@ namespace TraktRater.TraktAPI.DataStructures
     public class TraktMovie
     {
         [DataMember(Name = "imdb_id")]
-        public int IMDbId { get; set; }
+        public string IMDbId { get; set; }
 
         [DataMember(Name = "tmdb_id")]
         public int TMDbId { get; set; }

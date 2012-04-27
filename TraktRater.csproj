@@ -56,11 +56,15 @@
     <Compile Include="Extensions\SecurityExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Sites\API\IMDb\IMDbExtensions.cs" />
+    <Compile Include="Sites\API\IMDb\IMDbFieldMapping.cs" />
+    <Compile Include="Sites\API\IMDb\IMDbType.cs" />
     <Compile Include="Sites\API\TVDb\TVDbAPI.cs" />
     <Compile Include="Sites\API\TVDb\TVDbCache.cs" />
     <Compile Include="Sites\API\TVDb\TVDbEpisodeRatings.cs" />
     <Compile Include="Sites\API\TVDb\TVDbShow.cs" />
     <Compile Include="Sites\API\TVDb\TVDbShowRatings.cs" />
+    <Compile Include="Sites\IMDb.cs" />
     <Compile Include="Sites\TVDb.cs" />
     <Compile Include="Sites\IRateSite.cs" />
     <Compile Include="Sites\API\TVDb\TVDbURIs.cs" />
@@ -104,6 +108,7 @@
   <ItemGroup>
     <Content Include="trakt.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -12,6 +12,9 @@ namespace TraktRater.TraktAPI.DataStructures
         [DataMember(Name = "tvdb_id")]
         public int TVDbId { get; set; }
 
+        [DataMember(Name = "imdb_id")]
+        public string IMDbId { get; set; }
+
         [DataMember(Name = "title")]
         public string Title { get; set; }
 

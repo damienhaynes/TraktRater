@@ -45,9 +45,14 @@
             this.lblStatusMessage = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tipHelp = new System.Windows.Forms.ToolTip(this.components);
+            this.grbImdb = new System.Windows.Forms.GroupBox();
+            this.txtImdbFilename = new System.Windows.Forms.TextBox();
+            this.lblImdbCSV = new System.Windows.Forms.Label();
+            this.btnImdbBrowse = new System.Windows.Forms.Button();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
+            this.grbImdb.SuspendLayout();
             this.SuspendLayout();
             // 
             // grbTrakt
@@ -61,7 +66,7 @@
             this.grbTrakt.Size = new System.Drawing.Size(442, 81);
             this.grbTrakt.TabIndex = 0;
             this.grbTrakt.TabStop = false;
-            this.grbTrakt.Text = "trakt.tv";
+            this.grbTrakt.Text = "Trakt";
             // 
             // txtTraktPassword
             // 
@@ -107,7 +112,7 @@
             this.grbTVDb.Size = new System.Drawing.Size(442, 54);
             this.grbTVDb.TabIndex = 1;
             this.grbTVDb.TabStop = false;
-            this.grbTVDb.Text = "thetvdb.com";
+            this.grbTVDb.Text = "TheTVDb";
             // 
             // txtTVDbAccountId
             // 
@@ -139,7 +144,7 @@
             // 
             // btnImportRatings
             // 
-            this.btnImportRatings.Location = new System.Drawing.Point(12, 182);
+            this.btnImportRatings.Location = new System.Drawing.Point(12, 254);
             this.btnImportRatings.Name = "btnImportRatings";
             this.btnImportRatings.Size = new System.Drawing.Size(442, 26);
             this.btnImportRatings.TabIndex = 4;
@@ -149,7 +154,7 @@
             // 
             // pbrImportProgress
             // 
-            this.pbrImportProgress.Location = new System.Drawing.Point(13, 214);
+            this.pbrImportProgress.Location = new System.Drawing.Point(13, 286);
             this.pbrImportProgress.Name = "pbrImportProgress";
             this.pbrImportProgress.Size = new System.Drawing.Size(441, 23);
             this.pbrImportProgress.TabIndex = 5;
@@ -158,7 +163,7 @@
             // 
             this.grbReport.Controls.Add(this.lblStatusMessage);
             this.grbReport.Controls.Add(this.label5);
-            this.grbReport.Location = new System.Drawing.Point(14, 243);
+            this.grbReport.Location = new System.Drawing.Point(13, 317);
             this.grbReport.Name = "grbReport";
             this.grbReport.Size = new System.Drawing.Size(441, 49);
             this.grbReport.TabIndex = 6;
@@ -190,11 +195,53 @@
             this.tipHelp.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tipHelp.ToolTipTitle = "Help";
             // 
+            // grbImdb
+            // 
+            this.grbImdb.Controls.Add(this.btnImdbBrowse);
+            this.grbImdb.Controls.Add(this.txtImdbFilename);
+            this.grbImdb.Controls.Add(this.lblImdbCSV);
+            this.grbImdb.Location = new System.Drawing.Point(13, 182);
+            this.grbImdb.Name = "grbImdb";
+            this.grbImdb.Size = new System.Drawing.Size(442, 54);
+            this.grbImdb.TabIndex = 2;
+            this.grbImdb.TabStop = false;
+            this.grbImdb.Text = "IMDb";
+            // 
+            // txtImdb
+            // 
+            this.txtImdbFilename.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtImdbFilename.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
+            this.txtImdbFilename.Location = new System.Drawing.Point(177, 19);
+            this.txtImdbFilename.Name = "txtImdb";
+            this.txtImdbFilename.Size = new System.Drawing.Size(208, 20);
+            this.txtImdbFilename.TabIndex = 1;
+            this.tipHelp.SetToolTip(this.txtImdbFilename, "You can export your ratings history to csv from your IMDb account settings.\r\nOnce" +
+        " you have downloaded file, you can specify filename in this textbox.");
+            // 
+            // lblImdbCSV
+            // 
+            this.lblImdbCSV.AutoSize = true;
+            this.lblImdbCSV.Location = new System.Drawing.Point(18, 25);
+            this.lblImdbCSV.Name = "lblImdbCSV";
+            this.lblImdbCSV.Size = new System.Drawing.Size(89, 13);
+            this.lblImdbCSV.TabIndex = 0;
+            this.lblImdbCSV.Text = "CSV Ratings File:";
+            // 
+            // btnImdbBrowse
+            // 
+            this.btnImdbBrowse.Location = new System.Drawing.Point(391, 17);
+            this.btnImdbBrowse.Name = "btnImdbBrowse";
+            this.btnImdbBrowse.Size = new System.Drawing.Size(30, 23);
+            this.btnImdbBrowse.TabIndex = 2;
+            this.btnImdbBrowse.Text = "...";
+            this.btnImdbBrowse.UseVisualStyleBackColor = true;
+            // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 299);
+            this.ClientSize = new System.Drawing.Size(467, 378);
+            this.Controls.Add(this.grbImdb);
             this.Controls.Add(this.grbReport);
             this.Controls.Add(this.pbrImportProgress);
             this.Controls.Add(this.btnImportRatings);
@@ -213,6 +260,8 @@
             this.grbTVDb.ResumeLayout(false);
             this.grbTVDb.PerformLayout();
             this.grbReport.ResumeLayout(false);
+            this.grbImdb.ResumeLayout(false);
+            this.grbImdb.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -235,6 +284,10 @@
         public System.Windows.Forms.Label lblStatusMessage;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ToolTip tipHelp;
+        private System.Windows.Forms.GroupBox grbImdb;
+        private System.Windows.Forms.Button btnImdbBrowse;
+        private System.Windows.Forms.TextBox txtImdbFilename;
+        private System.Windows.Forms.Label lblImdbCSV;
     }
 }
 
