@@ -76,6 +76,15 @@ namespace TraktRater
         {
             Settings.TraktUsername = txtTraktUsername.Text;
         }
+
+        private void btnImdbBrowse_Click(object sender, EventArgs e)
+        {
+            DialogResult result = dlgFileOpen.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtImdbFilename.Text = dlgFileOpen.FileName;
+            }
+        }
         #endregion
 
         #region Import Actions

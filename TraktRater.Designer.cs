@@ -45,10 +45,11 @@
             this.lblStatusMessage = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tipHelp = new System.Windows.Forms.ToolTip(this.components);
-            this.grbImdb = new System.Windows.Forms.GroupBox();
             this.txtImdbFilename = new System.Windows.Forms.TextBox();
-            this.lblImdbCSV = new System.Windows.Forms.Label();
+            this.grbImdb = new System.Windows.Forms.GroupBox();
             this.btnImdbBrowse = new System.Windows.Forms.Button();
+            this.lblImdbCSV = new System.Windows.Forms.Label();
+            this.dlgFileOpen = new System.Windows.Forms.OpenFileDialog();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -195,6 +196,17 @@
             this.tipHelp.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tipHelp.ToolTipTitle = "Help";
             // 
+            // txtImdbFilename
+            // 
+            this.txtImdbFilename.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtImdbFilename.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
+            this.txtImdbFilename.Location = new System.Drawing.Point(177, 19);
+            this.txtImdbFilename.Name = "txtImdbFilename";
+            this.txtImdbFilename.Size = new System.Drawing.Size(208, 20);
+            this.txtImdbFilename.TabIndex = 1;
+            this.tipHelp.SetToolTip(this.txtImdbFilename, "You can export your ratings history to csv from your IMDb account settings.\r\nOnce" +
+        " you have downloaded file, you can specify filename in this textbox.");
+            // 
             // grbImdb
             // 
             this.grbImdb.Controls.Add(this.btnImdbBrowse);
@@ -207,16 +219,15 @@
             this.grbImdb.TabStop = false;
             this.grbImdb.Text = "IMDb";
             // 
-            // txtImdb
+            // btnImdbBrowse
             // 
-            this.txtImdbFilename.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.txtImdbFilename.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
-            this.txtImdbFilename.Location = new System.Drawing.Point(177, 19);
-            this.txtImdbFilename.Name = "txtImdb";
-            this.txtImdbFilename.Size = new System.Drawing.Size(208, 20);
-            this.txtImdbFilename.TabIndex = 1;
-            this.tipHelp.SetToolTip(this.txtImdbFilename, "You can export your ratings history to csv from your IMDb account settings.\r\nOnce" +
-        " you have downloaded file, you can specify filename in this textbox.");
+            this.btnImdbBrowse.Location = new System.Drawing.Point(391, 17);
+            this.btnImdbBrowse.Name = "btnImdbBrowse";
+            this.btnImdbBrowse.Size = new System.Drawing.Size(30, 23);
+            this.btnImdbBrowse.TabIndex = 2;
+            this.btnImdbBrowse.Text = "...";
+            this.btnImdbBrowse.UseVisualStyleBackColor = true;
+            this.btnImdbBrowse.Click += new System.EventHandler(this.btnImdbBrowse_Click);
             // 
             // lblImdbCSV
             // 
@@ -227,14 +238,11 @@
             this.lblImdbCSV.TabIndex = 0;
             this.lblImdbCSV.Text = "CSV Ratings File:";
             // 
-            // btnImdbBrowse
+            // dlgFileOpen
             // 
-            this.btnImdbBrowse.Location = new System.Drawing.Point(391, 17);
-            this.btnImdbBrowse.Name = "btnImdbBrowse";
-            this.btnImdbBrowse.Size = new System.Drawing.Size(30, 23);
-            this.btnImdbBrowse.TabIndex = 2;
-            this.btnImdbBrowse.Text = "...";
-            this.btnImdbBrowse.UseVisualStyleBackColor = true;
+            this.dlgFileOpen.DefaultExt = "csv";
+            this.dlgFileOpen.FileName = "ratings.csv";
+            this.dlgFileOpen.Filter = "CSV files|*.csv";
             // 
             // TraktRater
             // 
@@ -288,6 +296,7 @@
         private System.Windows.Forms.Button btnImdbBrowse;
         private System.Windows.Forms.TextBox txtImdbFilename;
         private System.Windows.Forms.Label lblImdbCSV;
+        private System.Windows.Forms.OpenFileDialog dlgFileOpen;
     }
 }
 
