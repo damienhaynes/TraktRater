@@ -16,16 +16,16 @@ namespace TraktRater.Sites.API.TVDb
 
         public static string GetFromCache(string filename)
         {
-            return GetFromCache(filename, true);
+            return GetFromCache(filename, 1);
         }
-        public static string GetFromCache(string filename, bool expires)
+        public static string GetFromCache(string filename, int expiresInDays)
         {
             try
             {
                 if (!File.Exists(filename)) return null;
 
-                // if cache is older than 1 day disregard
-                if (expires && File.GetLastWriteTime(filename) <= DateTime.Now.Subtract(TimeSpan.FromDays(1)))
+                // if cache is older than X days disregard
+                if (File.GetLastWriteTime(filename) <= DateTime.Now.Subtract(TimeSpan.FromDays(expiresInDays)))
                     return null;
 
                 return File.ReadAllText(filename);

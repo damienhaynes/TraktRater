@@ -46,7 +46,7 @@ namespace TraktRater.Sites.API.TVDb
         public static TVDbShow GetShowInfo(string seriesId)
         {
             string fileCache = string.Format(TVDbCache.cShowInfoFileCache, seriesId);
-            string response = TVDbCache.GetFromCache(fileCache, false);
+            string response = TVDbCache.GetFromCache(fileCache, 7);
             if (string.IsNullOrEmpty(response))
             {
                 response = TraktWeb.Transmit(string.Format(TVDbURIs.SeriesInfo, seriesId), string.Empty);
