@@ -148,6 +148,8 @@ namespace TraktRater.Sites
             {
                 // get season/episode info from showInfo object
                 var tvdbEpisode = showInfo.Episodes.Find(e => e.Id == episode.Id);
+                if (tvdbEpisode == null) continue;
+
                 var traktEpisode = new TraktEpisode
                 {
                     Episode = tvdbEpisode.EpisodeNumber,
