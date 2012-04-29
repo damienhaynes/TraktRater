@@ -8,6 +8,7 @@ using TraktRater.TraktAPI;
 using TraktRater.TraktAPI.DataStructures;
 using TraktRater.Sites.API.TVDb;
 using TraktRater.UI;
+using TraktRater.Settings;
 
 namespace TraktRater.Sites
 {
@@ -131,8 +132,8 @@ namespace TraktRater.Sites
 
             TraktRateShows showRateData = new TraktRateShows
             {
-                Username = Settings.TraktUsername,
-                Password = Settings.TraktPassword,
+                Username = AppSettings.TraktUsername,
+                Password = AppSettings.TraktPassword,
                 Shows = shows
             };
 
@@ -159,8 +160,8 @@ namespace TraktRater.Sites
 
             TraktRateEpisodes episodeRateData = new TraktRateEpisodes
             {
-                Username = Settings.TraktUsername,
-                Password = Settings.TraktPassword,
+                Username = AppSettings.TraktUsername,
+                Password = AppSettings.TraktPassword,
                 Episodes = episodes,
             };
 

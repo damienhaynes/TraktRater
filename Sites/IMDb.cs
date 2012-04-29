@@ -9,6 +9,7 @@ using TraktRater.TraktAPI;
 using TraktRater.TraktAPI.DataStructures;
 using TraktRater.Sites.API.IMDb;
 using Microsoft.VisualBasic.FileIO;
+using TraktRater.Settings;
 
 namespace TraktRater.Sites
 {
@@ -114,8 +115,8 @@ namespace TraktRater.Sites
 
             var movieRateData = new TraktRateMovies
             {
-                Username = Settings.TraktUsername,
-                Password = Settings.TraktPassword,
+                Username = AppSettings.TraktUsername,
+                Password = AppSettings.TraktPassword,
                 Movies = traktMovies
             };
 
@@ -137,8 +138,8 @@ namespace TraktRater.Sites
 
             var movieRateData = new TraktRateShows
             {
-                Username = Settings.TraktUsername,
-                Password = Settings.TraktPassword,
+                Username = AppSettings.TraktUsername,
+                Password = AppSettings.TraktPassword,
                 Shows = traktShows
             };
 

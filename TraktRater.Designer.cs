@@ -50,10 +50,14 @@
             this.btnImdbBrowse = new System.Windows.Forms.Button();
             this.lblImdbCSV = new System.Windows.Forms.Label();
             this.dlgFileOpen = new System.Windows.Forms.OpenFileDialog();
+            this.grbTMDb = new System.Windows.Forms.GroupBox();
+            this.lnkTMDbStart = new System.Windows.Forms.LinkLabel();
+            this.lblTMDbMessage = new System.Windows.Forms.Label();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
             this.grbImdb.SuspendLayout();
+            this.grbTMDb.SuspendLayout();
             this.SuspendLayout();
             // 
             // grbTrakt
@@ -76,7 +80,6 @@
             this.txtTraktPassword.Size = new System.Drawing.Size(244, 20);
             this.txtTraktPassword.TabIndex = 3;
             this.txtTraktPassword.UseSystemPasswordChar = true;
-            this.txtTraktPassword.TextChanged += new System.EventHandler(this.txtTraktPassword_TextChanged);
             // 
             // label2
             // 
@@ -93,7 +96,7 @@
             this.label1.Location = new System.Drawing.Point(18, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 13);
-            this.label1.TabIndex = 1;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Username:";
             // 
             // txtTraktUsername
@@ -101,7 +104,7 @@
             this.txtTraktUsername.Location = new System.Drawing.Point(177, 20);
             this.txtTraktUsername.Name = "txtTraktUsername";
             this.txtTraktUsername.Size = new System.Drawing.Size(244, 20);
-            this.txtTraktUsername.TabIndex = 0;
+            this.txtTraktUsername.TabIndex = 1;
             this.txtTraktUsername.TextChanged += new System.EventHandler(this.txtTraktUsername_TextChanged);
             // 
             // grbTVDb
@@ -111,9 +114,9 @@
             this.grbTVDb.Location = new System.Drawing.Point(12, 122);
             this.grbTVDb.Name = "grbTVDb";
             this.grbTVDb.Size = new System.Drawing.Size(442, 54);
-            this.grbTVDb.TabIndex = 1;
+            this.grbTVDb.TabIndex = 2;
             this.grbTVDb.TabStop = false;
-            this.grbTVDb.Text = "TheTVDb";
+            this.grbTVDb.Text = "TVDb";
             // 
             // txtTVDbAccountId
             // 
@@ -140,34 +143,34 @@
             this.lblDetails.Location = new System.Drawing.Point(13, 101);
             this.lblDetails.Name = "lblDetails";
             this.lblDetails.Size = new System.Drawing.Size(352, 13);
-            this.lblDetails.TabIndex = 3;
+            this.lblDetails.TabIndex = 1;
             this.lblDetails.Text = "Enter in account details for sources you wish to transfer ratings to trakt.tv:";
             // 
             // btnImportRatings
             // 
-            this.btnImportRatings.Location = new System.Drawing.Point(12, 254);
+            this.btnImportRatings.Location = new System.Drawing.Point(12, 330);
             this.btnImportRatings.Name = "btnImportRatings";
             this.btnImportRatings.Size = new System.Drawing.Size(442, 26);
-            this.btnImportRatings.TabIndex = 4;
+            this.btnImportRatings.TabIndex = 5;
             this.btnImportRatings.Text = "Start Ratings Import";
             this.btnImportRatings.UseVisualStyleBackColor = true;
             this.btnImportRatings.Click += new System.EventHandler(this.btnImportRatings_Click);
             // 
             // pbrImportProgress
             // 
-            this.pbrImportProgress.Location = new System.Drawing.Point(13, 286);
+            this.pbrImportProgress.Location = new System.Drawing.Point(13, 362);
             this.pbrImportProgress.Name = "pbrImportProgress";
             this.pbrImportProgress.Size = new System.Drawing.Size(441, 23);
-            this.pbrImportProgress.TabIndex = 5;
+            this.pbrImportProgress.TabIndex = 6;
             // 
             // grbReport
             // 
             this.grbReport.Controls.Add(this.lblStatusMessage);
             this.grbReport.Controls.Add(this.label5);
-            this.grbReport.Location = new System.Drawing.Point(13, 317);
+            this.grbReport.Location = new System.Drawing.Point(13, 393);
             this.grbReport.Name = "grbReport";
             this.grbReport.Size = new System.Drawing.Size(441, 49);
-            this.grbReport.TabIndex = 6;
+            this.grbReport.TabIndex = 7;
             this.grbReport.TabStop = false;
             this.grbReport.Text = "Report";
             // 
@@ -215,7 +218,7 @@
             this.grbImdb.Location = new System.Drawing.Point(13, 182);
             this.grbImdb.Name = "grbImdb";
             this.grbImdb.Size = new System.Drawing.Size(442, 54);
-            this.grbImdb.TabIndex = 2;
+            this.grbImdb.TabIndex = 3;
             this.grbImdb.TabStop = false;
             this.grbImdb.Text = "IMDb";
             // 
@@ -244,11 +247,43 @@
             this.dlgFileOpen.FileName = "ratings.csv";
             this.dlgFileOpen.Filter = "CSV files|*.csv";
             // 
+            // grbTMDb
+            // 
+            this.grbTMDb.Controls.Add(this.lnkTMDbStart);
+            this.grbTMDb.Controls.Add(this.lblTMDbMessage);
+            this.grbTMDb.Location = new System.Drawing.Point(13, 243);
+            this.grbTMDb.Name = "grbTMDb";
+            this.grbTMDb.Size = new System.Drawing.Size(441, 81);
+            this.grbTMDb.TabIndex = 4;
+            this.grbTMDb.TabStop = false;
+            this.grbTMDb.Text = "TMDb";
+            // 
+            // lnkTMDbStart
+            // 
+            this.lnkTMDbStart.AutoSize = true;
+            this.lnkTMDbStart.Location = new System.Drawing.Point(18, 52);
+            this.lnkTMDbStart.Name = "lnkTMDbStart";
+            this.lnkTMDbStart.Size = new System.Drawing.Size(113, 13);
+            this.lnkTMDbStart.TabIndex = 1;
+            this.lnkTMDbStart.TabStop = true;
+            this.lnkTMDbStart.Text = "Start Request Process";
+            this.lnkTMDbStart.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkTMDbStart_LinkClicked);
+            // 
+            // lblTMDbMessage
+            // 
+            this.lblTMDbMessage.Location = new System.Drawing.Point(17, 18);
+            this.lblTMDbMessage.Name = "lblTMDbMessage";
+            this.lblTMDbMessage.Size = new System.Drawing.Size(406, 44);
+            this.lblTMDbMessage.TabIndex = 0;
+            this.lblTMDbMessage.Text = "To get user ratings from TMDb you must first allow this application to access you" +
+    "r account details. This needs to be done by you in a webbrowser.";
+            // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 378);
+            this.ClientSize = new System.Drawing.Size(467, 451);
+            this.Controls.Add(this.grbTMDb);
             this.Controls.Add(this.grbImdb);
             this.Controls.Add(this.grbReport);
             this.Controls.Add(this.pbrImportProgress);
@@ -270,6 +305,8 @@
             this.grbReport.ResumeLayout(false);
             this.grbImdb.ResumeLayout(false);
             this.grbImdb.PerformLayout();
+            this.grbTMDb.ResumeLayout(false);
+            this.grbTMDb.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -297,6 +334,9 @@
         private System.Windows.Forms.TextBox txtImdbFilename;
         private System.Windows.Forms.Label lblImdbCSV;
         private System.Windows.Forms.OpenFileDialog dlgFileOpen;
+        private System.Windows.Forms.GroupBox grbTMDb;
+        private System.Windows.Forms.LinkLabel lnkTMDbStart;
+        private System.Windows.Forms.Label lblTMDbMessage;
     }
 }
 

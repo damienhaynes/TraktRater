@@ -12,6 +12,7 @@ using TraktRater.Sites;
 using TraktRater.Extensions;
 using TraktRater.TraktAPI.DataStructures;
 using TraktRater.UI;
+using TraktRater.Settings;
 
 namespace TraktRater
 {
@@ -19,12 +20,14 @@ namespace TraktRater
     {
         #region UI Invoke Delegates
         delegate void SetControlStateDelegate(bool enable);
+        delegate void SetTMDbControlStateDelegate();
         delegate void ClearProgressDelegate();
         #endregion
 
         #region Variables
         List<IRateSite> sites = new List<IRateSite>();
         static bool ImportRunning = false;
+        static bool ImportCancelled = false;
         #endregion
 
         #region Constants
@@ -43,12 +46,24 @@ namespace TraktRater
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            AppSettings.Load();
             ClearProgress();
+
+            // populate fields
+            txtTraktUsername.Text = AppSettings.TraktUsername;
+            txtTraktPassword.Text = AppSettings.TraktPassword;
+            txtTVDbAccountId.Text = AppSettings.TVDbAccountIdentifier;
+            txtImdbFilename.Text = AppSettings.IMDbFilename;
+            SetTMDbControlState();
+
+            // prevent re-hash and subscribe after setting password in box
+            txtTraktPassword.TextChanged += new EventHandler(txtTraktPassword_TextChanged);
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             CancelImport();
+            AppSettings.Save();
             base.OnClosing(e);
         }
         #endregion
@@ -64,17 +79,22 @@ namespace TraktRater
 
         private void txtTVDbAccountId_TextChanged(object sender, EventArgs e)
         {
-            Settings.TVDbAccountIdentifier = txtTVDbAccountId.Text;
+            AppSettings.TVDbAccountIdentifier = txtTVDbAccountId.Text;
         }
 
         private void txtTraktPassword_TextChanged(object sender, EventArgs e)
         {
-            Settings.TraktPassword = txtTraktPassword.Text.ToShaHash();
+            if (string.IsNullOrEmpty(txtTraktPassword.Text))
+            {
+                AppSettings.TraktPassword = string.Empty;
+                return;
+            }
+            AppSettings.TraktPassword = txtTraktPassword.Text.ToShaHash();
         }
 
         private void txtTraktUsername_TextChanged(object sender, EventArgs e)
         {
-            Settings.TraktUsername = txtTraktUsername.Text;
+            AppSettings.TraktUsername = txtTraktUsername.Text;
         }
 
         private void btnImdbBrowse_Click(object sender, EventArgs e)
@@ -85,6 +105,34 @@ namespace TraktRater
                 txtImdbFilename.Text = dlgFileOpen.FileName;
             }
         }
+
+        private void lnkTMDbStart_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(AppSettings.TMDbRequestToken) || !string.IsNullOrEmpty(AppSettings.TMDbSessionId))
+            {
+                AppSettings.TMDbRequestToken = string.Empty;
+                AppSettings.TMDbSessionId = string.Empty;
+                SetTMDbControlState();
+                return;
+            }
+
+            Thread tokenThread = new Thread((o) =>
+                {
+                    // store token and parse into tmdb object later
+                    // for request session id
+                    string requestToken = TMDb.RequestToken();
+
+                    if (!string.IsNullOrEmpty(requestToken))
+                    {
+                        TMDb.RequestAuthorization(requestToken);
+                        AppSettings.TMDbRequestToken = requestToken;
+                        SetTMDbControlState();
+                    }
+                });
+
+            tokenThread.Start();
+        }
+
         #endregion
 
         #region Import Actions
@@ -92,7 +140,7 @@ namespace TraktRater
         {
             if (ImportRunning) return;
 
-            if (string.IsNullOrEmpty(Settings.TraktUsername) || string.IsNullOrEmpty(Settings.TraktPassword))
+            if (string.IsNullOrEmpty(AppSettings.TraktUsername) || string.IsNullOrEmpty(AppSettings.TraktPassword))
             {
                 UIUtils.UpdateStatus("You must enter in your trakt username and password!", true);
                 return;
@@ -101,8 +149,9 @@ namespace TraktRater
             sites.Clear();
 
             // add import sites for processing
-            sites.Add(new TVDb(Settings.TVDbAccountIdentifier));
+            sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
             sites.Add(new IMDb(txtImdbFilename.Text));
+            sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
 
             if (sites.Where(s => s.Enabled).Count() == 0)
             {
@@ -110,6 +159,7 @@ namespace TraktRater
                 return;
             }
 
+            #region Import
             Thread importThread = new Thread((o) =>
             {
                 ImportRunning = true;
@@ -122,13 +172,14 @@ namespace TraktRater
 
                 #region Login to trakt
                 UIUtils.UpdateStatus("Logging in to trakt.tv...");
-                var accountDetails = new TraktAuthentication { Username = Settings.TraktUsername, Password = Settings.TraktPassword };
+                var accountDetails = new TraktAuthentication { Username = AppSettings.TraktUsername, Password = AppSettings.TraktPassword };
                 var response = TraktAPI.TraktAPI.TestAccount(accountDetails);
                 if (response == null || response.Status != "success")
                 {
                     UIUtils.UpdateStatus("Unable to login to trakt, check username and password!", true);
                     SetControlState(true);
                     ImportRunning = false;
+                    ImportCancelled = false;
                     return;
                 }
                 #endregion
@@ -138,7 +189,8 @@ namespace TraktRater
                 {
                     try
                     {
-                        site.ImportRatings();
+                        if (!ImportCancelled)
+                            site.ImportRatings();
                     }
                     catch (Exception e)
                     {
@@ -151,9 +203,11 @@ namespace TraktRater
                 SetControlState(true);
                 UIUtils.UpdateStatus("Import Complete!");
                 ImportRunning = false;
+                ImportCancelled = false;
             });
 
             importThread.Start();
+            #endregion
         }
 
         private void CancelImport()
@@ -161,6 +215,8 @@ namespace TraktRater
             if (!ImportRunning) return;
 
             UIUtils.UpdateStatus("Cancelling Import...");
+
+            ImportCancelled = true;
 
             Thread cancelThread = new Thread((o) =>
             {
@@ -188,6 +244,9 @@ namespace TraktRater
             txtTraktUsername.Enabled = enable;
             txtTraktPassword.Enabled = enable;
             txtTVDbAccountId.Enabled = enable;
+            txtImdbFilename.Enabled = enable;
+            btnImdbBrowse.Enabled = enable;
+            lnkTMDbStart.Enabled = enable;
 
             btnImportRatings.Text = enable ? cImportReady : cCancelImport;
             pbrImportProgress.Style = enable ? ProgressBarStyle.Continuous : ProgressBarStyle.Marquee;
@@ -204,6 +263,28 @@ namespace TraktRater
             
             lblStatusMessage.Text = "Ready for anything!";
             lblStatusMessage.ForeColor = Color.Black;
+        }
+
+        private void SetTMDbControlState()
+        {
+            if (this.InvokeRequired)
+            {
+                SetTMDbControlStateDelegate setTMDbState = new SetTMDbControlStateDelegate(SetTMDbControlState);
+                this.Invoke(setTMDbState);
+                return;
+            }
+
+            // we are either ready to get session id or we already have it
+            if (!string.IsNullOrEmpty(AppSettings.TMDbRequestToken) || !string.IsNullOrEmpty(AppSettings.TMDbSessionId))
+            {
+                lblTMDbMessage.Text = "Request Token and/or Session Id is already found.";
+                lnkTMDbStart.Text = "Disable TMDb Support";
+            }
+            else
+            {
+                lblTMDbMessage.Text = "To get user ratings from TMDb you must first allow this application to access your account details. This needs to be done by you in a webbrowser.";
+                lnkTMDbStart.Text = "Start Request Process";
+            }
         }
         #endregion
 

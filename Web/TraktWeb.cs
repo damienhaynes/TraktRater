@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using TraktRater.Settings;
 
 namespace TraktRater.Web
 {
@@ -41,7 +42,7 @@ namespace TraktRater.Web
                 ExtendedWebClient client = new ExtendedWebClient();
                 client.Timeout = 30000;
                 client.Encoding = Encoding.UTF8;
-                client.Headers.Add("user-agent", Settings.UserAgent);
+                client.Headers.Add("user-agent", AppSettings.UserAgent);
                 if (string.IsNullOrEmpty(data))
                     return client.DownloadString(address);
                 else
@@ -67,5 +68,32 @@ namespace TraktRater.Web
                 return ret;
             }
          }
+
+        public static string TransmitExtended(string address)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(address);
+                request.UserAgent = AppSettings.UserAgent;
+                request.Accept = "application/json";
+
+                WebResponse response = (HttpWebResponse)request.GetResponse();
+                if (response == null) return null;
+
+                Stream stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                string strResponse = reader.ReadToEnd();
+
+                stream.Close();
+                reader.Close();
+                response.Close();
+
+                return strResponse;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
