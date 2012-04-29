@@ -149,9 +149,9 @@ namespace TraktRater
             sites.Clear();
 
             // add import sites for processing
+            sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
             sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
             sites.Add(new IMDb(txtImdbFilename.Text));
-            sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
 
             if (sites.Where(s => s.Enabled).Count() == 0)
             {
