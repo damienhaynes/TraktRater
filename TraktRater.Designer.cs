@@ -209,6 +209,7 @@
             this.txtImdbFilename.TabIndex = 1;
             this.tipHelp.SetToolTip(this.txtImdbFilename, "You can export your ratings history to csv from your IMDb account settings.\r\nOnce" +
         " you have downloaded file, you can specify filename in this textbox.");
+            this.txtImdbFilename.TextChanged += new System.EventHandler(this.txtImdbFilename_TextChanged);
             // 
             // grbImdb
             // 

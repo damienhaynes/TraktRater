@@ -105,6 +105,11 @@ namespace TraktRater
                 txtImdbFilename.Text = dlgFileOpen.FileName;
             }
         }
+        
+        private void txtImdbFilename_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.IMDbFilename = txtImdbFilename.Text;
+        }
 
         private void lnkTMDbStart_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -151,7 +156,7 @@ namespace TraktRater
             // add import sites for processing
             sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
             sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
-            sites.Add(new IMDb(txtImdbFilename.Text));
+            sites.Add(new IMDb(AppSettings.IMDbFilename));
 
             if (sites.Where(s => s.Enabled).Count() == 0)
             {
