@@ -125,7 +125,7 @@ namespace TraktRater.Sites
                                  select new TraktMovie
                                  {
                                      TMDbId = movie.Id,
-                                     Rating = Convert.ToInt32(Math.Round(movie.Rating))
+                                     Rating = Convert.ToInt32(Math.Round(movie.Rating, MidpointRounding.AwayFromZero))
                                  });
 
             var movieRateData = new TraktRateMovies

@@ -46,7 +46,7 @@ The [TMDb](http://themoviedb.org) provider supports movie ratings. TraktRater re
  * Click on the **Start Request Process** in the Trakt Rater application.
  * When a valid request token is recieved from [TMDb](http://themoviedb.org) you will be re-directed in a webbrowser to approve or deny Trakt Rater.
  * Click on the **Allow Button** in webbrowser.
- * You are now ready to import ratings from [TMDb](http://themoviedb.org), exit the browser and return to the application.
+ * You are now ready to import ratings from [TMDb](http://themoviedb.org), exit the browser and return to the application. If you do not start importing with-in 60 minutes or restart the application before importing then you will need to repeat process.
  
 If at any time you want to disable access or request persmission again you can click on the **Disable TMDb Support** link and then repeat steps above. 
  
