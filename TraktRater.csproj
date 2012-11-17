@@ -52,8 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Extensions\SecurityExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\XMLReader.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktShow.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktRatingsResponse.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktResponse.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktShowSummary.cs" />
     <Compile Include="TraktAPI\TraktAPI.cs" />
     <Compile Include="TraktAPI\TraktURIs.cs" />
     <Compile Include="TraktRater.cs">

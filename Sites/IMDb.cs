@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using TraktRater.Extensions;
 using TraktRater.UI;
 using TraktRater.TraktAPI;
 using TraktRater.TraktAPI.DataStructures;
@@ -20,6 +22,7 @@ namespace TraktRater.Sites
         bool ImportCancelled = false;
         string CSVFile = null;
         List<Dictionary<string, string>> RateItems = new List<Dictionary<string, string>>();
+        Dictionary<string, TraktShowSummary> ShowSummaries = new Dictionary<string, TraktShowSummary>();
 
         #endregion
 
@@ -87,6 +90,22 @@ namespace TraktRater.Sites
             if (ImportCancelled) return;
             #endregion
 
+            #region Episodes
+            var episodes = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode);
+            if (episodes.Count() > 0)
+            {
+                UIUtils.UpdateStatus(string.Format("Importing {0} episode ratings to trakt.tv.", episodes.Count()));
+
+                TraktRatingsResponse response = TraktAPI.TraktAPI.RateEpisodes(GetRateEpisodeData(episodes));
+                if (response == null || response.Status != "success")
+                {
+                    UIUtils.UpdateStatus("Error importing episodes ratings to trakt.tv.", true);
+                    Thread.Sleep(2000);
+                }
+            }
+            if (ImportCancelled) return;
+            #endregion
+
             return;
         }
 
@@ -146,6 +165,166 @@ namespace TraktRater.Sites
             return movieRateData;
         }
 
+        private TraktRateEpisodes GetRateEpisodeData(IEnumerable<Dictionary<string, string>> episodes)
+        {
+            var traktEpisodes = new List<TraktEpisode>();
+
+            foreach(var episode in episodes)
+            {
+                // get the show information
+                string showTitle = GetShowName(episode[IMDbFieldMapping.cTitle]);
+                if (string.IsNullOrEmpty(showTitle)) continue;
+
+                // get slug of show title
+                string slug = showTitle.GenerateSlug();
+                if (string.IsNullOrEmpty(slug)) continue;
+
+                TraktShowSummary showSummary = new TraktShowSummary();
+
+                if (!ShowSummaries.TryGetValue(showTitle, out showSummary))
+                {
+                    // get from online
+                    UIUtils.UpdateStatus(string.Format("Retrieving data for {0}", showTitle));
+                    showSummary = TraktAPI.TraktAPI.GetShowSummary(slug);
+                    if (showSummary == null || showSummary.Seasons == null || showSummary.Seasons.Count == 0)
+                    {
+                        UIUtils.UpdateStatus(string.Format("Unable to get info for {0}", showTitle), true);
+                        continue;
+                    }
+
+                    // store show summary
+                    ShowSummaries.Add(showTitle, showSummary);
+                }
+                
+                var traktEpisode = GetTraktEpisodeData(episode, showSummary);
+                if (traktEpisode == null) continue;
+
+                traktEpisodes.Add(traktEpisode);
+            }
+
+            var episodeRateData = new TraktRateEpisodes
+            {
+                Username = AppSettings.TraktUsername,
+                Password = AppSettings.TraktPassword,
+                Episodes = traktEpisodes
+            };
+
+            return episodeRateData;
+        }
+
+        /// <summary>
+        /// Removes the episode name and returns only the show title
+        /// </summary>
+        private string GetShowName(string title)
+        {
+            if (string.IsNullOrEmpty(title)) return null;
+
+            // IMDb populates title field in the form "show: episode"
+            // Some shows also include colons so should only remove last one.
+            var parts = title.Split(':');
+            
+            if (parts.Count() == 2)
+                return parts[0];
+
+            if (parts.Count() > 2)
+                return title.Replace(string.Format(": {0}", parts[parts.Count() - 1].Trim()), string.Empty);
+
+            return title;
+        }
+
+        /// <summary>
+        /// returns only the episode name part of the title
+        /// </summary>
+        private string GetEpisodeName(string title)
+        {
+            if (string.IsNullOrEmpty(title)) return null;
+
+            // IMDb populates title field in the form "show: episode"
+            // Some shows also include colons so should only remove last one.
+            var parts = title.Split(':');
+
+            if (parts.Count() >= 2)
+                return parts[parts.Count() - 1].Trim();
+
+            return null;
+        }
+
+        private TraktEpisode GetTraktEpisodeData(Dictionary<string,string> episode, TraktShowSummary showSummary)
+        {
+            if (showSummary == null || showSummary.Seasons == null || showSummary.Seasons.Count == 0)
+                return null;
+
+            string episodeTitle = GetEpisodeName(episode[IMDbFieldMapping.cTitle]);
+            
+            // find episode title in list of episodes from show summary
+            if (!string.IsNullOrEmpty(episodeTitle))
+            {
+                TraktShowSummary.TraktSeason.TraktEpisode match = null;
+                foreach (var season in showSummary.Seasons)
+                {
+                    if (match != null) continue;
+                    match = season.Episodes.FirstOrDefault(e => string.Equals(e.Title, episodeTitle, StringComparison.InvariantCultureIgnoreCase));
+                }
+
+                if (match != null)
+                {
+                    return new TraktEpisode
+                                {
+                                    Episode = match.Episode,
+                                    Season = match.Season,
+                                    TVDbId = match.TVDbId,
+                                    Title = showSummary.Title,
+                                    Year = showSummary.Year,
+                                    Rating = int.Parse(episode[IMDbFieldMapping.cRating])
+                                };
+                }
+            }
+
+            // we can also lookup by airDate
+            string episodeAirDate = episode[IMDbFieldMapping.cReleaseDate];
+           
+            if (!string.IsNullOrEmpty(episodeAirDate))
+            {
+                // get epoch date
+                long dateTimeEpoch = 0;
+                try
+                {
+                    var splitDate = episodeAirDate.Split('-');
+                    // parse date and add 8hours for PST
+                    DateTime dateTime = new DateTime(int.Parse(splitDate[0]), int.Parse(splitDate[1]), int.Parse(splitDate[2])).AddHours(8);
+                    dateTimeEpoch = dateTime.ToEpoch();
+                }
+                catch
+                {
+                    UIUtils.UpdateStatus(string.Format("Unable to get info for {0}", episode[IMDbFieldMapping.cTitle]), true);
+                    return null;
+                }
+
+                TraktShowSummary.TraktSeason.TraktEpisode match = null;
+                foreach (var season in showSummary.Seasons)
+                {
+                    if (match != null) continue;
+                    match = season.Episodes.FirstOrDefault(e => e.FirstAired == dateTimeEpoch);
+                }
+
+                if (match != null)
+                {
+                    return new TraktEpisode
+                    {
+                        Episode = match.Episode,
+                        Season = match.Season,
+                        TVDbId = match.TVDbId,
+                        Title = showSummary.Title,
+                        Year = showSummary.Year,
+                        Rating = int.Parse(episode[IMDbFieldMapping.cRating])
+                    };
+                }
+            }
+
+            UIUtils.UpdateStatus(string.Format("Unable to get info for {0}", episode[IMDbFieldMapping.cTitle]), true);
+            return null;
+        }
+
         private bool ParseCSVFile(string filename)
         {
             if (!File.Exists(filename)) return false;
@@ -196,4 +375,5 @@ namespace TraktRater.Sites
 
         #endregion
     }
+
 }

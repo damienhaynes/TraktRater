@@ -80,5 +80,18 @@ namespace TraktRater.TraktAPI
             // return success or failure
             return response.FromJSON<TraktRatingsResponse>();
         }
+
+        public static TraktShowSummary GetShowSummary(string slug)
+        {
+            // check that we have everything we need
+            if (string.IsNullOrEmpty(slug))
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.Transmit(string.Format(TraktURIs.ShowSummary, slug), string.Empty);
+
+            // return success or failure
+            return response.FromJSON<TraktShowSummary>();
+        }
     }
 }

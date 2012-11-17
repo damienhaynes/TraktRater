@@ -16,5 +16,6 @@ namespace TraktRater.TraktAPI
         public const string RateMovies = @"http://api.trakt.tv/rate/movies/" + apiKey;
         public const string RateShows = @"http://api.trakt.tv/rate/shows/" + apiKey;
         public const string TestAccount = @"http://api.trakt.tv/account/test/" + apiKey;
+        public const string ShowSummary = @"http://api.trakt.tv/show/summary.json/" + apiKey + "/{0}/extended";
     }
 }
