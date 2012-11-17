@@ -18,7 +18,7 @@ Data Sources
 The following data sources are currently supported by this tool:
 
 ###IMDb###
-The [IMDb](http://imdb.com) provider supports tv show and movie ratings. Episode ratings may be added in a future release. TraktRater requires the user ratings from IMDb to be first exported to a csv file, to do this follow these steps:
+The [IMDb](http://imdb.com) provider supports tv show, episode and movie ratings. TraktRater requires the user ratings from IMDb to be first exported to a csv file, to do this follow these steps:
 
  * Login to [IMDb](http://imdb.com).
  * Click on the **Account** link in the top right hand corner of page.
