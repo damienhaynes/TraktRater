@@ -11,6 +11,7 @@ Usage
  * Run the TraktRater.exe tool from the download location.
  * Enter in your [trakt.tv](http://trakt.tv) username and password in the trakt section.
  * Enter in any details from 3rd Party data sources such as your [thetvdb.com](http://thetvdb.com) account identifier. If you leave any information from the data sources blank then it will be ignored on import.
+ * If you wish to mark episodes and movies as watched if you have rated them, then keep the corresponding option checked, otherwise uncheck.
  * Press the **Start Ratings Import** button.
 
 Data Sources
