@@ -71,6 +71,12 @@ namespace TraktRater
         #endregion
 
         #region UI Events
+
+        private void chkMarkAsWatched_Click(object sender, EventArgs e)
+        {
+            AppSettings.MarkAsWatched = !AppSettings.MarkAsWatched;
+        }
+
         private void btnImportRatings_Click(object sender, EventArgs e)
         {
             if (!ImportRunning)

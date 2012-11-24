@@ -301,6 +301,7 @@
             this.chkMarkAsWatched.TabIndex = 0;
             this.chkMarkAsWatched.Text = "Mark episodes and movies as watched if rated online";
             this.chkMarkAsWatched.UseVisualStyleBackColor = true;
+            this.chkMarkAsWatched.Click += new System.EventHandler(this.chkMarkAsWatched_Click);
             // 
             // TraktRater
             // 
