@@ -38,6 +38,7 @@ namespace TraktRater.Sites
         public void ImportRatings()
         {
             ImportCancelled = false;
+            List<TMDbMovie> watchedMovies = new List<TMDbMovie>();
 
             #region Session Id
             // check if we have a session id
@@ -86,6 +87,9 @@ namespace TraktRater.Sites
                 if (ImportCancelled) return;
             }
 
+            // add to list of movies to mark as watched
+            watchedMovies.AddRange(ratings.Movies);
+
             // get each page of movies
             for (int i = 2; i <= ratings.TotalPages; i++)
             {
@@ -100,8 +104,26 @@ namespace TraktRater.Sites
                     UIUtils.UpdateStatus("Failed to send ratings for TMDb movies.", true);
                     Thread.Sleep(2000);
                     if (ImportCancelled) return;
-                }                
+                }
+
+                // add to list of movies to mark as watched
+                watchedMovies.AddRange(ratings.Movies);
             } 
+            #endregion
+
+            #region Mark As Watched
+            if (AppSettings.MarkAsWatched && watchedMovies.Count > 0)
+            {
+                // mark all movies as watched if rated
+                UIUtils.UpdateStatus(string.Format("Importing {0} TMDb Movies as Watched...", watchedMovies.Count));
+                TraktMovieSyncResponse watchedResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetWatchedMoviesData(watchedMovies), TraktSyncModes.seen);
+                if (watchedResponse == null || watchedResponse.Status != "success")
+                {
+                    UIUtils.UpdateStatus("Failed to send watched status for TMDb movies.", true);
+                    Thread.Sleep(2000);
+                    if (ImportCancelled) return;
+                }
+            }
             #endregion
 
             return;
@@ -116,6 +138,26 @@ namespace TraktRater.Sites
         #endregion
 
         #region Private Methods
+
+        private TraktMovieSync GetWatchedMoviesData(List<TMDbMovie> movies)
+        {
+            var traktMovies = new List<TraktMovieSync.Movie>();
+
+            traktMovies.AddRange(from movie in movies
+                                 select new TraktMovieSync.Movie
+                                 {
+                                     TMDBID = movie.Id.ToString()
+                                 });
+
+            var movieWatchedData = new TraktMovieSync
+            {
+                UserName = AppSettings.TraktUsername,
+                Password = AppSettings.TraktPassword,
+                MovieList = traktMovies
+            };
+
+            return movieWatchedData;
+        }
 
         private TraktRateMovies GetRateMoviesData(List<TMDbMovie> movies)
         {

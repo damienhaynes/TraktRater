@@ -82,7 +82,9 @@
     <Compile Include="Sites\API\TVDb\TVDbURIs.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktAuthentication.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisode.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktEpisodeSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktMovie.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktMovieSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktRateEpisodes.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktRateMovies.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktRateShows.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktRatingsResponse.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktResponse.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowSummary.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktSyncMovieResponse.cs" />
     <Compile Include="TraktAPI\TraktAPI.cs" />
     <Compile Include="TraktAPI\TraktURIs.cs" />
     <Compile Include="TraktRater.cs">

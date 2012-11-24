@@ -12,6 +12,19 @@ using TraktRater.Web;
 namespace TraktRater.TraktAPI
 {
     /// <summary>
+    /// List of Sync Modes
+    /// </summary>
+    public enum TraktSyncModes
+    {
+        library,
+        seen,
+        unlibrary,
+        unseen,
+        watchlist,
+        unwatchlist
+    }
+
+    /// <summary>
     /// Object that communicates with the Trakt API
     /// </summary>
     public static class TraktAPI
@@ -92,6 +105,43 @@ namespace TraktRater.TraktAPI
 
             // return success or failure
             return response.FromJSON<TraktShowSummary>();
+        }
+
+        /// <summary>
+        /// Sends movie sync data to Trakt
+        /// </summary>
+        /// <param name="syncData">The sync data to send</param>
+        /// <param name="mode">The sync mode to use</param>
+        /// <returns>The response from trakt</returns>
+        public static TraktMovieSyncResponse SyncMovieLibrary(TraktMovieSync syncData, TraktSyncModes mode)
+        {
+            // check that we have everything we need
+            if (syncData == null || syncData.MovieList.Count == 0)
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.Transmit(string.Format(TraktURIs.SyncMovieLibrary, mode.ToString()), syncData.ToJSON());
+
+            // return success or failure
+            return response.FromJSON<TraktMovieSyncResponse>();
+        }
+
+        /// <summary>
+        /// Sends episode sync data to Trakt
+        /// </summary>
+        /// <param name="syncData">The sync data to send</param>
+        /// <param name="mode">The sync mode to use</param>
+        public static TraktResponse SyncEpisodeLibrary(TraktEpisodeSync syncData, TraktSyncModes mode)
+        {
+            // check that we have everything we need
+            if (syncData == null || string.IsNullOrEmpty(syncData.SeriesID))
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.Transmit(string.Format(TraktURIs.SyncEpisodeLibrary, mode.ToString()), syncData.ToJSON());
+
+            // return success or failure
+            return response.FromJSON<TraktResponse>();
         }
     }
 }

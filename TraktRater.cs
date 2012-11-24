@@ -54,6 +54,8 @@ namespace TraktRater
             txtTraktPassword.Text = AppSettings.TraktPassword;
             txtTVDbAccountId.Text = AppSettings.TVDbAccountIdentifier;
             txtImdbFilename.Text = AppSettings.IMDbFilename;
+            chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
+
             SetTMDbControlState();
 
             // prevent re-hash and subscribe after setting password in box

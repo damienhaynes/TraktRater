@@ -53,11 +53,14 @@
             this.grbTMDb = new System.Windows.Forms.GroupBox();
             this.lnkTMDbStart = new System.Windows.Forms.LinkLabel();
             this.lblTMDbMessage = new System.Windows.Forms.Label();
+            this.grbOptions = new System.Windows.Forms.GroupBox();
+            this.chkMarkAsWatched = new System.Windows.Forms.CheckBox();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
             this.grbImdb.SuspendLayout();
             this.grbTMDb.SuspendLayout();
+            this.grbOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // grbTrakt
@@ -148,29 +151,29 @@
             // 
             // btnImportRatings
             // 
-            this.btnImportRatings.Location = new System.Drawing.Point(12, 330);
+            this.btnImportRatings.Location = new System.Drawing.Point(12, 388);
             this.btnImportRatings.Name = "btnImportRatings";
             this.btnImportRatings.Size = new System.Drawing.Size(442, 26);
-            this.btnImportRatings.TabIndex = 5;
+            this.btnImportRatings.TabIndex = 6;
             this.btnImportRatings.Text = "Start Ratings Import";
             this.btnImportRatings.UseVisualStyleBackColor = true;
             this.btnImportRatings.Click += new System.EventHandler(this.btnImportRatings_Click);
             // 
             // pbrImportProgress
             // 
-            this.pbrImportProgress.Location = new System.Drawing.Point(13, 362);
+            this.pbrImportProgress.Location = new System.Drawing.Point(13, 420);
             this.pbrImportProgress.Name = "pbrImportProgress";
             this.pbrImportProgress.Size = new System.Drawing.Size(441, 23);
-            this.pbrImportProgress.TabIndex = 6;
+            this.pbrImportProgress.TabIndex = 7;
             // 
             // grbReport
             // 
             this.grbReport.Controls.Add(this.lblStatusMessage);
             this.grbReport.Controls.Add(this.label5);
-            this.grbReport.Location = new System.Drawing.Point(13, 393);
+            this.grbReport.Location = new System.Drawing.Point(13, 451);
             this.grbReport.Name = "grbReport";
             this.grbReport.Size = new System.Drawing.Size(441, 49);
-            this.grbReport.TabIndex = 7;
+            this.grbReport.TabIndex = 8;
             this.grbReport.TabStop = false;
             this.grbReport.Text = "Report";
             // 
@@ -279,11 +282,32 @@
             this.lblTMDbMessage.Text = "To get user ratings from TMDb you must first allow this application to access you" +
     "r account details. This needs to be done by you in a webbrowser.";
             // 
+            // grbOptions
+            // 
+            this.grbOptions.Controls.Add(this.chkMarkAsWatched);
+            this.grbOptions.Location = new System.Drawing.Point(12, 331);
+            this.grbOptions.Name = "grbOptions";
+            this.grbOptions.Size = new System.Drawing.Size(442, 51);
+            this.grbOptions.TabIndex = 5;
+            this.grbOptions.TabStop = false;
+            this.grbOptions.Text = "Options";
+            // 
+            // chkMarkAsWatched
+            // 
+            this.chkMarkAsWatched.AutoSize = true;
+            this.chkMarkAsWatched.Location = new System.Drawing.Point(21, 20);
+            this.chkMarkAsWatched.Name = "chkMarkAsWatched";
+            this.chkMarkAsWatched.Size = new System.Drawing.Size(276, 17);
+            this.chkMarkAsWatched.TabIndex = 0;
+            this.chkMarkAsWatched.Text = "Mark episodes and movies as watched if rated online";
+            this.chkMarkAsWatched.UseVisualStyleBackColor = true;
+            // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 451);
+            this.ClientSize = new System.Drawing.Size(467, 509);
+            this.Controls.Add(this.grbOptions);
             this.Controls.Add(this.grbTMDb);
             this.Controls.Add(this.grbImdb);
             this.Controls.Add(this.grbReport);
@@ -308,6 +332,8 @@
             this.grbImdb.PerformLayout();
             this.grbTMDb.ResumeLayout(false);
             this.grbTMDb.PerformLayout();
+            this.grbOptions.ResumeLayout(false);
+            this.grbOptions.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -338,6 +364,8 @@
         private System.Windows.Forms.GroupBox grbTMDb;
         private System.Windows.Forms.LinkLabel lnkTMDbStart;
         private System.Windows.Forms.Label lblTMDbMessage;
+        private System.Windows.Forms.GroupBox grbOptions;
+        private System.Windows.Forms.CheckBox chkMarkAsWatched;
     }
 }
 

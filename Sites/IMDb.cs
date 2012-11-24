@@ -45,6 +45,7 @@ namespace TraktRater.Sites
         public void ImportRatings()
         {
             ImportCancelled = false;
+            List<Dictionary<string, string>> watchedMovies = new List<Dictionary<string,string>>();            
 
             UIUtils.UpdateStatus("Reading IMDb ratings export...");
             if (!ParseCSVFile(CSVFile))
@@ -70,6 +71,9 @@ namespace TraktRater.Sites
                     UIUtils.UpdateStatus("Error importing movie ratings to trakt.tv.", true);
                     Thread.Sleep(2000);
                 }
+
+                // add to list of movies to mark as watched
+                watchedMovies.AddRange(movies);
             }
             if (ImportCancelled) return;
             #endregion
@@ -92,11 +96,14 @@ namespace TraktRater.Sites
 
             #region Episodes
             var episodes = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode);
+            TraktRateEpisodes episodesRated = null;
             if (episodes.Count() > 0)
             {
                 UIUtils.UpdateStatus(string.Format("Importing {0} episode ratings to trakt.tv.", episodes.Count()));
 
-                TraktRatingsResponse response = TraktAPI.TraktAPI.RateEpisodes(GetRateEpisodeData(episodes));
+                episodesRated = GetRateEpisodeData(episodes);
+
+                TraktRatingsResponse response = TraktAPI.TraktAPI.RateEpisodes(episodesRated);
                 if (response == null || response.Status != "success")
                 {
                     UIUtils.UpdateStatus("Error importing episodes ratings to trakt.tv.", true);
@@ -104,6 +111,52 @@ namespace TraktRater.Sites
                 }
             }
             if (ImportCancelled) return;
+            #endregion
+
+            #region Mark as Watched
+
+            #region Movies
+
+            if (AppSettings.MarkAsWatched && watchedMovies.Count > 0)
+            {
+                // mark all movies as watched if rated
+                UIUtils.UpdateStatus(string.Format("Importing {0} IMDb Movies as Watched...", watchedMovies.Count));
+                TraktMovieSyncResponse watchedMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetWatchedMoviesData(watchedMovies), TraktSyncModes.seen);
+                if (watchedMoviesResponse == null || watchedMoviesResponse.Status != "success")
+                {
+                    UIUtils.UpdateStatus("Failed to send watched status for IMDb movies.", true);
+                    Thread.Sleep(2000);
+                    if (ImportCancelled) return;
+                }
+            }
+
+            #endregion
+
+            #region Episodes
+
+            if (AppSettings.MarkAsWatched && episodesRated.Episodes.Count() > 0)
+            {
+                // mark all episodes as watched if rated
+                UIUtils.UpdateStatus(string.Format("Importing {0} IMDb Episodes as Watched...", episodesRated.Episodes.Count));
+                var watchedEpisodes = GetWatchedEpisodeData(episodesRated.Episodes);
+                foreach (var showSyncData in watchedEpisodes)
+                {
+                    if (ImportCancelled) return;
+
+                    // send the episodes from each show as watched
+                    UIUtils.UpdateStatus(string.Format("Importing {0} episodes of {1} as watched...", showSyncData.EpisodeList.Count(), showSyncData.Title));
+                    var watchedEpisodesResponse = TraktAPI.TraktAPI.SyncEpisodeLibrary(showSyncData, TraktSyncModes.seen);
+                    if (watchedEpisodesResponse == null || watchedEpisodesResponse.Status != "success")
+                    {
+                        UIUtils.UpdateStatus(string.Format("Failed to send watched status for IMDb '{0}' episodes.", showSyncData.Title), true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+
+            #endregion
+
             #endregion
 
             return;
@@ -118,6 +171,69 @@ namespace TraktRater.Sites
         #endregion
 
         #region Private Methods
+
+        /// <summary>
+        /// returns a list of shows with episodes to mark as watched
+        /// must send to trakt per show!
+        /// </summary>
+        private List<TraktEpisodeSync> GetWatchedEpisodeData(List<TraktEpisode> episodes)
+        {
+            var traktEpisodesSync = new List<TraktEpisodeSync>();
+
+            // seperate episodes list into shows
+            foreach (var showId in episodes.Select(e => e.TVDbId).Distinct())
+            {
+                var episodesInShow = episodes.Where(e => e.TVDbId == showId);
+                var episodesWatchedData = new List<TraktEpisodeSync.Episode>();
+
+                if (episodesInShow.Count() == 0) continue;
+
+                episodesWatchedData.AddRange(from episode in episodesInShow
+                                             select new TraktEpisodeSync.Episode
+                                             {
+                                                 EpisodeIndex = episode.Episode.ToString(),
+                                                 SeasonIndex = episode.Season.ToString()
+                                             });
+
+                if (episodesWatchedData.Count() == 0) continue;
+
+                var episodeSyncData = new TraktEpisodeSync
+                {
+                    UserName = AppSettings.TraktUsername,
+                    Password = AppSettings.TraktPassword,
+                    EpisodeList = episodesWatchedData,
+                    SeriesID = showId.ToString(),
+                    Title = episodesInShow.First().Title,
+                    Year = episodesInShow.First().Year.ToString()
+                };
+
+                traktEpisodesSync.Add(episodeSyncData);
+            }
+
+            return traktEpisodesSync;
+        }
+
+        private TraktMovieSync GetWatchedMoviesData(List<Dictionary<string, string>> movies)
+        {
+            var traktMovies = new List<TraktMovieSync.Movie>();
+
+            traktMovies.AddRange(from movie in movies
+                                 select new TraktMovieSync.Movie
+                                 {
+                                     IMDBID = movie[IMDbFieldMapping.cIMDbID],
+                                     Title = movie[IMDbFieldMapping.cTitle],
+                                     Year = int.Parse(movie[IMDbFieldMapping.cYear]).ToString()
+                                 });
+
+            var movieWatchedData = new TraktMovieSync
+            {
+                UserName = AppSettings.TraktUsername,
+                Password = AppSettings.TraktPassword,
+                MovieList = traktMovies
+            };
+
+            return movieWatchedData;
+        }
 
         private TraktRateMovies GetRateMoviesData(IEnumerable<Dictionary<string,string>> movies)
         {
@@ -196,7 +312,7 @@ namespace TraktRater.Sites
                     ShowSummaries.Add(showTitle, showSummary);
                 }
                 
-                var traktEpisode = GetTraktEpisodeData(episode, showSummary);
+                var traktEpisode = GetTraktEpisodeRateData(episode, showSummary);
                 if (traktEpisode == null) continue;
 
                 traktEpisodes.Add(traktEpisode);
@@ -249,7 +365,7 @@ namespace TraktRater.Sites
             return null;
         }
 
-        private TraktEpisode GetTraktEpisodeData(Dictionary<string,string> episode, TraktShowSummary showSummary)
+        private TraktEpisode GetTraktEpisodeRateData(Dictionary<string,string> episode, TraktShowSummary showSummary)
         {
             if (showSummary == null || showSummary.Seasons == null || showSummary.Seasons.Count == 0)
                 return null;
@@ -272,7 +388,7 @@ namespace TraktRater.Sites
                                 {
                                     Episode = match.Episode,
                                     Season = match.Season,
-                                    TVDbId = match.TVDbId,
+                                    TVDbId = showSummary.TVDbId,
                                     Title = showSummary.Title,
                                     Year = showSummary.Year,
                                     Rating = int.Parse(episode[IMDbFieldMapping.cRating])

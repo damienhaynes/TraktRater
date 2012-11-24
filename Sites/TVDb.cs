@@ -67,6 +67,7 @@ namespace TraktRater.Sites
 
             #region Import Episode Ratings
             int iCounter = 0;
+            List<TraktEpisode> episodesRated = new List<TraktEpisode>();
 
             foreach (var show in showRatings.Shows)
             {
@@ -100,14 +101,41 @@ namespace TraktRater.Sites
                 if (episodeRatings.Episodes.Count == 0) continue;
 
                 // submit one series at a time
-                response = TraktAPI.TraktAPI.RateEpisodes(GetRateEpisodeData(episodeRatings, showInfo));
+                var episodesToRate = GetRateEpisodeData(episodeRatings, showInfo);
+                response = TraktAPI.TraktAPI.RateEpisodes(episodesToRate);
                 if (response == null || response.Status != "success")
                 {
                     UIUtils.UpdateStatus(string.Format("Error importing {0} episode ratings to trakt.tv.", showInfo.Show.Name), true);
                     Thread.Sleep(2000);
                     continue;
                 }
+                episodesRated.AddRange(episodesToRate.Episodes);
             }
+            #endregion
+
+            #region Mark As Watched
+
+            if (AppSettings.MarkAsWatched && episodesRated.Count() > 0)
+            {
+                // mark all episodes as watched if rated
+                UIUtils.UpdateStatus(string.Format("Importing {0} TVDb Episodes as Watched...", episodesRated.Count()));
+                var watchedEpisodes = GetWatchedEpisodeData(episodesRated);
+                foreach (var showSyncData in watchedEpisodes)
+                {
+                    if (ImportCancelled) return;
+
+                    // send the episodes from each show as watched
+                    UIUtils.UpdateStatus(string.Format("Importing {0} episodes of {1} as watched...", showSyncData.EpisodeList.Count(), showSyncData.Title));
+                    var watchedEpisodesResponse = TraktAPI.TraktAPI.SyncEpisodeLibrary(showSyncData, TraktSyncModes.seen);
+                    if (watchedEpisodesResponse == null || watchedEpisodesResponse.Status != "success")
+                    {
+                        UIUtils.UpdateStatus(string.Format("Failed to send watched status for TVDb '{0}' episodes.", showSyncData.Title), true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+
             #endregion
 
             return;
@@ -122,6 +150,47 @@ namespace TraktRater.Sites
         #endregion
 
         #region Private Methods
+
+        /// <summary>
+        /// returns a list of shows with episodes to mark as watched
+        /// must send to trakt per show!
+        /// </summary>
+        private List<TraktEpisodeSync> GetWatchedEpisodeData(List<TraktEpisode> episodes)
+        {
+            var traktEpisodesSync = new List<TraktEpisodeSync>();
+
+            // seperate episodes list into shows
+            foreach (var showId in episodes.Select(e => e.TVDbId).Distinct())
+            {
+                var episodesInShow = episodes.Where(e => e.TVDbId == showId);
+                var episodesWatchedData = new List<TraktEpisodeSync.Episode>();
+
+                if (episodesInShow.Count() == 0) continue;
+
+                episodesWatchedData.AddRange(from episode in episodesInShow
+                                             select new TraktEpisodeSync.Episode
+                                             {
+                                                 EpisodeIndex = episode.Episode.ToString(),
+                                                 SeasonIndex = episode.Season.ToString()
+                                             });
+
+                if (episodesWatchedData.Count() == 0) continue;
+
+                var episodeSyncData = new TraktEpisodeSync
+                {
+                    UserName = AppSettings.TraktUsername,
+                    Password = AppSettings.TraktPassword,
+                    EpisodeList = episodesWatchedData,
+                    SeriesID = showId.ToString(),
+                    Title = episodesInShow.First().Title,
+                    Year = episodesInShow.First().Year.ToString()
+                };
+
+                traktEpisodesSync.Add(episodeSyncData);
+            }
+
+            return traktEpisodesSync;
+        }
 
         private TraktRateShows GetRateShowsData(TVDbShowRatings showRatings)
         {
@@ -155,7 +224,8 @@ namespace TraktRater.Sites
                     Episode = tvdbEpisode.EpisodeNumber,
                     Season = tvdbEpisode.SeasonNumber,
                     TVDbId = episodeRatings.Show.Id,
-                    Rating = episode.UserRating
+                    Rating = episode.UserRating,
+                    Title = showInfo.Show.Name
                 };
                 episodes.Add(traktEpisode);
             }

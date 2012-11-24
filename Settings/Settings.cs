@@ -16,6 +16,7 @@ namespace TraktRater.Settings
         const string cTVDbAccountId = "TVDbAccountId";
         const string cTMDbSessionId = "TMDbSessionId";
         const string cIMDbFilename = "IMDbFilename";
+        const string cMarkAsWatched = "MarkAsWatched";
         #endregion
 
         #region Settings
@@ -30,6 +31,8 @@ namespace TraktRater.Settings
         public static string TMDbRequestToken { get; set; }
 
         public static string IMDbFilename { get; set; }
+
+        public static bool MarkAsWatched { get; set; }
 
         public static string SettingsFile
         { 
@@ -70,7 +73,8 @@ namespace TraktRater.Settings
             TVDbAccountIdentifier = xmlReader.GetSettingValueAsString(cTVDbAccountId, string.Empty);
             TMDbSessionId = xmlReader.GetSettingValueAsString(cTMDbSessionId, string.Empty);
             IMDbFilename = xmlReader.GetSettingValueAsString(cIMDbFilename, string.Empty);
-  
+            MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
+
             // save settings, might be some new settings added
             Save();
         }
@@ -105,7 +109,8 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cTVDbAccountId, TVDbAccountIdentifier);
             xmlWriter.WriteSetting(cTMDbSessionId, TMDbSessionId);
             xmlWriter.WriteSetting(cIMDbFilename, IMDbFilename);
-            
+            xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
+
             // save file
             xmlWriter.Save(SettingsFile);
         }
