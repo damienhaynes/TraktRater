@@ -99,10 +99,20 @@ namespace TraktRater.TraktAPI
             // check that we have everything we need
             if (string.IsNullOrEmpty(slug))
                 return null;
-
-            // serialize data to JSON and send to server
-            string response = TraktWeb.Transmit(string.Format(TraktURIs.ShowSummary, slug), string.Empty);
-
+            
+            string fileCache = string.Format(TraktCache.cShowInfoFileCache, slug);
+            string response = TraktCache.GetFromCache(fileCache, 1);
+            if (string.IsNullOrEmpty(response))
+            {
+                // serialize data to JSON and send to server
+                response = TraktWeb.Transmit(string.Format(TraktURIs.ShowSummary, slug), string.Empty);
+                TraktCache.CacheResponse(response, fileCache);
+                if (response.FromJSON<TraktShowSummary>() == null)
+                {
+                    TraktCache.DeleteFromCache(fileCache);
+                    return null;
+                }
+            }
             // return success or failure
             return response.FromJSON<TraktShowSummary>();
         }

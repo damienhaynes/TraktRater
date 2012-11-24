@@ -94,6 +94,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktShowSummary.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSyncMovieResponse.cs" />
     <Compile Include="TraktAPI\TraktAPI.cs" />
+    <Compile Include="TraktAPI\TraktCache.cs" />
     <Compile Include="TraktAPI\TraktURIs.cs" />
     <Compile Include="TraktRater.cs">
       <SubType>Form</SubType>
