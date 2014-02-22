@@ -1,0 +1,4 @@
+*.manifest
+*.exe
+*.pdb
+*.suo
