@@ -178,7 +178,7 @@ namespace TraktRater.Sites
 
                 var episodeSyncData = new TraktEpisodeSync
                 {
-                    UserName = AppSettings.TraktUsername,
+                    Username = AppSettings.TraktUsername,
                     Password = AppSettings.TraktPassword,
                     EpisodeList = episodesWatchedData,
                     SeriesID = showId.ToString(),

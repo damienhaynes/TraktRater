@@ -16,6 +16,8 @@ namespace TraktRater.Settings
         const string cTVDbAccountId = "TVDbAccountId";
         const string cTMDbSessionId = "TMDbSessionId";
         const string cIMDbFilename = "IMDbFilename";
+        const string cIMDbUsername = "IMDbUsername";
+        const string cIMDBSyncWatchlist = "IMDBSyncWatchlist";
         const string cMarkAsWatched = "MarkAsWatched";
         #endregion
 
@@ -27,15 +29,19 @@ namespace TraktRater.Settings
         public static string TVDbAccountIdentifier { get; set; }
 
         public static string TMDbSessionId { get; set; }
-        
+
         public static string TMDbRequestToken { get; set; }
 
         public static string IMDbFilename { get; set; }
 
+        public static bool IMDbSyncWatchlist { get; set; }
+
+        public static string IMDbUsername { get; set; }
+
         public static bool MarkAsWatched { get; set; }
 
         public static string SettingsFile
-        { 
+        {
             get
             {
                 return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TraktRater\Settings.xml";
@@ -67,12 +73,14 @@ namespace TraktRater.Settings
         {
             XmlReader xmlReader = new XmlReader();
             xmlReader.Load(SettingsFile);
-            
+
             TraktUsername = xmlReader.GetSettingValueAsString(cTraktUsername, string.Empty);
             TraktPassword = xmlReader.GetSettingValueAsString(cTraktPassword, string.Empty);
             TVDbAccountIdentifier = xmlReader.GetSettingValueAsString(cTVDbAccountId, string.Empty);
             TMDbSessionId = xmlReader.GetSettingValueAsString(cTMDbSessionId, string.Empty);
             IMDbFilename = xmlReader.GetSettingValueAsString(cIMDbFilename, string.Empty);
+            IMDbUsername = xmlReader.GetSettingValueAsString(cIMDbUsername, string.Empty);
+            IMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cIMDBSyncWatchlist, false);
             MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
 
             // save settings, might be some new settings added
@@ -109,11 +117,14 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cTVDbAccountId, TVDbAccountIdentifier);
             xmlWriter.WriteSetting(cTMDbSessionId, TMDbSessionId);
             xmlWriter.WriteSetting(cIMDbFilename, IMDbFilename);
+            xmlWriter.WriteSetting(cIMDbUsername, IMDbUsername);
+            xmlWriter.WriteSetting(cIMDBSyncWatchlist, IMDbSyncWatchlist.ToString());
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
 
             // save file
             xmlWriter.Save(SettingsFile);
         }
         #endregion
+
     }
 }

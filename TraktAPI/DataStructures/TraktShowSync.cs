@@ -1,25 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace TraktRater.TraktAPI.DataStructures
 {
-    /// <summary>
-    /// Data structure for Syncing library to Trakt
-    /// </summary>
     [DataContract]
-    public class TraktMovieSync : TraktAuthentication
+    public class TraktShowSync : TraktAuthentication
     {
-        [DataMember(Name = "movies")]
-        public List<Movie> MovieList { get; set; }
+        [DataMember(Name = "shows")]
+        public List<Show> Showlist { get; set; }
 
         [DataContract]
-        public class Movie
+        public class Show
         {
             [DataMember(Name = "imdb_id")]
-            public string IMDBID { get; set; }
+            public string IMDbId { get; set; }
 
             [DataMember(Name = "tmdb_id")]
             public string TMDBID { get; set; }
