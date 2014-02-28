@@ -153,5 +153,18 @@ namespace TraktRater.TraktAPI
             // return success or failure
             return response.FromJSON<TraktResponse>();
         }
+
+        public static TraktResponse SyncShowLibrary(TraktShowSync syncData, TraktSyncModes mode)
+        {
+            // check that we have everything we need
+            if (syncData == null)
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.Transmit(string.Format(TraktURIs.SyncShowLibrary, mode.ToString()), syncData.ToJSON());
+
+            // return success or failure
+            return response.FromJSON<TraktResponse>();
+        }
     }
 }

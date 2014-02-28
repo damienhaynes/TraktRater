@@ -151,7 +151,7 @@ namespace TraktRater.Sites
 
             var movieWatchedData = new TraktMovieSync
             {
-                UserName = AppSettings.TraktUsername,
+                Username = AppSettings.TraktUsername,
                 Password = AppSettings.TraktPassword,
                 MovieList = traktMovies
             };

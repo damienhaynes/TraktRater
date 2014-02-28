@@ -54,6 +54,8 @@ namespace TraktRater
             txtTraktPassword.Text = AppSettings.TraktPassword;
             txtTVDbAccountId.Text = AppSettings.TVDbAccountIdentifier;
             txtImdbFilename.Text = AppSettings.IMDbFilename;
+            txtImdbUsername.Text = AppSettings.IMDbUsername;
+            chkImdbWatchlist.Checked = AppSettings.IMDbSyncWatchlist;
             chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
 
             SetTMDbControlState();
@@ -105,6 +107,21 @@ namespace TraktRater
             AppSettings.TraktUsername = txtTraktUsername.Text;
         }
 
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            chkImdbWatchlist.Text = "Sync Watchlist - make sure its public";
+            AppSettings.IMDbSyncWatchlist = chkImdbWatchlist.Checked;
+        }
+
+        private void rdnImdbCSV_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdnImdbCSV.Checked)
+                activateImdbCSV();
+            else
+                activateImdbWeb();
+        }
+
         private void btnImdbBrowse_Click(object sender, EventArgs e)
         {
             DialogResult result = dlgFileOpen.ShowDialog(this);
@@ -117,6 +134,11 @@ namespace TraktRater
         private void txtImdbFilename_TextChanged(object sender, EventArgs e)
         {
             AppSettings.IMDbFilename = txtImdbFilename.Text;
+        }
+
+        private void txtImdbUsername_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.IMDbUsername = txtImdbUsername.Text;
         }
 
         private void lnkTMDbStart_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -165,6 +187,7 @@ namespace TraktRater
             sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
             sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
             sites.Add(new IMDb(AppSettings.IMDbFilename));
+            sites.Add(new IMDbWeb(AppSettings.IMDbUsername));
 
             if (sites.Where(s => s.Enabled).Count() == 0)
             {
@@ -299,7 +322,25 @@ namespace TraktRater
                 lnkTMDbStart.Text = "Start Request Process";
             }
         }
-        #endregion
 
+        private void activateImdbCSV()
+        {
+            txtImdbFilename.Enabled = true;
+            btnImdbBrowse.Enabled = true;
+
+            txtImdbUsername.Enabled = false;
+            chkImdbWatchlist.Enabled = false;
+        }
+
+        private void activateImdbWeb()
+        {
+            txtImdbUsername.Enabled = true;
+            chkImdbWatchlist.Enabled = true;
+
+            txtImdbFilename.Enabled = false;
+            btnImdbBrowse.Enabled = false;
+        }
+
+        #endregion
     }
 }

@@ -57,6 +57,7 @@
     <Compile Include="Extensions\SecurityExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
+    <Compile Include="Sites\IMDbWeb.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\XMLReader.cs" />
     <Compile Include="Settings\XMLWriter.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktRatingsResponse.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktResponse.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowSummary.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktShowSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSyncMovieResponse.cs" />
     <Compile Include="TraktAPI\TraktAPI.cs" />
     <Compile Include="TraktAPI\TraktCache.cs" />

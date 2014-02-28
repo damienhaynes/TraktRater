@@ -7,14 +7,8 @@ using System.Runtime.Serialization;
 namespace TraktRater.TraktAPI.DataStructures
 {
     [DataContract]
-    public class TraktEpisodeSync
+    public class TraktEpisodeSync : TraktAuthentication
     {
-        [DataMember(Name = "username")]
-        public string UserName { get; set; }
-
-        [DataMember(Name = "password")]
-        public string Password { get; set; }
-
         [DataMember(Name = "imdb_id")]
         public string IMDBID { get; set; }
 
