@@ -44,7 +44,7 @@ namespace TraktRater.Sites
             List<Dictionary<string, string>> RateItems = new List<Dictionary<string, string>>();
             List<Dictionary<string, string>> watchlistItems = new List<Dictionary<string, string>>();
 
-            #region DownloadData
+            #region Download Data
             UIUtils.UpdateStatus("Reading IMDb ratings from web...");
 
             WebClient client = new WebClient();
@@ -90,7 +90,7 @@ namespace TraktRater.Sites
                 MovieIndex += 250;
             } while (count < RateItems.Count);
 
-            //if watchlist sync is activ
+            //if watchlist sync is active
             if (AppSettings.IMDbSyncWatchlist)
             {
                 UIUtils.UpdateStatus("Reading IMDb watchlist from web...");
@@ -130,13 +130,12 @@ namespace TraktRater.Sites
             }
             #endregion
 
-
             if (ImportCancelled) return;
 
             // IMDb does not return the season and episode number for TV Episodes
             // so we should filter down to TV Shows and Movies only
 
-            #region Rate und Mark as watched
+            #region Rate and Mark as watched
             #region Movies
             var movies = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie);
             if (movies.Count() > 0)
@@ -190,34 +189,34 @@ namespace TraktRater.Sites
             #endregion
             #endregion
 
-            #region Sync watchlist
+            #region Sync Watchlist
             if (AppSettings.IMDbSyncWatchlist)
             {
-                List<Dictionary<string, string>> wachtlistMovies = new List<Dictionary<string, string>>();
-                wachtlistMovies.AddRange(watchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie));
-                if (wachtlistMovies.Count() > 0)
+                List<Dictionary<string, string>> watchlistMovies = new List<Dictionary<string, string>>();
+                watchlistMovies.AddRange(watchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie));
+                if (watchlistMovies.Count() > 0)
                 {
                     //add all movies to watchlist
-                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb wachtlist movies to trakt.tv ...", wachtlistMovies.Count()));
-                    TraktMovieSyncResponse wachtlistMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetWatchedMoviesData(wachtlistMovies), TraktSyncModes.watchlist);
-                    if (wachtlistMoviesResponse == null || wachtlistMoviesResponse.Status != "success")
+                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist movies to trakt.tv ...", watchlistMovies.Count()));
+                    TraktMovieSyncResponse watchlistMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetWatchedMoviesData(watchlistMovies), TraktSyncModes.watchlist);
+                    if (watchlistMoviesResponse == null || watchlistMoviesResponse.Status != "success")
                     {
-                        UIUtils.UpdateStatus("Failed to send watched status for IMDb movies.", true);
+                        UIUtils.UpdateStatus("Failed to send watchlist for IMDb movies.", true);
                         Thread.Sleep(2000);
                         if (ImportCancelled) return;
                     }
                 }
 
-                List<Dictionary<string, string>> wachtlistShows = new List<Dictionary<string, string>>();
-                wachtlistShows.AddRange(watchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show));
-                if (wachtlistShows.Count() > 0)
+                List<Dictionary<string, string>> watchlistShows = new List<Dictionary<string, string>>();
+                watchlistShows.AddRange(watchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show));
+                if (watchlistShows.Count() > 0)
                 {
                     //add all shows to watchlist
-                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb wachtlist shows to trakt.tv ...", wachtlistShows.Count()));
-                    TraktResponse wachtlistMoviesResponse = TraktAPI.TraktAPI.SyncShowLibrary(GetWatchedShowsData(wachtlistShows), TraktSyncModes.watchlist);
-                    if (wachtlistMoviesResponse == null || wachtlistMoviesResponse.Status != "success")
+                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist shows to trakt.tv ...", watchlistShows.Count()));
+                    TraktResponse watchlistMoviesResponse = TraktAPI.TraktAPI.SyncShowLibrary(GetWatchedShowsData(watchlistShows), TraktSyncModes.watchlist);
+                    if (watchlistMoviesResponse == null || watchlistMoviesResponse.Status != "success")
                     {
-                        UIUtils.UpdateStatus("Failed to send watched status for IMDb movies.", true);
+                        UIUtils.UpdateStatus("Failed to send watchlist for IMDb shows.", true);
                         Thread.Sleep(2000);
                         if (ImportCancelled) return;
                     }
