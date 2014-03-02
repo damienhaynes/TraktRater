@@ -57,6 +57,7 @@
     <Compile Include="Extensions\SecurityExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
+    <Compile Include="Sites\Common\IMDbHelper.cs" />
     <Compile Include="Sites\IMDbWeb.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\XMLReader.cs" />
