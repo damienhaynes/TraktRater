@@ -105,6 +105,7 @@ namespace TraktRater.Sites.Common.IMDb
             var traktMovies = new List<TraktMovie>();
 
             traktMovies.AddRange(from movie in movies
+                                 where movie[IMDbFieldMapping.cYear] != "????" && !string.IsNullOrEmpty(movie[IMDbFieldMapping.cRating])
                                  select new TraktMovie
                                  {
                                      IMDbId = movie[IMDbFieldMapping.cIMDbID],
@@ -128,6 +129,7 @@ namespace TraktRater.Sites.Common.IMDb
             var traktShows = new List<TraktShow>();
 
             traktShows.AddRange(from show in shows
+                                where show[IMDbFieldMapping.cYear] != "????" && !string.IsNullOrEmpty(show[IMDbFieldMapping.cRating])
                                 select new TraktShow
                                 {
                                     IMDbId = show[IMDbFieldMapping.cIMDbID],
@@ -150,7 +152,7 @@ namespace TraktRater.Sites.Common.IMDb
         {
             var traktEpisodes = new List<TraktEpisode>();
 
-            foreach (var episode in episodes)
+            foreach (var episode in episodes.Where(e => !string.IsNullOrEmpty(e[IMDbFieldMapping.cRating])))
             {
                 // get the show information
                 string showTitle = GetShowName(episode[IMDbFieldMapping.cTitle]);
@@ -196,7 +198,7 @@ namespace TraktRater.Sites.Common.IMDb
         /// <summary>
         /// Removes the episode name and returns only the show title
         /// </summary>
-        public static string GetShowName(string title)
+        static string GetShowName(string title)
         {
             if (string.IsNullOrEmpty(title)) return null;
 
@@ -216,7 +218,7 @@ namespace TraktRater.Sites.Common.IMDb
         /// <summary>
         /// returns only the episode name part of the title
         /// </summary>
-        public static string GetEpisodeName(string title)
+        static string GetEpisodeName(string title)
         {
             if (string.IsNullOrEmpty(title)) return null;
 
