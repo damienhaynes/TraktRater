@@ -28,10 +28,10 @@ namespace TraktRater.Sites
 
         #region Constructor
 
-        public IMDb(string filename)
+        public IMDb(string filename, bool enabled)
         {
+            Enabled = !string.IsNullOrEmpty(filename) && File.Exists(filename) && enabled;
             CSVFile = filename;
-            Enabled = !string.IsNullOrEmpty(filename) && File.Exists(filename);
         }
 
         #endregion

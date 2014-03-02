@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using TraktRater.UI;
 using TraktRater.Extensions;
-using TraktRater.UI;
 using TraktRater.TraktAPI;
 using TraktRater.TraktAPI.DataStructures;
 using TraktRater.Sites.API.IMDb;
@@ -20,13 +19,14 @@ namespace TraktRater.Sites
     class IMDbWeb : IRateSite
     {
         bool ImportCancelled = false;
-        private string username;
+        private string Username;
 
-        public IMDbWeb(string p)
+        public IMDbWeb(string userName, bool enabled)
         {
-            Enabled = true;
-            this.username = p;
+            Enabled = !string.IsNullOrEmpty(userName) && enabled;
+            this.Username = userName;
         }
+
         #region IRateSite
 
         public string Name
@@ -54,7 +54,7 @@ namespace TraktRater.Sites
             do
             {
                 count = RateItems.Count;
-                string s = client.DownloadString("http://www.imdb.com/user/" + username + "/ratings?start=" + MovieIndex + "&view=compact");
+                string s = client.DownloadString("http://www.imdb.com/user/" + Username + "/ratings?start=" + MovieIndex + "&view=compact");
                 int begin = 0;
                 while ((begin = s.IndexOf("<tr data-item-id", begin)) > 0)
                 {
@@ -98,7 +98,7 @@ namespace TraktRater.Sites
                 do
                 {
                     count = watchlistItems.Count;
-                    string s = client.DownloadString("http://www.imdb.com/user/" + username + "/watchlist?start=" + MovieIndex + "&view=compact");
+                    string s = client.DownloadString("http://www.imdb.com/user/" + Username + "/watchlist?start=" + MovieIndex + "&view=compact");
                     int begin = 0;
                     while ((begin = s.IndexOf("<tr data-item-id", begin)) > 0)
                     {
