@@ -226,7 +226,7 @@
             this.txtImdbUsername.Name = "txtImdbUsername";
             this.txtImdbUsername.Size = new System.Drawing.Size(244, 20);
             this.txtImdbUsername.TabIndex = 4;
-            this.tipHelp.SetToolTip(this.txtImdbUsername, "You must make your ratings public. Supply username here, ex: ur26691022");
+            this.tipHelp.SetToolTip(this.txtImdbUsername, "You must make your ratings public. Supply username here, e.g. ur26691022");
             this.txtImdbUsername.TextChanged += new System.EventHandler(this.txtImdbUsername_TextChanged);
             // 
             // grbImdb
@@ -251,7 +251,7 @@
             this.rdnImdbUsername.Location = new System.Drawing.Point(21, 46);
             this.rdnImdbUsername.Name = "rdnImdbUsername";
             this.rdnImdbUsername.Size = new System.Drawing.Size(105, 17);
-            this.rdnImdbUsername.TabIndex = 7;
+            this.rdnImdbUsername.TabIndex = 3;
             this.rdnImdbUsername.TabStop = true;
             this.rdnImdbUsername.Text = "IMDb Username:";
             this.rdnImdbUsername.UseVisualStyleBackColor = true;
@@ -262,7 +262,7 @@
             this.rdnImdbCSV.Location = new System.Drawing.Point(21, 20);
             this.rdnImdbCSV.Name = "rdnImdbCSV";
             this.rdnImdbCSV.Size = new System.Drawing.Size(107, 17);
-            this.rdnImdbCSV.TabIndex = 6;
+            this.rdnImdbCSV.TabIndex = 0;
             this.rdnImdbCSV.Text = "CSV Ratings File:";
             this.rdnImdbCSV.UseVisualStyleBackColor = true;
             this.rdnImdbCSV.CheckedChanged += new System.EventHandler(this.rdnImdbCSV_CheckedChanged);
