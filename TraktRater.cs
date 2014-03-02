@@ -60,6 +60,14 @@ namespace TraktRater
 
             SetTMDbControlState();
 
+            // enable relavent IMDb option
+            if (!string.IsNullOrEmpty(AppSettings.IMDbFilename))
+                rdnImdbCSV.Checked = true;
+            else if (!string.IsNullOrEmpty(AppSettings.IMDbUsername))
+                rdnImdbUsername.Checked = true;
+            else
+                rdnImdbCSV.Checked = true;
+
             // prevent re-hash and subscribe after setting password in box
             txtTraktPassword.TextChanged += new EventHandler(txtTraktPassword_TextChanged);
         }
