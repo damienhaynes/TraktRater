@@ -115,10 +115,8 @@ namespace TraktRater
             AppSettings.TraktUsername = txtTraktUsername.Text;
         }
 
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void chkImdbWatchlist_CheckedChanged(object sender, EventArgs e)
         {
-            chkImdbWatchlist.Text = "Sync Watchlist - make sure its public";
             AppSettings.IMDbSyncWatchlist = chkImdbWatchlist.Checked;
         }
 
