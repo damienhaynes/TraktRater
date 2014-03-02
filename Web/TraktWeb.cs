@@ -40,7 +40,7 @@ namespace TraktRater.Web
             {
                 ServicePointManager.Expect100Continue = false;
                 ExtendedWebClient client = new ExtendedWebClient();
-                client.Timeout = 30000;
+                client.Timeout = 90000;
                 client.Encoding = Encoding.UTF8;
                 client.Headers.Add("user-agent", AppSettings.UserAgent);
                 if (string.IsNullOrEmpty(data))
