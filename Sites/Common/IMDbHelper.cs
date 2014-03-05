@@ -15,7 +15,7 @@ namespace TraktRater.Sites.Common.IMDb
     {
         static Dictionary<string, TraktShowSummary> ShowSummaries = new Dictionary<string, TraktShowSummary>();
 
-        public static TraktMovieSync GetWatchedMoviesData(List<Dictionary<string, string>> movies)
+        public static TraktMovieSync GetSyncMoviesData(List<Dictionary<string, string>> movies)
         {
             var traktMovies = new List<TraktMovieSync.Movie>();
 
@@ -27,17 +27,17 @@ namespace TraktRater.Sites.Common.IMDb
                                      Year = int.Parse(movie[IMDbFieldMapping.cYear]).ToString()
                                  });
 
-            var movieWatchedData = new TraktMovieSync
+            var movieData = new TraktMovieSync
             {
                 Username = AppSettings.TraktUsername,
                 Password = AppSettings.TraktPassword,
                 MovieList = traktMovies
             };
 
-            return movieWatchedData;
+            return movieData;
         }
 
-        public static TraktShowSync GetWatchedShowsData(IEnumerable<Dictionary<string, string>> shows)
+        public static TraktShowSync GetSyncShowsData(IEnumerable<Dictionary<string, string>> shows)
         {
             var traktShows = new List<TraktShowSync.Show>();
 
@@ -60,10 +60,10 @@ namespace TraktRater.Sites.Common.IMDb
         }
 
         /// <summary>
-        /// returns a list of shows with episodes to mark as watched
+        /// returns a list of shows with episodes
         /// must send to trakt per show!
         /// </summary>
-        public static List<TraktEpisodeSync> GetWatchedEpisodeData(List<TraktEpisode> episodes)
+        public static List<TraktEpisodeSync> GetSyncEpisodeData(List<TraktEpisode> episodes)
         {
             var traktEpisodesSync = new List<TraktEpisodeSync>();
 
@@ -71,24 +71,24 @@ namespace TraktRater.Sites.Common.IMDb
             foreach (var showId in episodes.Select(e => e.TVDbId).Distinct())
             {
                 var episodesInShow = episodes.Where(e => e.TVDbId == showId);
-                var episodesWatchedData = new List<TraktEpisodeSync.Episode>();
+                var episodesData = new List<TraktEpisodeSync.Episode>();
 
                 if (episodesInShow.Count() == 0) continue;
 
-                episodesWatchedData.AddRange(from episode in episodesInShow
+                episodesData.AddRange(from episode in episodesInShow
                                              select new TraktEpisodeSync.Episode
                                              {
                                                  EpisodeIndex = episode.Episode.ToString(),
                                                  SeasonIndex = episode.Season.ToString()
                                              });
 
-                if (episodesWatchedData.Count() == 0) continue;
+                if (episodesData.Count() == 0) continue;
 
                 var episodeSyncData = new TraktEpisodeSync
                 {
                     Username = AppSettings.TraktUsername,
                     Password = AppSettings.TraktPassword,
-                    EpisodeList = episodesWatchedData,
+                    EpisodeList = episodesData,
                     SeriesID = showId.ToString(),
                     Title = episodesInShow.First().Title,
                     Year = episodesInShow.First().Year.ToString()
@@ -100,7 +100,7 @@ namespace TraktRater.Sites.Common.IMDb
             return traktEpisodesSync;
         }
 
-        public static TraktRateMovies GetRateMoviesData(IEnumerable<Dictionary<string, string>> movies)
+        public static TraktMovies GetRateMoviesData(IEnumerable<Dictionary<string, string>> movies)
         {
             var traktMovies = new List<TraktMovie>();
 
@@ -114,7 +114,7 @@ namespace TraktRater.Sites.Common.IMDb
                                      Rating = int.Parse(movie[IMDbFieldMapping.cRating])
                                  });
 
-            var movieRateData = new TraktRateMovies
+            var movieRateData = new TraktMovies
             {
                 Username = AppSettings.TraktUsername,
                 Password = AppSettings.TraktPassword,
@@ -124,7 +124,7 @@ namespace TraktRater.Sites.Common.IMDb
             return movieRateData;
         }
 
-        public static TraktRateShows GetRateShowsData(IEnumerable<Dictionary<string, string>> shows)
+        public static TraktShows GetRateShowsData(IEnumerable<Dictionary<string, string>> shows)
         {
             var traktShows = new List<TraktShow>();
 
@@ -138,7 +138,7 @@ namespace TraktRater.Sites.Common.IMDb
                                     Rating = int.Parse(show[IMDbFieldMapping.cRating])
                                 });
 
-            var movieRateData = new TraktRateShows
+            var movieRateData = new TraktShows
             {
                 Username = AppSettings.TraktUsername,
                 Password = AppSettings.TraktPassword,
@@ -148,12 +148,15 @@ namespace TraktRater.Sites.Common.IMDb
             return movieRateData;
         }
 
-        public static TraktRateEpisodes GetRateEpisodeData(IEnumerable<Dictionary<string, string>> episodes)
+        public static TraktEpisodes GetEpisodeData(IEnumerable<Dictionary<string, string>> episodes, bool ratings=true)
         {
             var traktEpisodes = new List<TraktEpisode>();
 
-            foreach (var episode in episodes.Where(e => !string.IsNullOrEmpty(e[IMDbFieldMapping.cRating])))
+            foreach (var episode in episodes)
             {
+                if (ratings && string.IsNullOrEmpty(episode[IMDbFieldMapping.cRating]))
+                    continue;
+
                 // get the show information
                 string showTitle = GetShowName(episode[IMDbFieldMapping.cTitle]);
                 if (string.IsNullOrEmpty(showTitle)) continue;
@@ -179,20 +182,20 @@ namespace TraktRater.Sites.Common.IMDb
                     ShowSummaries.Add(showTitle, showSummary);
                 }
 
-                var traktEpisode = GetTraktEpisodeRateData(episode, showSummary);
+                var traktEpisode = GetTraktEpisodeData(episode, showSummary, ratings);
                 if (traktEpisode == null) continue;
 
                 traktEpisodes.Add(traktEpisode);
             }
 
-            var episodeRateData = new TraktRateEpisodes
+            var episodeData = new TraktEpisodes
             {
                 Username = AppSettings.TraktUsername,
                 Password = AppSettings.TraktPassword,
                 Episodes = traktEpisodes
             };
 
-            return episodeRateData;
+            return episodeData;
         }
 
         /// <summary>
@@ -232,7 +235,7 @@ namespace TraktRater.Sites.Common.IMDb
             return null;
         }
 
-        static TraktEpisode GetTraktEpisodeRateData(Dictionary<string, string> episode, TraktShowSummary showSummary)
+        static TraktEpisode GetTraktEpisodeData(Dictionary<string, string> episode, TraktShowSummary showSummary, bool ratings = true)
         {
             if (showSummary == null || showSummary.Seasons == null || showSummary.Seasons.Count == 0)
                 return null;
@@ -251,15 +254,19 @@ namespace TraktRater.Sites.Common.IMDb
 
                 if (match != null)
                 {
-                    return new TraktEpisode
+                    var traktEpisode = new TraktEpisode
                     {
                         Episode = match.Episode,
                         Season = match.Season,
                         TVDbId = showSummary.TVDbId,
                         Title = showSummary.Title,
-                        Year = showSummary.Year,
-                        Rating = int.Parse(episode[IMDbFieldMapping.cRating])
+                        Year = showSummary.Year
                     };
+                    
+                    if (ratings) 
+                        traktEpisode.Rating = int.Parse(episode[IMDbFieldMapping.cRating]);
+
+                    return traktEpisode;
                 }
             }
 
@@ -292,15 +299,19 @@ namespace TraktRater.Sites.Common.IMDb
 
                 if (match != null)
                 {
-                    return new TraktEpisode
+                    var traktEpisode = new TraktEpisode
                     {
                         Episode = match.Episode,
                         Season = match.Season,
                         TVDbId = match.TVDbId,
                         Title = showSummary.Title,
-                        Year = showSummary.Year,
-                        Rating = int.Parse(episode[IMDbFieldMapping.cRating])
+                        Year = showSummary.Year
                     };
+
+                    if (ratings)
+                        traktEpisode.Rating = int.Parse(episode[IMDbFieldMapping.cRating]);
+
+                    return traktEpisode;
                 }
             }
 

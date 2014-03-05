@@ -93,12 +93,12 @@ namespace TraktRater.Sites
 
             #region Episodes
             var episodes = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode);
-            TraktRateEpisodes episodesRated = null;
+            TraktEpisodes episodesRated = null;
             if (episodes.Count() > 0)
             {
                 UIUtils.UpdateStatus(string.Format("Importing {0} episode ratings to trakt.tv.", episodes.Count()));
 
-                episodesRated = Helper.GetRateEpisodeData(episodes);
+                episodesRated = Helper.GetEpisodeData(episodes);
 
                 TraktRatingsResponse response = TraktAPI.TraktAPI.RateEpisodes(episodesRated);
                 if (response == null || response.Status != "success")
@@ -118,7 +118,7 @@ namespace TraktRater.Sites
             {
                 // mark all movies as watched if rated
                 UIUtils.UpdateStatus(string.Format("Importing {0} IMDb Movies as Watched...", watchedMovies.Count));
-                TraktMovieSyncResponse watchedMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(Helper.GetWatchedMoviesData(watchedMovies), TraktSyncModes.seen);
+                TraktMovieSyncResponse watchedMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(Helper.GetSyncMoviesData(watchedMovies), TraktSyncModes.seen);
                 if (watchedMoviesResponse == null || watchedMoviesResponse.Status != "success")
                 {
                     UIUtils.UpdateStatus("Failed to send watched status for IMDb movies.", true);
@@ -135,7 +135,7 @@ namespace TraktRater.Sites
             {
                 // mark all episodes as watched if rated
                 UIUtils.UpdateStatus(string.Format("Importing {0} IMDb Episodes as Watched...", episodesRated.Episodes.Count));
-                var watchedEpisodes = Helper.GetWatchedEpisodeData(episodesRated.Episodes);
+                var watchedEpisodes = Helper.GetSyncEpisodeData(episodesRated.Episodes);
                 foreach (var showSyncData in watchedEpisodes)
                 {
                     if (ImportCancelled) return;

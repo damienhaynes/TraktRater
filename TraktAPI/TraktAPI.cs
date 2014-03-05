@@ -45,7 +45,7 @@ namespace TraktRater.TraktAPI
         /// </summary>
         /// <param name="data">The object containing the list of episodes to be rated</param>       
         /// <returns>The response from trakt</returns>
-        public static TraktRatingsResponse RateEpisodes(TraktRateEpisodes data)
+        public static TraktRatingsResponse RateEpisodes(TraktEpisodes data)
         {
             // check that we have everything we need
             if (data == null || data.Episodes.Count == 0)
@@ -63,7 +63,7 @@ namespace TraktRater.TraktAPI
         /// </summary>
         /// <param name="data">The object containing the list of shows to be rated</param>       
         /// <returns>The response from trakt</returns>
-        public static TraktRatingsResponse RateShows(TraktRateShows data)
+        public static TraktRatingsResponse RateShows(TraktShows data)
         {
             // check that we have everything we need
             if (data == null || data.Shows.Count == 0)
@@ -81,7 +81,7 @@ namespace TraktRater.TraktAPI
         /// </summary>
         /// <param name="data">The object containing the list of movies to be rated</param>       
         /// <returns>The response from trakt</returns>
-        public static TraktRatingsResponse RateMovies(TraktRateMovies data)
+        public static TraktRatingsResponse RateMovies(TraktMovies data)
         {
             // check that we have everything we need
             if (data == null || data.Movies.Count == 0)

@@ -192,14 +192,14 @@ namespace TraktRater.Sites
             return traktEpisodesSync;
         }
 
-        private TraktRateShows GetRateShowsData(TVDbShowRatings showRatings)
+        private TraktShows GetRateShowsData(TVDbShowRatings showRatings)
         {
             List<TraktShow> shows = new List<TraktShow>();
 
             shows.AddRange(from show in showRatings.Shows
                            select new TraktShow { TVDbId = show.Id, Rating = show.UserRating });
 
-            TraktRateShows showRateData = new TraktRateShows
+            TraktShows showRateData = new TraktShows
             {
                 Username = AppSettings.TraktUsername,
                 Password = AppSettings.TraktPassword,
@@ -209,7 +209,7 @@ namespace TraktRater.Sites
             return showRateData;
         }
 
-        private TraktRateEpisodes GetRateEpisodeData(TVDbEpisodeRatings episodeRatings, TVDbShow showInfo)
+        private TraktEpisodes GetRateEpisodeData(TVDbEpisodeRatings episodeRatings, TVDbShow showInfo)
         {
             List<TraktEpisode> episodes = new List<TraktEpisode>();
 
@@ -230,7 +230,7 @@ namespace TraktRater.Sites
                 episodes.Add(traktEpisode);
             }
 
-            TraktRateEpisodes episodeRateData = new TraktRateEpisodes
+            TraktEpisodes episodeRateData = new TraktEpisodes
             {
                 Username = AppSettings.TraktUsername,
                 Password = AppSettings.TraktPassword,

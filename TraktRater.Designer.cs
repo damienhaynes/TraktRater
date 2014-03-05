@@ -48,6 +48,7 @@
             this.txtImdbFilename = new System.Windows.Forms.TextBox();
             this.txtImdbUsername = new System.Windows.Forms.TextBox();
             this.grbImdb = new System.Windows.Forms.GroupBox();
+            this.lblIMDbDescription = new System.Windows.Forms.Label();
             this.rdnImdbUsername = new System.Windows.Forms.RadioButton();
             this.rdnImdbCSV = new System.Windows.Forms.RadioButton();
             this.chkImdbWatchlist = new System.Windows.Forms.CheckBox();
@@ -58,7 +59,6 @@
             this.lblTMDbMessage = new System.Windows.Forms.Label();
             this.grbOptions = new System.Windows.Forms.GroupBox();
             this.chkMarkAsWatched = new System.Windows.Forms.CheckBox();
-            this.lblIMDbDescription = new System.Windows.Forms.Label();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -246,6 +246,15 @@
             this.grbImdb.TabStop = false;
             this.grbImdb.Text = "IMDb";
             // 
+            // lblIMDbDescription
+            // 
+            this.lblIMDbDescription.AutoSize = true;
+            this.lblIMDbDescription.Location = new System.Drawing.Point(20, 20);
+            this.lblIMDbDescription.Name = "lblIMDbDescription";
+            this.lblIMDbDescription.Size = new System.Drawing.Size(349, 13);
+            this.lblIMDbDescription.TabIndex = 1;
+            this.lblIMDbDescription.Text = "Select \'CSV Ratings File\' for static file import or \'User ID\' for web retrieval:";
+            // 
             // rdnImdbUsername
             // 
             this.rdnImdbUsername.AutoSize = true;
@@ -348,15 +357,6 @@
             this.chkMarkAsWatched.Text = "Mark episodes and movies as watched if rated online";
             this.chkMarkAsWatched.UseVisualStyleBackColor = true;
             this.chkMarkAsWatched.Click += new System.EventHandler(this.chkMarkAsWatched_Click);
-            // 
-            // lblIMDbDescription
-            // 
-            this.lblIMDbDescription.AutoSize = true;
-            this.lblIMDbDescription.Location = new System.Drawing.Point(20, 20);
-            this.lblIMDbDescription.Name = "lblIMDbDescription";
-            this.lblIMDbDescription.Size = new System.Drawing.Size(349, 13);
-            this.lblIMDbDescription.TabIndex = 1;
-            this.lblIMDbDescription.Text = "Select \'CSV Ratings File\' for static file import or \'User ID\' for web retrieval:";
             // 
             // TraktRater
             // 

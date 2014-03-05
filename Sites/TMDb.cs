@@ -159,7 +159,7 @@ namespace TraktRater.Sites
             return movieWatchedData;
         }
 
-        private TraktRateMovies GetRateMoviesData(List<TMDbMovie> movies)
+        private TraktMovies GetRateMoviesData(List<TMDbMovie> movies)
         {
             var traktMovies = new List<TraktMovie>();
 
@@ -170,7 +170,7 @@ namespace TraktRater.Sites
                                      Rating = Convert.ToInt32(Math.Round(movie.Rating, MidpointRounding.AwayFromZero))
                                  });
 
-            var movieRateData = new TraktRateMovies
+            var movieRateData = new TraktMovies
             {
                 Username = AppSettings.TraktUsername,
                 Password = AppSettings.TraktPassword,
