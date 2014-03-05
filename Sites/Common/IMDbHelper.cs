@@ -271,7 +271,8 @@ namespace TraktRater.Sites.Common.IMDb
             }
 
             // we can also lookup by airDate
-            string episodeAirDate = episode[IMDbFieldMapping.cReleaseDate];
+            string episodeAirDate = null;
+            episode.TryGetValue(IMDbFieldMapping.cReleaseDate, out episodeAirDate);
 
             if (!string.IsNullOrEmpty(episodeAirDate))
             {
