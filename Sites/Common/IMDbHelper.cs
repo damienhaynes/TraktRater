@@ -171,11 +171,16 @@ namespace TraktRater.Sites.Common.IMDb
                 {
                     // get from online
                     UIUtils.UpdateStatus(string.Format("Retrieving data for {0}", showTitle));
-                    showSummary = TraktAPI.TraktAPI.GetShowSummary(slug);
+                    showSummary = TraktAPI.TraktAPI.GetShowSummary(episode[IMDbFieldMapping.cIMDbID]);
                     if (showSummary == null || showSummary.Seasons == null || showSummary.Seasons.Count == 0)
                     {
-                        UIUtils.UpdateStatus(string.Format("Unable to get info for {0}", showTitle), true);
-                        continue;
+                        // trakt may not have the IMDb for the show, try using title slug
+                        showSummary = TraktAPI.TraktAPI.GetShowSummary(slug);
+                        if (showSummary == null || showSummary.Seasons == null || showSummary.Seasons.Count == 0)
+                        {
+                            UIUtils.UpdateStatus(string.Format("Unable to get info for {0}", showTitle), true);
+                            continue;
+                        }
                     }
 
                     // store show summary
@@ -201,7 +206,7 @@ namespace TraktRater.Sites.Common.IMDb
         /// <summary>
         /// Removes the episode name and returns only the show title
         /// </summary>
-        static string GetShowName(string title)
+        public static string GetShowName(string title)
         {
             if (string.IsNullOrEmpty(title)) return null;
 
@@ -221,7 +226,7 @@ namespace TraktRater.Sites.Common.IMDb
         /// <summary>
         /// returns only the episode name part of the title
         /// </summary>
-        static string GetEpisodeName(string title)
+        public static string GetEpisodeName(string title)
         {
             if (string.IsNullOrEmpty(title)) return null;
 
