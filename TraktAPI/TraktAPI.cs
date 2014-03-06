@@ -29,6 +29,9 @@ namespace TraktRater.TraktAPI
     /// </summary>
     public static class TraktAPI
     {
+        public static string Username { get; set; }
+        public static string Password { get; set; }
+
         /// <summary>
         /// Tests account details can login to trakt.tv
         /// </summary>
@@ -166,5 +169,60 @@ namespace TraktRater.TraktAPI
             // return success or failure
             return response.FromJSON<TraktResponse>();
         }
+
+        /// <summary>
+        /// Returns the users Rated Movies
+        /// </summary>
+        /// <param name="user">username of person</param>
+        public static IEnumerable<TraktUserMovieRating> GetUserRatedMovies(string user)
+        {
+            string ratedMovies = TraktWeb.Transmit(string.Format(TraktURIs.UserRatedMoviesList, user), GetUserAuthentication());
+
+            // if we timeout we will return an error response
+            TraktResponse response = ratedMovies.FromJSON<TraktResponse>();
+            if (response == null || response.Error != null) return null;
+
+            return ratedMovies.FromJSONArray<TraktUserMovieRating>();
+        }
+
+        /// <summary>
+        /// Returns the users Rated Shows
+        /// </summary>
+        /// <param name="user">username of person</param>
+        public static IEnumerable<TraktUserShowRating> GetUserRatedShows(string user)
+        {
+            string ratedShows = TraktWeb.Transmit(string.Format(TraktURIs.UserRatedShowsList, user), GetUserAuthentication());
+
+            // if we timeout we will return an error response
+            TraktResponse response = ratedShows.FromJSON<TraktResponse>();
+            if (response == null || response.Error != null) return null;
+
+            return ratedShows.FromJSONArray<TraktUserShowRating>();
+        }
+
+        /// <summary>
+        /// Returns the users Rated Episodes
+        /// </summary>
+        /// <param name="user">username of person</param>
+        public static IEnumerable<TraktUserEpisodeRating> GetUserRatedEpisodes(string user)
+        {
+            string ratedEpisodes = TraktWeb.Transmit(string.Format(TraktURIs.UserRatedEpisodesList, user), GetUserAuthentication());
+
+            // if we timeout we will return an error response
+            TraktResponse response = ratedEpisodes.FromJSON<TraktResponse>();
+            if (response == null || response.Error != null) return null;
+
+            return ratedEpisodes.FromJSONArray<TraktUserEpisodeRating>();
+        }
+
+        /// <summary>
+        /// Gets a User Authentication object
+        /// </summary>       
+        /// <returns>The User Authentication json string</returns>
+        private static string GetUserAuthentication()
+        {
+            return new TraktAuthentication { Username = TraktAPI.Username, Password = TraktAPI.Password }.ToJSON();
+        }
+
     }
 }

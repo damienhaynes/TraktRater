@@ -22,9 +22,33 @@ namespace TraktRater.Settings
         #endregion
 
         #region Settings
-        public static string TraktUsername { get; set; }
+        public static string TraktUsername
+        {
+            get
+            {
+                return _traktUsername;
+            }
+            set
+            {
+                _traktUsername = value;
+                TraktAPI.TraktAPI.Username = _traktUsername;
+            }
+        }
+        static string _traktUsername = null;
 
-        public static string TraktPassword { get; set; }
+        public static string TraktPassword
+        {
+            get
+            {
+                return _traktPassword;
+            }
+            set
+            {
+                _traktPassword = value;
+                TraktAPI.TraktAPI.Password = _traktPassword;
+            }
+        }
+        static string _traktPassword = null;
 
         public static string TVDbAccountIdentifier { get; set; }
 

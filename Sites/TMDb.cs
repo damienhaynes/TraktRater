@@ -78,27 +78,22 @@ namespace TraktRater.Sites
 
             #region Import Movie Ratings
             if (ratings.TotalResults == 0) return;
-            UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", ratings.Page, ratings.TotalPages, ratings.Movies.Count));
-            var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(ratings.Movies));
-            if (response == null || response.Status != "success")
+
+            UIUtils.UpdateStatus("Retreiving existing movie ratings from trakt.tv.");
+            var currentUserMovieRatings = TraktAPI.TraktAPI.GetUserRatedMovies(AppSettings.TraktUsername);
+
+            if (currentUserMovieRatings != null)
             {
-                UIUtils.UpdateStatus("Failed to send ratings for TMDb movies.", true);
-                Thread.Sleep(2000);
-                if (ImportCancelled) return;
+                UIUtils.UpdateStatus(string.Format("Found {0} user movie ratings on trakt.tv", currentUserMovieRatings.Count()));
+                // Filter out movies to rate from existing ratings online
+                ratings.Movies.RemoveAll(m => currentUserMovieRatings.Any(c => c.TMDBID == m.Id.ToString()));
             }
 
-            // add to list of movies to mark as watched
-            watchedMovies.AddRange(ratings.Movies);
+            UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", ratings.Page, ratings.TotalPages, ratings.Movies.Count));
 
-            // get each page of movies
-            for (int i = 2; i <= ratings.TotalPages; i++)
+            if (ratings.Movies.Count > 0)
             {
-                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb Rated Movies...", ratings.Page, ratings.TotalPages));
-                ratings = TMDbAPI.GetRatedMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
-                if (ImportCancelled) return;
-
-                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", ratings.Page, ratings.TotalPages, ratings.Movies.Count));
-                response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(ratings.Movies));
+                var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(ratings.Movies));
                 if (response == null || response.Status != "success")
                 {
                     UIUtils.UpdateStatus("Failed to send ratings for TMDb movies.", true);
@@ -108,6 +103,36 @@ namespace TraktRater.Sites
 
                 // add to list of movies to mark as watched
                 watchedMovies.AddRange(ratings.Movies);
+            }
+
+            // get each page of movies
+            for (int i = 2; i <= ratings.TotalPages; i++)
+            {
+                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb Rated Movies...", ratings.Page, ratings.TotalPages));
+                ratings = TMDbAPI.GetRatedMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
+                if (ImportCancelled) return;
+
+                if (currentUserMovieRatings != null)
+                {
+                    // Filter out movies to rate from existing ratings online
+                    ratings.Movies.RemoveAll(m => currentUserMovieRatings.Any(c => c.TMDBID == m.Id.ToString()));
+                }
+
+                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", ratings.Page, ratings.TotalPages, ratings.Movies.Count));
+
+                if (ratings.Movies.Count > 0)
+                {
+                    var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(ratings.Movies));
+                    if (response == null || response.Status != "success")
+                    {
+                        UIUtils.UpdateStatus("Failed to send ratings for TMDb movies.", true);
+                        Thread.Sleep(2000);
+                        if (ImportCancelled) return;
+                    }
+
+                    // add to list of movies to mark as watched
+                    watchedMovies.AddRange(ratings.Movies);
+                }
             } 
             #endregion
 

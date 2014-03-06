@@ -168,55 +168,94 @@ namespace TraktRater.Sites
 
             if (ImportCancelled) return;
 
-            #region Rate
+            #region Sync Ratings
             #region Movies
-            var movies = ratedItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie);
+            var movies = ratedItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie).ToList();
             if (movies.Count() > 0)
             {
-                UIUtils.UpdateStatus(string.Format("Importing {0} movie ratings to trakt.tv.", movies.Count()));
+                UIUtils.UpdateStatus("Retreiving existing movie ratings from trakt.tv.");
+                var currentUserMovieRatings = TraktAPI.TraktAPI.GetUserRatedMovies(AppSettings.TraktUsername);
 
-                TraktRatingsResponse response = TraktAPI.TraktAPI.RateMovies(Helper.GetRateMoviesData(movies));
-                if (response == null || response.Status != "success")
+                if (currentUserMovieRatings != null)
                 {
-                    UIUtils.UpdateStatus("Error importing movie ratings to trakt.tv.", true);
-                    Thread.Sleep(2000);
+                    UIUtils.UpdateStatus(string.Format("Found {0} user movie ratings on trakt.tv", currentUserMovieRatings.Count()));
+                    // Filter out movies to rate from existing ratings online
+                    movies.RemoveAll(m => currentUserMovieRatings.Any(c => c.IMDBID == m[IMDbFieldMapping.cIMDbID]));
                 }
 
-                // add to list of movies to mark as watched
-                watchedMovies.AddRange(movies);
+                UIUtils.UpdateStatus(string.Format("Importing {0} movie ratings to trakt.tv.", movies.Count()));
+
+                if (movies.Count > 0)
+                {
+                    TraktRatingsResponse response = TraktAPI.TraktAPI.RateMovies(Helper.GetRateMoviesData(movies));
+                    if (response == null || response.Status != "success")
+                    {
+                        UIUtils.UpdateStatus("Error importing movie ratings to trakt.tv.", true);
+                        Thread.Sleep(2000);
+                    }
+
+                    // add to list of movies to mark as watched
+                    watchedMovies.AddRange(movies);
+                }
             }
             if (ImportCancelled) return;
             #endregion
 
             #region TV Shows
-            var shows = ratedItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show);
+            var shows = ratedItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show).ToList();
             if (shows.Count() > 0)
             {
-                UIUtils.UpdateStatus(string.Format("Importing {0} show ratings to trakt.tv.", shows.Count()));
+                UIUtils.UpdateStatus("Retreiving existing tv show ratings from trakt.tv.");
+                var currentUserShowRatings = TraktAPI.TraktAPI.GetUserRatedShows(AppSettings.TraktUsername);
 
-                TraktRatingsResponse response = TraktAPI.TraktAPI.RateShows(Helper.GetRateShowsData(shows));
-                if (response == null || response.Status != "success")
+                if (currentUserShowRatings != null)
                 {
-                    UIUtils.UpdateStatus("Error importing show ratings to trakt.tv.", true);
-                    Thread.Sleep(2000);
+                    UIUtils.UpdateStatus(string.Format("Found {0} user tv show ratings on trakt.tv", currentUserShowRatings.Count()));
+                    // Filter out shows to rate from existing ratings online
+                    shows.RemoveAll(s => currentUserShowRatings.Any(c => (c.IMDBID == s[IMDbFieldMapping.cIMDbID]) || (c.Title == s[IMDbFieldMapping.cTitle] && c.Year.ToString() == s[IMDbFieldMapping.cYear])));
+                }
+
+                if (shows.Count > 0)
+                {
+                    UIUtils.UpdateStatus(string.Format("Importing {0} tv show ratings to trakt.tv.", shows.Count()));
+
+                    TraktRatingsResponse response = TraktAPI.TraktAPI.RateShows(Helper.GetRateShowsData(shows));
+                    if (response == null || response.Status != "success")
+                    {
+                        UIUtils.UpdateStatus("Error importing show ratings to trakt.tv.", true);
+                        Thread.Sleep(2000);
+                    }
                 }
             }
             if (ImportCancelled) return;
             #endregion
 
             #region Episodes
-            var episodes = ratedItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode);
+            var episodes = ratedItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode).ToList();
             if (episodes.Count() > 0)
             {
+                UIUtils.UpdateStatus("Retreiving existing tv episode ratings from trakt.tv.");
+                var currentUserEpisodeRatings = TraktAPI.TraktAPI.GetUserRatedEpisodes(AppSettings.TraktUsername);
+
+                if (currentUserEpisodeRatings != null)
+                {
+                    UIUtils.UpdateStatus(string.Format("Found {0} user tv episode ratings on trakt.tv", currentUserEpisodeRatings.Count()));
+                    // Filter out shows to rate from existing ratings online
+                    episodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => ((c.ShowDetails.IMDBID == e[IMDbFieldMapping.cIMDbID]) || (c.ShowDetails.Title == Helper.GetShowName(e[IMDbFieldMapping.cTitle]) && c.ShowDetails.Year.ToString() == e[IMDbFieldMapping.cYear])) && (c.EpisodeDetails.Title.ToLowerInvariant() == Helper.GetEpisodeName(e[IMDbFieldMapping.cTitle]).ToLowerInvariant())));
+                }
+
                 UIUtils.UpdateStatus(string.Format("Importing {0} episode ratings to trakt.tv.", episodes.Count()));
 
-                ratedEpisodes = Helper.GetEpisodeData(episodes);
-
-                TraktRatingsResponse response = TraktAPI.TraktAPI.RateEpisodes(ratedEpisodes);
-                if (response == null || response.Status != "success")
+                if (episodes.Count > 0)
                 {
-                    UIUtils.UpdateStatus("Error importing episodes ratings to trakt.tv.", true);
-                    Thread.Sleep(2000);
+                    ratedEpisodes = Helper.GetEpisodeData(episodes);
+
+                    TraktRatingsResponse response = TraktAPI.TraktAPI.RateEpisodes(ratedEpisodes);
+                    if (response == null || response.Status != "success")
+                    {
+                        UIUtils.UpdateStatus("Error importing episodes ratings to trakt.tv.", true);
+                        Thread.Sleep(2000);
+                    }
                 }
             }
             if (ImportCancelled) return;
@@ -302,7 +341,7 @@ namespace TraktRater.Sites
                 #endregion
 
                 #region Episodes
-                episodes = watchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode);
+                episodes = watchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode).ToList();
                 if (episodes.Count() > 0)
                 {
                     UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist episodes...", episodes.Count()));

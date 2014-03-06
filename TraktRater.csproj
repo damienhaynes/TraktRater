@@ -96,6 +96,9 @@
     <Compile Include="TraktAPI\DataStructures\TraktShowSummary.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSyncMovieResponse.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktUserEpisodeRating.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktUserMovieRating.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktUserShowRating.cs" />
     <Compile Include="TraktAPI\TraktAPI.cs" />
     <Compile Include="TraktAPI\TraktCache.cs" />
     <Compile Include="TraktAPI\TraktURIs.cs" />

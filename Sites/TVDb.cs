@@ -55,19 +55,39 @@ namespace TraktRater.Sites
 
             #region Import Show Ratings
             if (ImportCancelled) return;
-            UIUtils.UpdateStatus(string.Format("Importing {0} show ratings to trakt.tv.", showRatings.Shows.Count));
+            UIUtils.UpdateStatus("Retreiving existing tv show ratings from trakt.tv.");
+            var currentUserShowRatings = TraktAPI.TraktAPI.GetUserRatedShows(AppSettings.TraktUsername);
 
-            TraktRatingsResponse response = TraktAPI.TraktAPI.RateShows(GetRateShowsData(showRatings));
-            if (response == null || response.Status != "success")
+            var filteredShows = new TVDbShowRatings();
+            filteredShows.Shows.AddRange(showRatings.Shows);
+
+            if (currentUserShowRatings != null)
             {
-                UIUtils.UpdateStatus("Error importing show ratings to trakt.tv.", true);
-                Thread.Sleep(2000);
+                UIUtils.UpdateStatus(string.Format("Found {0} user tv show ratings on trakt.tv", currentUserShowRatings.Count()));
+                // Filter out shows to rate from existing ratings online                
+                filteredShows.Shows.RemoveAll(s => currentUserShowRatings.Any(c => c.TVDBID == s.Id.ToString()));
+            }
+
+            UIUtils.UpdateStatus(string.Format("Importing {0} show ratings to trakt.tv.", filteredShows.Shows.Count));
+
+            if (filteredShows.Shows.Count > 0)
+            {
+                TraktRatingsResponse response = TraktAPI.TraktAPI.RateShows(GetRateShowsData(filteredShows));
+                if (response == null || response.Status != "success")
+                {
+                    UIUtils.UpdateStatus("Error importing show ratings to trakt.tv.", true);
+                    Thread.Sleep(2000);
+                }
             }
             #endregion
 
             #region Import Episode Ratings
             int iCounter = 0;
             List<TraktEpisode> episodesRated = new List<TraktEpisode>();
+
+            // get all existing user ratings from trakt.tv
+            UIUtils.UpdateStatus("Retreiving existing episode ratings from trakt.tv.");
+            var currentUserEpisodeRatings = TraktAPI.TraktAPI.GetUserRatedEpisodes(AppSettings.TraktUsername);
 
             foreach (var show in showRatings.Shows)
             {
@@ -97,12 +117,20 @@ namespace TraktRater.Sites
                     continue;
                 }
                 if (ImportCancelled) return;
+
+                if (currentUserEpisodeRatings != null)
+                {
+                    UIUtils.UpdateStatus(string.Format("Found {0} user tv episode ratings on trakt.tv", currentUserEpisodeRatings.Count()));
+                    // Filter out shows to rate from existing ratings online
+                    episodeRatings.Episodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => ((c.EpisodeDetails.TVDBID == e.Id.ToString()))));
+                }
+
                 UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} episode ratings for {3}", iCounter, showRatings.Shows.Count, episodeRatings.Episodes.Count, showInfo.Show.Name));
                 if (episodeRatings.Episodes.Count == 0) continue;
 
                 // submit one series at a time
                 var episodesToRate = GetRateEpisodeData(episodeRatings, showInfo);
-                response = TraktAPI.TraktAPI.RateEpisodes(episodesToRate);
+                var response = TraktAPI.TraktAPI.RateEpisodes(episodesToRate);
                 if (response == null || response.Status != "success")
                 {
                     UIUtils.UpdateStatus(string.Format("Error importing {0} episode ratings to trakt.tv.", showInfo.Show.Name), true);
