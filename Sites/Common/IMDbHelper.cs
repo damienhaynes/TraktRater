@@ -171,11 +171,22 @@ namespace TraktRater.Sites.Common.IMDb
                 {
                     // get from online
                     UIUtils.UpdateStatus(string.Format("Retrieving data for {0}", showTitle));
-                    showSummary = TraktAPI.TraktAPI.GetShowSummary(episode[IMDbFieldMapping.cIMDbID]);
+
+                    // Note: IMDb ID will be the TV Show IMDb if syncing from Web, otherwise it uses the Episode IMDb ID
+                    // The Summary method will not work with the Episode IMDb so fallback to Title slug.
+                    
+                    // Check the field count to determine if its a Web/CSV episode
+                    if (episode[IMDbFieldMapping.cProvider] == "web")
+                        slug = episode[IMDbFieldMapping.cIMDbID];
+
+                    showSummary = TraktAPI.TraktAPI.GetShowSummary(slug);
                     if (showSummary == null || showSummary.Seasons == null || showSummary.Seasons.Count == 0)
                     {
                         // trakt may not have the IMDb for the show, try using title slug
-                        showSummary = TraktAPI.TraktAPI.GetShowSummary(slug);
+                        if (!slug.StartsWith("tt"))
+                        {
+                            showSummary = TraktAPI.TraktAPI.GetShowSummary(slug);
+                        }
                         if (showSummary == null || showSummary.Seasons == null || showSummary.Seasons.Count == 0)
                         {
                             UIUtils.UpdateStatus(string.Format("Unable to get info for {0}", showTitle), true);

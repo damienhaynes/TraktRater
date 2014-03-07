@@ -13,5 +13,6 @@ namespace TraktRater.Sites.API.IMDb
         public const string cRating = "You rated";
         public const string cYear = "Year";
         public const string cReleaseDate = "Release Date (month/day/year)";
+        public const string cProvider = "Provider";
     }
 }

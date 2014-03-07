@@ -151,49 +151,46 @@ namespace TraktRater.Sites
             #endregion
 
             #region Mark as Watched
-
-            #region Movies
-
-            if (AppSettings.MarkAsWatched && watchedMovies.Count > 0)
+            if (AppSettings.MarkAsWatched)
             {
-                // mark all movies as watched if rated
-                UIUtils.UpdateStatus(string.Format("Importing {0} IMDb Movies as Watched...", watchedMovies.Count));
-                TraktMovieSyncResponse watchedMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(Helper.GetSyncMoviesData(watchedMovies), TraktSyncModes.seen);
-                if (watchedMoviesResponse == null || watchedMoviesResponse.Status != "success")
+                #region Movies
+                if (watchedMovies.Count > 0)
                 {
-                    UIUtils.UpdateStatus("Failed to send watched status for IMDb movies.", true);
-                    Thread.Sleep(2000);
-                    if (ImportCancelled) return;
-                }
-            }
-
-            #endregion
-
-            #region Episodes
-
-            if (AppSettings.MarkAsWatched && episodesRated.Episodes.Count() > 0)
-            {
-                // mark all episodes as watched if rated
-                UIUtils.UpdateStatus(string.Format("Importing {0} IMDb Episodes as Watched...", episodesRated.Episodes.Count));
-                var watchedEpisodes = Helper.GetSyncEpisodeData(episodesRated.Episodes);
-                foreach (var showSyncData in watchedEpisodes)
-                {
-                    if (ImportCancelled) return;
-
-                    // send the episodes from each show as watched
-                    UIUtils.UpdateStatus(string.Format("Importing {0} episodes of {1} as watched...", showSyncData.EpisodeList.Count(), showSyncData.Title));
-                    var watchedEpisodesResponse = TraktAPI.TraktAPI.SyncEpisodeLibrary(showSyncData, TraktSyncModes.seen);
-                    if (watchedEpisodesResponse == null || watchedEpisodesResponse.Status != "success")
+                    // mark all movies as watched if rated
+                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb Movies as Watched...", watchedMovies.Count));
+                    TraktMovieSyncResponse watchedMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(Helper.GetSyncMoviesData(watchedMovies), TraktSyncModes.seen);
+                    if (watchedMoviesResponse == null || watchedMoviesResponse.Status != "success")
                     {
-                        UIUtils.UpdateStatus(string.Format("Failed to send watched status for IMDb '{0}' episodes.", showSyncData.Title), true);
+                        UIUtils.UpdateStatus("Failed to send watched status for IMDb movies.", true);
                         Thread.Sleep(2000);
-                        continue;
+                        if (ImportCancelled) return;
                     }
                 }
+                #endregion
+
+                #region Episodes
+                if (episodesRated != null && episodesRated.Episodes.Count() > 0)
+                {
+                    // mark all episodes as watched if rated
+                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb Episodes as Watched...", episodesRated.Episodes.Count));
+                    var watchedEpisodes = Helper.GetSyncEpisodeData(episodesRated.Episodes);
+                    foreach (var showSyncData in watchedEpisodes)
+                    {
+                        if (ImportCancelled) return;
+
+                        // send the episodes from each show as watched
+                        UIUtils.UpdateStatus(string.Format("Importing {0} episodes of {1} as watched...", showSyncData.EpisodeList.Count(), showSyncData.Title));
+                        var watchedEpisodesResponse = TraktAPI.TraktAPI.SyncEpisodeLibrary(showSyncData, TraktSyncModes.seen);
+                        if (watchedEpisodesResponse == null || watchedEpisodesResponse.Status != "success")
+                        {
+                            UIUtils.UpdateStatus(string.Format("Failed to send watched status for IMDb '{0}' episodes.", showSyncData.Title), true);
+                            Thread.Sleep(2000);
+                            continue;
+                        }
+                    }
+                }
+                #endregion
             }
-
-            #endregion
-
             #endregion
 
             return;
@@ -244,6 +241,9 @@ namespace TraktRater.Sites
                         rateItem.Add(fieldHeadings[index], field);
                         index++;
                     }
+
+                    // Set provider to web or csv
+                    rateItem.Add(IMDbFieldMapping.cProvider, "csv");
 
                     // add to list of items
                     RateItems.Add(rateItem);

@@ -101,6 +101,9 @@ namespace TraktRater.Sites
                     else
                         rateItem.Add(IMDbFieldMapping.cType, find.Groups[1].ToString());
 
+                    // Set provider to web or csv
+                    rateItem.Add(IMDbFieldMapping.cProvider, "web");
+
                     ratedItems.Add(rateItem);
 
                     begin += 10;
@@ -153,7 +156,10 @@ namespace TraktRater.Sites
                             watchListItem.Add(IMDbFieldMapping.cType, "Feature Film");
                         else
                             watchListItem.Add(IMDbFieldMapping.cType, find.Groups[1].ToString());
-                        
+
+                        // Set provider to web or csv
+                        watchListItem.Add(IMDbFieldMapping.cProvider, "web");
+
                         watchlistItems.Add(watchListItem);
                         
                         begin += 10;
@@ -281,7 +287,7 @@ namespace TraktRater.Sites
                 #endregion
 
                 #region Episodes
-                if (ratedEpisodes.Episodes.Count() > 0)
+                if (ratedEpisodes != null && ratedEpisodes.Episodes.Count() > 0)
                 {
                     // mark all episodes as watched if rated
                     UIUtils.UpdateStatus(string.Format("Importing {0} IMDb Episodes as Watched...", ratedEpisodes.Episodes.Count));
@@ -314,7 +320,7 @@ namespace TraktRater.Sites
                 {
                     //add all movies to watchlist
                     UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist movies to trakt.tv ...", watchlistMovies.Count()));
-                    TraktMovieSyncResponse watchlistMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(Helper.GetSyncMoviesData(watchlistMovies), TraktSyncModes.watchlist);
+                    var watchlistMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(Helper.GetSyncMoviesData(watchlistMovies), TraktSyncModes.watchlist);
                     if (watchlistMoviesResponse == null || watchlistMoviesResponse.Status != "success")
                     {
                         UIUtils.UpdateStatus("Failed to send watchlist for IMDb movies.", true);
@@ -330,10 +336,10 @@ namespace TraktRater.Sites
                 {
                     //add all shows to watchlist
                     UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist shows to trakt.tv ...", watchlistShows.Count()));
-                    TraktResponse watchlistMoviesResponse = TraktAPI.TraktAPI.SyncShowLibrary(Helper.GetSyncShowsData(watchlistShows), TraktSyncModes.watchlist);
-                    if (watchlistMoviesResponse == null || watchlistMoviesResponse.Status != "success")
+                    var watchlistShowsResponse = TraktAPI.TraktAPI.SyncShowLibrary(Helper.GetSyncShowsData(watchlistShows), TraktSyncModes.watchlist);
+                    if (watchlistShowsResponse == null || watchlistShowsResponse.Status != "success")
                     {
-                        UIUtils.UpdateStatus("Failed to send watchlist for IMDb shows.", true);
+                        UIUtils.UpdateStatus("Failed to send watchlist for IMDb tv shows.", true);
                         Thread.Sleep(2000);
                         if (ImportCancelled) return;
                     }
@@ -355,8 +361,8 @@ namespace TraktRater.Sites
 
                         // send the episodes from each show as watched
                         UIUtils.UpdateStatus(string.Format("Importing {0} episodes of {1} to watchlist...", showSyncData.EpisodeList.Count(), showSyncData.Title));
-                        var watchedEpisodesResponse = TraktAPI.TraktAPI.SyncEpisodeLibrary(showSyncData, TraktSyncModes.watchlist);
-                        if (watchedEpisodesResponse == null || watchedEpisodesResponse.Status != "success")
+                        var watchlistEpisodesResponse = TraktAPI.TraktAPI.SyncEpisodeLibrary(showSyncData, TraktSyncModes.watchlist);
+                        if (watchlistEpisodesResponse == null || watchlistEpisodesResponse.Status != "success")
                         {
                             UIUtils.UpdateStatus(string.Format("Failed to send watchlist for IMDb '{0}' episodes.", showSyncData.Title), true);
                             Thread.Sleep(2000);
