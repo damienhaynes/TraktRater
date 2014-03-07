@@ -24,7 +24,8 @@ namespace TraktRater.Sites.Common.IMDb
                                  {
                                      IMDBID = movie[IMDbFieldMapping.cIMDbID],
                                      Title = movie[IMDbFieldMapping.cTitle],
-                                     Year = int.Parse(movie[IMDbFieldMapping.cYear]).ToString()
+                                     Year = movie[IMDbFieldMapping.cYear],
+                                     LastPlayed = GetLastPlayedDate(movie)
                                  });
 
             var movieData = new TraktMovieSync
@@ -79,7 +80,8 @@ namespace TraktRater.Sites.Common.IMDb
                                              select new TraktEpisodeSync.Episode
                                              {
                                                  EpisodeIndex = episode.Episode.ToString(),
-                                                 SeasonIndex = episode.Season.ToString()
+                                                 SeasonIndex = episode.Season.ToString(),
+                                                 LastPlayed = episode.LastPlayed
                                              });
 
                 if (episodesData.Count() == 0) continue;
@@ -276,7 +278,8 @@ namespace TraktRater.Sites.Common.IMDb
                         Season = match.Season,
                         TVDbId = showSummary.TVDbId,
                         Title = showSummary.Title,
-                        Year = showSummary.Year
+                        Year = showSummary.Year,
+                        LastPlayed = GetLastPlayedDate(episode)
                     };
                     
                     if (ratings) 
@@ -334,6 +337,31 @@ namespace TraktRater.Sites.Common.IMDb
 
             UIUtils.UpdateStatus(string.Format("Unable to get info for {0}", episode[IMDbFieldMapping.cTitle]), true);
             return null;
+        }
+
+        static long GetLastPlayedDate(Dictionary<string, string> item)
+        {
+            long lastPlayedDate = DateTime.Now.ToEpoch();
+
+            // check if we have the 'created' field
+            if (item.ContainsKey(IMDbFieldMapping.cCreated))
+            {
+                // date is in the form:
+                // Tue Mar  4 00:00:00 2014
+                string created = item[IMDbFieldMapping.cCreated];
+                string[] splits = created.Split(new string[] { " ", "  " }, StringSplitOptions.RemoveEmptyEntries);
+                if (splits.Count() == 5)
+                {
+                    // make date in form DD MMM YYYY
+                    DateTime result;
+                    if (DateTime.TryParse(string.Format("{0} {1} {2}", splits[2], splits[1], splits[4]), out result))
+                    {
+                        lastPlayedDate = result.ToEpoch();
+                    }
+                }
+            }
+
+            return lastPlayedDate;
         }
     }
 }

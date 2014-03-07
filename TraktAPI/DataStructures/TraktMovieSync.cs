@@ -29,6 +29,9 @@ namespace TraktRater.TraktAPI.DataStructures
 
             [DataMember(Name = "year")]
             public string Year { get; set; }
+
+            [DataMember(Name = "last_played")]
+            public long LastPlayed { get; set; }
         }
     }
 }

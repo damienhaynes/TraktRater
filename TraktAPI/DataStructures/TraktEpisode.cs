@@ -26,5 +26,7 @@ namespace TraktRater.TraktAPI.DataStructures
 
         [DataMember(Name = "rating")]
         public int Rating { get; set; }
+
+        public long LastPlayed { get; set; }
     }
 }

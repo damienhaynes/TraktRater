@@ -32,6 +32,9 @@ namespace TraktRater.TraktAPI.DataStructures
 
             [DataMember(Name = "episode")]
             public string EpisodeIndex { get; set; }
+
+            [DataMember(Name = "last_played")]
+            public long LastPlayed { get; set; }
         }
 
     }
