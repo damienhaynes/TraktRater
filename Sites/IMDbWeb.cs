@@ -247,7 +247,7 @@ namespace TraktRater.Sites
                 {
                     UIUtils.UpdateStatus(string.Format("Found {0} user tv episode ratings on trakt.tv", currentUserEpisodeRatings.Count()));
                     // Filter out shows to rate from existing ratings online
-                    episodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => ((c.ShowDetails.IMDBID == e[IMDbFieldMapping.cIMDbID]) || (c.ShowDetails.Title == Helper.GetShowName(e[IMDbFieldMapping.cTitle]) && c.ShowDetails.Year.ToString() == e[IMDbFieldMapping.cYear])) && (c.EpisodeDetails.Title.ToLowerInvariant() == Helper.GetEpisodeName(e[IMDbFieldMapping.cTitle]).ToLowerInvariant())));
+                    episodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => (c.ShowDetails.IMDBID == e[IMDbFieldMapping.cIMDbID] || c.ShowDetails.Title.ToLowerInvariant().StartsWith(Helper.GetShowName(e[IMDbFieldMapping.cTitle]).ToLowerInvariant())) && (c.EpisodeDetails.Title.ToLowerInvariant() == Helper.GetEpisodeName(e[IMDbFieldMapping.cTitle]).ToLowerInvariant())));
                 }
 
                 UIUtils.UpdateStatus(string.Format("Importing {0} episode ratings to trakt.tv.", episodes.Count()));

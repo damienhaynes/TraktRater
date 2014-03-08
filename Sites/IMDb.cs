@@ -130,7 +130,9 @@ namespace TraktRater.Sites
                     UIUtils.UpdateStatus(string.Format("Found {0} user tv episode ratings on trakt.tv", currentUserEpisodeRatings.Count()));
                     // Filter out shows to rate from existing ratings online
                     // IMDb CSV does not contain a IMDb for the show, only episode so we can't use that for matching
-                    episodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => c.ShowDetails.Title == Helper.GetShowName(e[IMDbFieldMapping.cTitle]) && c.EpisodeDetails.Title.ToLowerInvariant() == Helper.GetEpisodeName(e[IMDbFieldMapping.cTitle]).ToLowerInvariant()));
+                    // For the show name, check the start of the IMDb Title is in the trakt Title (some show names dont match up e.g. Doctor Who -> Doctor Who 2005
+                    // We check episode titles so the starts with will provider an accurate match
+                    episodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => c.ShowDetails.Title.ToLowerInvariant().StartsWith(Helper.GetShowName(e[IMDbFieldMapping.cTitle]).ToLowerInvariant()) && c.EpisodeDetails.Title.ToLowerInvariant() == Helper.GetEpisodeName(e[IMDbFieldMapping.cTitle]).ToLowerInvariant()));
                 }
 
                 UIUtils.UpdateStatus(string.Format("Importing {0} episode ratings to trakt.tv.", episodes.Count()));
