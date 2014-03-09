@@ -45,14 +45,20 @@
             this.lblStatusMessage = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tipHelp = new System.Windows.Forms.ToolTip(this.components);
-            this.txtImdbFilename = new System.Windows.Forms.TextBox();
-            this.txtImdbUsername = new System.Windows.Forms.TextBox();
+            this.txtImdbRatingsFilename = new System.Windows.Forms.TextBox();
+            this.txtImdbWebUsername = new System.Windows.Forms.TextBox();
+            this.txtImdbWatchlistFile = new System.Windows.Forms.TextBox();
             this.grbImdb = new System.Windows.Forms.GroupBox();
+            this.btnImdbWatchlistBrowse = new System.Windows.Forms.Button();
+            this.lblWatchlistFile = new System.Windows.Forms.Label();
+            this.lblRatingsFile = new System.Windows.Forms.Label();
             this.lblIMDbDescription = new System.Windows.Forms.Label();
             this.rdnImdbUsername = new System.Windows.Forms.RadioButton();
             this.rdnImdbCSV = new System.Windows.Forms.RadioButton();
-            this.chkImdbWatchlist = new System.Windows.Forms.CheckBox();
-            this.btnImdbBrowse = new System.Windows.Forms.Button();
+            this.chkImdbWebWatchlist = new System.Windows.Forms.CheckBox();
+            this.btnImdbRatingsBrowse = new System.Windows.Forms.Button();
+            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
+            this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.dlgFileOpen = new System.Windows.Forms.OpenFileDialog();
             this.grbTMDb = new System.Windows.Forms.GroupBox();
             this.lnkTMDbStart = new System.Windows.Forms.LinkLabel();
@@ -155,7 +161,7 @@
             // 
             // btnImportRatings
             // 
-            this.btnImportRatings.Location = new System.Drawing.Point(12, 452);
+            this.btnImportRatings.Location = new System.Drawing.Point(13, 539);
             this.btnImportRatings.Name = "btnImportRatings";
             this.btnImportRatings.Size = new System.Drawing.Size(443, 26);
             this.btnImportRatings.TabIndex = 6;
@@ -165,7 +171,7 @@
             // 
             // pbrImportProgress
             // 
-            this.pbrImportProgress.Location = new System.Drawing.Point(13, 484);
+            this.pbrImportProgress.Location = new System.Drawing.Point(14, 571);
             this.pbrImportProgress.Name = "pbrImportProgress";
             this.pbrImportProgress.Size = new System.Drawing.Size(442, 23);
             this.pbrImportProgress.TabIndex = 7;
@@ -174,7 +180,7 @@
             // 
             this.grbReport.Controls.Add(this.lblStatusMessage);
             this.grbReport.Controls.Add(this.label5);
-            this.grbReport.Location = new System.Drawing.Point(12, 522);
+            this.grbReport.Location = new System.Drawing.Point(13, 609);
             this.grbReport.Name = "grbReport";
             this.grbReport.Size = new System.Drawing.Size(442, 49);
             this.grbReport.TabIndex = 8;
@@ -206,65 +212,110 @@
             this.tipHelp.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tipHelp.ToolTipTitle = "Help";
             // 
-            // txtImdbFilename
+            // txtImdbRatingsFilename
             // 
-            this.txtImdbFilename.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.txtImdbFilename.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
-            this.txtImdbFilename.Enabled = false;
-            this.txtImdbFilename.Location = new System.Drawing.Point(177, 47);
-            this.txtImdbFilename.Name = "txtImdbFilename";
-            this.txtImdbFilename.Size = new System.Drawing.Size(208, 20);
-            this.txtImdbFilename.TabIndex = 3;
-            this.tipHelp.SetToolTip(this.txtImdbFilename, "You can export your ratings history to csv from your IMDb account settings.\r\nOnce" +
+            this.txtImdbRatingsFilename.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtImdbRatingsFilename.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
+            this.txtImdbRatingsFilename.Enabled = false;
+            this.txtImdbRatingsFilename.Location = new System.Drawing.Point(177, 66);
+            this.txtImdbRatingsFilename.Name = "txtImdbRatingsFilename";
+            this.txtImdbRatingsFilename.Size = new System.Drawing.Size(208, 20);
+            this.txtImdbRatingsFilename.TabIndex = 4;
+            this.tipHelp.SetToolTip(this.txtImdbRatingsFilename, "You can export your ratings history to csv from your IMDb account settings.\r\nOnce" +
         " you have downloaded file, you can specify filename in this textbox.");
-            this.txtImdbFilename.TextChanged += new System.EventHandler(this.txtImdbFilename_TextChanged);
+            this.txtImdbRatingsFilename.TextChanged += new System.EventHandler(this.txtImdbFilename_TextChanged);
             // 
-            // txtImdbUsername
+            // txtImdbWebUsername
             // 
-            this.txtImdbUsername.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.txtImdbUsername.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
-            this.txtImdbUsername.Location = new System.Drawing.Point(177, 73);
-            this.txtImdbUsername.Name = "txtImdbUsername";
-            this.txtImdbUsername.Size = new System.Drawing.Size(244, 20);
-            this.txtImdbUsername.TabIndex = 6;
-            this.tipHelp.SetToolTip(this.txtImdbUsername, resources.GetString("txtImdbUsername.ToolTip"));
-            this.txtImdbUsername.TextChanged += new System.EventHandler(this.txtImdbUsername_TextChanged);
+            this.txtImdbWebUsername.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtImdbWebUsername.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
+            this.txtImdbWebUsername.Location = new System.Drawing.Point(177, 154);
+            this.txtImdbWebUsername.Name = "txtImdbWebUsername";
+            this.txtImdbWebUsername.Size = new System.Drawing.Size(244, 20);
+            this.txtImdbWebUsername.TabIndex = 10;
+            this.tipHelp.SetToolTip(this.txtImdbWebUsername, resources.GetString("txtImdbWebUsername.ToolTip"));
+            this.txtImdbWebUsername.TextChanged += new System.EventHandler(this.txtImdbUsername_TextChanged);
+            // 
+            // txtImdbWatchlistFile
+            // 
+            this.txtImdbWatchlistFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtImdbWatchlistFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
+            this.txtImdbWatchlistFile.Location = new System.Drawing.Point(177, 111);
+            this.txtImdbWatchlistFile.Name = "txtImdbWatchlistFile";
+            this.txtImdbWatchlistFile.Size = new System.Drawing.Size(208, 20);
+            this.txtImdbWatchlistFile.TabIndex = 7;
+            this.tipHelp.SetToolTip(this.txtImdbWatchlistFile, "Leave field blank if you\'re not interested in importing a watchlist from IMDb to " +
+        "trakt.tv.");
+            this.txtImdbWatchlistFile.TextChanged += new System.EventHandler(this.txtImdbWatchlistFile_TextChanged);
             // 
             // grbImdb
             // 
+            this.grbImdb.Controls.Add(this.btnImdbWatchlistBrowse);
+            this.grbImdb.Controls.Add(this.txtImdbWatchlistFile);
+            this.grbImdb.Controls.Add(this.lblWatchlistFile);
+            this.grbImdb.Controls.Add(this.lblRatingsFile);
             this.grbImdb.Controls.Add(this.lblIMDbDescription);
             this.grbImdb.Controls.Add(this.rdnImdbUsername);
             this.grbImdb.Controls.Add(this.rdnImdbCSV);
-            this.grbImdb.Controls.Add(this.chkImdbWatchlist);
-            this.grbImdb.Controls.Add(this.txtImdbUsername);
-            this.grbImdb.Controls.Add(this.btnImdbBrowse);
-            this.grbImdb.Controls.Add(this.txtImdbFilename);
+            this.grbImdb.Controls.Add(this.chkImdbWebWatchlist);
+            this.grbImdb.Controls.Add(this.txtImdbWebUsername);
+            this.grbImdb.Controls.Add(this.btnImdbRatingsBrowse);
+            this.grbImdb.Controls.Add(this.txtImdbRatingsFilename);
+            this.grbImdb.Controls.Add(this.shapeContainer1);
             this.grbImdb.Location = new System.Drawing.Point(12, 175);
             this.grbImdb.Name = "grbImdb";
-            this.grbImdb.Size = new System.Drawing.Size(443, 127);
+            this.grbImdb.Size = new System.Drawing.Size(443, 214);
             this.grbImdb.TabIndex = 3;
             this.grbImdb.TabStop = false;
             this.grbImdb.Text = "IMDb";
+            // 
+            // btnImdbWatchlistBrowse
+            // 
+            this.btnImdbWatchlistBrowse.Location = new System.Drawing.Point(392, 108);
+            this.btnImdbWatchlistBrowse.Name = "btnImdbWatchlistBrowse";
+            this.btnImdbWatchlistBrowse.Size = new System.Drawing.Size(28, 23);
+            this.btnImdbWatchlistBrowse.TabIndex = 8;
+            this.btnImdbWatchlistBrowse.Text = "...";
+            this.btnImdbWatchlistBrowse.UseVisualStyleBackColor = true;
+            this.btnImdbWatchlistBrowse.Click += new System.EventHandler(this.btnImdbWatchlistBrowse_Click);
+            // 
+            // lblWatchlistFile
+            // 
+            this.lblWatchlistFile.AutoSize = true;
+            this.lblWatchlistFile.Location = new System.Drawing.Point(177, 93);
+            this.lblWatchlistFile.Name = "lblWatchlistFile";
+            this.lblWatchlistFile.Size = new System.Drawing.Size(73, 13);
+            this.lblWatchlistFile.TabIndex = 6;
+            this.lblWatchlistFile.Text = "Watchlist File:";
+            // 
+            // lblRatingsFile
+            // 
+            this.lblRatingsFile.AutoSize = true;
+            this.lblRatingsFile.Location = new System.Drawing.Point(174, 50);
+            this.lblRatingsFile.Name = "lblRatingsFile";
+            this.lblRatingsFile.Size = new System.Drawing.Size(65, 13);
+            this.lblRatingsFile.TabIndex = 3;
+            this.lblRatingsFile.Text = "Ratings File:";
             // 
             // lblIMDbDescription
             // 
             this.lblIMDbDescription.AutoSize = true;
             this.lblIMDbDescription.Location = new System.Drawing.Point(20, 20);
             this.lblIMDbDescription.Name = "lblIMDbDescription";
-            this.lblIMDbDescription.Size = new System.Drawing.Size(349, 13);
+            this.lblIMDbDescription.Size = new System.Drawing.Size(347, 13);
             this.lblIMDbDescription.TabIndex = 1;
-            this.lblIMDbDescription.Text = "Select \'CSV Ratings File\' for static file import or \'User ID\' for web retrieval:";
+            this.lblIMDbDescription.Text = "Select \'CSV Import\' for static file import or \'Web Scrape\' for web retrieval:";
             // 
             // rdnImdbUsername
             // 
             this.rdnImdbUsername.AutoSize = true;
             this.rdnImdbUsername.Checked = true;
-            this.rdnImdbUsername.Location = new System.Drawing.Point(21, 74);
+            this.rdnImdbUsername.Location = new System.Drawing.Point(21, 157);
             this.rdnImdbUsername.Name = "rdnImdbUsername";
-            this.rdnImdbUsername.Size = new System.Drawing.Size(64, 17);
-            this.rdnImdbUsername.TabIndex = 5;
+            this.rdnImdbUsername.Size = new System.Drawing.Size(88, 17);
+            this.rdnImdbUsername.TabIndex = 9;
             this.rdnImdbUsername.TabStop = true;
-            this.rdnImdbUsername.Text = "User ID:";
+            this.rdnImdbUsername.Text = "Web Scrape:";
             this.rdnImdbUsername.UseVisualStyleBackColor = true;
             // 
             // rdnImdbCSV
@@ -272,45 +323,63 @@
             this.rdnImdbCSV.AutoSize = true;
             this.rdnImdbCSV.Location = new System.Drawing.Point(21, 48);
             this.rdnImdbCSV.Name = "rdnImdbCSV";
-            this.rdnImdbCSV.Size = new System.Drawing.Size(107, 17);
+            this.rdnImdbCSV.Size = new System.Drawing.Size(81, 17);
             this.rdnImdbCSV.TabIndex = 2;
-            this.rdnImdbCSV.Text = "CSV Ratings File:";
+            this.rdnImdbCSV.Text = "CSV Import:";
             this.rdnImdbCSV.UseVisualStyleBackColor = true;
             this.rdnImdbCSV.CheckedChanged += new System.EventHandler(this.rdnImdbCSV_CheckedChanged);
             // 
-            // chkImdbWatchlist
+            // chkImdbWebWatchlist
             // 
-            this.chkImdbWatchlist.AutoSize = true;
-            this.chkImdbWatchlist.Location = new System.Drawing.Point(177, 99);
-            this.chkImdbWatchlist.Name = "chkImdbWatchlist";
-            this.chkImdbWatchlist.Size = new System.Drawing.Size(97, 17);
-            this.chkImdbWatchlist.TabIndex = 0;
-            this.chkImdbWatchlist.Text = "Sync Watchlist";
-            this.chkImdbWatchlist.UseVisualStyleBackColor = true;
-            this.chkImdbWatchlist.CheckedChanged += new System.EventHandler(this.chkImdbWatchlist_CheckedChanged);
+            this.chkImdbWebWatchlist.AutoSize = true;
+            this.chkImdbWebWatchlist.Location = new System.Drawing.Point(177, 180);
+            this.chkImdbWebWatchlist.Name = "chkImdbWebWatchlist";
+            this.chkImdbWebWatchlist.Size = new System.Drawing.Size(97, 17);
+            this.chkImdbWebWatchlist.TabIndex = 11;
+            this.chkImdbWebWatchlist.Text = "Sync Watchlist";
+            this.chkImdbWebWatchlist.UseVisualStyleBackColor = true;
+            this.chkImdbWebWatchlist.CheckedChanged += new System.EventHandler(this.chkImdbWatchlist_CheckedChanged);
             // 
-            // btnImdbBrowse
+            // btnImdbRatingsBrowse
             // 
-            this.btnImdbBrowse.Enabled = false;
-            this.btnImdbBrowse.Location = new System.Drawing.Point(391, 45);
-            this.btnImdbBrowse.Name = "btnImdbBrowse";
-            this.btnImdbBrowse.Size = new System.Drawing.Size(29, 23);
-            this.btnImdbBrowse.TabIndex = 4;
-            this.btnImdbBrowse.Text = "...";
-            this.btnImdbBrowse.UseVisualStyleBackColor = true;
-            this.btnImdbBrowse.Click += new System.EventHandler(this.btnImdbBrowse_Click);
+            this.btnImdbRatingsBrowse.Enabled = false;
+            this.btnImdbRatingsBrowse.Location = new System.Drawing.Point(391, 64);
+            this.btnImdbRatingsBrowse.Name = "btnImdbRatingsBrowse";
+            this.btnImdbRatingsBrowse.Size = new System.Drawing.Size(29, 23);
+            this.btnImdbRatingsBrowse.TabIndex = 5;
+            this.btnImdbRatingsBrowse.Text = "...";
+            this.btnImdbRatingsBrowse.UseVisualStyleBackColor = true;
+            this.btnImdbRatingsBrowse.Click += new System.EventHandler(this.btnImdbBrowse_Click);
+            // 
+            // shapeContainer1
+            // 
+            this.shapeContainer1.Location = new System.Drawing.Point(3, 16);
+            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
+            this.shapeContainer1.Name = "shapeContainer1";
+            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
+            this.lineShape1});
+            this.shapeContainer1.Size = new System.Drawing.Size(437, 195);
+            this.shapeContainer1.TabIndex = 0;
+            this.shapeContainer1.TabStop = false;
+            // 
+            // lineShape1
+            // 
+            this.lineShape1.Name = "lineShape1";
+            this.lineShape1.X1 = 179;
+            this.lineShape1.X2 = 416;
+            this.lineShape1.Y1 = 126;
+            this.lineShape1.Y2 = 126;
             // 
             // dlgFileOpen
             // 
             this.dlgFileOpen.DefaultExt = "csv";
-            this.dlgFileOpen.FileName = "ratings.csv";
             this.dlgFileOpen.Filter = "CSV files|*.csv";
             // 
             // grbTMDb
             // 
             this.grbTMDb.Controls.Add(this.lnkTMDbStart);
             this.grbTMDb.Controls.Add(this.lblTMDbMessage);
-            this.grbTMDb.Location = new System.Drawing.Point(13, 308);
+            this.grbTMDb.Location = new System.Drawing.Point(14, 395);
             this.grbTMDb.Name = "grbTMDb";
             this.grbTMDb.Size = new System.Drawing.Size(443, 81);
             this.grbTMDb.TabIndex = 4;
@@ -340,7 +409,7 @@
             // grbOptions
             // 
             this.grbOptions.Controls.Add(this.chkMarkAsWatched);
-            this.grbOptions.Location = new System.Drawing.Point(13, 395);
+            this.grbOptions.Location = new System.Drawing.Point(14, 482);
             this.grbOptions.Name = "grbOptions";
             this.grbOptions.Size = new System.Drawing.Size(443, 51);
             this.grbOptions.TabIndex = 5;
@@ -362,7 +431,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 582);
+            this.ClientSize = new System.Drawing.Size(467, 670);
             this.Controls.Add(this.grbOptions);
             this.Controls.Add(this.grbTMDb);
             this.Controls.Add(this.grbImdb);
@@ -413,19 +482,25 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ToolTip tipHelp;
         private System.Windows.Forms.GroupBox grbImdb;
-        private System.Windows.Forms.Button btnImdbBrowse;
-        private System.Windows.Forms.TextBox txtImdbFilename;
+        private System.Windows.Forms.Button btnImdbRatingsBrowse;
+        private System.Windows.Forms.TextBox txtImdbRatingsFilename;
         private System.Windows.Forms.OpenFileDialog dlgFileOpen;
         private System.Windows.Forms.GroupBox grbTMDb;
         private System.Windows.Forms.LinkLabel lnkTMDbStart;
         private System.Windows.Forms.Label lblTMDbMessage;
         private System.Windows.Forms.GroupBox grbOptions;
         private System.Windows.Forms.CheckBox chkMarkAsWatched;
-        private System.Windows.Forms.TextBox txtImdbUsername;
-        private System.Windows.Forms.CheckBox chkImdbWatchlist;
+        private System.Windows.Forms.TextBox txtImdbWebUsername;
+        private System.Windows.Forms.CheckBox chkImdbWebWatchlist;
         private System.Windows.Forms.RadioButton rdnImdbUsername;
         private System.Windows.Forms.RadioButton rdnImdbCSV;
         private System.Windows.Forms.Label lblIMDbDescription;
+        private System.Windows.Forms.Button btnImdbWatchlistBrowse;
+        private System.Windows.Forms.TextBox txtImdbWatchlistFile;
+        private System.Windows.Forms.Label lblWatchlistFile;
+        private System.Windows.Forms.Label lblRatingsFile;
+        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
+        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
     }
 }
 

@@ -15,7 +15,8 @@ namespace TraktRater.Settings
         const string cTraktPassword = "TraktPassword";
         const string cTVDbAccountId = "TVDbAccountId";
         const string cTMDbSessionId = "TMDbSessionId";
-        const string cIMDbFilename = "IMDbFilename";
+        const string cIMDbRatingsFilename = "IMDbFilename";
+        const string cIMDbWatchlistFilename = "IMDbWatchlistFilename";
         const string cIMDbUsername = "IMDbUsername";
         const string cIMDBSyncWatchlist = "IMDBSyncWatchlist";
         const string cMarkAsWatched = "MarkAsWatched";
@@ -56,7 +57,9 @@ namespace TraktRater.Settings
 
         public static string TMDbRequestToken { get; set; }
 
-        public static string IMDbFilename { get; set; }
+        public static string IMDbRatingsFilename { get; set; }
+        
+        public static string IMDbWatchlistFilename { get; set; }
 
         public static bool IMDbSyncWatchlist { get; set; }
 
@@ -102,7 +105,8 @@ namespace TraktRater.Settings
             TraktPassword = xmlReader.GetSettingValueAsString(cTraktPassword, string.Empty);
             TVDbAccountIdentifier = xmlReader.GetSettingValueAsString(cTVDbAccountId, string.Empty);
             TMDbSessionId = xmlReader.GetSettingValueAsString(cTMDbSessionId, string.Empty);
-            IMDbFilename = xmlReader.GetSettingValueAsString(cIMDbFilename, string.Empty);
+            IMDbRatingsFilename = xmlReader.GetSettingValueAsString(cIMDbRatingsFilename, string.Empty);
+            IMDbWatchlistFilename = xmlReader.GetSettingValueAsString(cIMDbWatchlistFilename, string.Empty);
             IMDbUsername = xmlReader.GetSettingValueAsString(cIMDbUsername, string.Empty);
             IMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cIMDBSyncWatchlist, false);
             MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
@@ -140,7 +144,8 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cTraktPassword, TraktPassword);
             xmlWriter.WriteSetting(cTVDbAccountId, TVDbAccountIdentifier);
             xmlWriter.WriteSetting(cTMDbSessionId, TMDbSessionId);
-            xmlWriter.WriteSetting(cIMDbFilename, IMDbFilename);
+            xmlWriter.WriteSetting(cIMDbRatingsFilename, IMDbRatingsFilename);
+            xmlWriter.WriteSetting(cIMDbWatchlistFilename, IMDbWatchlistFilename);
             xmlWriter.WriteSetting(cIMDbUsername, IMDbUsername);
             xmlWriter.WriteSetting(cIMDBSyncWatchlist, IMDbSyncWatchlist.ToString());
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
