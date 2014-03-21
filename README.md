@@ -21,7 +21,7 @@ Data Sources
 The following data sources are currently supported by this tool:
 
 ###IMDb###
-The [IMDb](http://imdb.com) provider supports tv show, episode and movie ratings. TraktRater requires the user ratings from IMDb to be first exported to a csv file, to do this follow these steps:
+The [IMDb](http://imdb.com) provider supports tv show, episode and movie ratings. TraktRater also supports import of your watchlist from IMDb to trakt.tv. Import can either be via CSV export (recommended) or by scraping online using your user id:
 
  * Login to [IMDb](http://imdb.com).
  * Click on the **Account** link in the top right hand corner of page.
@@ -29,7 +29,10 @@ The [IMDb](http://imdb.com) provider supports tv show, episode and movie ratings
  * Scroll to the bottom of the page and click on the **Export this List** link.
  * Save the csv file to a folder on your computer.
  * In the TraktRater tool, enter in the filename in the textbox provided.
+ * Repeat process to export your Watchlist.csv file, if you don't want to import your watchlist then the keep field empty.
 
+If you choose to do a **Web Scrape**, ensure your profile is marked as **Public** otherwise it will fail. Your IMDb User ID can be found from the address bar in your browser window, look for something like **ur13828119**.
+ 
 ###TVDb###
 The [TVDb](http://thetvdb.com) provider supports tv show and episode ratings. TraktRater requires your Account Identifier, **NOT** your username. You can find your account id by following these steps:
 
