@@ -57,8 +57,6 @@
             this.rdnImdbCSV = new System.Windows.Forms.RadioButton();
             this.chkImdbWebWatchlist = new System.Windows.Forms.CheckBox();
             this.btnImdbRatingsBrowse = new System.Windows.Forms.Button();
-            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
-            this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.dlgFileOpen = new System.Windows.Forms.OpenFileDialog();
             this.grbTMDb = new System.Windows.Forms.GroupBox();
             this.lnkTMDbStart = new System.Windows.Forms.LinkLabel();
@@ -261,7 +259,6 @@
             this.grbImdb.Controls.Add(this.txtImdbWebUsername);
             this.grbImdb.Controls.Add(this.btnImdbRatingsBrowse);
             this.grbImdb.Controls.Add(this.txtImdbRatingsFilename);
-            this.grbImdb.Controls.Add(this.shapeContainer1);
             this.grbImdb.Location = new System.Drawing.Point(12, 175);
             this.grbImdb.Name = "grbImdb";
             this.grbImdb.Size = new System.Drawing.Size(443, 214);
@@ -350,25 +347,6 @@
             this.btnImdbRatingsBrowse.Text = "...";
             this.btnImdbRatingsBrowse.UseVisualStyleBackColor = true;
             this.btnImdbRatingsBrowse.Click += new System.EventHandler(this.btnImdbBrowse_Click);
-            // 
-            // shapeContainer1
-            // 
-            this.shapeContainer1.Location = new System.Drawing.Point(3, 16);
-            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
-            this.shapeContainer1.Name = "shapeContainer1";
-            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
-            this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(437, 195);
-            this.shapeContainer1.TabIndex = 0;
-            this.shapeContainer1.TabStop = false;
-            // 
-            // lineShape1
-            // 
-            this.lineShape1.Name = "lineShape1";
-            this.lineShape1.X1 = 179;
-            this.lineShape1.X2 = 416;
-            this.lineShape1.Y1 = 126;
-            this.lineShape1.Y2 = 126;
             // 
             // dlgFileOpen
             // 
@@ -499,8 +477,6 @@
         private System.Windows.Forms.TextBox txtImdbWatchlistFile;
         private System.Windows.Forms.Label lblWatchlistFile;
         private System.Windows.Forms.Label lblRatingsFile;
-        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
-        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
     }
 }
 
