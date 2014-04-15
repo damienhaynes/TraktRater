@@ -165,7 +165,7 @@ namespace TraktRater.Sites
                         begin += 10;
                     }
                     // fetch next page
-                    movieIndex += 250;
+                    movieIndex += 100;
                 }
                 while (count < watchlistItems.Count);
             }
