@@ -57,11 +57,13 @@ namespace TraktRater.Sites
             WebClient client = new WebClient();
             int count = ratedItems.Count;
             int movieIndex = 1;
+            int movieIncrement = 250;
 
             #region Ratings
             do
             {
                 count = ratedItems.Count;
+                UI.UIUtils.UpdateStatus(string.Format("Requesting ratings {0} - {1}, Total Results: {2}", movieIndex, (movieIncrement + movieIndex - 1), count));
                 string s = client.DownloadString("http://www.imdb.com/user/" + Username + "/ratings?start=" + movieIndex + "&view=compact");
                 int begin = 0;
 
@@ -109,7 +111,7 @@ namespace TraktRater.Sites
                     begin += 10;
                 }
                 // fetch next page
-                movieIndex += 250;
+                movieIndex += movieIncrement;
             }
             while (count < ratedItems.Count);
             #endregion
@@ -119,10 +121,12 @@ namespace TraktRater.Sites
             {
                 UIUtils.UpdateStatus("Reading IMDb watchlist from web...");
                 movieIndex = 1;
+                movieIncrement = 100;
 
                 do
                 {
                     count = watchlistItems.Count;
+                    UI.UIUtils.UpdateStatus(string.Format("Requesting watchlist items {0} - {1}, Total Results: {2}", movieIndex, (movieIncrement + movieIndex - 1), count));
                     string s = client.DownloadString("http://www.imdb.com/user/" + Username + "/watchlist?start=" + movieIndex + "&view=compact");
                     int begin = 0;
 
@@ -165,7 +169,7 @@ namespace TraktRater.Sites
                         begin += 10;
                     }
                     // fetch next page
-                    movieIndex += 100;
+                    movieIndex += movieIncrement;
                 }
                 while (count < watchlistItems.Count);
             }
