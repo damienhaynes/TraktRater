@@ -58,6 +58,7 @@ namespace TraktRater
             txtImdbWebUsername.Text = AppSettings.IMDbUsername;
             chkImdbWebWatchlist.Checked = AppSettings.IMDbSyncWatchlist;
             chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
+            chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
 
             SetTMDbControlState();
 
@@ -119,6 +120,11 @@ namespace TraktRater
         private void chkImdbWatchlist_CheckedChanged(object sender, EventArgs e)
         {
             AppSettings.IMDbSyncWatchlist = chkImdbWebWatchlist.Checked;
+        }
+
+        private void chkIgnoreWatchedForWatchlists_Click(object sender, EventArgs e)
+        {
+            AppSettings.IgnoreWatchedForWatchlist = chkIgnoreWatchedForWatchlists.Checked;
         }
 
         private void rdnImdbCSV_CheckedChanged(object sender, EventArgs e)

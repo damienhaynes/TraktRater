@@ -63,6 +63,7 @@
             this.lblTMDbMessage = new System.Windows.Forms.Label();
             this.grbOptions = new System.Windows.Forms.GroupBox();
             this.chkMarkAsWatched = new System.Windows.Forms.CheckBox();
+            this.chkIgnoreWatchedForWatchlists = new System.Windows.Forms.CheckBox();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -159,7 +160,7 @@
             // 
             // btnImportRatings
             // 
-            this.btnImportRatings.Location = new System.Drawing.Point(13, 539);
+            this.btnImportRatings.Location = new System.Drawing.Point(13, 557);
             this.btnImportRatings.Name = "btnImportRatings";
             this.btnImportRatings.Size = new System.Drawing.Size(443, 26);
             this.btnImportRatings.TabIndex = 6;
@@ -169,7 +170,7 @@
             // 
             // pbrImportProgress
             // 
-            this.pbrImportProgress.Location = new System.Drawing.Point(14, 571);
+            this.pbrImportProgress.Location = new System.Drawing.Point(14, 589);
             this.pbrImportProgress.Name = "pbrImportProgress";
             this.pbrImportProgress.Size = new System.Drawing.Size(442, 23);
             this.pbrImportProgress.TabIndex = 7;
@@ -178,7 +179,7 @@
             // 
             this.grbReport.Controls.Add(this.lblStatusMessage);
             this.grbReport.Controls.Add(this.label5);
-            this.grbReport.Location = new System.Drawing.Point(13, 609);
+            this.grbReport.Location = new System.Drawing.Point(13, 627);
             this.grbReport.Name = "grbReport";
             this.grbReport.Size = new System.Drawing.Size(442, 49);
             this.grbReport.TabIndex = 8;
@@ -386,10 +387,11 @@
             // 
             // grbOptions
             // 
+            this.grbOptions.Controls.Add(this.chkIgnoreWatchedForWatchlists);
             this.grbOptions.Controls.Add(this.chkMarkAsWatched);
             this.grbOptions.Location = new System.Drawing.Point(14, 482);
             this.grbOptions.Name = "grbOptions";
-            this.grbOptions.Size = new System.Drawing.Size(443, 51);
+            this.grbOptions.Size = new System.Drawing.Size(443, 71);
             this.grbOptions.TabIndex = 5;
             this.grbOptions.TabStop = false;
             this.grbOptions.Text = "Options";
@@ -405,11 +407,22 @@
             this.chkMarkAsWatched.UseVisualStyleBackColor = true;
             this.chkMarkAsWatched.Click += new System.EventHandler(this.chkMarkAsWatched_Click);
             // 
+            // chkIgnoreWatchedForWatchlists
+            // 
+            this.chkIgnoreWatchedForWatchlists.AutoSize = true;
+            this.chkIgnoreWatchedForWatchlists.Location = new System.Drawing.Point(21, 43);
+            this.chkIgnoreWatchedForWatchlists.Name = "chkIgnoreWatchedForWatchlists";
+            this.chkIgnoreWatchedForWatchlists.Size = new System.Drawing.Size(216, 17);
+            this.chkIgnoreWatchedForWatchlists.TabIndex = 1;
+            this.chkIgnoreWatchedForWatchlists.Text = "Ignore watched items for Watchlist Sync";
+            this.chkIgnoreWatchedForWatchlists.UseVisualStyleBackColor = true;
+            this.chkIgnoreWatchedForWatchlists.Click += new System.EventHandler(this.chkIgnoreWatchedForWatchlists_Click);
+            // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 670);
+            this.ClientSize = new System.Drawing.Size(467, 686);
             this.Controls.Add(this.grbOptions);
             this.Controls.Add(this.grbTMDb);
             this.Controls.Add(this.grbImdb);
@@ -477,6 +490,7 @@
         private System.Windows.Forms.TextBox txtImdbWatchlistFile;
         private System.Windows.Forms.Label lblWatchlistFile;
         private System.Windows.Forms.Label lblRatingsFile;
+        private System.Windows.Forms.CheckBox chkIgnoreWatchedForWatchlists;
     }
 }
 

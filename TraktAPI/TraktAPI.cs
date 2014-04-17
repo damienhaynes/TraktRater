@@ -216,6 +216,36 @@ namespace TraktRater.TraktAPI
         }
 
         /// <summary>
+        /// Returns the users Watched Movies
+        /// </summary>
+        /// <param name="user">username of person</param>
+        public static IEnumerable<TraktMovie> GetUserWatchedMovies(string user)
+        {
+            string watchedMovies = TraktWeb.Transmit(string.Format(TraktURIs.UserWatchedMoviesList, user), GetUserAuthentication());
+
+            // if we timeout we will return an error response
+            var response = watchedMovies.FromJSON<TraktResponse>();
+            if (response == null || response.Error != null) return null;
+
+            return watchedMovies.FromJSONArray<TraktMovie>();
+        }
+
+        /// <summary>
+        /// Returns the users Watched Shows
+        /// </summary>
+        /// <param name="user">username of person</param>
+        public static IEnumerable<TraktShowWatched> GetUserWatchedShows(string user)
+        {
+            string watchedShows = TraktWeb.Transmit(string.Format(TraktURIs.UserWatchedShowsList, user), GetUserAuthentication());
+
+            // if we timeout we will return an error response
+            var response = watchedShows.FromJSON<TraktResponse>();
+            if (response == null || response.Error != null) return null;
+
+            return watchedShows.FromJSONArray<TraktShowWatched>();
+        }
+
+        /// <summary>
         /// Gets a User Authentication object
         /// </summary>       
         /// <returns>The User Authentication json string</returns>

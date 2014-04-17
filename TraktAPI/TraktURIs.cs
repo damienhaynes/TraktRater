@@ -23,5 +23,7 @@ namespace TraktRater.TraktAPI
         public const string UserRatedMoviesList = @"http://api.trakt.tv/user/ratings/movies.json/" + apiKey + @"/{0}";
         public const string UserRatedShowsList = @"http://api.trakt.tv/user/ratings/shows.json/" + apiKey + @"/{0}";
         public const string UserRatedEpisodesList = @"http://api.trakt.tv/user/ratings/episodes.json/" + apiKey + @"/{0}";
+        public const string UserWatchedMoviesList = @"http://api.trakt.tv/user/library/movies/watched.json/" + apiKey + @"/{0}/min";
+        public const string UserWatchedShowsList = @"http://api.trakt.tv/user/library/shows/watched.json/" + apiKey + @"/{0}/min";
     }
 }

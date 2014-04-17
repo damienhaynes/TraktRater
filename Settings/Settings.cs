@@ -20,6 +20,7 @@ namespace TraktRater.Settings
         const string cIMDbUsername = "IMDbUsername";
         const string cIMDBSyncWatchlist = "IMDBSyncWatchlist";
         const string cMarkAsWatched = "MarkAsWatched";
+        const string cIgnoreWatchedForWatchlist = "IgnoreWatchedForWatchlist";
         #endregion
 
         #region Settings
@@ -67,6 +68,8 @@ namespace TraktRater.Settings
 
         public static bool MarkAsWatched { get; set; }
 
+        public static bool IgnoreWatchedForWatchlist { get; set; }
+
         public static string SettingsFile
         {
             get
@@ -110,6 +113,7 @@ namespace TraktRater.Settings
             IMDbUsername = xmlReader.GetSettingValueAsString(cIMDbUsername, string.Empty);
             IMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cIMDBSyncWatchlist, false);
             MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
+            IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
 
             // save settings, might be some new settings added
             Save();
@@ -149,6 +153,7 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cIMDbUsername, IMDbUsername);
             xmlWriter.WriteSetting(cIMDBSyncWatchlist, IMDbSyncWatchlist.ToString());
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
+            xmlWriter.WriteSetting(cIgnoreWatchedForWatchlist, IgnoreWatchedForWatchlist.ToString());
 
             // save file
             xmlWriter.Save(SettingsFile);
