@@ -165,8 +165,8 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cIMDbUsername, IMDbUsername);
             xmlWriter.WriteSetting(cIMDBSyncWatchlist, IMDbSyncWatchlist.ToString());
             xmlWriter.WriteSetting(cListalSyncWatchlist, ListalSyncWatchlist.ToString());
-            xmlWriter.WriteSetting(cListalMovieFilename, ListalMovieFilename.ToString());
-            xmlWriter.WriteSetting(cListalShowFilename, ListalShowFilename.ToString());
+            xmlWriter.WriteSetting(cListalMovieFilename, ListalMovieFilename);
+            xmlWriter.WriteSetting(cListalShowFilename, ListalShowFilename);
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
             xmlWriter.WriteSetting(cIgnoreWatchedForWatchlist, IgnoreWatchedForWatchlist.ToString());
 

@@ -227,6 +227,21 @@ namespace TraktRater.Sites
             movies = WatchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie).ToList();
             if (movies.Count() > 0)
             {
+                if (AppSettings.IgnoreWatchedForWatchlist)
+                {
+                    UIUtils.UpdateStatus("Requesting watched movies from trakt...");
+
+                    // get watched movies from trakt so we don't import movies into watchlist that are already watched
+                    var watchedTraktMovies = TraktAPI.TraktAPI.GetUserWatchedMovies(AppSettings.TraktUsername);
+                    if (watchedTraktMovies != null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("Found {0} watched movies on trakt", watchedTraktMovies.Count()));
+
+                        // remove movies from sync list which are watched already
+                        movies.RemoveAll(w => watchedTraktMovies.Count(t => t.IMDbId == w[IMDbFieldMapping.cIMDbID]) != 0);
+                    }
+                }
+
                 //add all movies to watchlist
                 UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist movies to trakt.tv ...", movies.Count()));
                 var watchlistMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(Helper.GetSyncMoviesData(movies), TraktSyncModes.watchlist);
@@ -241,9 +256,25 @@ namespace TraktRater.Sites
             #endregion
 
             #region Import Watchlist TV Shows
+            IEnumerable<TraktShowWatched> watchedTraktShows = null;
             shows = WatchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show).ToList();
             if (shows.Count() > 0)
             {
+                if (AppSettings.IgnoreWatchedForWatchlist)
+                {
+                    UIUtils.UpdateStatus("Requesting watched shows from trakt...");
+
+                    // get watched movies from trakt so we don't import shows into watchlist that are already watched
+                    watchedTraktShows = TraktAPI.TraktAPI.GetUserWatchedShows(AppSettings.TraktUsername);
+                    if (watchedTraktShows != null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("Found {0} watched shows on trakt", watchedTraktShows.Count()));
+
+                        // remove shows from sync list which are watched already
+                        shows.RemoveAll(w => watchedTraktShows.Count(t => (t.IMDbId == w[IMDbFieldMapping.cIMDbID]) || (t.Title == w[IMDbFieldMapping.cTitle] && t.Year.ToString() == w[IMDbFieldMapping.cYear])) != 0);
+                    }
+                }
+
                 //add all shows to watchlist
                 UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist shows to trakt.tv ...", shows.Count()));
                 var watchlistShowsResponse = TraktAPI.TraktAPI.SyncShowLibrary(Helper.GetSyncShowsData(shows), TraktSyncModes.watchlist);
@@ -261,6 +292,18 @@ namespace TraktRater.Sites
             episodes = WatchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode).ToList();
             if (episodes.Count() > 0)
             {
+                if (AppSettings.IgnoreWatchedForWatchlist)
+                {
+                    // we already might have it from the shows sync
+                    if (watchedTraktShows == null)
+                    {
+                        UIUtils.UpdateStatus("Requesting watched shows from trakt...");
+
+                        // get watched movies from trakt so we don't import shows into watchlist that are already watched
+                        watchedTraktShows = TraktAPI.TraktAPI.GetUserWatchedShows(AppSettings.TraktUsername);
+                    }
+                }
+
                 UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist episodes...", episodes.Count()));
                 var watchlistEpisodes = Helper.GetEpisodeData(episodes, false);
 
@@ -269,6 +312,31 @@ namespace TraktRater.Sites
                 foreach (var showSyncData in syncEpisodeData)
                 {
                     if (ImportCancelled) return;
+
+                    // filter out watched episodes
+                    if (watchedTraktShows != null)
+                    {
+                        var traktShow = watchedTraktShows.FirstOrDefault(t => t.IMDbId == showSyncData.IMDBID || (t.Title == showSyncData.Title && t.Year.ToString() == showSyncData.Year));
+                        if (traktShow != null)
+                        {
+                            // check if we have already watched any of the episodes of the show and filter them out from the EpisodeList
+                            var unwatchedEpisodes = new List<TraktEpisodeSync.Episode>();
+                            foreach (var episode in showSyncData.EpisodeList)
+                            {
+                                if (traktShow.Seasons.Count(s => s.Season.ToString() == episode.SeasonIndex && s.Episodes.Contains(int.Parse(episode.EpisodeIndex))) == 0)
+                                {
+                                    unwatchedEpisodes.Add(new TraktEpisodeSync.Episode { EpisodeIndex = episode.EpisodeIndex, SeasonIndex = episode.SeasonIndex, LastPlayed = episode.LastPlayed });
+                                }
+                            }
+
+                            if (unwatchedEpisodes.Count == 0)
+                            {
+                                UIUtils.UpdateStatus(string.Format("No unwatched episodes of {0} found", showSyncData.Title));
+                                continue;
+                            }
+                            showSyncData.EpisodeList = unwatchedEpisodes;
+                        }
+                    }
 
                     // send the episodes from each show as watched
                     UIUtils.UpdateStatus(string.Format("Importing {0} episodes of {1} to watchlist...", showSyncData.EpisodeList.Count(), showSyncData.Title));

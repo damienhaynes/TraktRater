@@ -59,6 +59,7 @@ namespace TraktRater
             chkImdbWebWatchlist.Checked = AppSettings.IMDbSyncWatchlist;
             chkListalWebWatchlist.Checked = AppSettings.ListalSyncWatchlist;
             txtListalMovieXMLExport.Text = AppSettings.ListalMovieFilename;
+            txtListalShowXMLExport.Text = AppSettings.ListalShowFilename;
             chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
             chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
             
