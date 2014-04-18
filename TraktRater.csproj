@@ -57,6 +57,8 @@
     <Compile Include="Extensions\SecurityExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
+    <Compile Include="Sites\API\Listal\ListalAPI.cs" />
+    <Compile Include="Sites\API\Listal\ListalExport.cs" />
     <Compile Include="Sites\Common\IMDbHelper.cs" />
     <Compile Include="Sites\IMDbWeb.cs" />
     <Compile Include="Settings\Settings.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Sites\API\TMDb\TMDbMovie.cs" />
     <Compile Include="Sites\API\TMDb\TMDbRatedMovies.cs" />
     <Compile Include="Sites\API\TMDb\TMDbSessionResponse.cs" />
+    <Compile Include="Sites\Listal.cs" />
     <Compile Include="Sites\TMDb.cs" />
     <Compile Include="Sites\API\TMDb\TMDbAccountInfo.cs" />
     <Compile Include="Sites\API\TMDb\TMDbTokenResponse.cs" />

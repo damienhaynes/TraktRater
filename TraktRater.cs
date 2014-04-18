@@ -57,18 +57,29 @@ namespace TraktRater
             txtImdbWatchlistFile.Text = AppSettings.IMDbWatchlistFilename;
             txtImdbWebUsername.Text = AppSettings.IMDbUsername;
             chkImdbWebWatchlist.Checked = AppSettings.IMDbSyncWatchlist;
+            chkListalWebWatchlist.Checked = AppSettings.ListalSyncWatchlist;
+            txtListalMovieXMLExport.Text = AppSettings.ListalMovieFilename;
             chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
             chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
-
+            
             SetTMDbControlState();
 
             // enable relavent IMDb option
             if (!string.IsNullOrEmpty(AppSettings.IMDbRatingsFilename) || !string.IsNullOrEmpty(AppSettings.IMDbWatchlistFilename))
+            {
+                ActivateImdbControls(true);
                 rdnImdbCSV.Checked = true;
+            }
             else if (!string.IsNullOrEmpty(AppSettings.IMDbUsername))
+            {
+                ActivateImdbControls(false);
                 rdnImdbUsername.Checked = true;
+            }
             else
+            {
+                ActivateImdbControls(true);
                 rdnImdbCSV.Checked = true;
+            }
 
             // prevent re-hash and subscribe after setting password in box
             txtTraktPassword.TextChanged += new EventHandler(txtTraktPassword_TextChanged);
@@ -130,13 +141,14 @@ namespace TraktRater
         private void rdnImdbCSV_CheckedChanged(object sender, EventArgs e)
         {
             if (rdnImdbCSV.Checked)
-                activateImdbCSV();
+                ActivateImdbControls(true);
             else
-                activateImdbWeb();
+                ActivateImdbControls(false);
         }
 
         private void btnImdbBrowse_Click(object sender, EventArgs e)
         {
+            dlgFileOpen.Filter = "CSV files|*.csv";
             DialogResult result = dlgFileOpen.ShowDialog(this);
             if (result == DialogResult.OK)
             {
@@ -146,10 +158,21 @@ namespace TraktRater
 
         private void btnImdbWatchlistBrowse_Click(object sender, EventArgs e)
         {
+            dlgFileOpen.Filter = "CSV files|*.csv";
             DialogResult result = dlgFileOpen.ShowDialog(this);
             if (result == DialogResult.OK)
             {
                 txtImdbWatchlistFile.Text = dlgFileOpen.FileName;
+            }
+        }
+
+        private void btnListalXMLExport_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "XML files|*.xml";
+            DialogResult result = dlgFileOpen.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtListalMovieXMLExport.Text = dlgFileOpen.FileName;
             }
         }
 
@@ -166,6 +189,16 @@ namespace TraktRater
         private void txtImdbUsername_TextChanged(object sender, EventArgs e)
         {
             AppSettings.IMDbUsername = txtImdbWebUsername.Text;
+        }
+
+        private void txtListalMovieXMLExport_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.ListalMovieFilename = txtListalMovieXMLExport.Text;
+        }
+
+        private void chkListalWebWatchlist_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.ListalSyncWatchlist = chkListalWebWatchlist.Checked;
         }
 
         private void lnkTMDbStart_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -195,6 +228,11 @@ namespace TraktRater
             tokenThread.Start();
         }
 
+        private void lnkListalExport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.listal.com/user/export");
+        }
+
         #endregion
 
         #region Import Actions
@@ -215,6 +253,7 @@ namespace TraktRater
             sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
             sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, rdnImdbCSV.Checked));
             sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
+            sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalSyncWatchlist));
 
             if (sites.Where(s => s.Enabled).Count() == 0)
             {
@@ -352,30 +391,18 @@ namespace TraktRater
             }
         }
 
-        private void activateImdbCSV()
+        private void ActivateImdbControls(bool isCSV)
         {
-            lblRatingsFile.Enabled = true;
-            lblWatchlistFile.Enabled = true;
-            txtImdbRatingsFilename.Enabled = true;
-            txtImdbWatchlistFile.Enabled = true;
-            btnImdbRatingsBrowse.Enabled = true;
-            btnImdbWatchlistBrowse.Enabled = true;
+            lblRatingsFile.Enabled = isCSV;
+            txtImdbRatingsFilename.Enabled = isCSV;
+            btnImdbRatingsBrowse.Enabled = isCSV;
 
-            txtImdbWebUsername.Enabled = false;
-            chkImdbWebWatchlist.Enabled = false;
-        }
+            txtImdbWatchlistFile.Enabled = isCSV;
+            btnImdbWatchlistBrowse.Enabled = isCSV;
+            lblWatchlistFile.Enabled = isCSV;
 
-        private void activateImdbWeb()
-        {
-            txtImdbWebUsername.Enabled = true;
-            chkImdbWebWatchlist.Enabled = true;
-
-            lblRatingsFile.Enabled = false;
-            lblWatchlistFile.Enabled = false;
-            txtImdbRatingsFilename.Enabled = false;
-            txtImdbWatchlistFile.Enabled = false;
-            btnImdbRatingsBrowse.Enabled = false;
-            btnImdbWatchlistBrowse.Enabled = false;
+            txtImdbWebUsername.Enabled = !isCSV;
+            chkImdbWebWatchlist.Enabled = !isCSV;
         }
 
         #endregion

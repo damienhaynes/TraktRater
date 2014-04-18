@@ -62,14 +62,22 @@
             this.lnkTMDbStart = new System.Windows.Forms.LinkLabel();
             this.lblTMDbMessage = new System.Windows.Forms.Label();
             this.grbOptions = new System.Windows.Forms.GroupBox();
-            this.chkMarkAsWatched = new System.Windows.Forms.CheckBox();
             this.chkIgnoreWatchedForWatchlists = new System.Windows.Forms.CheckBox();
+            this.chkMarkAsWatched = new System.Windows.Forms.CheckBox();
+            this.grbListal = new System.Windows.Forms.GroupBox();
+            this.lnkListalExport = new System.Windows.Forms.LinkLabel();
+            this.chkListalWebWatchlist = new System.Windows.Forms.CheckBox();
+            this.btnListalXMLExport = new System.Windows.Forms.Button();
+            this.txtListalMovieXMLExport = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
             this.grbImdb.SuspendLayout();
             this.grbTMDb.SuspendLayout();
             this.grbOptions.SuspendLayout();
+            this.grbListal.SuspendLayout();
             this.SuspendLayout();
             // 
             // grbTrakt
@@ -160,9 +168,9 @@
             // 
             // btnImportRatings
             // 
-            this.btnImportRatings.Location = new System.Drawing.Point(13, 557);
+            this.btnImportRatings.Location = new System.Drawing.Point(12, 429);
             this.btnImportRatings.Name = "btnImportRatings";
-            this.btnImportRatings.Size = new System.Drawing.Size(443, 26);
+            this.btnImportRatings.Size = new System.Drawing.Size(891, 26);
             this.btnImportRatings.TabIndex = 6;
             this.btnImportRatings.Text = "Start Ratings Import";
             this.btnImportRatings.UseVisualStyleBackColor = true;
@@ -170,18 +178,18 @@
             // 
             // pbrImportProgress
             // 
-            this.pbrImportProgress.Location = new System.Drawing.Point(14, 589);
+            this.pbrImportProgress.Location = new System.Drawing.Point(13, 461);
             this.pbrImportProgress.Name = "pbrImportProgress";
-            this.pbrImportProgress.Size = new System.Drawing.Size(442, 23);
+            this.pbrImportProgress.Size = new System.Drawing.Size(886, 23);
             this.pbrImportProgress.TabIndex = 7;
             // 
             // grbReport
             // 
             this.grbReport.Controls.Add(this.lblStatusMessage);
             this.grbReport.Controls.Add(this.label5);
-            this.grbReport.Location = new System.Drawing.Point(13, 627);
+            this.grbReport.Location = new System.Drawing.Point(12, 499);
             this.grbReport.Name = "grbReport";
-            this.grbReport.Size = new System.Drawing.Size(442, 49);
+            this.grbReport.Size = new System.Drawing.Size(887, 49);
             this.grbReport.TabIndex = 8;
             this.grbReport.TabStop = false;
             this.grbReport.Text = "Report";
@@ -190,7 +198,7 @@
             // 
             this.lblStatusMessage.Location = new System.Drawing.Point(77, 20);
             this.lblStatusMessage.Name = "lblStatusMessage";
-            this.lblStatusMessage.Size = new System.Drawing.Size(346, 23);
+            this.lblStatusMessage.Size = new System.Drawing.Size(794, 23);
             this.lblStatusMessage.TabIndex = 1;
             this.lblStatusMessage.Text = "Ready for anything!";
             // 
@@ -352,13 +360,12 @@
             // dlgFileOpen
             // 
             this.dlgFileOpen.DefaultExt = "csv";
-            this.dlgFileOpen.Filter = "CSV files|*.csv";
             // 
             // grbTMDb
             // 
             this.grbTMDb.Controls.Add(this.lnkTMDbStart);
             this.grbTMDb.Controls.Add(this.lblTMDbMessage);
-            this.grbTMDb.Location = new System.Drawing.Point(14, 395);
+            this.grbTMDb.Location = new System.Drawing.Point(461, 115);
             this.grbTMDb.Name = "grbTMDb";
             this.grbTMDb.Size = new System.Drawing.Size(443, 81);
             this.grbTMDb.TabIndex = 4;
@@ -389,23 +396,12 @@
             // 
             this.grbOptions.Controls.Add(this.chkIgnoreWatchedForWatchlists);
             this.grbOptions.Controls.Add(this.chkMarkAsWatched);
-            this.grbOptions.Location = new System.Drawing.Point(14, 482);
+            this.grbOptions.Location = new System.Drawing.Point(461, 12);
             this.grbOptions.Name = "grbOptions";
-            this.grbOptions.Size = new System.Drawing.Size(443, 71);
+            this.grbOptions.Size = new System.Drawing.Size(443, 81);
             this.grbOptions.TabIndex = 5;
             this.grbOptions.TabStop = false;
             this.grbOptions.Text = "Options";
-            // 
-            // chkMarkAsWatched
-            // 
-            this.chkMarkAsWatched.AutoSize = true;
-            this.chkMarkAsWatched.Location = new System.Drawing.Point(21, 19);
-            this.chkMarkAsWatched.Name = "chkMarkAsWatched";
-            this.chkMarkAsWatched.Size = new System.Drawing.Size(276, 17);
-            this.chkMarkAsWatched.TabIndex = 0;
-            this.chkMarkAsWatched.Text = "Mark episodes and movies as watched if rated online";
-            this.chkMarkAsWatched.UseVisualStyleBackColor = true;
-            this.chkMarkAsWatched.Click += new System.EventHandler(this.chkMarkAsWatched_Click);
             // 
             // chkIgnoreWatchedForWatchlists
             // 
@@ -418,11 +414,96 @@
             this.chkIgnoreWatchedForWatchlists.UseVisualStyleBackColor = true;
             this.chkIgnoreWatchedForWatchlists.Click += new System.EventHandler(this.chkIgnoreWatchedForWatchlists_Click);
             // 
+            // chkMarkAsWatched
+            // 
+            this.chkMarkAsWatched.AutoSize = true;
+            this.chkMarkAsWatched.Location = new System.Drawing.Point(21, 19);
+            this.chkMarkAsWatched.Name = "chkMarkAsWatched";
+            this.chkMarkAsWatched.Size = new System.Drawing.Size(276, 17);
+            this.chkMarkAsWatched.TabIndex = 0;
+            this.chkMarkAsWatched.Text = "Mark episodes and movies as watched if rated online";
+            this.chkMarkAsWatched.UseVisualStyleBackColor = true;
+            this.chkMarkAsWatched.Click += new System.EventHandler(this.chkMarkAsWatched_Click);
+            // 
+            // grbListal
+            // 
+            this.grbListal.Controls.Add(this.label6);
+            this.grbListal.Controls.Add(this.lnkListalExport);
+            this.grbListal.Controls.Add(this.chkListalWebWatchlist);
+            this.grbListal.Controls.Add(this.btnListalXMLExport);
+            this.grbListal.Controls.Add(this.txtListalMovieXMLExport);
+            this.grbListal.Controls.Add(this.label4);
+            this.grbListal.Location = new System.Drawing.Point(462, 203);
+            this.grbListal.Name = "grbListal";
+            this.grbListal.Size = new System.Drawing.Size(442, 126);
+            this.grbListal.TabIndex = 9;
+            this.grbListal.TabStop = false;
+            this.grbListal.Text = "Listal";
+            // 
+            // lnkListalExport
+            // 
+            this.lnkListalExport.AutoSize = true;
+            this.lnkListalExport.Location = new System.Drawing.Point(20, 100);
+            this.lnkListalExport.Name = "lnkListalExport";
+            this.lnkListalExport.Size = new System.Drawing.Size(157, 13);
+            this.lnkListalExport.TabIndex = 14;
+            this.lnkListalExport.TabStop = true;
+            this.lnkListalExport.Text = "Get your Listal export file(s) here";
+            this.lnkListalExport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkListalExport_LinkClicked);
+            // 
+            // chkListalWebWatchlist
+            // 
+            this.chkListalWebWatchlist.AutoSize = true;
+            this.chkListalWebWatchlist.Location = new System.Drawing.Point(155, 46);
+            this.chkListalWebWatchlist.Name = "chkListalWebWatchlist";
+            this.chkListalWebWatchlist.Size = new System.Drawing.Size(150, 17);
+            this.chkListalWebWatchlist.TabIndex = 13;
+            this.chkListalWebWatchlist.Text = "Sync Wantlist to Watchlist";
+            this.chkListalWebWatchlist.UseVisualStyleBackColor = true;
+            this.chkListalWebWatchlist.CheckedChanged += new System.EventHandler(this.chkListalWebWatchlist_CheckedChanged);
+            // 
+            // btnListalXMLExport
+            // 
+            this.btnListalXMLExport.Location = new System.Drawing.Point(392, 18);
+            this.btnListalXMLExport.Name = "btnListalXMLExport";
+            this.btnListalXMLExport.Size = new System.Drawing.Size(29, 23);
+            this.btnListalXMLExport.TabIndex = 12;
+            this.btnListalXMLExport.Text = "...";
+            this.btnListalXMLExport.UseVisualStyleBackColor = true;
+            this.btnListalXMLExport.Click += new System.EventHandler(this.btnListalXMLExport_Click);
+            // 
+            // txtListalMovieXMLExport
+            // 
+            this.txtListalMovieXMLExport.Location = new System.Drawing.Point(155, 20);
+            this.txtListalMovieXMLExport.Name = "txtListalMovieXMLExport";
+            this.txtListalMovieXMLExport.Size = new System.Drawing.Size(231, 20);
+            this.txtListalMovieXMLExport.TabIndex = 4;
+            this.txtListalMovieXMLExport.TextChanged += new System.EventHandler(this.txtListalMovieXMLExport_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(16, 24);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(91, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Movie Export File:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(20, 80);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(346, 13);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Logon into the Listal website, then download export files from link below:";
+            // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 686);
+            this.ClientSize = new System.Drawing.Size(912, 555);
+            this.Controls.Add(this.grbListal);
             this.Controls.Add(this.grbOptions);
             this.Controls.Add(this.grbTMDb);
             this.Controls.Add(this.grbImdb);
@@ -450,6 +531,8 @@
             this.grbTMDb.PerformLayout();
             this.grbOptions.ResumeLayout(false);
             this.grbOptions.PerformLayout();
+            this.grbListal.ResumeLayout(false);
+            this.grbListal.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -491,6 +574,13 @@
         private System.Windows.Forms.Label lblWatchlistFile;
         private System.Windows.Forms.Label lblRatingsFile;
         private System.Windows.Forms.CheckBox chkIgnoreWatchedForWatchlists;
+        private System.Windows.Forms.GroupBox grbListal;
+        private System.Windows.Forms.TextBox txtListalMovieXMLExport;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnListalXMLExport;
+        private System.Windows.Forms.CheckBox chkListalWebWatchlist;
+        private System.Windows.Forms.LinkLabel lnkListalExport;
+        private System.Windows.Forms.Label label6;
     }
 }
 

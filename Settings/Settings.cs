@@ -19,6 +19,8 @@ namespace TraktRater.Settings
         const string cIMDbWatchlistFilename = "IMDbWatchlistFilename";
         const string cIMDbUsername = "IMDbUsername";
         const string cIMDBSyncWatchlist = "IMDBSyncWatchlist";
+        const string cListalSyncWatchlist = "ListalSyncWatchlist";
+        const string cListalMovieFilename = "ListalMovieFilename";
         const string cMarkAsWatched = "MarkAsWatched";
         const string cIgnoreWatchedForWatchlist = "IgnoreWatchedForWatchlist";
         #endregion
@@ -64,7 +66,11 @@ namespace TraktRater.Settings
 
         public static bool IMDbSyncWatchlist { get; set; }
 
+        public static bool ListalSyncWatchlist { get; set; }
+
         public static string IMDbUsername { get; set; }
+
+        public static string ListalMovieFilename { get; set; }
 
         public static bool MarkAsWatched { get; set; }
 
@@ -112,6 +118,8 @@ namespace TraktRater.Settings
             IMDbWatchlistFilename = xmlReader.GetSettingValueAsString(cIMDbWatchlistFilename, string.Empty);
             IMDbUsername = xmlReader.GetSettingValueAsString(cIMDbUsername, string.Empty);
             IMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cIMDBSyncWatchlist, false);
+            ListalSyncWatchlist = xmlReader.GetSettingValueAsBool(cListalSyncWatchlist, false);
+            ListalMovieFilename = xmlReader.GetSettingValueAsString(cListalMovieFilename, string.Empty);
             MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
             IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
 
@@ -152,6 +160,8 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cIMDbWatchlistFilename, IMDbWatchlistFilename);
             xmlWriter.WriteSetting(cIMDbUsername, IMDbUsername);
             xmlWriter.WriteSetting(cIMDBSyncWatchlist, IMDbSyncWatchlist.ToString());
+            xmlWriter.WriteSetting(cListalSyncWatchlist, ListalSyncWatchlist.ToString());
+            xmlWriter.WriteSetting(cListalMovieFilename, ListalMovieFilename.ToString());
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
             xmlWriter.WriteSetting(cIgnoreWatchedForWatchlist, IgnoreWatchedForWatchlist.ToString());
 

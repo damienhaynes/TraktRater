@@ -19,6 +19,22 @@ namespace TraktRater.Extensions
         }
 
         /// <summary>
+        /// Date Time extension method to return a unix epoch
+        /// time as a long
+        /// </summary>
+        /// <returns> A long representing the Date Time as the number
+        /// of seconds since 1/1/1970</returns>
+        public static long ToEpoch(this string dt, double hourShift = 0)
+        {
+            DateTime date;
+            if (DateTime.TryParse(dt, out date))
+            {
+                return date.AddHours(hourShift).ToEpoch();
+            }
+
+            return 0;
+        }
+        /// <summary>
         /// Long extension method to convert a Unix epoch
         /// time to a standard C# DateTime object.
         /// </summary>
