@@ -16,7 +16,7 @@ namespace TraktRater.Sites.API.Listal
 
     public static class ListalAPI
     {
-        public static ListalExport ReadListExportFile(string exportFile)
+        public static ListalExport ReadListalExportFile(string exportFile)
         {
             if (!File.Exists(exportFile)) return null;
 

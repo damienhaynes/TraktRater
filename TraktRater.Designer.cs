@@ -65,12 +65,15 @@
             this.chkIgnoreWatchedForWatchlists = new System.Windows.Forms.CheckBox();
             this.chkMarkAsWatched = new System.Windows.Forms.CheckBox();
             this.grbListal = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.btnListalShowXMLExport = new System.Windows.Forms.Button();
+            this.txtListalShowXMLExport = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.lnkListalExport = new System.Windows.Forms.LinkLabel();
             this.chkListalWebWatchlist = new System.Windows.Forms.CheckBox();
-            this.btnListalXMLExport = new System.Windows.Forms.Button();
+            this.btnListalMovieXMLExport = new System.Windows.Forms.Button();
             this.txtListalMovieXMLExport = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -162,9 +165,10 @@
             this.lblDetails.AutoSize = true;
             this.lblDetails.Location = new System.Drawing.Point(9, 99);
             this.lblDetails.Name = "lblDetails";
-            this.lblDetails.Size = new System.Drawing.Size(352, 13);
+            this.lblDetails.Size = new System.Drawing.Size(550, 13);
             this.lblDetails.TabIndex = 1;
-            this.lblDetails.Text = "Enter in account details for sources you wish to transfer ratings to trakt.tv:";
+            this.lblDetails.Text = "Enter in account details for each external source you wish to transfer ratings, w" +
+    "atched and watchlist data to trakt.tv:";
             // 
             // btnImportRatings
             // 
@@ -427,23 +431,62 @@
             // 
             // grbListal
             // 
+            this.grbListal.Controls.Add(this.label7);
+            this.grbListal.Controls.Add(this.btnListalShowXMLExport);
+            this.grbListal.Controls.Add(this.txtListalShowXMLExport);
             this.grbListal.Controls.Add(this.label6);
             this.grbListal.Controls.Add(this.lnkListalExport);
             this.grbListal.Controls.Add(this.chkListalWebWatchlist);
-            this.grbListal.Controls.Add(this.btnListalXMLExport);
+            this.grbListal.Controls.Add(this.btnListalMovieXMLExport);
             this.grbListal.Controls.Add(this.txtListalMovieXMLExport);
             this.grbListal.Controls.Add(this.label4);
             this.grbListal.Location = new System.Drawing.Point(462, 203);
             this.grbListal.Name = "grbListal";
-            this.grbListal.Size = new System.Drawing.Size(442, 126);
+            this.grbListal.Size = new System.Drawing.Size(442, 186);
             this.grbListal.TabIndex = 9;
             this.grbListal.TabStop = false;
             this.grbListal.Text = "Listal";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(16, 53);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(106, 13);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "TV Show Export File:";
+            // 
+            // btnListalShowXMLExport
+            // 
+            this.btnListalShowXMLExport.Location = new System.Drawing.Point(392, 44);
+            this.btnListalShowXMLExport.Name = "btnListalShowXMLExport";
+            this.btnListalShowXMLExport.Size = new System.Drawing.Size(29, 23);
+            this.btnListalShowXMLExport.TabIndex = 17;
+            this.btnListalShowXMLExport.Text = "...";
+            this.btnListalShowXMLExport.UseVisualStyleBackColor = true;
+            this.btnListalShowXMLExport.Click += new System.EventHandler(this.btnListalShowXMLExport_Click);
+            // 
+            // txtListalShowXMLExport
+            // 
+            this.txtListalShowXMLExport.Location = new System.Drawing.Point(155, 46);
+            this.txtListalShowXMLExport.Name = "txtListalShowXMLExport";
+            this.txtListalShowXMLExport.Size = new System.Drawing.Size(231, 20);
+            this.txtListalShowXMLExport.TabIndex = 16;
+            this.txtListalShowXMLExport.TextChanged += new System.EventHandler(this.txtListalShowXMLExport_TextChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(17, 126);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(346, 13);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Logon into the Listal website, then download export files from link below:";
+            // 
             // lnkListalExport
             // 
             this.lnkListalExport.AutoSize = true;
-            this.lnkListalExport.Location = new System.Drawing.Point(20, 100);
+            this.lnkListalExport.Location = new System.Drawing.Point(17, 146);
             this.lnkListalExport.Name = "lnkListalExport";
             this.lnkListalExport.Size = new System.Drawing.Size(157, 13);
             this.lnkListalExport.TabIndex = 14;
@@ -454,7 +497,7 @@
             // chkListalWebWatchlist
             // 
             this.chkListalWebWatchlist.AutoSize = true;
-            this.chkListalWebWatchlist.Location = new System.Drawing.Point(155, 46);
+            this.chkListalWebWatchlist.Location = new System.Drawing.Point(155, 80);
             this.chkListalWebWatchlist.Name = "chkListalWebWatchlist";
             this.chkListalWebWatchlist.Size = new System.Drawing.Size(150, 17);
             this.chkListalWebWatchlist.TabIndex = 13;
@@ -462,15 +505,15 @@
             this.chkListalWebWatchlist.UseVisualStyleBackColor = true;
             this.chkListalWebWatchlist.CheckedChanged += new System.EventHandler(this.chkListalWebWatchlist_CheckedChanged);
             // 
-            // btnListalXMLExport
+            // btnListalMovieXMLExport
             // 
-            this.btnListalXMLExport.Location = new System.Drawing.Point(392, 18);
-            this.btnListalXMLExport.Name = "btnListalXMLExport";
-            this.btnListalXMLExport.Size = new System.Drawing.Size(29, 23);
-            this.btnListalXMLExport.TabIndex = 12;
-            this.btnListalXMLExport.Text = "...";
-            this.btnListalXMLExport.UseVisualStyleBackColor = true;
-            this.btnListalXMLExport.Click += new System.EventHandler(this.btnListalXMLExport_Click);
+            this.btnListalMovieXMLExport.Location = new System.Drawing.Point(392, 18);
+            this.btnListalMovieXMLExport.Name = "btnListalMovieXMLExport";
+            this.btnListalMovieXMLExport.Size = new System.Drawing.Size(29, 23);
+            this.btnListalMovieXMLExport.TabIndex = 12;
+            this.btnListalMovieXMLExport.Text = "...";
+            this.btnListalMovieXMLExport.UseVisualStyleBackColor = true;
+            this.btnListalMovieXMLExport.Click += new System.EventHandler(this.btnListalMovieXMLExport_Click);
             // 
             // txtListalMovieXMLExport
             // 
@@ -488,15 +531,6 @@
             this.label4.Size = new System.Drawing.Size(91, 13);
             this.label4.TabIndex = 4;
             this.label4.Text = "Movie Export File:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(20, 80);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(346, 13);
-            this.label6.TabIndex = 15;
-            this.label6.Text = "Logon into the Listal website, then download export files from link below:";
             // 
             // TraktRater
             // 
@@ -577,10 +611,13 @@
         private System.Windows.Forms.GroupBox grbListal;
         private System.Windows.Forms.TextBox txtListalMovieXMLExport;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnListalXMLExport;
+        private System.Windows.Forms.Button btnListalMovieXMLExport;
         private System.Windows.Forms.CheckBox chkListalWebWatchlist;
         private System.Windows.Forms.LinkLabel lnkListalExport;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnListalShowXMLExport;
+        private System.Windows.Forms.TextBox txtListalShowXMLExport;
     }
 }
 

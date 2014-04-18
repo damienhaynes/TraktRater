@@ -166,13 +166,23 @@ namespace TraktRater
             }
         }
 
-        private void btnListalXMLExport_Click(object sender, EventArgs e)
+        private void btnListalMovieXMLExport_Click(object sender, EventArgs e)
         {
             dlgFileOpen.Filter = "XML files|*.xml";
             DialogResult result = dlgFileOpen.ShowDialog(this);
             if (result == DialogResult.OK)
             {
                 txtListalMovieXMLExport.Text = dlgFileOpen.FileName;
+            }
+        }
+
+        private void btnListalShowXMLExport_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "XML files|*.xml";
+            DialogResult result = dlgFileOpen.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtListalShowXMLExport.Text = dlgFileOpen.FileName;
             }
         }
 
@@ -194,6 +204,11 @@ namespace TraktRater
         private void txtListalMovieXMLExport_TextChanged(object sender, EventArgs e)
         {
             AppSettings.ListalMovieFilename = txtListalMovieXMLExport.Text;
+        }
+
+        private void txtListalShowXMLExport_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.ListalShowFilename = txtListalShowXMLExport.Text;
         }
 
         private void chkListalWebWatchlist_CheckedChanged(object sender, EventArgs e)
@@ -253,7 +268,7 @@ namespace TraktRater
             sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
             sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, rdnImdbCSV.Checked));
             sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
-            sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalSyncWatchlist));
+            sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
 
             if (sites.Where(s => s.Enabled).Count() == 0)
             {

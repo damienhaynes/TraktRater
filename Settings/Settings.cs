@@ -21,6 +21,7 @@ namespace TraktRater.Settings
         const string cIMDBSyncWatchlist = "IMDBSyncWatchlist";
         const string cListalSyncWatchlist = "ListalSyncWatchlist";
         const string cListalMovieFilename = "ListalMovieFilename";
+        const string cListalShowFilename = "ListalShowFilename";
         const string cMarkAsWatched = "MarkAsWatched";
         const string cIgnoreWatchedForWatchlist = "IgnoreWatchedForWatchlist";
         #endregion
@@ -72,6 +73,8 @@ namespace TraktRater.Settings
 
         public static string ListalMovieFilename { get; set; }
 
+        public static string ListalShowFilename { get; set; }
+
         public static bool MarkAsWatched { get; set; }
 
         public static bool IgnoreWatchedForWatchlist { get; set; }
@@ -120,6 +123,7 @@ namespace TraktRater.Settings
             IMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cIMDBSyncWatchlist, false);
             ListalSyncWatchlist = xmlReader.GetSettingValueAsBool(cListalSyncWatchlist, false);
             ListalMovieFilename = xmlReader.GetSettingValueAsString(cListalMovieFilename, string.Empty);
+            ListalShowFilename = xmlReader.GetSettingValueAsString(cListalShowFilename, string.Empty);
             MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
             IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
 
@@ -162,6 +166,7 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cIMDBSyncWatchlist, IMDbSyncWatchlist.ToString());
             xmlWriter.WriteSetting(cListalSyncWatchlist, ListalSyncWatchlist.ToString());
             xmlWriter.WriteSetting(cListalMovieFilename, ListalMovieFilename.ToString());
+            xmlWriter.WriteSetting(cListalShowFilename, ListalShowFilename.ToString());
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
             xmlWriter.WriteSetting(cIgnoreWatchedForWatchlist, IgnoreWatchedForWatchlist.ToString());
 
