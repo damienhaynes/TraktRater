@@ -56,6 +56,13 @@ The [TMDb](http://themoviedb.org) provider supports movie ratings. TraktRater re
  
 If at any time you want to disable access or request persmission again you can click on the **Disable TMDb Support** link and then repeat steps above. 
  
+###Listal###
+The [Listal](http://www.listal.com) provider supports tv shows and movie ratings. TraktRater also supports import of your wanted list from Listal, it converts this into a watchlist. Once you login to the listal website, you can follow the link provided in the UI to download the respective XML files for Shows and Movies.
+
+ * Logon to www.listal.com if you haven't already.
+ * Download your Movies and/or Shows from [Export](http://www.listal.com/user/export)
+ * Use the Movie and/or Show text boxes to browse to the downloaded XML files.
+ 
 Contributing
 ------------
 
