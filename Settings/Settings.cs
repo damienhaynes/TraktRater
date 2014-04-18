@@ -24,6 +24,10 @@ namespace TraktRater.Settings
         const string cListalShowFilename = "ListalShowFilename";
         const string cMarkAsWatched = "MarkAsWatched";
         const string cIgnoreWatchedForWatchlist = "IgnoreWatchedForWatchlist";
+        const string cEnableTMDb = "EnableTMDb";
+        const string cEnableTVDb = "EnableTVDb";
+        const string cEnableIMDb = "EnableIMDb";
+        const string cEnableListal = "EnableListal";
         #endregion
 
         #region Settings
@@ -79,6 +83,11 @@ namespace TraktRater.Settings
 
         public static bool IgnoreWatchedForWatchlist { get; set; }
 
+        public static bool EnableTVDb { get; set; }
+        public static bool EnableTMDb { get; set; }
+        public static bool EnableIMDb { get; set; }
+        public static bool EnableListal { get; set; }
+
         public static string SettingsFile
         {
             get
@@ -126,6 +135,10 @@ namespace TraktRater.Settings
             ListalShowFilename = xmlReader.GetSettingValueAsString(cListalShowFilename, string.Empty);
             MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
             IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
+            EnableIMDb = xmlReader.GetSettingValueAsBool(cEnableIMDb, true);
+            EnableTMDb = xmlReader.GetSettingValueAsBool(cEnableTMDb, true);
+            EnableTVDb = xmlReader.GetSettingValueAsBool(cEnableTVDb, true);
+            EnableListal = xmlReader.GetSettingValueAsBool(cEnableListal, true);
 
             // save settings, might be some new settings added
             Save();
@@ -169,6 +182,10 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cListalShowFilename, ListalShowFilename);
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
             xmlWriter.WriteSetting(cIgnoreWatchedForWatchlist, IgnoreWatchedForWatchlist.ToString());
+            xmlWriter.WriteSetting(cEnableIMDb, EnableIMDb.ToString());
+            xmlWriter.WriteSetting(cEnableTMDb, EnableTMDb.ToString());
+            xmlWriter.WriteSetting(cEnableTVDb, EnableTVDb.ToString());
+            xmlWriter.WriteSetting(cEnableListal, EnableListal.ToString());
 
             // save file
             xmlWriter.Save(SettingsFile);

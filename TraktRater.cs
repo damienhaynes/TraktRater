@@ -62,24 +62,32 @@ namespace TraktRater
             txtListalShowXMLExport.Text = AppSettings.ListalShowFilename;
             chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
             chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
-            
+            chkTVDbEnabled.Checked = AppSettings.EnableTVDb;
+            chkTMDbEnabled.Checked = AppSettings.EnableTMDb;
+            chkIMDbEnabled.Checked = AppSettings.EnableIMDb;
+            chkListalEnabled.Checked = AppSettings.EnableListal;
+
             SetTMDbControlState();
 
             // enable relavent IMDb option
             if (!string.IsNullOrEmpty(AppSettings.IMDbRatingsFilename) || !string.IsNullOrEmpty(AppSettings.IMDbWatchlistFilename))
             {
-                ActivateImdbControls(true);
                 rdnImdbCSV.Checked = true;
             }
             else if (!string.IsNullOrEmpty(AppSettings.IMDbUsername))
             {
-                ActivateImdbControls(false);
                 rdnImdbUsername.Checked = true;
             }
             else
             {
-                ActivateImdbControls(true);
                 rdnImdbCSV.Checked = true;
+            }
+
+            EnableExternalSourceControlsInGroupBoxes();
+
+            if (AppSettings.EnableIMDb)
+            {
+                EnableImdbCSVControls(rdnImdbCSV.Checked);
             }
 
             // prevent re-hash and subscribe after setting password in box
@@ -142,9 +150,9 @@ namespace TraktRater
         private void rdnImdbCSV_CheckedChanged(object sender, EventArgs e)
         {
             if (rdnImdbCSV.Checked)
-                ActivateImdbControls(true);
+                EnableImdbCSVControls(true);
             else
-                ActivateImdbControls(false);
+                EnableImdbCSVControls(false);
         }
 
         private void btnImdbBrowse_Click(object sender, EventArgs e)
@@ -249,6 +257,34 @@ namespace TraktRater
             System.Diagnostics.Process.Start("http://www.listal.com/user/export");
         }
 
+        private void chkTVDbEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.EnableTVDb = chkTVDbEnabled.Checked;
+            EnableTvdbControls(AppSettings.EnableTVDb);
+        }
+
+        private void chkIMDbEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.EnableIMDb = chkIMDbEnabled.Checked;
+            EnableImdbControls(AppSettings.EnableIMDb);
+            if (AppSettings.EnableIMDb)
+            {
+                EnableImdbCSVControls(rdnImdbCSV.Checked);
+            }
+        }
+
+        private void chkTMDbEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.EnableTMDb = chkTMDbEnabled.Checked;
+            EnableTmdbControls(AppSettings.EnableTMDb);
+        }
+
+        private void chkListalEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.EnableListal = chkListalEnabled.Checked;
+            EnableListalControls(AppSettings.EnableListal);
+        }
+
         #endregion
 
         #region Import Actions
@@ -265,15 +301,15 @@ namespace TraktRater
             sites.Clear();
 
             // add import sites for processing
-            sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
-            sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
-            sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, rdnImdbCSV.Checked));
-            sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
-            sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
+            if (AppSettings.EnableTMDb)   sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
+            if (AppSettings.EnableTVDb)   sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
+            if (AppSettings.EnableIMDb)   sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, rdnImdbCSV.Checked));
+            if (AppSettings.EnableIMDb)   sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
+            if (AppSettings.EnableListal) sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
 
             if (sites.Where(s => s.Enabled).Count() == 0)
             {
-                UIUtils.UpdateStatus("Incorrect site information supplied!", true);
+                UIUtils.UpdateStatus("No sites enabled or incorrect site information supplied!", true);
                 return;
             }
 
@@ -359,14 +395,13 @@ namespace TraktRater
                 return;
             }
 
-            txtTraktUsername.Enabled = enable;
-            txtTraktPassword.Enabled = enable;
-            txtTVDbAccountId.Enabled = enable;
-            txtImdbRatingsFilename.Enabled = enable;
-            txtImdbWatchlistFile.Enabled = enable;
-            btnImdbRatingsBrowse.Enabled = enable;
-            btnImdbWatchlistBrowse.Enabled = enable;
-            lnkTMDbStart.Enabled = enable;
+            grbOptions.Enabled = enable;
+            grbTrakt.Enabled = enable;
+
+            grbImdb.Enabled = enable;
+            grbTMDb.Enabled = enable;
+            grbTVDb.Enabled = enable;
+            grbListal.Enabled = enable;
 
             btnImportRatings.Text = enable ? cImportReady : cCancelImport;
             pbrImportProgress.Style = enable ? ProgressBarStyle.Continuous : ProgressBarStyle.Marquee;
@@ -407,18 +442,64 @@ namespace TraktRater
             }
         }
 
-        private void ActivateImdbControls(bool isCSV)
+        private void EnableTvdbControls(bool enableState)
         {
-            lblRatingsFile.Enabled = isCSV;
+            lblTVDbAccountId.Enabled = enableState;
+            txtTVDbAccountId.Enabled = enableState;
+        }
+
+        private void EnableImdbControls(bool enableState)
+        {
+            lblImdbDescription.Enabled = enableState;
+            rdnImdbCSV.Enabled = enableState;
+            rdnImdbUsername.Enabled = enableState;
+            txtImdbRatingsFilename.Enabled = enableState;
+            txtImdbWatchlistFile.Enabled = enableState;
+            btnImdbRatingsBrowse.Enabled = enableState;
+            btnImdbWatchlistBrowse.Enabled = enableState;
+            lblImdbRatingsFile.Enabled = enableState;
+            lblImdbWatchlistFile.Enabled = enableState;
+            txtImdbWebUsername.Enabled = enableState;
+            chkImdbWebWatchlist.Enabled = enableState;
+        }
+
+        private void EnableImdbCSVControls(bool isCSV)
+        {
+            lblImdbRatingsFile.Enabled = isCSV;
             txtImdbRatingsFilename.Enabled = isCSV;
             btnImdbRatingsBrowse.Enabled = isCSV;
 
             txtImdbWatchlistFile.Enabled = isCSV;
             btnImdbWatchlistBrowse.Enabled = isCSV;
-            lblWatchlistFile.Enabled = isCSV;
+            lblImdbWatchlistFile.Enabled = isCSV;
 
             txtImdbWebUsername.Enabled = !isCSV;
             chkImdbWebWatchlist.Enabled = !isCSV;
+        }
+
+        private void EnableTmdbControls(bool enableState)
+        {
+            lblTMDbMessage.Enabled = enableState;
+            lnkTMDbStart.Enabled = enableState;
+        }
+
+        private void EnableListalControls(bool enableState)
+        {
+            lblListalMovieExportFile.Enabled = enableState;
+            lblListalShowExportFile.Enabled = enableState;
+            txtListalMovieXMLExport.Enabled = enableState;
+            txtListalShowXMLExport.Enabled = enableState;
+            lblListalLinkInfo.Enabled = enableState;
+            lnkListalExport.Enabled = enableState;
+            chkListalWebWatchlist.Enabled = enableState;
+        }
+
+        private void EnableExternalSourceControlsInGroupBoxes()
+        {
+            EnableImdbControls(AppSettings.EnableIMDb);
+            EnableTmdbControls(AppSettings.EnableTMDb);
+            EnableTvdbControls(AppSettings.EnableTVDb);
+            EnableListalControls(AppSettings.EnableListal);
         }
 
         #endregion
