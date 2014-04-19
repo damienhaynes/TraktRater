@@ -36,6 +36,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtTraktUsername = new System.Windows.Forms.TextBox();
             this.grbTVDb = new System.Windows.Forms.GroupBox();
+            this.chkTVDbEnabled = new System.Windows.Forms.CheckBox();
             this.txtTVDbAccountId = new System.Windows.Forms.TextBox();
             this.lblTVDbAccountId = new System.Windows.Forms.Label();
             this.lblDetails = new System.Windows.Forms.Label();
@@ -49,6 +50,7 @@
             this.txtImdbWebUsername = new System.Windows.Forms.TextBox();
             this.txtImdbWatchlistFile = new System.Windows.Forms.TextBox();
             this.grbImdb = new System.Windows.Forms.GroupBox();
+            this.chkIMDbEnabled = new System.Windows.Forms.CheckBox();
             this.btnImdbWatchlistBrowse = new System.Windows.Forms.Button();
             this.lblImdbWatchlistFile = new System.Windows.Forms.Label();
             this.lblImdbRatingsFile = new System.Windows.Forms.Label();
@@ -59,12 +61,14 @@
             this.btnImdbRatingsBrowse = new System.Windows.Forms.Button();
             this.dlgFileOpen = new System.Windows.Forms.OpenFileDialog();
             this.grbTMDb = new System.Windows.Forms.GroupBox();
+            this.chkTMDbEnabled = new System.Windows.Forms.CheckBox();
             this.lnkTMDbStart = new System.Windows.Forms.LinkLabel();
             this.lblTMDbMessage = new System.Windows.Forms.Label();
             this.grbOptions = new System.Windows.Forms.GroupBox();
             this.chkIgnoreWatchedForWatchlists = new System.Windows.Forms.CheckBox();
             this.chkMarkAsWatched = new System.Windows.Forms.CheckBox();
             this.grbListal = new System.Windows.Forms.GroupBox();
+            this.chkListalEnabled = new System.Windows.Forms.CheckBox();
             this.lblListalShowExportFile = new System.Windows.Forms.Label();
             this.btnListalShowXMLExport = new System.Windows.Forms.Button();
             this.txtListalShowXMLExport = new System.Windows.Forms.TextBox();
@@ -74,10 +78,7 @@
             this.btnListalMovieXMLExport = new System.Windows.Forms.Button();
             this.txtListalMovieXMLExport = new System.Windows.Forms.TextBox();
             this.lblListalMovieExportFile = new System.Windows.Forms.Label();
-            this.chkTVDbEnabled = new System.Windows.Forms.CheckBox();
-            this.chkIMDbEnabled = new System.Windows.Forms.CheckBox();
-            this.chkTMDbEnabled = new System.Windows.Forms.CheckBox();
-            this.chkListalEnabled = new System.Windows.Forms.CheckBox();
+            this.chkTMDbSyncWatchlist = new System.Windows.Forms.CheckBox();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -142,16 +143,27 @@
             this.grbTVDb.Location = new System.Drawing.Point(12, 115);
             this.grbTVDb.Name = "grbTVDb";
             this.grbTVDb.Size = new System.Drawing.Size(443, 81);
-            this.grbTVDb.TabIndex = 2;
+            this.grbTVDb.TabIndex = 3;
             this.grbTVDb.TabStop = false;
             this.grbTVDb.Text = "TVDb";
+            // 
+            // chkTVDbEnabled
+            // 
+            this.chkTVDbEnabled.AutoSize = true;
+            this.chkTVDbEnabled.Location = new System.Drawing.Point(19, 19);
+            this.chkTVDbEnabled.Name = "chkTVDbEnabled";
+            this.chkTVDbEnabled.Size = new System.Drawing.Size(65, 17);
+            this.chkTVDbEnabled.TabIndex = 0;
+            this.chkTVDbEnabled.Text = "Enabled";
+            this.chkTVDbEnabled.UseVisualStyleBackColor = true;
+            this.chkTVDbEnabled.CheckedChanged += new System.EventHandler(this.chkTVDbEnabled_CheckedChanged);
             // 
             // txtTVDbAccountId
             // 
             this.txtTVDbAccountId.Location = new System.Drawing.Point(175, 46);
             this.txtTVDbAccountId.Name = "txtTVDbAccountId";
             this.txtTVDbAccountId.Size = new System.Drawing.Size(244, 20);
-            this.txtTVDbAccountId.TabIndex = 1;
+            this.txtTVDbAccountId.TabIndex = 2;
             this.tipHelp.SetToolTip(this.txtTVDbAccountId, "The Account Identifier can be found in the account tab of\r\nhttp://thetvdb.com web" +
         "site. It is 16 hexidecimal characters e.g.\r\n\r\nEB6D329D10E3835A");
             this.txtTVDbAccountId.TextChanged += new System.EventHandler(this.txtTVDbAccountId_TextChanged);
@@ -162,7 +174,7 @@
             this.lblTVDbAccountId.Location = new System.Drawing.Point(16, 49);
             this.lblTVDbAccountId.Name = "lblTVDbAccountId";
             this.lblTVDbAccountId.Size = new System.Drawing.Size(93, 13);
-            this.lblTVDbAccountId.TabIndex = 0;
+            this.lblTVDbAccountId.TabIndex = 1;
             this.lblTVDbAccountId.Text = "Account Identifier:";
             // 
             // lblDetails
@@ -171,7 +183,7 @@
             this.lblDetails.Location = new System.Drawing.Point(9, 99);
             this.lblDetails.Name = "lblDetails";
             this.lblDetails.Size = new System.Drawing.Size(550, 13);
-            this.lblDetails.TabIndex = 1;
+            this.lblDetails.TabIndex = 2;
             this.lblDetails.Text = "Enter in account details for each external source you wish to transfer ratings, w" +
     "atched and watchlist data to trakt.tv:";
             // 
@@ -180,7 +192,7 @@
             this.btnImportRatings.Location = new System.Drawing.Point(12, 455);
             this.btnImportRatings.Name = "btnImportRatings";
             this.btnImportRatings.Size = new System.Drawing.Size(891, 26);
-            this.btnImportRatings.TabIndex = 6;
+            this.btnImportRatings.TabIndex = 7;
             this.btnImportRatings.Text = "Start Ratings Import";
             this.btnImportRatings.UseVisualStyleBackColor = true;
             this.btnImportRatings.Click += new System.EventHandler(this.btnImportRatings_Click);
@@ -190,7 +202,7 @@
             this.pbrImportProgress.Location = new System.Drawing.Point(13, 487);
             this.pbrImportProgress.Name = "pbrImportProgress";
             this.pbrImportProgress.Size = new System.Drawing.Size(886, 23);
-            this.pbrImportProgress.TabIndex = 7;
+            this.pbrImportProgress.TabIndex = 8;
             // 
             // grbReport
             // 
@@ -199,7 +211,7 @@
             this.grbReport.Location = new System.Drawing.Point(12, 525);
             this.grbReport.Name = "grbReport";
             this.grbReport.Size = new System.Drawing.Size(887, 49);
-            this.grbReport.TabIndex = 8;
+            this.grbReport.TabIndex = 9;
             this.grbReport.TabStop = false;
             this.grbReport.Text = "Report";
             // 
@@ -281,9 +293,20 @@
             this.grbImdb.Location = new System.Drawing.Point(12, 202);
             this.grbImdb.Name = "grbImdb";
             this.grbImdb.Size = new System.Drawing.Size(443, 241);
-            this.grbImdb.TabIndex = 3;
+            this.grbImdb.TabIndex = 5;
             this.grbImdb.TabStop = false;
             this.grbImdb.Text = "IMDb";
+            // 
+            // chkIMDbEnabled
+            // 
+            this.chkIMDbEnabled.AutoSize = true;
+            this.chkIMDbEnabled.Location = new System.Drawing.Point(19, 19);
+            this.chkIMDbEnabled.Name = "chkIMDbEnabled";
+            this.chkIMDbEnabled.Size = new System.Drawing.Size(65, 17);
+            this.chkIMDbEnabled.TabIndex = 0;
+            this.chkIMDbEnabled.Text = "Enabled";
+            this.chkIMDbEnabled.UseVisualStyleBackColor = true;
+            this.chkIMDbEnabled.CheckedChanged += new System.EventHandler(this.chkIMDbEnabled_CheckedChanged);
             // 
             // btnImdbWatchlistBrowse
             // 
@@ -295,29 +318,29 @@
             this.btnImdbWatchlistBrowse.UseVisualStyleBackColor = true;
             this.btnImdbWatchlistBrowse.Click += new System.EventHandler(this.btnImdbWatchlistBrowse_Click);
             // 
-            // lblWatchlistFile
+            // lblImdbWatchlistFile
             // 
             this.lblImdbWatchlistFile.AutoSize = true;
             this.lblImdbWatchlistFile.Location = new System.Drawing.Point(175, 118);
-            this.lblImdbWatchlistFile.Name = "lblWatchlistFile";
+            this.lblImdbWatchlistFile.Name = "lblImdbWatchlistFile";
             this.lblImdbWatchlistFile.Size = new System.Drawing.Size(73, 13);
             this.lblImdbWatchlistFile.TabIndex = 6;
             this.lblImdbWatchlistFile.Text = "Watchlist File:";
             // 
-            // lblRatingsFile
+            // lblImdbRatingsFile
             // 
             this.lblImdbRatingsFile.AutoSize = true;
             this.lblImdbRatingsFile.Location = new System.Drawing.Point(172, 75);
-            this.lblImdbRatingsFile.Name = "lblRatingsFile";
+            this.lblImdbRatingsFile.Name = "lblImdbRatingsFile";
             this.lblImdbRatingsFile.Size = new System.Drawing.Size(65, 13);
             this.lblImdbRatingsFile.TabIndex = 3;
             this.lblImdbRatingsFile.Text = "Ratings File:";
             // 
-            // lblIMDbDescription
+            // lblImdbDescription
             // 
             this.lblImdbDescription.AutoSize = true;
             this.lblImdbDescription.Location = new System.Drawing.Point(18, 45);
-            this.lblImdbDescription.Name = "lblIMDbDescription";
+            this.lblImdbDescription.Name = "lblImdbDescription";
             this.lblImdbDescription.Size = new System.Drawing.Size(347, 13);
             this.lblImdbDescription.TabIndex = 1;
             this.lblImdbDescription.Text = "Select \'CSV Import\' for static file import or \'Web Scrape\' for web retrieval:";
@@ -373,33 +396,45 @@
             // 
             // grbTMDb
             // 
+            this.grbTMDb.Controls.Add(this.chkTMDbSyncWatchlist);
             this.grbTMDb.Controls.Add(this.chkTMDbEnabled);
             this.grbTMDb.Controls.Add(this.lnkTMDbStart);
             this.grbTMDb.Controls.Add(this.lblTMDbMessage);
             this.grbTMDb.Location = new System.Drawing.Point(461, 115);
             this.grbTMDb.Name = "grbTMDb";
-            this.grbTMDb.Size = new System.Drawing.Size(443, 108);
+            this.grbTMDb.Size = new System.Drawing.Size(443, 126);
             this.grbTMDb.TabIndex = 4;
             this.grbTMDb.TabStop = false;
             this.grbTMDb.Text = "TMDb";
             // 
+            // chkTMDbEnabled
+            // 
+            this.chkTMDbEnabled.AutoSize = true;
+            this.chkTMDbEnabled.Location = new System.Drawing.Point(20, 19);
+            this.chkTMDbEnabled.Name = "chkTMDbEnabled";
+            this.chkTMDbEnabled.Size = new System.Drawing.Size(65, 17);
+            this.chkTMDbEnabled.TabIndex = 0;
+            this.chkTMDbEnabled.Text = "Enabled";
+            this.chkTMDbEnabled.UseVisualStyleBackColor = true;
+            this.chkTMDbEnabled.CheckedChanged += new System.EventHandler(this.chkTMDbEnabled_CheckedChanged);
+            // 
             // lnkTMDbStart
             // 
             this.lnkTMDbStart.AutoSize = true;
-            this.lnkTMDbStart.Location = new System.Drawing.Point(18, 80);
+            this.lnkTMDbStart.Location = new System.Drawing.Point(18, 98);
             this.lnkTMDbStart.Name = "lnkTMDbStart";
             this.lnkTMDbStart.Size = new System.Drawing.Size(113, 13);
-            this.lnkTMDbStart.TabIndex = 1;
+            this.lnkTMDbStart.TabIndex = 3;
             this.lnkTMDbStart.TabStop = true;
             this.lnkTMDbStart.Text = "Start Request Process";
             this.lnkTMDbStart.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkTMDbStart_LinkClicked);
             // 
             // lblTMDbMessage
             // 
-            this.lblTMDbMessage.Location = new System.Drawing.Point(17, 46);
+            this.lblTMDbMessage.Location = new System.Drawing.Point(17, 64);
             this.lblTMDbMessage.Name = "lblTMDbMessage";
             this.lblTMDbMessage.Size = new System.Drawing.Size(406, 44);
-            this.lblTMDbMessage.TabIndex = 0;
+            this.lblTMDbMessage.TabIndex = 2;
             this.lblTMDbMessage.Text = "To get user ratings from TMDb you must first allow this application to access you" +
     "r account details. This needs to be done by you in a webbrowser.";
             // 
@@ -410,7 +445,7 @@
             this.grbOptions.Location = new System.Drawing.Point(461, 12);
             this.grbOptions.Name = "grbOptions";
             this.grbOptions.Size = new System.Drawing.Size(443, 81);
-            this.grbOptions.TabIndex = 5;
+            this.grbOptions.TabIndex = 1;
             this.grbOptions.TabStop = false;
             this.grbOptions.Text = "Options";
             // 
@@ -448,56 +483,67 @@
             this.grbListal.Controls.Add(this.btnListalMovieXMLExport);
             this.grbListal.Controls.Add(this.txtListalMovieXMLExport);
             this.grbListal.Controls.Add(this.lblListalMovieExportFile);
-            this.grbListal.Location = new System.Drawing.Point(462, 229);
+            this.grbListal.Location = new System.Drawing.Point(462, 247);
             this.grbListal.Name = "grbListal";
-            this.grbListal.Size = new System.Drawing.Size(442, 214);
-            this.grbListal.TabIndex = 9;
+            this.grbListal.Size = new System.Drawing.Size(442, 196);
+            this.grbListal.TabIndex = 6;
             this.grbListal.TabStop = false;
             this.grbListal.Text = "Listal";
+            // 
+            // chkListalEnabled
+            // 
+            this.chkListalEnabled.AutoSize = true;
+            this.chkListalEnabled.Location = new System.Drawing.Point(20, 26);
+            this.chkListalEnabled.Name = "chkListalEnabled";
+            this.chkListalEnabled.Size = new System.Drawing.Size(65, 17);
+            this.chkListalEnabled.TabIndex = 0;
+            this.chkListalEnabled.Text = "Enabled";
+            this.chkListalEnabled.UseVisualStyleBackColor = true;
+            this.chkListalEnabled.CheckedChanged += new System.EventHandler(this.chkListalEnabled_CheckedChanged);
             // 
             // lblListalShowExportFile
             // 
             this.lblListalShowExportFile.AutoSize = true;
-            this.lblListalShowExportFile.Location = new System.Drawing.Point(17, 81);
+            this.lblListalShowExportFile.Location = new System.Drawing.Point(16, 89);
             this.lblListalShowExportFile.Name = "lblListalShowExportFile";
             this.lblListalShowExportFile.Size = new System.Drawing.Size(106, 13);
-            this.lblListalShowExportFile.TabIndex = 18;
+            this.lblListalShowExportFile.TabIndex = 4;
             this.lblListalShowExportFile.Text = "TV Show Export File:";
             // 
             // btnListalShowXMLExport
             // 
-            this.btnListalShowXMLExport.Location = new System.Drawing.Point(393, 72);
+            this.btnListalShowXMLExport.Location = new System.Drawing.Point(392, 80);
             this.btnListalShowXMLExport.Name = "btnListalShowXMLExport";
             this.btnListalShowXMLExport.Size = new System.Drawing.Size(29, 23);
-            this.btnListalShowXMLExport.TabIndex = 17;
+            this.btnListalShowXMLExport.TabIndex = 6;
             this.btnListalShowXMLExport.Text = "...";
             this.btnListalShowXMLExport.UseVisualStyleBackColor = true;
             this.btnListalShowXMLExport.Click += new System.EventHandler(this.btnListalShowXMLExport_Click);
             // 
             // txtListalShowXMLExport
             // 
-            this.txtListalShowXMLExport.Location = new System.Drawing.Point(156, 74);
+            this.txtListalShowXMLExport.Location = new System.Drawing.Point(155, 82);
             this.txtListalShowXMLExport.Name = "txtListalShowXMLExport";
             this.txtListalShowXMLExport.Size = new System.Drawing.Size(231, 20);
-            this.txtListalShowXMLExport.TabIndex = 16;
+            this.txtListalShowXMLExport.TabIndex = 5;
             this.txtListalShowXMLExport.TextChanged += new System.EventHandler(this.txtListalShowXMLExport_TextChanged);
             // 
-            // lblLinkInfo
+            // lblListalLinkInfo
             // 
             this.lblListalLinkInfo.AutoSize = true;
-            this.lblListalLinkInfo.Location = new System.Drawing.Point(18, 154);
-            this.lblListalLinkInfo.Name = "lblLinkInfo";
+            this.lblListalLinkInfo.Location = new System.Drawing.Point(17, 149);
+            this.lblListalLinkInfo.Name = "lblListalLinkInfo";
             this.lblListalLinkInfo.Size = new System.Drawing.Size(346, 13);
-            this.lblListalLinkInfo.TabIndex = 15;
+            this.lblListalLinkInfo.TabIndex = 8;
             this.lblListalLinkInfo.Text = "Logon into the Listal website, then download export files from link below:";
             // 
             // lnkListalExport
             // 
             this.lnkListalExport.AutoSize = true;
-            this.lnkListalExport.Location = new System.Drawing.Point(18, 174);
+            this.lnkListalExport.Location = new System.Drawing.Point(17, 169);
             this.lnkListalExport.Name = "lnkListalExport";
             this.lnkListalExport.Size = new System.Drawing.Size(157, 13);
-            this.lnkListalExport.TabIndex = 14;
+            this.lnkListalExport.TabIndex = 9;
             this.lnkListalExport.TabStop = true;
             this.lnkListalExport.Text = "Get your Listal export file(s) here";
             this.lnkListalExport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkListalExport_LinkClicked);
@@ -505,84 +551,51 @@
             // chkListalWebWatchlist
             // 
             this.chkListalWebWatchlist.AutoSize = true;
-            this.chkListalWebWatchlist.Location = new System.Drawing.Point(156, 108);
+            this.chkListalWebWatchlist.Location = new System.Drawing.Point(155, 116);
             this.chkListalWebWatchlist.Name = "chkListalWebWatchlist";
             this.chkListalWebWatchlist.Size = new System.Drawing.Size(150, 17);
-            this.chkListalWebWatchlist.TabIndex = 13;
+            this.chkListalWebWatchlist.TabIndex = 7;
             this.chkListalWebWatchlist.Text = "Sync Wantlist to Watchlist";
             this.chkListalWebWatchlist.UseVisualStyleBackColor = true;
             this.chkListalWebWatchlist.CheckedChanged += new System.EventHandler(this.chkListalWebWatchlist_CheckedChanged);
             // 
             // btnListalMovieXMLExport
             // 
-            this.btnListalMovieXMLExport.Location = new System.Drawing.Point(393, 46);
+            this.btnListalMovieXMLExport.Location = new System.Drawing.Point(392, 54);
             this.btnListalMovieXMLExport.Name = "btnListalMovieXMLExport";
             this.btnListalMovieXMLExport.Size = new System.Drawing.Size(29, 23);
-            this.btnListalMovieXMLExport.TabIndex = 12;
+            this.btnListalMovieXMLExport.TabIndex = 3;
             this.btnListalMovieXMLExport.Text = "...";
             this.btnListalMovieXMLExport.UseVisualStyleBackColor = true;
             this.btnListalMovieXMLExport.Click += new System.EventHandler(this.btnListalMovieXMLExport_Click);
             // 
             // txtListalMovieXMLExport
             // 
-            this.txtListalMovieXMLExport.Location = new System.Drawing.Point(156, 48);
+            this.txtListalMovieXMLExport.Location = new System.Drawing.Point(155, 56);
             this.txtListalMovieXMLExport.Name = "txtListalMovieXMLExport";
             this.txtListalMovieXMLExport.Size = new System.Drawing.Size(231, 20);
-            this.txtListalMovieXMLExport.TabIndex = 4;
+            this.txtListalMovieXMLExport.TabIndex = 2;
             this.txtListalMovieXMLExport.TextChanged += new System.EventHandler(this.txtListalMovieXMLExport_TextChanged);
             // 
             // lblListalMovieExportFile
             // 
             this.lblListalMovieExportFile.AutoSize = true;
-            this.lblListalMovieExportFile.Location = new System.Drawing.Point(17, 52);
+            this.lblListalMovieExportFile.Location = new System.Drawing.Point(16, 60);
             this.lblListalMovieExportFile.Name = "lblListalMovieExportFile";
             this.lblListalMovieExportFile.Size = new System.Drawing.Size(91, 13);
-            this.lblListalMovieExportFile.TabIndex = 4;
+            this.lblListalMovieExportFile.TabIndex = 1;
             this.lblListalMovieExportFile.Text = "Movie Export File:";
             // 
-            // chkTVDbEnabled
+            // chkTMDbSyncWatchlist
             // 
-            this.chkTVDbEnabled.AutoSize = true;
-            this.chkTVDbEnabled.Location = new System.Drawing.Point(19, 19);
-            this.chkTVDbEnabled.Name = "chkTVDbEnabled";
-            this.chkTVDbEnabled.Size = new System.Drawing.Size(65, 17);
-            this.chkTVDbEnabled.TabIndex = 2;
-            this.chkTVDbEnabled.Text = "Enabled";
-            this.chkTVDbEnabled.UseVisualStyleBackColor = true;
-            this.chkTVDbEnabled.CheckedChanged += new System.EventHandler(this.chkTVDbEnabled_CheckedChanged);
-            // 
-            // chkIMDbEnabled
-            // 
-            this.chkIMDbEnabled.AutoSize = true;
-            this.chkIMDbEnabled.Location = new System.Drawing.Point(19, 19);
-            this.chkIMDbEnabled.Name = "chkIMDbEnabled";
-            this.chkIMDbEnabled.Size = new System.Drawing.Size(65, 17);
-            this.chkIMDbEnabled.TabIndex = 3;
-            this.chkIMDbEnabled.Text = "Enabled";
-            this.chkIMDbEnabled.UseVisualStyleBackColor = true;
-            this.chkIMDbEnabled.CheckedChanged += new System.EventHandler(this.chkIMDbEnabled_CheckedChanged);
-            // 
-            // chkTMDbEnabled
-            // 
-            this.chkTMDbEnabled.AutoSize = true;
-            this.chkTMDbEnabled.Location = new System.Drawing.Point(20, 19);
-            this.chkTMDbEnabled.Name = "chkTMDbEnabled";
-            this.chkTMDbEnabled.Size = new System.Drawing.Size(65, 17);
-            this.chkTMDbEnabled.TabIndex = 3;
-            this.chkTMDbEnabled.Text = "Enabled";
-            this.chkTMDbEnabled.UseVisualStyleBackColor = true;
-            this.chkTMDbEnabled.CheckedChanged += new System.EventHandler(this.chkTMDbEnabled_CheckedChanged);
-            // 
-            // chkListalEnabled
-            // 
-            this.chkListalEnabled.AutoSize = true;
-            this.chkListalEnabled.Location = new System.Drawing.Point(21, 19);
-            this.chkListalEnabled.Name = "chkListalEnabled";
-            this.chkListalEnabled.Size = new System.Drawing.Size(65, 17);
-            this.chkListalEnabled.TabIndex = 4;
-            this.chkListalEnabled.Text = "Enabled";
-            this.chkListalEnabled.UseVisualStyleBackColor = true;
-            this.chkListalEnabled.CheckedChanged += new System.EventHandler(this.chkListalEnabled_CheckedChanged);
+            this.chkTMDbSyncWatchlist.AutoSize = true;
+            this.chkTMDbSyncWatchlist.Location = new System.Drawing.Point(20, 42);
+            this.chkTMDbSyncWatchlist.Name = "chkTMDbSyncWatchlist";
+            this.chkTMDbSyncWatchlist.Size = new System.Drawing.Size(97, 17);
+            this.chkTMDbSyncWatchlist.TabIndex = 1;
+            this.chkTMDbSyncWatchlist.Text = "Sync Watchlist";
+            this.chkTMDbSyncWatchlist.UseVisualStyleBackColor = true;
+            this.chkTMDbSyncWatchlist.CheckedChanged += new System.EventHandler(this.chkTMDbSyncWatchlist_CheckedChanged);
             // 
             // TraktRater
             // 
@@ -674,6 +687,7 @@
         private System.Windows.Forms.CheckBox chkIMDbEnabled;
         private System.Windows.Forms.CheckBox chkTMDbEnabled;
         private System.Windows.Forms.CheckBox chkListalEnabled;
+        private System.Windows.Forms.CheckBox chkTMDbSyncWatchlist;
     }
 }
 

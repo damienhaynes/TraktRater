@@ -53,6 +53,7 @@ namespace TraktRater
             txtTraktUsername.Text = AppSettings.TraktUsername;
             txtTraktPassword.Text = AppSettings.TraktPassword;
             txtTVDbAccountId.Text = AppSettings.TVDbAccountIdentifier;
+            chkTMDbSyncWatchlist.Checked = AppSettings.TMDbSyncWatchlist;
             txtImdbRatingsFilename.Text = AppSettings.IMDbRatingsFilename;
             txtImdbWatchlistFile.Text = AppSettings.IMDbWatchlistFilename;
             txtImdbWebUsername.Text = AppSettings.IMDbUsername;
@@ -279,6 +280,11 @@ namespace TraktRater
             EnableTmdbControls(AppSettings.EnableTMDb);
         }
 
+        private void chkTMDbSyncWatchlist_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.TMDbSyncWatchlist = chkTMDbSyncWatchlist.Checked;
+        }
+
         private void chkListalEnabled_CheckedChanged(object sender, EventArgs e)
         {
             AppSettings.EnableListal = chkListalEnabled.Checked;
@@ -432,7 +438,7 @@ namespace TraktRater
             // we are either ready to get session id or we already have it
             if (!string.IsNullOrEmpty(AppSettings.TMDbRequestToken) || !string.IsNullOrEmpty(AppSettings.TMDbSessionId))
             {
-                lblTMDbMessage.Text = "Request Token and/or Session Id is already found.";
+                lblTMDbMessage.Text = "Request Token and/or Session Id has already been found.";
                 lnkTMDbStart.Text = "Disable TMDb Support";
             }
             else
@@ -481,6 +487,7 @@ namespace TraktRater
         {
             lblTMDbMessage.Enabled = enableState;
             lnkTMDbStart.Enabled = enableState;
+            chkTMDbSyncWatchlist.Enabled = enableState;
         }
 
         private void EnableListalControls(bool enableState)

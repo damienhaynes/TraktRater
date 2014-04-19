@@ -62,6 +62,8 @@
     <Compile Include="Sites\API\TMDb\TMDbPage.cs" />
     <Compile Include="Sites\API\TMDb\TMDbRatedShows.cs" />
     <Compile Include="Sites\API\TMDb\TMDbShow.cs" />
+    <Compile Include="Sites\API\TMDb\TMDbWatchlistMovies.cs" />
+    <Compile Include="Sites\API\TMDb\TMDbWatchlistShows.cs" />
     <Compile Include="Sites\Common\IMDbHelper.cs" />
     <Compile Include="Sites\IMDbWeb.cs" />
     <Compile Include="Settings\Settings.cs" />

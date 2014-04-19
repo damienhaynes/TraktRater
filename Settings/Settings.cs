@@ -19,6 +19,7 @@ namespace TraktRater.Settings
         const string cIMDbWatchlistFilename = "IMDbWatchlistFilename";
         const string cIMDbUsername = "IMDbUsername";
         const string cIMDBSyncWatchlist = "IMDBSyncWatchlist";
+        const string cTMDBSyncWatchlist = "TMDBSyncWatchlist";
         const string cListalSyncWatchlist = "ListalSyncWatchlist";
         const string cListalMovieFilename = "ListalMovieFilename";
         const string cListalShowFilename = "ListalShowFilename";
@@ -70,6 +71,8 @@ namespace TraktRater.Settings
         public static string IMDbWatchlistFilename { get; set; }
 
         public static bool IMDbSyncWatchlist { get; set; }
+
+        public static bool TMDbSyncWatchlist { get; set; }
 
         public static bool ListalSyncWatchlist { get; set; }
 
@@ -126,6 +129,7 @@ namespace TraktRater.Settings
             TraktPassword = xmlReader.GetSettingValueAsString(cTraktPassword, string.Empty);
             TVDbAccountIdentifier = xmlReader.GetSettingValueAsString(cTVDbAccountId, string.Empty);
             TMDbSessionId = xmlReader.GetSettingValueAsString(cTMDbSessionId, string.Empty);
+            TMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cTMDBSyncWatchlist, true);
             IMDbRatingsFilename = xmlReader.GetSettingValueAsString(cIMDbRatingsFilename, string.Empty);
             IMDbWatchlistFilename = xmlReader.GetSettingValueAsString(cIMDbWatchlistFilename, string.Empty);
             IMDbUsername = xmlReader.GetSettingValueAsString(cIMDbUsername, string.Empty);
@@ -173,6 +177,7 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cTraktPassword, TraktPassword);
             xmlWriter.WriteSetting(cTVDbAccountId, TVDbAccountIdentifier);
             xmlWriter.WriteSetting(cTMDbSessionId, TMDbSessionId);
+            xmlWriter.WriteSetting(cTMDBSyncWatchlist, TMDbSyncWatchlist.ToString());
             xmlWriter.WriteSetting(cIMDbRatingsFilename, IMDbRatingsFilename);
             xmlWriter.WriteSetting(cIMDbWatchlistFilename, IMDbWatchlistFilename);
             xmlWriter.WriteSetting(cIMDbUsername, IMDbUsername);

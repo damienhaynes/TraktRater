@@ -46,5 +46,17 @@ namespace TraktRater.Sites.API.TMDb
             string response = TraktWeb.TransmitExtended(string.Format(TMDbURIs.UserRatingsShows, accountId, sessionId, page.ToString()));
             return response.FromJSON<TMDbRatedShows>();
         }
+
+        public static TMDbWatchlistMovies GetWatchlistMovies(string accountId, string sessionId, int page)
+        {
+            string response = TraktWeb.TransmitExtended(string.Format(TMDbURIs.UserWatchlistMovies, accountId, sessionId, page.ToString()));
+            return response.FromJSON<TMDbWatchlistMovies>();
+        }
+
+        public static TMDbWatchlistShows GetWatchlistShows(string accountId, string sessionId, int page)
+        {
+            string response = TraktWeb.TransmitExtended(string.Format(TMDbURIs.UserWatchlistShows, accountId, sessionId, page.ToString()));
+            return response.FromJSON<TMDbWatchlistShows>();
+        }
     }
 }

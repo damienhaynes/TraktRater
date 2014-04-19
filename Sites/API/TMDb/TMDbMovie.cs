@@ -21,9 +21,6 @@ namespace TraktRater.Sites.API.TMDb
         [DataMember(Name = "poster_path")]
         public string PosterPath { get; set; }
 
-        [DataMember(Name = "rating")]
-        public double Rating { get; set; }
-
         [DataMember(Name = "release_date")]
         public string ReleaseDate { get; set; }
 
@@ -35,5 +32,12 @@ namespace TraktRater.Sites.API.TMDb
 
         [DataMember(Name = "vote_count")]
         public int VoteCount { get; set; }
+    }
+
+    [DataContract]
+    public class TMDbRatedMovie : TMDbMovie
+    {
+        [DataMember(Name = "rating")]
+        public double Rating { get; set; }
     }
 }

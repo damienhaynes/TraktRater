@@ -10,6 +10,6 @@ namespace TraktRater.Sites.API.TMDb
     public class TMDbRatedMovies : TMDbPage
     {
         [DataMember(Name = "results")]
-        public List<TMDbMovie> Movies { get; set; }
+        public List<TMDbRatedMovie> Movies { get; set; }
     }
 }

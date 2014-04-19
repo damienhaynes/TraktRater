@@ -73,12 +73,10 @@ namespace TraktRater.Sites
             #region Get Rated Movies
             UIUtils.UpdateStatus("Getting first batch of TMDb rated movies..");
             var movieRatings = TMDbAPI.GetRatedMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, 1);
-            if (ImportCancelled) return;
+            if (movieRatings == null || movieRatings.TotalResults == 0 || ImportCancelled) return;
             #endregion
 
             #region Import Movie Ratings
-            if (movieRatings == null || movieRatings.TotalResults == 0) return;
-
             UIUtils.UpdateStatus("Retreiving existing movie ratings from trakt.tv.");
             var currentUserMovieRatings = TraktAPI.TraktAPI.GetUserRatedMovies(AppSettings.TraktUsername);
 
@@ -91,7 +89,7 @@ namespace TraktRater.Sites
 
             UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", movieRatings.Page, movieRatings.TotalPages, movieRatings.Movies.Count));
 
-            if (movieRatings == null || movieRatings.Movies.Count > 0)
+            if (movieRatings.Movies.Count > 0)
             {
                 var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(movieRatings.Movies));
                 if (response == null || response.Status != "success")
@@ -110,7 +108,7 @@ namespace TraktRater.Sites
             {
                 UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb Rated Movies...", movieRatings.Page, movieRatings.TotalPages));
                 movieRatings = TMDbAPI.GetRatedMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
-                if (ImportCancelled) return;
+                if (movieRatings == null || movieRatings.TotalResults == 0 || ImportCancelled) return;
 
                 if (currentUserMovieRatings != null)
                 {
@@ -120,7 +118,7 @@ namespace TraktRater.Sites
 
                 UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", movieRatings.Page, movieRatings.TotalPages, movieRatings.Movies.Count));
 
-                if (movieRatings == null || movieRatings.Movies.Count > 0)
+                if (movieRatings.Movies.Count > 0)
                 {
                     var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(movieRatings.Movies));
                     if (response == null || response.Status != "success")
@@ -142,7 +140,7 @@ namespace TraktRater.Sites
             {
                 // mark all movies as watched if rated
                 UIUtils.UpdateStatus(string.Format("Importing {0} TMDb Movies as Watched...", watchedMovies.Count));
-                TraktMovieSyncResponse watchedResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetWatchedMoviesData(watchedMovies), TraktSyncModes.seen);
+                TraktMovieSyncResponse watchedResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(watchedMovies), TraktSyncModes.seen);
                 if (watchedResponse == null || watchedResponse.Status != "success")
                 {
                     UIUtils.UpdateStatus("Failed to send watched status for TMDb movies.", true);
@@ -213,6 +211,137 @@ namespace TraktRater.Sites
             if (ImportCancelled) return;
             #endregion
 
+            #region Import Watchlist
+
+            if (AppSettings.TMDbSyncWatchlist)
+            {
+                #region Movies
+                IEnumerable<TraktMovie> traktWatchedMovies = null;
+
+                UIUtils.UpdateStatus("Getting first batch of TMDb watchlist movies..");
+                var moviesInWatchlist = TMDbAPI.GetWatchlistMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, 1);
+                if (moviesInWatchlist == null || moviesInWatchlist.TotalResults == 0 || ImportCancelled) return;
+
+                if (AppSettings.IgnoreWatchedForWatchlist)
+                {
+                    UIUtils.UpdateStatus("Retreiving existing watched movies from trakt.tv.");
+                    traktWatchedMovies = TraktAPI.TraktAPI.GetUserWatchedMovies(AppSettings.TraktUsername);
+
+                    if (traktWatchedMovies != null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("Found {0} watched movies on trakt.tv", traktWatchedMovies.Count()));
+                        // Filter out watched movies to add to watchlist
+                        moviesInWatchlist.Movies.RemoveAll(m => traktWatchedMovies.Any(c => c.TMDbId == m.Id));
+                    }
+                }
+
+                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb watchlist movies...", moviesInWatchlist.Page, moviesInWatchlist.TotalPages, moviesInWatchlist.Movies.Count));
+
+                if (moviesInWatchlist.Movies.Count > 0)
+                {
+                    var response = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(moviesInWatchlist.Movies), TraktSyncModes.watchlist);
+                    if (response == null || response.Status != "success")
+                    {
+                        UIUtils.UpdateStatus("Failed to send watchlist for TMDb movies.", true);
+                        Thread.Sleep(2000);
+                        if (ImportCancelled) return;
+                    }
+                }
+
+                // get each page of movies
+                for (int i = 2; i <= moviesInWatchlist.TotalPages; i++)
+                {
+                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb watchlist movies...", moviesInWatchlist.Page, moviesInWatchlist.TotalPages));
+                    moviesInWatchlist = TMDbAPI.GetWatchlistMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
+                    if (moviesInWatchlist == null || moviesInWatchlist.TotalResults == 0 || ImportCancelled) return;
+
+                    if (traktWatchedMovies != null)
+                    {
+                        // Filter out watched movies to add to watchlist
+                        moviesInWatchlist.Movies.RemoveAll(m => traktWatchedMovies.Any(c => c.TMDbId == m.Id));
+                    }
+
+                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb watchlist movies...", moviesInWatchlist.Page, moviesInWatchlist.TotalPages, moviesInWatchlist.Movies.Count));
+
+                    if (moviesInWatchlist.Movies.Count > 0)
+                    {
+                        var response = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(moviesInWatchlist.Movies), TraktSyncModes.watchlist);
+                        if (response == null || response.Status != "success")
+                        {
+                            UIUtils.UpdateStatus("Failed to send watchlist for TMDb movies.", true);
+                            Thread.Sleep(2000);
+                            if (ImportCancelled) return;
+                        }
+                    }
+                }
+                if (ImportCancelled) return;
+                #endregion
+
+                #region Shows
+                IEnumerable<TraktShow> traktWatchedShows = null;
+
+                UIUtils.UpdateStatus("Getting first batch of TMDb watchlist shows..");
+                var showsInWatchlist = TMDbAPI.GetWatchlistShows(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, 1);
+                if (showsInWatchlist == null || showsInWatchlist.TotalResults == 0 || ImportCancelled) return;
+
+                if (AppSettings.IgnoreWatchedForWatchlist)
+                {
+                    UIUtils.UpdateStatus("Retreiving existing watched shows from trakt.tv.");
+                    traktWatchedShows = TraktAPI.TraktAPI.GetUserWatchedShows(AppSettings.TraktUsername);
+
+                    if (traktWatchedShows != null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("Found {0} watched shows on trakt.tv", traktWatchedShows.Count()));
+                        // Filter out watched movies to add to watchlist
+                        showsInWatchlist.Shows.RemoveAll(s => traktWatchedShows.Any(c => c.Title == s.Title && c.Year.ToString() == s.ReleaseDate.Substring(0,4)));
+                    }
+                }
+
+                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb watchlist shows...", showsInWatchlist.Page, showsInWatchlist.TotalPages, showsInWatchlist.Shows.Count));
+
+                if (showsInWatchlist.Shows.Count > 0)
+                {
+                    var response = TraktAPI.TraktAPI.SyncShowLibrary(GetSyncShowsData(showsInWatchlist.Shows), TraktSyncModes.watchlist);
+                    if (response == null || response.Status != "success")
+                    {
+                        UIUtils.UpdateStatus("Failed to send watchlist for TMDb shows.", true);
+                        Thread.Sleep(2000);
+                        if (ImportCancelled) return;
+                    }
+                }
+
+                // get each page of movies
+                for (int i = 2; i <= showsInWatchlist.TotalPages; i++)
+                {
+                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb watchlist shows...", showsInWatchlist.Page, showsInWatchlist.TotalPages));
+                    showsInWatchlist = TMDbAPI.GetWatchlistShows(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
+                    if (showsInWatchlist == null || showsInWatchlist.TotalResults == 0 || ImportCancelled) return;
+
+                    if (traktWatchedShows != null)
+                    {
+                        // Filter out watched movies to add to watchlist
+                        showsInWatchlist.Shows.RemoveAll(s => traktWatchedShows.Any(c => c.Title == s.Title && c.Year.ToString() == s.ReleaseDate.Substring(0, 4)));
+                    }
+
+                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb watchlist shows...", showsInWatchlist.Page, showsInWatchlist.TotalPages, showsInWatchlist.Shows.Count));
+
+                    if (showsInWatchlist.Shows.Count > 0)
+                    {
+                        var response = TraktAPI.TraktAPI.SyncShowLibrary(GetSyncShowsData(showsInWatchlist.Shows), TraktSyncModes.watchlist);
+                        if (response == null || response.Status != "success")
+                        {
+                            UIUtils.UpdateStatus("Failed to send watchlist for TMDb shows.", true);
+                            Thread.Sleep(2000);
+                            if (ImportCancelled) return;
+                        }
+                    }
+                }
+                if (ImportCancelled) return;
+                #endregion
+            }
+
+            #endregion
+
             return;
         }
 
@@ -226,7 +355,7 @@ namespace TraktRater.Sites
 
         #region Private Methods
 
-        private TraktMovieSync GetWatchedMoviesData(List<TMDbMovie> movies)
+        private TraktMovieSync GetSyncMoviesData(List<TMDbMovie> movies)
         {
             var traktMovies = new List<TraktMovieSync.Movie>();
 
@@ -236,17 +365,38 @@ namespace TraktRater.Sites
                                      TMDBID = movie.Id.ToString()
                                  });
 
-            var movieWatchedData = new TraktMovieSync
+            var movieSyncData = new TraktMovieSync
             {
                 Username = AppSettings.TraktUsername,
                 Password = AppSettings.TraktPassword,
                 MovieList = traktMovies
             };
 
-            return movieWatchedData;
+            return movieSyncData;
         }
 
-        private TraktMovies GetRateMoviesData(List<TMDbMovie> movies)
+        private TraktShowSync GetSyncShowsData(List<TMDbShow> shows)
+        {
+            var traktShows = new List<TraktShowSync.Show>();
+
+            traktShows.AddRange(from show in shows
+                                select new TraktShowSync.Show
+                                 {
+                                     Title = show.Title,
+                                     Year = show.ReleaseDate.Substring(0,4)
+                                 });
+
+            var showSyncData = new TraktShowSync
+            {
+                Username = AppSettings.TraktUsername,
+                Password = AppSettings.TraktPassword,
+                Showlist = traktShows
+            };
+
+            return showSyncData;
+        }
+
+        private TraktMovies GetRateMoviesData(List<TMDbRatedMovie> movies)
         {
             var traktMovies = new List<TraktMovie>();
 
@@ -267,7 +417,7 @@ namespace TraktRater.Sites
             return movieRateData;
         }
 
-        private TraktShows GetRateShowsData(List<TMDbShow> shows)
+        private TraktShows GetRateShowsData(List<TMDbRatedShow> shows)
         {
             var traktShows = new List<TraktShow>();
 
@@ -275,7 +425,7 @@ namespace TraktRater.Sites
                                  select new TraktShow
                                  {
                                      Title = show.Title,
-                                     Year = int.Parse(show.ReleaseDate.Substring(0,4)),
+                                     Year = string.IsNullOrEmpty(show.ReleaseDate) ? 0 : int.Parse(show.ReleaseDate.Substring(0, 4)),
                                      Rating = Convert.ToInt32(Math.Round(show.Rating, MidpointRounding.AwayFromZero))
                                  });
 

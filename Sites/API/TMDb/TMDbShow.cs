@@ -24,9 +24,6 @@ namespace TraktRater.Sites.API.TMDb
         [DataMember(Name = "popularity")]
         public double Popularity { get; set; }
 
-        [DataMember(Name = "rating")]
-        public double Rating { get; set; }
-
         [DataMember(Name = "first_air_date")]
         public string ReleaseDate { get; set; }
 
@@ -38,5 +35,12 @@ namespace TraktRater.Sites.API.TMDb
 
         [DataMember(Name = "vote_count")]
         public int VoteCount { get; set; }
+    }
+
+    [DataContract]
+    public class TMDbRatedShow : TMDbShow
+    {
+        [DataMember(Name = "rating")]
+        public double Rating { get; set; }
     }
 }
