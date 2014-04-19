@@ -4,6 +4,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Text;
 using System.Windows.Forms;
@@ -46,6 +47,7 @@ namespace TraktRater
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            this.Text = "TraktRater v" + Assembly.GetEntryAssembly().GetName().Version;
             AppSettings.Load();
             ClearProgress();
 
