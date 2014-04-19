@@ -7,9 +7,9 @@ using System.Runtime.Serialization;
 namespace TraktRater.Sites.API.TMDb
 {
     [DataContract]
-    public class TMDbRatedMovies : TMDbPage
+    public class TMDbRatedShows : TMDbPage
     {
         [DataMember(Name = "results")]
-        public List<TMDbMovie> Movies { get; set; }
+        public List<TMDbShow> Shows { get; set; }
     }
 }

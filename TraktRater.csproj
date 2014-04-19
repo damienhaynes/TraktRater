@@ -59,6 +59,9 @@
     <Compile Include="Extensions\XmlExtensions.cs" />
     <Compile Include="Sites\API\Listal\ListalAPI.cs" />
     <Compile Include="Sites\API\Listal\ListalExport.cs" />
+    <Compile Include="Sites\API\TMDb\TMDbPage.cs" />
+    <Compile Include="Sites\API\TMDb\TMDbRatedShows.cs" />
+    <Compile Include="Sites\API\TMDb\TMDbShow.cs" />
     <Compile Include="Sites\Common\IMDbHelper.cs" />
     <Compile Include="Sites\IMDbWeb.cs" />
     <Compile Include="Settings\Settings.cs" />

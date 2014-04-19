@@ -12,7 +12,7 @@ using TraktRater.Settings;
 
 namespace TraktRater.Sites
 {
-    public class TMDb : IRateSite
+    internal class TMDb : IRateSite
     {
         #region Variables
 
@@ -71,13 +71,13 @@ namespace TraktRater.Sites
             #endregion
 
             #region Get Rated Movies
-            UIUtils.UpdateStatus("Getting first batch of TMDb Rated Movies..");
-            var ratings = TMDbAPI.GetRatedMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, 1);
+            UIUtils.UpdateStatus("Getting first batch of TMDb rated movies..");
+            var movieRatings = TMDbAPI.GetRatedMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, 1);
             if (ImportCancelled) return;
             #endregion
 
             #region Import Movie Ratings
-            if (ratings.TotalResults == 0) return;
+            if (movieRatings == null || movieRatings.TotalResults == 0) return;
 
             UIUtils.UpdateStatus("Retreiving existing movie ratings from trakt.tv.");
             var currentUserMovieRatings = TraktAPI.TraktAPI.GetUserRatedMovies(AppSettings.TraktUsername);
@@ -86,14 +86,14 @@ namespace TraktRater.Sites
             {
                 UIUtils.UpdateStatus(string.Format("Found {0} user movie ratings on trakt.tv", currentUserMovieRatings.Count()));
                 // Filter out movies to rate from existing ratings online
-                ratings.Movies.RemoveAll(m => currentUserMovieRatings.Any(c => c.TMDBID == m.Id.ToString()));
+                movieRatings.Movies.RemoveAll(m => currentUserMovieRatings.Any(c => c.TMDBID == m.Id.ToString()));
             }
 
-            UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", ratings.Page, ratings.TotalPages, ratings.Movies.Count));
+            UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", movieRatings.Page, movieRatings.TotalPages, movieRatings.Movies.Count));
 
-            if (ratings.Movies.Count > 0)
+            if (movieRatings == null || movieRatings.Movies.Count > 0)
             {
-                var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(ratings.Movies));
+                var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(movieRatings.Movies));
                 if (response == null || response.Status != "success")
                 {
                     UIUtils.UpdateStatus("Failed to send ratings for TMDb movies.", true);
@@ -102,27 +102,27 @@ namespace TraktRater.Sites
                 }
 
                 // add to list of movies to mark as watched
-                watchedMovies.AddRange(ratings.Movies);
+                watchedMovies.AddRange(movieRatings.Movies);
             }
 
             // get each page of movies
-            for (int i = 2; i <= ratings.TotalPages; i++)
+            for (int i = 2; i <= movieRatings.TotalPages; i++)
             {
-                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb Rated Movies...", ratings.Page, ratings.TotalPages));
-                ratings = TMDbAPI.GetRatedMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
+                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb Rated Movies...", movieRatings.Page, movieRatings.TotalPages));
+                movieRatings = TMDbAPI.GetRatedMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
                 if (ImportCancelled) return;
 
                 if (currentUserMovieRatings != null)
                 {
                     // Filter out movies to rate from existing ratings online
-                    ratings.Movies.RemoveAll(m => currentUserMovieRatings.Any(c => c.TMDBID == m.Id.ToString()));
+                    movieRatings.Movies.RemoveAll(m => currentUserMovieRatings.Any(c => c.TMDBID == m.Id.ToString()));
                 }
 
-                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", ratings.Page, ratings.TotalPages, ratings.Movies.Count));
+                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", movieRatings.Page, movieRatings.TotalPages, movieRatings.Movies.Count));
 
-                if (ratings.Movies.Count > 0)
+                if (movieRatings == null || movieRatings.Movies.Count > 0)
                 {
-                    var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(ratings.Movies));
+                    var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(movieRatings.Movies));
                     if (response == null || response.Status != "success")
                     {
                         UIUtils.UpdateStatus("Failed to send ratings for TMDb movies.", true);
@@ -131,9 +131,10 @@ namespace TraktRater.Sites
                     }
 
                     // add to list of movies to mark as watched
-                    watchedMovies.AddRange(ratings.Movies);
+                    watchedMovies.AddRange(movieRatings.Movies);
                 }
-            } 
+            }
+            if (ImportCancelled) return;
             #endregion
 
             #region Mark As Watched
@@ -149,6 +150,67 @@ namespace TraktRater.Sites
                     if (ImportCancelled) return;
                 }
             }
+            #endregion
+
+            #region Get Rated Shows
+            UIUtils.UpdateStatus("Getting first batch of TMDb rated shows..");
+            var showRatings = TMDbAPI.GetRatedShows(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, 1);
+            if (ImportCancelled) return;
+            #endregion
+
+            #region Import Show Ratings
+            if (showRatings == null || showRatings.TotalResults == 0) return;
+
+            UIUtils.UpdateStatus("Retreiving existing show ratings from trakt.tv.");
+            var currentUserShowRatings = TraktAPI.TraktAPI.GetUserRatedShows(AppSettings.TraktUsername);
+
+            if (currentUserShowRatings != null)
+            {
+                UIUtils.UpdateStatus(string.Format("Found {0} user show ratings on trakt.tv", currentUserShowRatings.Count()));
+                // Filter out shows to rate from existing ratings online
+                showRatings.Shows.RemoveAll(m => currentUserShowRatings.Any(c => c.Title == m.Title && c.Year.ToString() == m.ReleaseDate.Substring(0,4)));
+            }
+
+            UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Show Ratings...", showRatings.Page, showRatings.TotalPages, showRatings.Shows.Count));
+
+            if (showRatings == null || showRatings.Shows.Count > 0)
+            {
+                var response = TraktAPI.TraktAPI.RateShows(GetRateShowsData(showRatings.Shows));
+                if (response == null || response.Status != "success")
+                {
+                    UIUtils.UpdateStatus("Failed to send ratings for TMDb shows.", true);
+                    Thread.Sleep(2000);
+                    if (ImportCancelled) return;
+                }
+            }
+
+            // get each page of movies
+            for (int i = 2; i <= showRatings.TotalPages; i++)
+            {
+                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb rated shows...", showRatings.Page, showRatings.TotalPages));
+                showRatings = TMDbAPI.GetRatedShows(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
+                if (ImportCancelled) return;
+
+                if (currentUserShowRatings != null)
+                {
+                    // Filter out shows to rate from existing ratings online
+                    showRatings.Shows.RemoveAll(m => currentUserShowRatings.Any(c => c.Title == m.Title && c.Year.ToString() == m.ReleaseDate.Substring(0, 4)));
+                }
+
+                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb show ratings...", showRatings.Page, showRatings.TotalPages, showRatings.Shows.Count));
+
+                if (showRatings == null || showRatings.Shows.Count > 0)
+                {
+                    var response = TraktAPI.TraktAPI.RateShows(GetRateShowsData(showRatings.Shows));
+                    if (response == null || response.Status != "success")
+                    {
+                        UIUtils.UpdateStatus("Failed to send ratings for TMDb shows.", true);
+                        Thread.Sleep(2000);
+                        if (ImportCancelled) return;
+                    }
+                }
+            }
+            if (ImportCancelled) return;
             #endregion
 
             return;
@@ -203,6 +265,28 @@ namespace TraktRater.Sites
             };
 
             return movieRateData;
+        }
+
+        private TraktShows GetRateShowsData(List<TMDbShow> shows)
+        {
+            var traktShows = new List<TraktShow>();
+
+            traktShows.AddRange(from show in shows
+                                 select new TraktShow
+                                 {
+                                     Title = show.Title,
+                                     Year = int.Parse(show.ReleaseDate.Substring(0,4)),
+                                     Rating = Convert.ToInt32(Math.Round(show.Rating, MidpointRounding.AwayFromZero))
+                                 });
+
+            var showRateData = new TraktShows
+            {
+                Username = AppSettings.TraktUsername,
+                Password = AppSettings.TraktPassword,
+                Shows = traktShows
+            };
+
+            return showRateData;
         }
 
         #endregion

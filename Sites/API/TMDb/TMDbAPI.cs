@@ -37,8 +37,14 @@ namespace TraktRater.Sites.API.TMDb
 
         public static TMDbRatedMovies GetRatedMovies(string accountId, string sessionId, int page)
         {
-            string response = TraktWeb.TransmitExtended(string.Format(TMDbURIs.UserRatings, accountId, sessionId, page.ToString()));
+            string response = TraktWeb.TransmitExtended(string.Format(TMDbURIs.UserRatingsMovies, accountId, sessionId, page.ToString()));
             return response.FromJSON<TMDbRatedMovies>();
+        }
+
+        public static TMDbRatedShows GetRatedShows(string accountId, string sessionId, int page)
+        {
+            string response = TraktWeb.TransmitExtended(string.Format(TMDbURIs.UserRatingsShows, accountId, sessionId, page.ToString()));
+            return response.FromJSON<TMDbRatedShows>();
         }
     }
 }
