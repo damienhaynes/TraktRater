@@ -6,16 +6,16 @@ using System.Text;
 using TraktRater.Web;
 using TraktRater.Extensions;
 
-namespace TraktRater.Sites.API.Critiker
+namespace TraktRater.Sites.API.Criticker
 {
-    internal static class CritikerAPI
+    internal static class CritickerAPI
     {
-        public static CritikerFilmRankings ReadCritikerMovieExportFile(string exportFile)
+        public static CritickerFilmRankings ReadCritickerMovieExportFile(string exportFile)
         {
             if (!File.Exists(exportFile)) return null;
 
             string xml = File.ReadAllText(exportFile);
-            return xml.FromXML<CritikerFilmRankings>();
+            return xml.FromXML<CritickerFilmRankings>();
         }
     }
 }

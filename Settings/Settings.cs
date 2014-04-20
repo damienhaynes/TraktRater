@@ -23,14 +23,14 @@ namespace TraktRater.Settings
         const string cListalSyncWatchlist = "ListalSyncWatchlist";
         const string cListalMovieFilename = "ListalMovieFilename";
         const string cListalShowFilename = "ListalShowFilename";
-        const string cCritikerMovieFilename = "CritikerMovieFilename";
+        const string cCritickerMovieFilename = "CritickerMovieFilename";
         const string cMarkAsWatched = "MarkAsWatched";
         const string cIgnoreWatchedForWatchlist = "IgnoreWatchedForWatchlist";
         const string cEnableTMDb = "EnableTMDb";
         const string cEnableTVDb = "EnableTVDb";
         const string cEnableIMDb = "EnableIMDb";
         const string cEnableListal = "EnableListal";
-        const string cEnableCritiker = "EnableCritiker";
+        const string cEnableCriticker = "EnableCriticker";
         #endregion
 
         #region Settings
@@ -84,7 +84,7 @@ namespace TraktRater.Settings
 
         public static string ListalShowFilename { get; set; }
 
-        public static string CritikerMovieFilename { get; set; }
+        public static string CritickerMovieFilename { get; set; }
 
         public static bool MarkAsWatched { get; set; }
 
@@ -94,7 +94,7 @@ namespace TraktRater.Settings
         public static bool EnableTMDb { get; set; }
         public static bool EnableIMDb { get; set; }
         public static bool EnableListal { get; set; }
-        public static bool EnableCritiker { get; set; }
+        public static bool EnableCriticker { get; set; }
 
         public static string SettingsFile
         {
@@ -142,14 +142,14 @@ namespace TraktRater.Settings
             ListalSyncWatchlist = xmlReader.GetSettingValueAsBool(cListalSyncWatchlist, false);
             ListalMovieFilename = xmlReader.GetSettingValueAsString(cListalMovieFilename, string.Empty);
             ListalShowFilename = xmlReader.GetSettingValueAsString(cListalShowFilename, string.Empty);
-            CritikerMovieFilename = xmlReader.GetSettingValueAsString(cCritikerMovieFilename, string.Empty);
+            CritickerMovieFilename = xmlReader.GetSettingValueAsString(cCritickerMovieFilename, string.Empty);
             MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
             IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
             EnableIMDb = xmlReader.GetSettingValueAsBool(cEnableIMDb, false);
             EnableTMDb = xmlReader.GetSettingValueAsBool(cEnableTMDb, false);
             EnableTVDb = xmlReader.GetSettingValueAsBool(cEnableTVDb, false);
             EnableListal = xmlReader.GetSettingValueAsBool(cEnableListal, false);
-            EnableCritiker = xmlReader.GetSettingValueAsBool(cEnableCritiker, false);
+            EnableCriticker = xmlReader.GetSettingValueAsBool(cEnableCriticker, false);
 
             // save settings, might be some new settings added
             Save();
@@ -192,14 +192,14 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cListalSyncWatchlist, ListalSyncWatchlist.ToString());
             xmlWriter.WriteSetting(cListalMovieFilename, ListalMovieFilename);
             xmlWriter.WriteSetting(cListalShowFilename, ListalShowFilename);
-            xmlWriter.WriteSetting(cCritikerMovieFilename, CritikerMovieFilename);
+            xmlWriter.WriteSetting(cCritickerMovieFilename, CritickerMovieFilename);
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
             xmlWriter.WriteSetting(cIgnoreWatchedForWatchlist, IgnoreWatchedForWatchlist.ToString());
             xmlWriter.WriteSetting(cEnableIMDb, EnableIMDb.ToString());
             xmlWriter.WriteSetting(cEnableTMDb, EnableTMDb.ToString());
             xmlWriter.WriteSetting(cEnableTVDb, EnableTVDb.ToString());
             xmlWriter.WriteSetting(cEnableListal, EnableListal.ToString());
-            xmlWriter.WriteSetting(cEnableCritiker, EnableCritiker.ToString());
+            xmlWriter.WriteSetting(cEnableCriticker, EnableCriticker.ToString());
 
             // save file
             xmlWriter.Save(SettingsFile);

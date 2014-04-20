@@ -64,8 +64,8 @@ The [Listal](http://www.listal.com) provider supports tv shows and movie ratings
  * Download your Movies and/or Shows from [Export](http://www.listal.com/user/export)
  * Use the Movie and/or Show text boxes to browse to the downloaded XML files.
  
-###Critiker###
-The [Critiker](http://http://www.criticker.com) provider supports movie ratings.
+###Criticker###
+The [Criticker](http://http://www.criticker.com) provider supports movie ratings.
 
  * Logon to www.criticker.com if you haven't already.
  * Click on your User Profile 'You'[User Profile](http://www.criticker.com/profile/)

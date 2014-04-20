@@ -5,10 +5,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
-namespace TraktRater.Sites.API.Critiker
+namespace TraktRater.Sites.API.Criticker
 {
     [XmlRoot("recentrankings")]
-    public class CritikerFilmRankings
+    public class CritickerFilmRankings
     {
         [XmlElement("film")]
         public List<Film> Films { get; set; }

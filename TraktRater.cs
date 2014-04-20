@@ -63,14 +63,14 @@ namespace TraktRater
             chkListalWebWatchlist.Checked = AppSettings.ListalSyncWatchlist;
             txtListalMovieXMLExport.Text = AppSettings.ListalMovieFilename;
             txtListalShowXMLExport.Text = AppSettings.ListalShowFilename;
-            txtCritikerMovieExportFile.Text = AppSettings.CritikerMovieFilename;
+            txtCritickerMovieExportFile.Text = AppSettings.CritickerMovieFilename;
             chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
             chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
             chkTVDbEnabled.Checked = AppSettings.EnableTVDb;
             chkTMDbEnabled.Checked = AppSettings.EnableTMDb;
             chkIMDbEnabled.Checked = AppSettings.EnableIMDb;
             chkListalEnabled.Checked = AppSettings.EnableListal;
-            chkCritickerEnabled.Checked = AppSettings.EnableCritiker;
+            chkCritickerEnabled.Checked = AppSettings.EnableCriticker;
 
             SetTMDbControlState();
 
@@ -200,13 +200,13 @@ namespace TraktRater
             }
         }
 
-        private void btnCritikerMovieExportBrowse_Click(object sender, EventArgs e)
+        private void btnCritickerMovieExportBrowse_Click(object sender, EventArgs e)
         {
             dlgFileOpen.Filter = "XML files|*.xml";
             DialogResult result = dlgFileOpen.ShowDialog(this);
             if (result == DialogResult.OK)
             {
-                txtCritikerMovieExportFile.Text = dlgFileOpen.FileName;
+                txtCritickerMovieExportFile.Text = dlgFileOpen.FileName;
             }
         }
 
@@ -235,9 +235,9 @@ namespace TraktRater
             AppSettings.ListalShowFilename = txtListalShowXMLExport.Text;
         }
 
-        private void txtCritikerMovieExportFile_TextChanged(object sender, EventArgs e)
+        private void txtCritickerMovieExportFile_TextChanged(object sender, EventArgs e)
         {
-            AppSettings.CritikerMovieFilename = txtCritikerMovieExportFile.Text;
+            AppSettings.CritickerMovieFilename = txtCritickerMovieExportFile.Text;
         }
 
         private void chkListalWebWatchlist_CheckedChanged(object sender, EventArgs e)
@@ -312,8 +312,8 @@ namespace TraktRater
 
         private void chkCritickerEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            AppSettings.EnableCritiker = chkCritickerEnabled.Checked;
-            EnableCritikerControls(AppSettings.EnableCritiker);
+            AppSettings.EnableCriticker = chkCritickerEnabled.Checked;
+            EnableCritickerControls(AppSettings.EnableCriticker);
         }
 
         #endregion
@@ -337,7 +337,7 @@ namespace TraktRater
             if (AppSettings.EnableIMDb)     sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, rdnImdbCSV.Checked));
             if (AppSettings.EnableIMDb)     sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
             if (AppSettings.EnableListal)   sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
-            if (AppSettings.EnableCritiker) sites.Add(new Critiker(AppSettings.CritikerMovieFilename));
+            if (AppSettings.EnableCriticker) sites.Add(new Criticker(AppSettings.CritickerMovieFilename));
 
             if (sites.Where(s => s.Enabled).Count() == 0)
             {
@@ -527,11 +527,11 @@ namespace TraktRater
             chkListalWebWatchlist.Enabled = enableState;
         }
 
-        private void EnableCritikerControls(bool enableState)
+        private void EnableCritickerControls(bool enableState)
         {
-            lblCritikerMovieExportFile.Enabled = enableState;
-            txtCritikerMovieExportFile.Enabled = enableState;
-            btnCritikerMovieExportBrowse.Enabled = enableState;
+            lblCritickerMovieExportFile.Enabled = enableState;
+            txtCritickerMovieExportFile.Enabled = enableState;
+            btnCritickerMovieExportBrowse.Enabled = enableState;
         }
 
         private void EnableExternalSourceControlsInGroupBoxes()
@@ -540,7 +540,7 @@ namespace TraktRater
             EnableTmdbControls(AppSettings.EnableTMDb);
             EnableTvdbControls(AppSettings.EnableTVDb);
             EnableListalControls(AppSettings.EnableListal);
-            EnableCritikerControls(AppSettings.EnableCritiker);
+            EnableCritickerControls(AppSettings.EnableCriticker);
         }
 
         #endregion
