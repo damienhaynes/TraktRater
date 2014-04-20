@@ -90,7 +90,7 @@ namespace TraktRater.Sites
             #region Ratings
 
             var listalMovieRatings = listal.Channel.Items.Where(m => m.Rating > 0).ToList();
-            UIUtils.UpdateStatus(string.Format("Found {0} movies with ratings.", listalMovieRatings.Count), true);
+            UIUtils.UpdateStatus(string.Format("Found {0} movies with ratings.", listalMovieRatings.Count));
 
             if (listalMovieRatings.Count > 0)
             {

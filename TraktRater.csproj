@@ -57,6 +57,8 @@
     <Compile Include="Extensions\SecurityExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
+    <Compile Include="Sites\API\Critiker\CritikerAPI.cs" />
+    <Compile Include="Sites\API\Critiker\CritikerFilmRankings.cs" />
     <Compile Include="Sites\API\Listal\ListalAPI.cs" />
     <Compile Include="Sites\API\Listal\ListalExport.cs" />
     <Compile Include="Sites\API\TMDb\TMDbPage.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Sites\API\TMDb\TMDbWatchlistMovies.cs" />
     <Compile Include="Sites\API\TMDb\TMDbWatchlistShows.cs" />
     <Compile Include="Sites\Common\IMDbHelper.cs" />
+    <Compile Include="Sites\Critiker.cs" />
     <Compile Include="Sites\IMDbWeb.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\XMLReader.cs" />

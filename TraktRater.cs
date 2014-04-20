@@ -63,12 +63,14 @@ namespace TraktRater
             chkListalWebWatchlist.Checked = AppSettings.ListalSyncWatchlist;
             txtListalMovieXMLExport.Text = AppSettings.ListalMovieFilename;
             txtListalShowXMLExport.Text = AppSettings.ListalShowFilename;
+            txtCritikerMovieExportFile.Text = AppSettings.CritikerMovieFilename;
             chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
             chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
             chkTVDbEnabled.Checked = AppSettings.EnableTVDb;
             chkTMDbEnabled.Checked = AppSettings.EnableTMDb;
             chkIMDbEnabled.Checked = AppSettings.EnableIMDb;
             chkListalEnabled.Checked = AppSettings.EnableListal;
+            chkCritickerEnabled.Checked = AppSettings.EnableCritiker;
 
             SetTMDbControlState();
 
@@ -198,6 +200,16 @@ namespace TraktRater
             }
         }
 
+        private void btnCritikerMovieExportBrowse_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "XML files|*.xml";
+            DialogResult result = dlgFileOpen.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtCritikerMovieExportFile.Text = dlgFileOpen.FileName;
+            }
+        }
+
         private void txtImdbFilename_TextChanged(object sender, EventArgs e)
         {
             AppSettings.IMDbRatingsFilename = txtImdbRatingsFilename.Text;
@@ -221,6 +233,11 @@ namespace TraktRater
         private void txtListalShowXMLExport_TextChanged(object sender, EventArgs e)
         {
             AppSettings.ListalShowFilename = txtListalShowXMLExport.Text;
+        }
+
+        private void txtCritikerMovieExportFile_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.CritikerMovieFilename = txtCritikerMovieExportFile.Text;
         }
 
         private void chkListalWebWatchlist_CheckedChanged(object sender, EventArgs e)
@@ -293,6 +310,12 @@ namespace TraktRater
             EnableListalControls(AppSettings.EnableListal);
         }
 
+        private void chkCritickerEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.EnableCritiker = chkCritickerEnabled.Checked;
+            EnableCritikerControls(AppSettings.EnableCritiker);
+        }
+
         #endregion
 
         #region Import Actions
@@ -309,11 +332,12 @@ namespace TraktRater
             sites.Clear();
 
             // add import sites for processing
-            if (AppSettings.EnableTMDb)   sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
-            if (AppSettings.EnableTVDb)   sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
-            if (AppSettings.EnableIMDb)   sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, rdnImdbCSV.Checked));
-            if (AppSettings.EnableIMDb)   sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
-            if (AppSettings.EnableListal) sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
+            if (AppSettings.EnableTMDb)     sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
+            if (AppSettings.EnableTVDb)     sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
+            if (AppSettings.EnableIMDb)     sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, rdnImdbCSV.Checked));
+            if (AppSettings.EnableIMDb)     sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
+            if (AppSettings.EnableListal)   sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
+            if (AppSettings.EnableCritiker) sites.Add(new Critiker(AppSettings.CritikerMovieFilename));
 
             if (sites.Where(s => s.Enabled).Count() == 0)
             {
@@ -503,12 +527,20 @@ namespace TraktRater
             chkListalWebWatchlist.Enabled = enableState;
         }
 
+        private void EnableCritikerControls(bool enableState)
+        {
+            lblCritikerMovieExportFile.Enabled = enableState;
+            txtCritikerMovieExportFile.Enabled = enableState;
+            btnCritikerMovieExportBrowse.Enabled = enableState;
+        }
+
         private void EnableExternalSourceControlsInGroupBoxes()
         {
             EnableImdbControls(AppSettings.EnableIMDb);
             EnableTmdbControls(AppSettings.EnableTMDb);
             EnableTvdbControls(AppSettings.EnableTVDb);
             EnableListalControls(AppSettings.EnableListal);
+            EnableCritikerControls(AppSettings.EnableCritiker);
         }
 
         #endregion
