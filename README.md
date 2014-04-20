@@ -64,6 +64,17 @@ The [Listal](http://www.listal.com) provider supports tv shows and movie ratings
  * Download your Movies and/or Shows from [Export](http://www.listal.com/user/export)
  * Use the Movie and/or Show text boxes to browse to the downloaded XML files.
  
+###Critiker###
+The [Critiker](http://http://www.criticker.com) provider supports movie ratings.
+
+ * Logon to www.criticker.com if you haven't already.
+ * Click on your User Profile 'You'[User Profile](http://www.criticker.com/profile/)
+ * Click on your **Full Rankings List**.
+ * From the **Export** box, right click on the **XML** icon and select **Save Link As...*.
+ * Save the file to your hard drive.
+ * Select your file from the TraktRater application.
+ * You're now ready to Import!.
+ 
 Contributing
 ------------
 
