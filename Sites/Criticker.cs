@@ -75,12 +75,19 @@ namespace TraktRater.Sites
                 UIUtils.UpdateStatus(string.Format("Importing {0} Criticker movie ratings...", criticker.Films.Count));
                 if (criticker.Films.Count > 0)
                 {
-                    var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(criticker.Films));
-                    if (response == null || response.Status != "success")
+                    int pages = (int)Math.Ceiling((double)criticker.Films.Count() / 50);
+                    for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus("Failed to send ratings for Criticker movies.", true);
-                        Thread.Sleep(2000);
-                        if (ImportCancelled) return;
+                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Criticker movie ratings...", i + 1, pages));
+
+                        var movies = GetRateMoviesData(criticker.Films.Skip(i * 50).Take(50).ToList());
+                        var response = TraktAPI.TraktAPI.RateMovies(movies);
+                        if (response == null || response.Status != "success")
+                        {
+                            UIUtils.UpdateStatus("Failed to send ratings for Criticker movies.", true);
+                            Thread.Sleep(2000);
+                            if (ImportCancelled) return;
+                        }
                     }
                 }
             }
@@ -97,12 +104,18 @@ namespace TraktRater.Sites
                 UIUtils.UpdateStatus(string.Format("Importing {0} Criticker movies as watched...", criticker.Films.Count));
                 if (criticker.Films.Count > 0)
                 {
-                    var watchedResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(criticker.Films), TraktSyncModes.seen);
-                    if (watchedResponse == null || watchedResponse.Status != "success")
+                    int pages = (int)Math.Ceiling((double)criticker.Films.Count() / 50);
+                    for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus("Failed to send watched status for Criticker movies.", true);
-                        Thread.Sleep(2000);
-                        if (ImportCancelled) return;
+                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Criticker movies as watched...", i + 1, pages));
+
+                        var watchedResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(criticker.Films.Skip(i * 50).Take(50).ToList()), TraktSyncModes.seen);
+                        if (watchedResponse == null || watchedResponse.Status != "success")
+                        {
+                            UIUtils.UpdateStatus("Failed to send watched status for Criticker movies.", true);
+                            Thread.Sleep(2000);
+                            if (ImportCancelled) return;
+                        }
                     }
                 }
             }
