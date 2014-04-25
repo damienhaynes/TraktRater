@@ -69,6 +69,7 @@ namespace TraktRater.Sites
                     UIUtils.UpdateStatus(string.Format("Found {0} user movie ratings on trakt.tv", currentUserMovieRatings.Count()));
 
                     // filter out movies to rate from existing ratings online
+                    UIUtils.UpdateStatus("Filtering out movies which are already rated");
                     criticker.Films.RemoveAll(m => currentUserMovieRatings.Any(c => c.Title.ToLowerInvariant() == m.Title.ToLowerInvariant() && c.Year == m.Year.ToString()));
                 }
 

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using TraktRater;
+using TraktRater.Logger;
 
 namespace TraktRater.UI
 {
@@ -28,6 +29,11 @@ namespace TraktRater.UI
 
             Program.MainWindow.lblStatusMessage.Text = message;
             Program.MainWindow.lblStatusMessage.ForeColor = error ? Color.Red : Color.Black;
+
+            if (!error)
+                FileLog.Info(message);
+            else
+                FileLog.Error(message);
         }
     }
 }

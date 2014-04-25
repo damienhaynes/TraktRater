@@ -8,8 +8,16 @@ using TraktRater.Settings.XML;
 
 namespace TraktRater.Settings
 {
-    public class AppSettings
+    internal class AppSettings
     {
+        public enum LoggingSeverity
+        {
+            Error,
+            Warning,
+            Info,
+            Debug
+        }
+
         #region Constants
         const string cTraktUsername = "TraktUsername";
         const string cTraktPassword = "TraktPassword";
@@ -31,6 +39,7 @@ namespace TraktRater.Settings
         const string cEnableIMDb = "EnableIMDb";
         const string cEnableListal = "EnableListal";
         const string cEnableCriticker = "EnableCriticker";
+        const string cLogLevel = "LogLevel";
         #endregion
 
         #region Settings
@@ -96,6 +105,8 @@ namespace TraktRater.Settings
         public static bool EnableListal { get; set; }
         public static bool EnableCriticker { get; set; }
 
+        public static LoggingSeverity LogSeverityLevel { get; set; }
+
         public static string SettingsFile
         {
             get
@@ -119,6 +130,7 @@ namespace TraktRater.Settings
                 return Assembly.GetCallingAssembly().GetName().Version.ToString();
             }
         }
+
         #endregion
 
         #region Persistence
@@ -150,6 +162,7 @@ namespace TraktRater.Settings
             EnableTVDb = xmlReader.GetSettingValueAsBool(cEnableTVDb, false);
             EnableListal = xmlReader.GetSettingValueAsBool(cEnableListal, false);
             EnableCriticker = xmlReader.GetSettingValueAsBool(cEnableCriticker, false);
+            LogSeverityLevel = (LoggingSeverity)(xmlReader.GetSettingValueAsInt(cLogLevel, 3));
 
             // save settings, might be some new settings added
             Save();
@@ -200,6 +213,7 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cEnableTVDb, EnableTVDb.ToString());
             xmlWriter.WriteSetting(cEnableListal, EnableListal.ToString());
             xmlWriter.WriteSetting(cEnableCriticker, EnableCriticker.ToString());
+            xmlWriter.WriteSetting(cLogLevel, ((int)LogSeverityLevel).ToString());
 
             // save file
             xmlWriter.Save(SettingsFile);

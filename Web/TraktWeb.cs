@@ -28,6 +28,16 @@ namespace TraktRater.Web
 
     public static class TraktWeb
     {
+        #region Events
+        internal delegate void OnDataSendDelegate(string url, string postData);
+        internal delegate void OnDataReceivedDelegate(string response);
+        internal delegate void OnDataErrorReceivedDelegate(string error);
+
+        internal static event OnDataSendDelegate OnDataSend;
+        internal static event OnDataReceivedDelegate OnDataReceived;
+        internal static event OnDataErrorReceivedDelegate OnDataErrorReceived;
+        #endregion
+
         /// <summary>
         /// Communicates to and from a Server
         /// </summary>
@@ -36,6 +46,9 @@ namespace TraktRater.Web
         /// <returns>The response from Server</returns>
         public static string Transmit(string address, string data)
         {
+            if (OnDataSend != null)
+                OnDataSend(address, data);
+
             try
             {
                 ServicePointManager.Expect100Continue = false;
@@ -43,17 +56,25 @@ namespace TraktRater.Web
                 client.Timeout = 90000;
                 client.Encoding = Encoding.UTF8;
                 client.Headers.Add("user-agent", AppSettings.UserAgent);
+                
+                string response = string.Empty;
+
                 if (string.IsNullOrEmpty(data))
-                    return client.DownloadString(address);
+                    response = client.DownloadString(address);
                 else
-                    return client.UploadString(address, data);
+                    response = client.UploadString(address, data);
+
+                if (OnDataReceived != null)
+                    OnDataReceived(response);
+
+                return response;
             }
-            catch (WebException e)
+            catch (WebException we)
             {
                 string ret = null;
 
                 // something bad happened
-                var response = e.Response as HttpWebResponse;
+                var response = we.Response as HttpWebResponse;
                 try
                 {
                     using (var stream = response.GetResponseStream())
@@ -61,16 +82,26 @@ namespace TraktRater.Web
                         using (var reader = new StreamReader(stream))
                         {
                             ret = reader.ReadToEnd();
+
+                            if (OnDataErrorReceived != null)
+                                OnDataErrorReceived(ret);
                         }
                     }
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    if (OnDataErrorReceived != null)
+                        OnDataErrorReceived(e.Message);
+                }
                 return ret;
             }
          }
 
         public static string TransmitExtended(string address)
         {
+            if (OnDataSend != null)
+                OnDataSend(address, null);
+
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(address);
@@ -84,14 +115,20 @@ namespace TraktRater.Web
                 StreamReader reader = new StreamReader(stream);
                 string strResponse = reader.ReadToEnd();
 
+                if (OnDataReceived != null)
+                    OnDataReceived(strResponse);
+
                 stream.Close();
                 reader.Close();
                 response.Close();
 
                 return strResponse;
             }
-            catch
+            catch (Exception e)
             {
+                if (OnDataErrorReceived != null)
+                    OnDataErrorReceived(e.Message);
+
                 return null;
             }
         }

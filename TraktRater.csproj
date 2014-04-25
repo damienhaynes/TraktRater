@@ -57,6 +57,7 @@
     <Compile Include="Extensions\SecurityExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
+    <Compile Include="Logger\FileLog.cs" />
     <Compile Include="Sites\API\Criticker\CritickerAPI.cs" />
     <Compile Include="Sites\API\Criticker\CritickerFilmRankings.cs" />
     <Compile Include="Sites\API\Listal\ListalAPI.cs" />

@@ -14,6 +14,7 @@ using TraktRater.Extensions;
 using TraktRater.TraktAPI.DataStructures;
 using TraktRater.UI;
 using TraktRater.Settings;
+using TraktRater.Logger;
 
 namespace TraktRater
 {
@@ -321,6 +322,9 @@ namespace TraktRater
         #region Import Actions
         private void StartImport()
         {
+            // update file log with new name
+            FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
+
             if (ImportRunning) return;
 
             if (string.IsNullOrEmpty(AppSettings.TraktUsername) || string.IsNullOrEmpty(AppSettings.TraktPassword))
@@ -373,8 +377,9 @@ namespace TraktRater
                 // import ratings
                 foreach (var site in sites.Where(s => s.Enabled))
                 {
+                    UIUtils.UpdateStatus(string.Format("Starting import from {0}", site.Name));
                     try
-                    {
+                    {   
                         if (!ImportCancelled)
                             site.ImportRatings();
                     }
@@ -383,6 +388,7 @@ namespace TraktRater
                         UIUtils.UpdateStatus(string.Format("{0}:{1}", site.Name, e.Message), true);
                         Thread.Sleep(5000);
                     }
+                    UIUtils.UpdateStatus(string.Format("Finished import from {0}", site.Name));
                 }
 
                 // finished
