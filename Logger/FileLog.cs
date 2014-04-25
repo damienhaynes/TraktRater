@@ -13,7 +13,7 @@ namespace TraktRater.Logger
     {
         private static Object lockObject = new object();
 
-        private static string LogDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TraktRater\Logs";
+        internal static string LogDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TraktRater\Logs";
         internal static string LogFileName { get; set; }
 
         static FileLog()

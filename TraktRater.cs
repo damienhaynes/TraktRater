@@ -317,6 +317,11 @@ namespace TraktRater
             EnableCritickerControls(AppSettings.EnableCriticker);
         }
 
+        private void lnkLogFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(FileLog.LogDirectory);
+        }
+
         #endregion
 
         #region Import Actions
