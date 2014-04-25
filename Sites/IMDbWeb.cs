@@ -8,8 +8,10 @@ using TraktRater.TraktAPI;
 using TraktRater.TraktAPI.DataStructures;
 using TraktRater.Sites.API.IMDb;
 using TraktRater.Sites.Common.IMDb;
+using TraktRater.Logger;
 using Microsoft.VisualBasic.FileIO;
 using TraktRater.Settings;
+using TraktRater.Web;
 using System.Net;
 using System.Net.Cache;
 using System.Text.RegularExpressions;
@@ -64,13 +66,19 @@ namespace TraktRater.Sites
             {
                 count = ratedItems.Count;
                 UI.UIUtils.UpdateStatus(string.Format("Requesting ratings {0} - {1}, Total Results: {2}", movieIndex, (movieIncrement + movieIndex - 1), count));
-                string s = client.DownloadString("http://www.imdb.com/user/" + Username + "/ratings?start=" + movieIndex + "&view=compact");
+                string url = "http://www.imdb.com/user/" + Username + "/ratings?start=" + movieIndex + "&view=compact";                
+                string response = TraktWeb.Transmit(url, null, false);
+                if (response == null) break;
                 int begin = 0;
 
-                while ((begin = s.IndexOf("<tr data-item-id", begin)) > 0)
+                // only log response when set to trace as it's very verbose in this case
+                if (AppSettings.LogSeverityLevel >= AppSettings.LoggingSeverity.Trace)
+                    FileLog.Trace("Response: {0}", response); 
+
+                while ((begin = response.IndexOf("<tr data-item-id", begin)) > 0)
                 {
                     var rateItem = new Dictionary<string, string>();
-                    string sub = s.Substring(begin, s.IndexOf("</tr>", begin) - begin);
+                    string sub = response.Substring(begin, response.IndexOf("</tr>", begin) - begin);
 
                     Regex reg = new Regex("<td class=\"title[^\"]*\"><a href=\"/title/(?<cIMDbID>tt\\d+)/[^\"]*\">(?<cTitle>[^<]+)</a>(?:\\s*<br>\\s*Episode:\\s*<a href=\"/title/(?<cEpisodeID>tt\\d+)/[^\"]*\">(?<cEpisodeTitle>[^<]+)</a>)?</td>");
 
@@ -127,13 +135,21 @@ namespace TraktRater.Sites
                 {
                     count = watchlistItems.Count;
                     UI.UIUtils.UpdateStatus(string.Format("Requesting watchlist items {0} - {1}, Total Results: {2}", movieIndex, (movieIncrement + movieIndex - 1), count));
-                    string s = client.DownloadString("http://www.imdb.com/user/" + Username + "/watchlist?start=" + movieIndex + "&view=compact");
+                    string url = "http://www.imdb.com/user/" + Username + "/watchlist?start=" + movieIndex + "&view=compact";
+                    string response = TraktWeb.Transmit(url, null, false);
+                    if (response == null) break;
                     int begin = 0;
 
-                    while ((begin = s.IndexOf("<tr data-item-id", begin)) > 0)
+                    // only log response when set to trace as it's very verbose in this case
+                    if (AppSettings.LogSeverityLevel >= AppSettings.LoggingSeverity.Trace)
+                        FileLog.Trace("Response: {0}", response); 
+
+                    if (response == null) continue;
+
+                    while ((begin = response.IndexOf("<tr data-item-id", begin)) > 0)
                     {
                         var watchListItem = new Dictionary<string, string>();
-                        string sub = s.Substring(begin, s.IndexOf("</tr>", begin) - begin);
+                        string sub = response.Substring(begin, response.IndexOf("</tr>", begin) - begin);
 
                         Regex reg = new Regex("<td class=\"title[^\"]*\"><a href=\"/title/(?<cIMDbID>tt\\d+)/[^\"]*\">(?<cTitle>[^<]+)</a>(?:\\s*<br>\\s*Episode:\\s*<a href=\"/title/(?<cEpisodeID>tt\\d+)/[^\"]*\">(?<cEpisodeTitle>[^<]+)</a>)?</td>");
 

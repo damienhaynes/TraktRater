@@ -44,7 +44,7 @@ namespace TraktRater.Web
         /// <param name="address">The URI to use</param>
         /// <param name="data">The Data to send</param>
         /// <returns>The response from Server</returns>
-        public static string Transmit(string address, string data)
+        public static string Transmit(string address, string data, bool logResponse = true)
         {
             if (OnDataSend != null)
                 OnDataSend(address, data);
@@ -64,7 +64,7 @@ namespace TraktRater.Web
                 else
                     response = client.UploadString(address, data);
 
-                if (OnDataReceived != null)
+                if (logResponse && OnDataReceived != null)
                     OnDataReceived(response);
 
                 return response;

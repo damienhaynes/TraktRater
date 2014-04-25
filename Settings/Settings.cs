@@ -15,7 +15,8 @@ namespace TraktRater.Settings
             Error,
             Warning,
             Info,
-            Debug
+            Debug,
+            Trace
         }
 
         #region Constants

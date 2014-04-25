@@ -53,6 +53,17 @@ namespace TraktRater.Logger
             Debug(String.Format(format, args));
         }
 
+        internal static void Trace(String log)
+        {
+            if ((int)AppSettings.LogSeverityLevel >= 4)
+                WriteToFile(String.Format(CreatePrefix(), "TRACE", log));
+        }
+
+        internal static void Trace(String format, params Object[] args)
+        {
+            Trace(String.Format(format, args));
+        }
+
         internal static void Error(String log)
         {
             if ((int)AppSettings.LogSeverityLevel >= 0)
