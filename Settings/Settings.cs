@@ -41,6 +41,7 @@ namespace TraktRater.Settings
         const string cEnableListal = "EnableListal";
         const string cEnableCriticker = "EnableCriticker";
         const string cLogLevel = "LogLevel";
+        const string cBatchSize = "BatchSize";
         #endregion
 
         #region Settings
@@ -99,6 +100,8 @@ namespace TraktRater.Settings
         public static bool MarkAsWatched { get; set; }
 
         public static bool IgnoreWatchedForWatchlist { get; set; }
+
+        public static int BatchSize { get; set; }
 
         public static bool EnableTVDb { get; set; }
         public static bool EnableTMDb { get; set; }
@@ -164,6 +167,7 @@ namespace TraktRater.Settings
             EnableListal = xmlReader.GetSettingValueAsBool(cEnableListal, false);
             EnableCriticker = xmlReader.GetSettingValueAsBool(cEnableCriticker, false);
             LogSeverityLevel = (LoggingSeverity)(xmlReader.GetSettingValueAsInt(cLogLevel, 3));
+            BatchSize = xmlReader.GetSettingValueAsInt(cBatchSize, 50);
 
             // save settings, might be some new settings added
             Save();
@@ -215,7 +219,8 @@ namespace TraktRater.Settings
             xmlWriter.WriteSetting(cEnableListal, EnableListal.ToString());
             xmlWriter.WriteSetting(cEnableCriticker, EnableCriticker.ToString());
             xmlWriter.WriteSetting(cLogLevel, ((int)LogSeverityLevel).ToString());
-
+            xmlWriter.WriteSetting(cBatchSize, BatchSize.ToString());
+            
             // save file
             xmlWriter.Save(SettingsFile);
         }
