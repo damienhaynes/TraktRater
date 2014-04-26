@@ -76,12 +76,13 @@ namespace TraktRater.Sites
                 UIUtils.UpdateStatus(string.Format("Importing {0} Criticker movie ratings...", criticker.Films.Count));
                 if (criticker.Films.Count > 0)
                 {
-                    int pages = (int)Math.Ceiling((double)criticker.Films.Count() / 50);
+                    int pageSize = AppSettings.BatchSize;
+                    int pages = (int)Math.Ceiling((double)criticker.Films.Count() / pageSize);
                     for (int i = 0; i < pages; i++)
                     {
                         UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Criticker movie ratings...", i + 1, pages));
 
-                        var movies = GetRateMoviesData(criticker.Films.Skip(i * 50).Take(50).ToList());
+                        var movies = GetRateMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList());
                         var response = TraktAPI.TraktAPI.RateMovies(movies);
                         if (response == null || response.Status != "success")
                         {
@@ -105,12 +106,13 @@ namespace TraktRater.Sites
                 UIUtils.UpdateStatus(string.Format("Importing {0} Criticker movies as watched...", criticker.Films.Count));
                 if (criticker.Films.Count > 0)
                 {
-                    int pages = (int)Math.Ceiling((double)criticker.Films.Count() / 50);
+                    int pageSize = AppSettings.BatchSize;
+                    int pages = (int)Math.Ceiling((double)criticker.Films.Count() / pageSize);
                     for (int i = 0; i < pages; i++)
                     {
                         UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Criticker movies as watched...", i + 1, pages));
 
-                        var watchedResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(criticker.Films.Skip(i * 50).Take(50).ToList()), TraktSyncModes.seen);
+                        var watchedResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList()), TraktSyncModes.seen);
                         if (watchedResponse == null || watchedResponse.Status != "success")
                         {
                             UIUtils.UpdateStatus("Failed to send watched status for Criticker movies.", true);

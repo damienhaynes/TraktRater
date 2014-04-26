@@ -72,11 +72,19 @@ namespace TraktRater.Sites
 
             if (filteredShows.Shows.Count > 0)
             {
-                TraktRatingsResponse response = TraktAPI.TraktAPI.RateShows(GetRateShowsData(filteredShows));
-                if (response == null || response.Status != "success")
+                int pageSize = AppSettings.BatchSize;
+                int pages = (int)Math.Ceiling((double)filteredShows.Shows.Count / pageSize);
+                for (int i = 0; i < pages; i++)
                 {
-                    UIUtils.UpdateStatus("Error importing show ratings to trakt.tv.", true);
-                    Thread.Sleep(2000);
+                    UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} TVDb rated shows...", i + 1, pages));
+
+                    TraktRatingsResponse response = TraktAPI.TraktAPI.RateShows(GetRateShowsData(filteredShows.Shows.Skip(i * pageSize).Take(pageSize).ToList()));
+                    if (response == null || response.Status != "success")
+                    {
+                        UIUtils.UpdateStatus("Error importing show ratings to trakt.tv.", true);
+                        Thread.Sleep(2000);
+                    }
+                    if (ImportCancelled) return;
                 }
             }
             #endregion
@@ -220,18 +228,18 @@ namespace TraktRater.Sites
             return traktEpisodesSync;
         }
 
-        private TraktShows GetRateShowsData(TVDbShowRatings showRatings)
+        private TraktShows GetRateShowsData(List<TVDbShowRatings.Series> shows)
         {
-            List<TraktShow> shows = new List<TraktShow>();
+            List<TraktShow> tvshows = new List<TraktShow>();
 
-            shows.AddRange(from show in showRatings.Shows
-                           select new TraktShow { TVDbId = show.Id, Rating = show.UserRating });
+            tvshows.AddRange(from show in shows
+                             select new TraktShow { TVDbId = show.Id, Rating = show.UserRating });
 
             TraktShows showRateData = new TraktShows
             {
                 Username = AppSettings.TraktUsername,
                 Password = AppSettings.TraktPassword,
-                Shows = shows
+                Shows = tvshows
             };
 
             return showRateData;
