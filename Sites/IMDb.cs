@@ -102,15 +102,24 @@ namespace TraktRater.Sites
 
                 if (movies.Count > 0)
                 {
-                    TraktRatingsResponse response = TraktAPI.TraktAPI.RateMovies(Helper.GetRateMoviesData(movies));
-                    if (response == null || response.Status != "success")
+                    int pageSize = AppSettings.BatchSize;
+                    int pages = (int)Math.Ceiling((double)movies.Count / pageSize);
+                    for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus("Error importing movie ratings to trakt.tv.", true);
-                        Thread.Sleep(2000);
-                    }
+                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb rated movies...", i + 1, pages));
 
-                    // add to list of movies to mark as watched
-                    watchedMovies.AddRange(movies);
+                        TraktRatingsResponse response = TraktAPI.TraktAPI.RateMovies(Helper.GetRateMoviesData(movies.Skip(i * pageSize).Take(pageSize)));
+                        if (response == null || response.Status != "success")
+                        {
+                            UIUtils.UpdateStatus("Error importing IMDb movie ratings to trakt.tv.", true);
+                            Thread.Sleep(2000);
+                        }
+
+                        // add to list of movies to mark as watched
+                        watchedMovies.AddRange(movies);
+
+                        if (ImportCancelled) return;
+                    }
                 }
             }
             if (ImportCancelled) return;
@@ -134,11 +143,20 @@ namespace TraktRater.Sites
 
                 if (shows.Count > 0)
                 {
-                    TraktRatingsResponse response = TraktAPI.TraktAPI.RateShows(Helper.GetRateShowsData(shows));
-                    if (response == null || response.Status != "success")
+                    int pageSize = AppSettings.BatchSize;
+                    int pages = (int)Math.Ceiling((double)shows.Count / pageSize);
+                    for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus("Error importing tv show ratings to trakt.tv.", true);
-                        Thread.Sleep(2000);
+                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb rated shows...", i + 1, pages));
+
+                        TraktRatingsResponse response = TraktAPI.TraktAPI.RateShows(Helper.GetRateShowsData(shows.Skip(i * pageSize).Take(pageSize)));
+                        if (response == null || response.Status != "success")
+                        {
+                            UIUtils.UpdateStatus("Error importing IMDb tv show ratings to trakt.tv.", true);
+                            Thread.Sleep(2000);
+                        }
+
+                        if (ImportCancelled) return;
                     }
                 }
             }
@@ -167,13 +185,22 @@ namespace TraktRater.Sites
 
                 if (episodes.Count > 0)
                 {
-                    episodesRated = Helper.GetEpisodeData(episodes);
-
-                    TraktRatingsResponse response = TraktAPI.TraktAPI.RateEpisodes(episodesRated);
-                    if (response == null || response.Status != "success")
+                    int pageSize = AppSettings.BatchSize;
+                    int pages = (int)Math.Ceiling((double)episodes.Count / pageSize);
+                    for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus("Error importing episodes ratings to trakt.tv.", true);
-                        Thread.Sleep(2000);
+                        episodesRated = Helper.GetEpisodeData(episodes.Skip(i * pageSize).Take(pageSize));
+
+                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb rated episodes...", i + 1, pages));
+
+                        TraktRatingsResponse response = TraktAPI.TraktAPI.RateEpisodes(episodesRated);
+                        if (response == null || response.Status != "success")
+                        {
+                            UIUtils.UpdateStatus("Error importing IMDb episodes ratings to trakt.tv.", true);
+                            Thread.Sleep(2000);
+                        }
+
+                        if (ImportCancelled) return;
                     }
                 }
             }
@@ -187,12 +214,20 @@ namespace TraktRater.Sites
                 if (watchedMovies.Count > 0)
                 {
                     // mark all movies as watched if rated
-                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb Movies as Watched...", watchedMovies.Count));
-                    TraktMovieSyncResponse watchedMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(Helper.GetSyncMoviesData(watchedMovies), TraktSyncModes.seen);
-                    if (watchedMoviesResponse == null || watchedMoviesResponse.Status != "success")
+                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb movies as watched...", watchedMovies.Count));
+
+                    int pageSize = AppSettings.BatchSize;
+                    int pages = (int)Math.Ceiling((double)movies.Count / pageSize);
+                    for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus("Failed to send watched status for IMDb movies.", true);
-                        Thread.Sleep(2000);
+                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb movies as watched...", i + 1, pages));
+
+                        var watchedMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(Helper.GetSyncMoviesData(watchedMovies.Skip(i * pageSize).Take(pageSize).ToList()), TraktSyncModes.seen);
+                        if (watchedMoviesResponse == null || watchedMoviesResponse.Status != "success")
+                        {
+                            UIUtils.UpdateStatus("Failed to send watched status for IMDb movies.", true);
+                            Thread.Sleep(2000);
+                        }
                         if (ImportCancelled) return;
                     }
                 }
@@ -242,13 +277,22 @@ namespace TraktRater.Sites
                     }
                 }
 
-                //add all movies to watchlist
+                // add movies to watchlist
                 UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist movies to trakt.tv ...", movies.Count()));
-                var watchlistMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(Helper.GetSyncMoviesData(movies), TraktSyncModes.watchlist);
-                if (watchlistMoviesResponse == null || watchlistMoviesResponse.Status != "success")
+
+                int pageSize = AppSettings.BatchSize;
+                int pages = (int)Math.Ceiling((double)movies.Count / pageSize);
+                for (int i = 0; i < pages; i++)
                 {
-                    UIUtils.UpdateStatus("Failed to send watchlist for IMDb movies.", true);
-                    Thread.Sleep(2000);
+                    UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb watchlist movies...", i + 1, pages));
+
+                    var watchlistMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(Helper.GetSyncMoviesData(movies.Skip(i * pageSize).Take(pageSize).ToList()), TraktSyncModes.watchlist);
+                    if (watchlistMoviesResponse == null || watchlistMoviesResponse.Status != "success")
+                    {
+                        UIUtils.UpdateStatus("Failed to send watchlist for IMDb movies.", true);
+                        Thread.Sleep(2000);
+                    }
+
                     if (ImportCancelled) return;
                 }
             }
@@ -275,13 +319,22 @@ namespace TraktRater.Sites
                     }
                 }
 
-                //add all shows to watchlist
+                // add shows to watchlist
                 UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist shows to trakt.tv ...", shows.Count()));
-                var watchlistShowsResponse = TraktAPI.TraktAPI.SyncShowLibrary(Helper.GetSyncShowsData(shows), TraktSyncModes.watchlist);
-                if (watchlistShowsResponse == null || watchlistShowsResponse.Status != "success")
+
+                int pageSize = AppSettings.BatchSize;
+                int pages = (int)Math.Ceiling((double)shows.Count / pageSize);
+                for (int i = 0; i < pages; i++)
                 {
-                    UIUtils.UpdateStatus("Failed to send watchlist for IMDb tv shows.", true);
-                    Thread.Sleep(2000);
+                    UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb watchlist shows...", i + 1, pages));
+
+                    var watchlistShowsResponse = TraktAPI.TraktAPI.SyncShowLibrary(Helper.GetSyncShowsData(shows.Skip(i * pageSize).Take(pageSize)), TraktSyncModes.watchlist);
+                    if (watchlistShowsResponse == null || watchlistShowsResponse.Status != "success")
+                    {
+                        UIUtils.UpdateStatus("Failed to send watchlist for IMDb tv shows.", true);
+                        Thread.Sleep(2000);
+                    }
+
                     if (ImportCancelled) return;
                 }
             }
@@ -299,7 +352,7 @@ namespace TraktRater.Sites
                     {
                         UIUtils.UpdateStatus("Requesting watched shows from trakt...");
 
-                        // get watched movies from trakt so we don't import shows into watchlist that are already watched
+                        // get watched shows from trakt so we don't import shows into watchlist that are already watched
                         watchedTraktShows = TraktAPI.TraktAPI.GetUserWatchedShows(AppSettings.TraktUsername);
                     }
                 }
