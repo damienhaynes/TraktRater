@@ -72,6 +72,7 @@ namespace TraktRater
             chkIMDbEnabled.Checked = AppSettings.EnableIMDb;
             chkListalEnabled.Checked = AppSettings.EnableListal;
             chkCritickerEnabled.Checked = AppSettings.EnableCriticker;
+            nudBatchSize.Value = AppSettings.BatchSize;
 
             SetTMDbControlState();
 
@@ -322,6 +323,11 @@ namespace TraktRater
             System.Diagnostics.Process.Start(FileLog.LogDirectory);
         }
 
+        private void nudBatchSize_ValueChanged(object sender, EventArgs e)
+        {
+            AppSettings.BatchSize = (int)nudBatchSize.Value;
+        }
+
         #endregion
 
         #region Import Actions
@@ -555,6 +561,5 @@ namespace TraktRater
         }
 
         #endregion
-
     }
 }

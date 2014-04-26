@@ -43,12 +43,14 @@
             this.btnImportRatings = new System.Windows.Forms.Button();
             this.pbrImportProgress = new System.Windows.Forms.ProgressBar();
             this.grbReport = new System.Windows.Forms.GroupBox();
+            this.lnkLogFolder = new System.Windows.Forms.LinkLabel();
             this.lblStatusMessage = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tipHelp = new System.Windows.Forms.ToolTip(this.components);
             this.txtImdbRatingsFilename = new System.Windows.Forms.TextBox();
             this.txtImdbWebUsername = new System.Windows.Forms.TextBox();
             this.txtImdbWatchlistFile = new System.Windows.Forms.TextBox();
+            this.nudBatchSize = new System.Windows.Forms.NumericUpDown();
             this.grbImdb = new System.Windows.Forms.GroupBox();
             this.chkIMDbEnabled = new System.Windows.Forms.CheckBox();
             this.btnImdbWatchlistBrowse = new System.Windows.Forms.Button();
@@ -66,6 +68,7 @@
             this.lnkTMDbStart = new System.Windows.Forms.LinkLabel();
             this.lblTMDbMessage = new System.Windows.Forms.Label();
             this.grbOptions = new System.Windows.Forms.GroupBox();
+            this.lblBatchImportSize = new System.Windows.Forms.Label();
             this.chkIgnoreWatchedForWatchlists = new System.Windows.Forms.CheckBox();
             this.chkMarkAsWatched = new System.Windows.Forms.CheckBox();
             this.grbListal = new System.Windows.Forms.GroupBox();
@@ -84,10 +87,10 @@
             this.chkCritickerEnabled = new System.Windows.Forms.CheckBox();
             this.txtCritickerMovieExportFile = new System.Windows.Forms.TextBox();
             this.lblCritickerMovieExportFile = new System.Windows.Forms.Label();
-            this.lnkLogFolder = new System.Windows.Forms.LinkLabel();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBatchSize)).BeginInit();
             this.grbImdb.SuspendLayout();
             this.grbTMDb.SuspendLayout();
             this.grbOptions.SuspendLayout();
@@ -103,7 +106,7 @@
             this.grbTrakt.Controls.Add(this.txtTraktUsername);
             this.grbTrakt.Location = new System.Drawing.Point(12, 12);
             this.grbTrakt.Name = "grbTrakt";
-            this.grbTrakt.Size = new System.Drawing.Size(443, 81);
+            this.grbTrakt.Size = new System.Drawing.Size(443, 121);
             this.grbTrakt.TabIndex = 0;
             this.grbTrakt.TabStop = false;
             this.grbTrakt.Text = "Trakt";
@@ -147,7 +150,7 @@
             this.grbTVDb.Controls.Add(this.chkTVDbEnabled);
             this.grbTVDb.Controls.Add(this.txtTVDbAccountId);
             this.grbTVDb.Controls.Add(this.lblTVDbAccountId);
-            this.grbTVDb.Location = new System.Drawing.Point(12, 115);
+            this.grbTVDb.Location = new System.Drawing.Point(12, 152);
             this.grbTVDb.Name = "grbTVDb";
             this.grbTVDb.Size = new System.Drawing.Size(443, 81);
             this.grbTVDb.TabIndex = 3;
@@ -187,7 +190,7 @@
             // lblDetails
             // 
             this.lblDetails.AutoSize = true;
-            this.lblDetails.Location = new System.Drawing.Point(9, 99);
+            this.lblDetails.Location = new System.Drawing.Point(9, 136);
             this.lblDetails.Name = "lblDetails";
             this.lblDetails.Size = new System.Drawing.Size(550, 13);
             this.lblDetails.TabIndex = 2;
@@ -196,7 +199,7 @@
             // 
             // btnImportRatings
             // 
-            this.btnImportRatings.Location = new System.Drawing.Point(12, 558);
+            this.btnImportRatings.Location = new System.Drawing.Point(12, 595);
             this.btnImportRatings.Name = "btnImportRatings";
             this.btnImportRatings.Size = new System.Drawing.Size(891, 26);
             this.btnImportRatings.TabIndex = 8;
@@ -206,7 +209,7 @@
             // 
             // pbrImportProgress
             // 
-            this.pbrImportProgress.Location = new System.Drawing.Point(13, 590);
+            this.pbrImportProgress.Location = new System.Drawing.Point(13, 627);
             this.pbrImportProgress.Name = "pbrImportProgress";
             this.pbrImportProgress.Size = new System.Drawing.Size(886, 23);
             this.pbrImportProgress.TabIndex = 9;
@@ -216,12 +219,23 @@
             this.grbReport.Controls.Add(this.lnkLogFolder);
             this.grbReport.Controls.Add(this.lblStatusMessage);
             this.grbReport.Controls.Add(this.label5);
-            this.grbReport.Location = new System.Drawing.Point(12, 623);
+            this.grbReport.Location = new System.Drawing.Point(12, 660);
             this.grbReport.Name = "grbReport";
             this.grbReport.Size = new System.Drawing.Size(887, 49);
             this.grbReport.TabIndex = 10;
             this.grbReport.TabStop = false;
             this.grbReport.Text = "Report";
+            // 
+            // lnkLogFolder
+            // 
+            this.lnkLogFolder.AutoSize = true;
+            this.lnkLogFolder.Location = new System.Drawing.Point(795, 20);
+            this.lnkLogFolder.Name = "lnkLogFolder";
+            this.lnkLogFolder.Size = new System.Drawing.Size(86, 13);
+            this.lnkLogFolder.TabIndex = 2;
+            this.lnkLogFolder.TabStop = true;
+            this.lnkLogFolder.Text = "Open Log Folder";
+            this.lnkLogFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkLogFolder_LinkClicked);
             // 
             // lblStatusMessage
             // 
@@ -284,6 +298,31 @@
         "trakt.tv.");
             this.txtImdbWatchlistFile.TextChanged += new System.EventHandler(this.txtImdbWatchlistFile_TextChanged);
             // 
+            // nudBatchSize
+            // 
+            this.nudBatchSize.Location = new System.Drawing.Point(133, 71);
+            this.nudBatchSize.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudBatchSize.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudBatchSize.Name = "nudBatchSize";
+            this.nudBatchSize.Size = new System.Drawing.Size(104, 20);
+            this.nudBatchSize.TabIndex = 3;
+            this.tipHelp.SetToolTip(this.nudBatchSize, "Set the size of the batch when importing items to trakt.tv. Set lower if having i" +
+        "ssues with the server.");
+            this.nudBatchSize.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.nudBatchSize.ValueChanged += new System.EventHandler(this.nudBatchSize_ValueChanged);
+            // 
             // grbImdb
             // 
             this.grbImdb.Controls.Add(this.chkIMDbEnabled);
@@ -298,7 +337,7 @@
             this.grbImdb.Controls.Add(this.txtImdbWebUsername);
             this.grbImdb.Controls.Add(this.btnImdbRatingsBrowse);
             this.grbImdb.Controls.Add(this.txtImdbRatingsFilename);
-            this.grbImdb.Location = new System.Drawing.Point(12, 202);
+            this.grbImdb.Location = new System.Drawing.Point(12, 239);
             this.grbImdb.Name = "grbImdb";
             this.grbImdb.Size = new System.Drawing.Size(443, 241);
             this.grbImdb.TabIndex = 5;
@@ -408,7 +447,7 @@
             this.grbTMDb.Controls.Add(this.chkTMDbEnabled);
             this.grbTMDb.Controls.Add(this.lnkTMDbStart);
             this.grbTMDb.Controls.Add(this.lblTMDbMessage);
-            this.grbTMDb.Location = new System.Drawing.Point(461, 115);
+            this.grbTMDb.Location = new System.Drawing.Point(461, 152);
             this.grbTMDb.Name = "grbTMDb";
             this.grbTMDb.Size = new System.Drawing.Size(443, 126);
             this.grbTMDb.TabIndex = 4;
@@ -459,14 +498,25 @@
             // 
             // grbOptions
             // 
+            this.grbOptions.Controls.Add(this.nudBatchSize);
+            this.grbOptions.Controls.Add(this.lblBatchImportSize);
             this.grbOptions.Controls.Add(this.chkIgnoreWatchedForWatchlists);
             this.grbOptions.Controls.Add(this.chkMarkAsWatched);
             this.grbOptions.Location = new System.Drawing.Point(461, 12);
             this.grbOptions.Name = "grbOptions";
-            this.grbOptions.Size = new System.Drawing.Size(443, 81);
+            this.grbOptions.Size = new System.Drawing.Size(443, 121);
             this.grbOptions.TabIndex = 1;
             this.grbOptions.TabStop = false;
             this.grbOptions.Text = "Options";
+            // 
+            // lblBatchImportSize
+            // 
+            this.lblBatchImportSize.AutoSize = true;
+            this.lblBatchImportSize.Location = new System.Drawing.Point(17, 76);
+            this.lblBatchImportSize.Name = "lblBatchImportSize";
+            this.lblBatchImportSize.Size = new System.Drawing.Size(93, 13);
+            this.lblBatchImportSize.TabIndex = 2;
+            this.lblBatchImportSize.Text = "Batch Import Size:";
             // 
             // chkIgnoreWatchedForWatchlists
             // 
@@ -502,7 +552,7 @@
             this.grbListal.Controls.Add(this.btnListalMovieXMLExport);
             this.grbListal.Controls.Add(this.txtListalMovieXMLExport);
             this.grbListal.Controls.Add(this.lblListalMovieExportFile);
-            this.grbListal.Location = new System.Drawing.Point(462, 247);
+            this.grbListal.Location = new System.Drawing.Point(462, 284);
             this.grbListal.Name = "grbListal";
             this.grbListal.Size = new System.Drawing.Size(442, 196);
             this.grbListal.TabIndex = 6;
@@ -611,7 +661,7 @@
             this.grbCriticker.Controls.Add(this.chkCritickerEnabled);
             this.grbCriticker.Controls.Add(this.txtCritickerMovieExportFile);
             this.grbCriticker.Controls.Add(this.lblCritickerMovieExportFile);
-            this.grbCriticker.Location = new System.Drawing.Point(13, 450);
+            this.grbCriticker.Location = new System.Drawing.Point(13, 487);
             this.grbCriticker.Name = "grbCriticker";
             this.grbCriticker.Size = new System.Drawing.Size(442, 97);
             this.grbCriticker.TabIndex = 7;
@@ -656,22 +706,11 @@
             this.lblCritickerMovieExportFile.TabIndex = 1;
             this.lblCritickerMovieExportFile.Text = "Movie Export File:";
             // 
-            // lnkLogFolder
-            // 
-            this.lnkLogFolder.AutoSize = true;
-            this.lnkLogFolder.Location = new System.Drawing.Point(795, 20);
-            this.lnkLogFolder.Name = "lnkLogFolder";
-            this.lnkLogFolder.Size = new System.Drawing.Size(86, 13);
-            this.lnkLogFolder.TabIndex = 2;
-            this.lnkLogFolder.TabStop = true;
-            this.lnkLogFolder.Text = "Open Log Folder";
-            this.lnkLogFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkLogFolder_LinkClicked);
-            // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(912, 684);
+            this.ClientSize = new System.Drawing.Size(912, 716);
             this.Controls.Add(this.grbCriticker);
             this.Controls.Add(this.grbListal);
             this.Controls.Add(this.grbOptions);
@@ -686,7 +725,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "TraktRater";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Trakt Rater";
@@ -696,6 +734,7 @@
             this.grbTVDb.PerformLayout();
             this.grbReport.ResumeLayout(false);
             this.grbReport.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBatchSize)).EndInit();
             this.grbImdb.ResumeLayout(false);
             this.grbImdb.PerformLayout();
             this.grbTMDb.ResumeLayout(false);
@@ -768,6 +807,8 @@
         private System.Windows.Forms.TextBox txtCritickerMovieExportFile;
         private System.Windows.Forms.Label lblCritickerMovieExportFile;
         private System.Windows.Forms.LinkLabel lnkLogFolder;
+        private System.Windows.Forms.Label lblBatchImportSize;
+        private System.Windows.Forms.NumericUpDown nudBatchSize;
     }
 }
 
