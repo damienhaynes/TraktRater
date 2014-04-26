@@ -110,11 +110,19 @@ namespace TraktRater.Sites
                 UIUtils.UpdateStatus(string.Format("Importing {0} Listal movie ratings...", listalMovieRatings.Count));
                 if (listalMovieRatings.Count > 0)
                 {
-                    var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(listalMovieRatings));
-                    if (response == null || response.Status != "success")
+                    int pageSize = AppSettings.BatchSize;
+                    int pages = (int)Math.Ceiling((double)listalMovieRatings.Count / pageSize);
+                    for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus("Failed to send ratings for Listal movies.", true);
-                        Thread.Sleep(2000);
+                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Listal rated movies...", i + 1, pages));
+
+                        var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(listalMovieRatings.Skip(i * pageSize).Take(pageSize).ToList()));
+                        if (response == null || response.Status != "success")
+                        {
+                            UIUtils.UpdateStatus("Failed to send ratings for Listal movies.", true);
+                            Thread.Sleep(2000);
+                        }
+
                         if (ImportCancelled) return;
                     }
                 }
@@ -131,11 +139,19 @@ namespace TraktRater.Sites
                 UIUtils.UpdateStatus(string.Format("Importing {0} Listal movies as watched...", listalMovieRatings.Count));
                 if (listalMovieRatings.Count > 0)
                 {
-                    var watchedResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(listalMovieRatings), TraktSyncModes.seen);
-                    if (watchedResponse == null || watchedResponse.Status != "success")
+                    int pageSize = AppSettings.BatchSize;
+                    int pages = (int)Math.Ceiling((double)listalMovieRatings.Count / pageSize);
+                    for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus("Failed to send watched status for Listal movies.", true);
-                        Thread.Sleep(2000);
+                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Listal movies as watched...", i + 1, pages));
+
+                        var watchedResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(listalMovieRatings.Skip(i * pageSize).Take(pageSize).ToList()), TraktSyncModes.seen);
+                        if (watchedResponse == null || watchedResponse.Status != "success")
+                        {
+                            UIUtils.UpdateStatus("Failed to send watched status for Listal movies.", true);
+                            Thread.Sleep(2000);
+                        }
+
                         if (ImportCancelled) return;
                     }
                 }
@@ -170,12 +186,24 @@ namespace TraktRater.Sites
 
                     // add all movies to watchlist
                     UIUtils.UpdateStatus(string.Format("Importing {0} Listal Wantlist movies to trakt.tv Watchlist...", wantList.Count()));
-                    var watchlistMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(wantList), TraktSyncModes.watchlist);
-                    if (watchlistMoviesResponse == null || watchlistMoviesResponse.Status != "success")
+
+                    if (wantList.Count > 0)
                     {
-                        UIUtils.UpdateStatus("Failed to send watchlist for Listal movies.", true);
-                        Thread.Sleep(2000);
-                        if (ImportCancelled) return;
+                        int pageSize = AppSettings.BatchSize;
+                        int pages = (int)Math.Ceiling((double)wantList.Count / pageSize);
+                        for (int i = 0; i < pages; i++)
+                        {
+                            UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Listal wantlist movies to trakt.tv watchlist...", i + 1, pages));
+
+                            var watchlistMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(wantList.Skip(i * pageSize).Take(pageSize).ToList()), TraktSyncModes.watchlist);
+                            if (watchlistMoviesResponse == null || watchlistMoviesResponse.Status != "success")
+                            {
+                                UIUtils.UpdateStatus("Failed to send watchlist for Listal movies.", true);
+                                Thread.Sleep(2000);
+                            }
+
+                            if (ImportCancelled) return;
+                        }
                     }
                 }
             }
@@ -222,11 +250,19 @@ namespace TraktRater.Sites
                 UIUtils.UpdateStatus(string.Format("Importing {0} Listal tv show ratings...", listalShowRatings.Count));
                 if (listalShowRatings.Count > 0)
                 {
-                    var response = TraktAPI.TraktAPI.RateShows(GetRateShowsData(listalShowRatings));
-                    if (response == null || response.Status != "success")
+                    int pageSize = AppSettings.BatchSize;
+                    int pages = (int)Math.Ceiling((double)listalShowRatings.Count / pageSize);
+                    for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus("Failed to send ratings for Listal tv shows.", true);
-                        Thread.Sleep(2000);
+                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Listal show ratings...", i + 1, pages));
+
+                        var response = TraktAPI.TraktAPI.RateShows(GetRateShowsData(listalShowRatings.Skip(i * pageSize).Take(pageSize).ToList()));
+                        if (response == null || response.Status != "success")
+                        {
+                            UIUtils.UpdateStatus("Failed to send ratings for Listal tv shows.", true);
+                            Thread.Sleep(2000);
+                        }
+
                         if (ImportCancelled) return;
                     }
                 }
@@ -261,14 +297,26 @@ namespace TraktRater.Sites
                         if (ImportCancelled) return;
                     }
 
-                    // add all movies to watchlist
+                    // add movies to watchlist
                     UIUtils.UpdateStatus(string.Format("Importing {0} Listal Wantlist tv shows to trakt.tv Watchlist...", wantList.Count()));
-                    var watchlistShowsResponse = TraktAPI.TraktAPI.SyncShowLibrary(GetSyncShowsData(wantList), TraktSyncModes.watchlist);
-                    if (watchlistShowsResponse == null || watchlistShowsResponse.Status != "success")
+
+                    if (wantList.Count > 0)
                     {
-                        UIUtils.UpdateStatus("Failed to send watchlist for Listal tv shows.", true);
-                        Thread.Sleep(2000);
-                        if (ImportCancelled) return;
+                        int pageSize = AppSettings.BatchSize;
+                        int pages = (int)Math.Ceiling((double)wantList.Count / pageSize);
+                        for (int i = 0; i < pages; i++)
+                        {
+                            UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Listal wantlist tv shows to trakt.tv watchlist...", i + 1, pages));
+
+                            var watchlistShowsResponse = TraktAPI.TraktAPI.SyncShowLibrary(GetSyncShowsData(wantList.Skip(i * pageSize).Take(pageSize).ToList()), TraktSyncModes.watchlist);
+                            if (watchlistShowsResponse == null || watchlistShowsResponse.Status != "success")
+                            {
+                                UIUtils.UpdateStatus("Failed to send watchlist for Listal tv shows.", true);
+                                Thread.Sleep(2000);
+                            }
+
+                            if (ImportCancelled) return;
+                        }
                     }
                 }
             }
