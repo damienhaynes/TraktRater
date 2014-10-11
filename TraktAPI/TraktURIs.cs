@@ -10,20 +10,23 @@ namespace TraktRater.TraktAPI
     /// </summary>
     public static class TraktURIs
     {
-        const string apiKey = "5a3cf09bdce2e48c78f94f11f41b68ba";
+        public const string Login = @"http://api.v2.trakt.tv/auth/login";
 
-        public const string RateEpisodes = @"http://api.trakt.tv/rate/episodes/" + apiKey;
-        public const string RateMovies = @"http://api.trakt.tv/rate/movies/" + apiKey;
-        public const string RateShows = @"http://api.trakt.tv/rate/shows/" + apiKey;
-        public const string TestAccount = @"http://api.trakt.tv/account/test/" + apiKey;
-        public const string ShowSummary = @"http://api.trakt.tv/show/summary.json/" + apiKey + "/{0}/extended";
-        public const string SyncMovieLibrary = @"http://api.trakt.tv/movie/{0}/" + apiKey;
-        public const string SyncEpisodeLibrary = @"http://api.trakt.tv/show/episode/{0}/" + apiKey;
-        public const string SyncShowLibrary = @"http://api.trakt.tv/show/{0}/" + apiKey;
-        public const string UserRatedMoviesList = @"http://api.trakt.tv/user/ratings/movies.json/" + apiKey + @"/{0}";
-        public const string UserRatedShowsList = @"http://api.trakt.tv/user/ratings/shows.json/" + apiKey + @"/{0}";
-        public const string UserRatedEpisodesList = @"http://api.trakt.tv/user/ratings/episodes.json/" + apiKey + @"/{0}";
-        public const string UserWatchedMoviesList = @"http://api.trakt.tv/user/library/movies/watched.json/" + apiKey + @"/{0}/min";
-        public const string UserWatchedShowsList = @"http://api.trakt.tv/user/library/shows/watched.json/" + apiKey + @"/{0}/min";
+        public const string RatedMoviesList = @"http://api.v2.trakt.tv/sync/ratings/movies";
+        public const string RatedShowsList = @"http://api.v2.trakt.tv/sync/ratings/shows";
+        public const string RatedEpisodesList = @"http://api.v2.trakt.tv/sync/ratings/episodes";
+
+        public const string WatchedMoviesList = @"http://api.v2.trakt.tv/sync/watched/movies";
+        public const string WatchedEpisodesList = @"http://api.v2.trakt.tv/sync/watched/shows";
+
+        public const string WatchlistMoviesList = @"http://api.v2.trakt.tv/sync/watchlist/movies";
+        public const string WatchlistShowsList = @"http://api.v2.trakt.tv/sync/watchlist/shows";
+        public const string WatchlistEpisodesList = @"http://api.v2.trakt.tv/sync/watchlist/episodes";
+
+        public const string SyncRatings = @"http://api.v2.trakt.tv/sync/ratings";
+        public const string SyncWatchlist = @"http://api.v2.trakt.tv/sync/watchlist";
+        public const string SyncWatched = @"http://api.v2.trakt.tv/sync/history";
+
+        public const string ShowSummary = @"http://api.v2.trakt.tv/shows/{0}?extended=full";
     }
 }

@@ -7,32 +7,50 @@ using TraktRater.UI;
 using TraktRater.TraktAPI;
 using TraktRater.TraktAPI.DataStructures;
 using TraktRater.Sites.API.IMDb;
+using TraktRater.Sites.API.TVDb;
 using TraktRater.Settings;
+using System.Threading;
 
 namespace TraktRater.Sites.Common.IMDb
 {
     public class Helper
     {
-        static Dictionary<string, TraktShowSummary> ShowSummaries = new Dictionary<string, TraktShowSummary>();
-
         public static TraktMovieSync GetSyncMoviesData(List<Dictionary<string, string>> movies)
         {
-            var traktMovies = new List<TraktMovieSync.Movie>();
+            var traktMovies = new List<TraktMovie>();
 
             traktMovies.AddRange(from movie in movies
-                                 select new TraktMovieSync.Movie
+                                 select new TraktMovie
                                  {
-                                     IMDBID = movie[IMDbFieldMapping.cIMDbID],
+                                     Ids = new TraktMovieId { ImdbId = movie[IMDbFieldMapping.cIMDbID] },
                                      Title = movie[IMDbFieldMapping.cTitle],
-                                     Year = movie[IMDbFieldMapping.cYear],
-                                     LastPlayed = GetLastPlayedDate(movie)
+                                     Year = movie[IMDbFieldMapping.cYear].IsValidYear() ? int.Parse(movie[IMDbFieldMapping.cYear]) : 0
                                  });
 
             var movieData = new TraktMovieSync
             {
-                Username = AppSettings.TraktUsername,
-                Password = AppSettings.TraktPassword,
-                MovieList = traktMovies
+                Movies = traktMovies
+            };
+
+            return movieData;
+        }
+
+        public static TraktMovieWatchedSync GetSyncWatchedMoviesData(List<Dictionary<string, string>> movies)
+        {
+            var traktMovies = new List<TraktMovieWatched>();
+
+            traktMovies.AddRange(from movie in movies
+                                 select new TraktMovieWatched
+                                 {
+                                     Ids = new TraktMovieId { ImdbId = movie[IMDbFieldMapping.cIMDbID] },
+                                     Title = movie[IMDbFieldMapping.cTitle],
+                                     Year = movie[IMDbFieldMapping.cYear].IsValidYear() ? int.Parse(movie[IMDbFieldMapping.cYear]) : 0,
+                                     WatchedAt = GetLastCreatedDate(movie)
+                                 });
+
+            var movieData = new TraktMovieWatchedSync
+            {
+                Movies = traktMovies
             };
 
             return movieData;
@@ -40,182 +58,137 @@ namespace TraktRater.Sites.Common.IMDb
 
         public static TraktShowSync GetSyncShowsData(IEnumerable<Dictionary<string, string>> shows)
         {
-            var traktShows = new List<TraktShowSync.Show>();
+            var traktShows = new List<TraktShow>();
 
             traktShows.AddRange(from show in shows
-                                select new TraktShowSync.Show
+                                select new TraktShow
                                 {
-                                    IMDbId = show[IMDbFieldMapping.cIMDbID],
+                                    Ids = new TraktShowId { ImdbId = show[IMDbFieldMapping.cIMDbID] },
                                     Title = show[IMDbFieldMapping.cTitle],
-                                    Year = show[IMDbFieldMapping.cYear]
+                                    Year = show[IMDbFieldMapping.cYear].IsValidYear() ? int.Parse(show[IMDbFieldMapping.cYear]) : 0
                                 });
 
             var traktShowsData = new TraktShowSync
             {
-                Username = AppSettings.TraktUsername,
-                Password = AppSettings.TraktPassword,
-                Showlist = traktShows
+                Shows = traktShows
             };
 
             return traktShowsData;
         }
 
-        /// <summary>
-        /// returns a list of shows with episodes
-        /// must send to trakt per show!
-        /// </summary>
-        public static List<TraktEpisodeSync> GetSyncEpisodeData(List<TraktEpisode> episodes)
+        public static TraktMovieRatingSync GetRateMoviesData(IEnumerable<Dictionary<string, string>> movies)
         {
-            var traktEpisodesSync = new List<TraktEpisodeSync>();
-
-            // seperate episodes list into shows
-            foreach (var showId in episodes.Select(e => e.TVDbId).Distinct())
-            {
-                var episodesInShow = episodes.Where(e => e.TVDbId == showId);
-                var episodesData = new List<TraktEpisodeSync.Episode>();
-
-                if (episodesInShow.Count() == 0) continue;
-
-                episodesData.AddRange(from episode in episodesInShow
-                                             select new TraktEpisodeSync.Episode
-                                             {
-                                                 EpisodeIndex = episode.Episode.ToString(),
-                                                 SeasonIndex = episode.Season.ToString(),
-                                                 LastPlayed = episode.LastPlayed
-                                             });
-
-                if (episodesData.Count() == 0) continue;
-
-                var episodeSyncData = new TraktEpisodeSync
-                {
-                    Username = AppSettings.TraktUsername,
-                    Password = AppSettings.TraktPassword,
-                    EpisodeList = episodesData,
-                    SeriesID = showId.ToString(),
-                    Title = episodesInShow.First().Title,
-                    Year = episodesInShow.First().Year.ToString()
-                };
-
-                traktEpisodesSync.Add(episodeSyncData);
-            }
-
-            return traktEpisodesSync;
-        }
-
-        public static TraktMovies GetRateMoviesData(IEnumerable<Dictionary<string, string>> movies)
-        {
-            var traktMovies = new List<TraktMovie>();
+            var traktMovies = new List<TraktMovieRating>();
 
             traktMovies.AddRange(from movie in movies
-                                 where movie[IMDbFieldMapping.cYear] != "????" && !string.IsNullOrEmpty(movie[IMDbFieldMapping.cRating])
-                                 select new TraktMovie
+                                 where !string.IsNullOrEmpty(movie[IMDbFieldMapping.cRating])
+                                 select new TraktMovieRating
                                  {
-                                     IMDbId = movie[IMDbFieldMapping.cIMDbID],
+                                     Ids = new TraktMovieId { ImdbId = movie[IMDbFieldMapping.cIMDbID] },
                                      Title = movie[IMDbFieldMapping.cTitle],
-                                     Year = int.Parse(movie[IMDbFieldMapping.cYear]),
-                                     Rating = int.Parse(movie[IMDbFieldMapping.cRating])
+                                     Year = movie[IMDbFieldMapping.cYear].IsValidYear() ? int.Parse(movie[IMDbFieldMapping.cYear]) : 0,
+                                     Rating = int.Parse(movie[IMDbFieldMapping.cRating]),
+                                     RatedAt = GetLastCreatedDate(movie)
                                  });
 
-            var movieRateData = new TraktMovies
+            var movieRateData = new TraktMovieRatingSync
             {
-                Username = AppSettings.TraktUsername,
-                Password = AppSettings.TraktPassword,
-                Movies = traktMovies
+                movies = traktMovies
             };
 
             return movieRateData;
         }
 
-        public static TraktShows GetRateShowsData(IEnumerable<Dictionary<string, string>> shows)
+        public static TraktShowRatingSync GetRateShowsData(IEnumerable<Dictionary<string, string>> shows)
         {
-            var traktShows = new List<TraktShow>();
+            var traktShows = new List<TraktShowRating>();
 
             traktShows.AddRange(from show in shows
-                                where show[IMDbFieldMapping.cYear] != "????" && !string.IsNullOrEmpty(show[IMDbFieldMapping.cRating])
-                                select new TraktShow
+                                where !string.IsNullOrEmpty(show[IMDbFieldMapping.cRating])
+                                select new TraktShowRating
                                 {
-                                    IMDbId = show[IMDbFieldMapping.cIMDbID],
+                                    Ids = new TraktShowId { ImdbId = show[IMDbFieldMapping.cIMDbID] },
                                     Title = show[IMDbFieldMapping.cTitle],
-                                    Year = int.Parse(show[IMDbFieldMapping.cYear]),
-                                    Rating = int.Parse(show[IMDbFieldMapping.cRating])
+                                    Year = show[IMDbFieldMapping.cYear].IsValidYear() ? int.Parse(show[IMDbFieldMapping.cYear]) : 0,
+                                    Rating = int.Parse(show[IMDbFieldMapping.cRating]),
+                                    RatedAt = GetLastCreatedDate(show)
                                 });
 
-            var movieRateData = new TraktShows
+            var showRateData = new TraktShowRatingSync
             {
-                Username = AppSettings.TraktUsername,
-                Password = AppSettings.TraktPassword,
-                Shows = traktShows
+                shows = traktShows
             };
 
-            return movieRateData;
+            return showRateData;
         }
 
-        public static TraktEpisodes GetEpisodeData(IEnumerable<Dictionary<string, string>> episodes, bool ratings=true)
+        public static TraktEpisodeRatingSync GetTraktEpisodeRateData(IEnumerable<IMDbEpisode> episodes)
         {
-            var traktEpisodes = new List<TraktEpisode>();
+            if (episodes == null)
+                return null;
 
-            foreach (var episode in episodes)
+            var traktEpisodes = new List<TraktEpisodeRating>();
+
+            traktEpisodes.AddRange(from episode in episodes
+                                   select new TraktEpisodeRating
+                                   {
+                                       Ids = new TraktEpisodeId { TvdbId = episode.TvdbId, ImdbId = episode.ImdbId },
+                                       Rating = episode.Rating,
+                                       RatedAt = GetLastCreatedDate(episode.Created)
+                                   });
+
+            var episodesToRate = new TraktEpisodeRatingSync
             {
-                if (ratings && string.IsNullOrEmpty(episode[IMDbFieldMapping.cRating]))
-                    continue;
-
-                // get the show information
-                string showTitle = GetShowName(episode[IMDbFieldMapping.cTitle]);
-                if (string.IsNullOrEmpty(showTitle)) continue;
-
-                // get slug of show title
-                string slug = showTitle.GenerateSlug();
-                if (string.IsNullOrEmpty(slug)) continue;
-
-                TraktShowSummary showSummary = new TraktShowSummary();
-
-                if (!ShowSummaries.TryGetValue(showTitle, out showSummary))
-                {
-                    // get from online
-                    UIUtils.UpdateStatus(string.Format("Retrieving data for {0}", showTitle));
-
-                    // Note: IMDb ID will be the TV Show IMDb if syncing from Web, otherwise it uses the Episode IMDb ID
-                    // The Summary method will not work with the Episode IMDb so fallback to Title slug.
-                    
-                    // Check the field count to determine if its a Web/CSV episode
-                    if (episode[IMDbFieldMapping.cProvider] == "web")
-                        slug = episode[IMDbFieldMapping.cIMDbID];
-
-                    showSummary = TraktAPI.TraktAPI.GetShowSummary(slug);
-                    if (showSummary == null || showSummary.Seasons == null || showSummary.Seasons.Count == 0)
-                    {
-                        // trakt may not have the IMDb for the show, try using title slug
-                        if (!slug.StartsWith("tt"))
-                        {
-                            showSummary = TraktAPI.TraktAPI.GetShowSummary(slug);
-                        }
-                        if (showSummary == null || showSummary.Seasons == null || showSummary.Seasons.Count == 0)
-                        {
-                            UIUtils.UpdateStatus(string.Format("Unable to get info for {0}", showTitle), true);
-                            continue;
-                        }
-                    }
-
-                    // store show summary
-                    ShowSummaries.Add(showTitle, showSummary);
-                }
-
-                var traktEpisode = GetTraktEpisodeData(episode, showSummary, ratings);
-                if (traktEpisode == null) continue;
-
-                traktEpisodes.Add(traktEpisode);
-            }
-
-            var episodeData = new TraktEpisodes
-            {
-                Username = AppSettings.TraktUsername,
-                Password = AppSettings.TraktPassword,
                 Episodes = traktEpisodes
             };
 
-            return episodeData;
+            return episodesToRate;
+
         }
 
+        public static TraktEpisodeWatchedSync GetTraktEpisodeWatchedData(IEnumerable<IMDbEpisode> episodes)
+        {
+            if (episodes == null)
+                return null;
+
+            var traktEpisodes = new List<TraktEpisodeWatched>();
+
+            traktEpisodes.AddRange(from episode in episodes
+                                   select new TraktEpisodeWatched
+                                   {
+                                       Ids = new TraktEpisodeId { TvdbId = episode.TvdbId, ImdbId = episode.ImdbId },
+                                       WatchedAt = GetLastCreatedDate(episode.Created)
+                                   });
+
+            var episodesWatched = new TraktEpisodeWatchedSync
+            {
+                Episodes = traktEpisodes
+            };
+
+            return episodesWatched;
+        }
+
+        public static TraktEpisodeSync GetTraktEpisodeData(IEnumerable<IMDbEpisode> episodes)
+        {
+            if (episodes == null)
+                return null;
+
+            var traktEpisodes = new List<TraktEpisode>();
+
+            traktEpisodes.AddRange(from episode in episodes
+                                   select new TraktEpisode
+                                   {
+                                       Ids = new TraktEpisodeId { TvdbId = episode.TvdbId, ImdbId = episode.ImdbId }
+                                   });
+
+            var episodeSync = new TraktEpisodeSync
+            {
+                Episodes = traktEpisodes
+            };
+
+            return episodeSync;
+        }
+        
         /// <summary>
         /// Removes the episode name and returns only the show title
         /// </summary>
@@ -253,115 +226,157 @@ namespace TraktRater.Sites.Common.IMDb
             return null;
         }
 
-        static TraktEpisode GetTraktEpisodeData(Dictionary<string, string> episode, TraktShowSummary showSummary, bool ratings = true)
+        public static IMDbEpisode GetIMDbEpisodeFromTVDb(Dictionary<string, string> episode)
         {
-            if (showSummary == null || showSummary.Seasons == null || showSummary.Seasons.Count == 0)
-                return null;
-
-            string episodeTitle = GetEpisodeName(episode[IMDbFieldMapping.cTitle]);
-
-            // find episode title in list of episodes from show summary
-            if (!string.IsNullOrEmpty(episodeTitle))
+            try
             {
-                TraktShowSummary.TraktSeason.TraktEpisode match = null;
-                foreach (var season in showSummary.Seasons)
-                {
-                    if (match != null) continue;
-                    match = season.Episodes.FirstOrDefault(e => string.Equals(e.Title, episodeTitle, StringComparison.InvariantCultureIgnoreCase));
-                }
+                string tvEpisodeName = Helper.GetEpisodeName(episode[IMDbFieldMapping.cTitle]);
+                string tvShowName = Helper.GetShowName(episode[IMDbFieldMapping.cTitle]);
+                string tvShowYear = episode[IMDbFieldMapping.cYear];
+                string tvShowImdbId = episode[IMDbFieldMapping.cIMDbID];
 
-                if (match != null)
+                // search for the show
+                UIUtils.UpdateStatus(string.Format("Searching for tv show {0} on thetvdb.com", tvShowName));
+                var searchResults = TVDbAPI.SearchShow(tvShowName);
+                if (searchResults == null)
                 {
-                    var traktEpisode = new TraktEpisode
-                    {
-                        Episode = match.Episode,
-                        Season = match.Season,
-                        TVDbId = showSummary.TVDbId,
-                        Title = showSummary.Title,
-                        Year = showSummary.Year,
-                        LastPlayed = GetLastPlayedDate(episode)
-                    };
-                    
-                    if (ratings) 
-                        traktEpisode.Rating = int.Parse(episode[IMDbFieldMapping.cRating]);
-
-                    return traktEpisode;
-                }
-            }
-
-            // we can also lookup by airDate
-            string episodeAirDate = null;
-            episode.TryGetValue(IMDbFieldMapping.cReleaseDate, out episodeAirDate);
-
-            if (!string.IsNullOrEmpty(episodeAirDate))
-            {
-                // get epoch date
-                long dateTimeEpoch = 0;
-                try
-                {
-                    var splitDate = episodeAirDate.Split('-');
-                    // parse date and add 8hours for PST
-                    DateTime dateTime = new DateTime(int.Parse(splitDate[0]), int.Parse(splitDate[1]), int.Parse(splitDate[2])).AddHours(8);
-                    dateTimeEpoch = dateTime.ToEpoch();
-                }
-                catch
-                {
-                    UIUtils.UpdateStatus(string.Format("Unable to get info for {0}", episode[IMDbFieldMapping.cTitle]), true);
+                    UIUtils.UpdateStatus(string.Format("Failed to search for tv show {0} from thetvdb.com", tvShowName), true);
+                    Thread.Sleep(2000);
                     return null;
                 }
 
-                TraktShowSummary.TraktSeason.TraktEpisode match = null;
-                foreach (var season in showSummary.Seasons)
+                // get the first match that contains the same 'year'
+                // only if we're using a csv export file 
+                var tvdbShowSearchResult = new TVDbShowSearch.Series();
+                if (episode[IMDbFieldMapping.cProvider].IsCSVExport())
                 {
-                    if (match != null) continue;
-                    match = season.Episodes.FirstOrDefault(e => e.FirstAired == dateTimeEpoch);
-                }
-
-                if (match != null)
-                {
-                    var traktEpisode = new TraktEpisode
+                    tvdbShowSearchResult = searchResults.Shows.Find(s => s.FirstAired != null && s.FirstAired.Contains(tvShowYear));
+                    if (tvdbShowSearchResult == null)
                     {
-                        Episode = match.Episode,
-                        Season = match.Season,
-                        TVDbId = match.TVDbId,
-                        Title = showSummary.Title,
-                        Year = showSummary.Year
-                    };
-
-                    if (ratings)
-                        traktEpisode.Rating = int.Parse(episode[IMDbFieldMapping.cRating]);
-
-                    return traktEpisode;
+                        UIUtils.UpdateStatus(string.Format("Failed to search for tv show {0} ({1}) from thetvdb.com", tvShowName, tvShowYear), true);
+                        Thread.Sleep(2000);
+                        return null;
+                    }
                 }
-            }
+                else
+                {
+                    // the website populates the 'year' with the episode year (not show)
+                    // so we can't use that for a show match.
+                    // However, the website populates the IMDb using the IMDb ID of the show (not episode).
+                    tvdbShowSearchResult = searchResults.Shows.Find(s => s.ImdbId != null && s.ImdbId == tvShowImdbId);
+                    if (tvdbShowSearchResult == null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("Failed to search for tv show {0} (imdb_id:{1}) from thetvdb.com", tvShowName, tvShowImdbId ?? "<empty>"), true);
+                        Thread.Sleep(2000);
+                        return null;
+                    }
+                }
 
-            UIUtils.UpdateStatus(string.Format("Unable to get info for {0}", episode[IMDbFieldMapping.cTitle]), true);
-            return null;
+                // get the show info for the given show
+                UIUtils.UpdateStatus(string.Format("Getting tv show info for {0} [tvdb_id:{1}] on thetvdb.com", tvShowName, tvdbShowSearchResult.Id));
+                var tvdbShowInfo = TVDbAPI.GetShowInfo(tvdbShowSearchResult.Id.ToString());
+                if (tvdbShowInfo == null)
+                {
+                    UIUtils.UpdateStatus(string.Format("Failed to get show info for tv show {0} [tvdb_id:{1}] from thetvdb.com", tvShowName, tvdbShowSearchResult.Id), true);
+                    Thread.Sleep(2000);
+                    return null;
+                }
+
+                // we now have a list of episodes from thetvdb.com, we can use the IMDb Episode Title to lookup a tvdb ID
+                var tvdbEpisodeInfo = tvdbShowInfo.Episodes.Find(e => e.Name.ToLowerInvariant() == tvEpisodeName.ToLowerInvariant());
+                if (tvdbEpisodeInfo == null)
+                {
+                    // we can also lookup by airDate if using a csv export file
+                    if (episode[IMDbFieldMapping.cProvider].IsCSVExport())
+                    {
+                        string episodeAirDate = null;
+                        episode.TryGetValue(IMDbFieldMapping.cReleaseDate, out episodeAirDate);
+                        if (!string.IsNullOrEmpty(episodeAirDate))
+                        {
+                            tvdbEpisodeInfo = tvdbShowInfo.Episodes.Find(e => e.AirDate == episodeAirDate);
+                        }
+
+                        // still no luck?
+                        if (tvdbEpisodeInfo == null)
+                        {
+                            UIUtils.UpdateStatus(string.Format("Failed to get episode info for tv show {0} [tvdb_id:{1}] - {2} [AirDate:{3}] from thetvdb.com", tvShowName, tvdbShowSearchResult.Id, tvEpisodeName, episodeAirDate ?? "<empty>"), true);
+                            Thread.Sleep(2000);
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        if (tvdbEpisodeInfo == null)
+                        {
+                            UIUtils.UpdateStatus(string.Format("Failed to get episode info for tv show {0} [tvdb_id:{1}] - {2} from thetvdb.com", tvShowName, tvdbShowSearchResult.Id, tvEpisodeName), true);
+                            Thread.Sleep(2000);
+                            return null;
+                        }
+                    }
+                }
+
+                // Note: Web Parsing does not use the IMDb ID for the episode, only the show.
+                //       we're also not setting the created date from the webrequest.
+                var imdbEpisode = new IMDbEpisode
+                {
+                    Created = episode[IMDbFieldMapping.cProvider].IsCSVExport() ? episode[IMDbFieldMapping.cCreated] : null,
+                    EpisodeName = tvEpisodeName,
+                    EpisodeNumber = tvdbEpisodeInfo.EpisodeNumber,
+                    ImdbId = episode[IMDbFieldMapping.cProvider].IsCSVExport() ? episode[IMDbFieldMapping.cIMDbID] : null,
+                    SeasonNumber = tvdbEpisodeInfo.SeasonNumber,
+                    ShowName = tvShowName,
+                    TvdbId = tvdbEpisodeInfo.Id
+                };
+
+                if (episode.ContainsKey(IMDbFieldMapping.cRating))
+                    imdbEpisode.Rating = string.IsNullOrEmpty(episode[IMDbFieldMapping.cRating]) ? 0 : int.Parse(episode[IMDbFieldMapping.cRating]);
+
+                // return the episode
+                return imdbEpisode;
+            }
+            catch (Exception e)
+            {
+                UIUtils.UpdateStatus(string.Format("Failed to get episode info for '{0}' from thetvdb.com, Reason: '{1}'", episode[IMDbFieldMapping.cTitle], e.Message), true);
+                Thread.Sleep(2000);
+                return null;
+            }
         }
 
-        static long GetLastPlayedDate(Dictionary<string, string> item)
+        static string GetLastCreatedDate(Dictionary<string, string> item)
         {
-            long lastPlayedDate = DateTime.Now.ToEpoch();
+            string createdDate = DateTime.Now.ToString().ToISO8601();
 
             // check if we have the 'created' field
             if (item.ContainsKey(IMDbFieldMapping.cCreated))
             {
+                createdDate = GetLastCreatedDate(item[IMDbFieldMapping.cCreated]);
+            }
+
+            return createdDate;
+        }
+
+        static string GetLastCreatedDate(string imdbDateTime)
+        {
+            string createdDate = DateTime.Now.ToString().ToISO8601();
+
+            // check if we have the 'created' field
+            if (!string.IsNullOrEmpty(imdbDateTime))
+            {
                 // date is in the form:
                 // Tue Mar  4 00:00:00 2014
-                string created = item[IMDbFieldMapping.cCreated];
-                string[] splits = created.Split(new string[] { " ", "  " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] splits = imdbDateTime.Split(new string[] { " ", "  " }, StringSplitOptions.RemoveEmptyEntries);
                 if (splits.Count() == 5)
                 {
                     // make date in form DD MMM YYYY
                     DateTime result;
                     if (DateTime.TryParse(string.Format("{0} {1} {2}", splits[2], splits[1], splits[4]), out result))
                     {
-                        lastPlayedDate = result.ToEpoch();
+                        createdDate = result.ToString().ToISO8601();
                     }
                 }
             }
 
-            return lastPlayedDate;
+            return createdDate;
         }
     }
 }

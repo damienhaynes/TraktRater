@@ -118,6 +118,7 @@
             this.txtTraktPassword.Size = new System.Drawing.Size(244, 20);
             this.txtTraktPassword.TabIndex = 3;
             this.txtTraktPassword.UseSystemPasswordChar = true;
+            this.txtTraktPassword.TextChanged += new System.EventHandler(this.txtTraktPassword_TextChanged);
             // 
             // label2
             // 

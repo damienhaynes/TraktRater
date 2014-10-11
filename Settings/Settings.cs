@@ -21,7 +21,7 @@ namespace TraktRater.Settings
 
         #region Constants
         const string cTraktUsername = "TraktUsername";
-        const string cTraktPassword = "TraktPassword";
+        const string cTraktPassword = "TraktPassword2";
         const string cTVDbAccountId = "TVDbAccountId";
         const string cTMDbSessionId = "TMDbSessionId";
         const string cIMDbRatingsFilename = "IMDbFilename";
@@ -72,7 +72,7 @@ namespace TraktRater.Settings
             }
         }
         static string _traktPassword = null;
-
+        
         public static string TVDbAccountIdentifier { get; set; }
 
         public static string TMDbSessionId { get; set; }

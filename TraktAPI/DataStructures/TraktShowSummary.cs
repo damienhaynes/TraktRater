@@ -15,31 +15,11 @@ namespace TraktRater.TraktAPI.DataStructures
         [DataContract]
         public class TraktSeason
         {
+            [DataMember(Name = "number")]
+            public int Number { get; set; }
+
             [DataMember(Name = "episodes")]
-            public List<TraktSeason.TraktEpisode> Episodes { get; set; }
-
-            [DataMember(Name = "season")]
-            public int Season { get; set; }
-
-            [DataContract]
-            public class TraktEpisode
-            {
-                [DataMember(Name = "tvdb_id")]
-                public int TVDbId { get; set; }
-
-                [DataMember(Name = "title")]
-                public string Title { get; set; }
-
-                [DataMember(Name = "first_aired")]
-                public long FirstAired { get; set; }
-
-                [DataMember(Name = "season")]
-                public int Season { get; set; }
-
-                [DataMember(Name = "episode")]
-                public int Episode { get; set; }
-            }
+            public List<TraktEpisode> Episodes { get; set; }
         }
-
     }
 }

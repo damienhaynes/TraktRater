@@ -12,53 +12,201 @@ using TraktRater.Web;
 namespace TraktRater.TraktAPI
 {
     /// <summary>
-    /// List of Sync Modes
-    /// </summary>
-    public enum TraktSyncModes
-    {
-        library,
-        seen,
-        unlibrary,
-        unseen,
-        watchlist,
-        unwatchlist
-    }
-
-    /// <summary>
     /// Object that communicates with the Trakt API
     /// </summary>
-    public static class TraktAPI
+    public class TraktAPI
     {
+        const string ApplicationId = "def4d8e1118401d858c3c6c9d18149f99704d1312914ddd2a51beb9bb4ebf13a";
+
         public static string Username { get; set; }
         public static string Password { get; set; }
+        public static string UserAgent { get; set; }
 
         /// <summary>
-        /// Tests account details can login to trakt.tv
+        /// Login to trakt and to request a user token for all subsequent requests
         /// </summary>
-        /// <param name="data">Object containing username/password</param>
-        /// <returns>The response from trakt</returns>
-        public static TraktResponse TestAccount(TraktAuthentication data)
+        /// <returns></returns>
+        public static TraktUserToken GetUserToken()
         {
-            string response = TraktWeb.Transmit(TraktURIs.TestAccount, data.ToJSON());
-            return response.FromJSON<TraktResponse>();
+            // set our required headers now
+            TraktWeb.CustomRequestHeaders.Clear();
+
+            TraktWeb.CustomRequestHeaders.Add("trakt-api-key", ApplicationId);
+            TraktWeb.CustomRequestHeaders.Add("trakt-api-version", "2");
+            TraktWeb.CustomRequestHeaders.Add("trakt-user-login", Username);
+
+            string response = TraktWeb.PostToTrakt(TraktURIs.Login, GetUserLogin());
+            var loginResponse = response.FromJSON<TraktUserToken>();
+            
+            if (loginResponse == null)
+                return loginResponse;
+
+            // add the token for authenticated methods
+            TraktWeb.CustomRequestHeaders.Add("trakt-user-token", loginResponse.Token);
+            
+            return loginResponse;
         }
 
         /// <summary>
-        /// Rates a list of episodes on trakt
+        /// Gets a User Login object
+        /// </summary>       
+        /// <returns>The User Login json string</returns>
+        private static string GetUserLogin()
+        {
+            return new TraktLogin { Login = TraktAPI.Username, Password = TraktAPI.Password }.ToJSON();
+        }
+
+        #region Sync to Trakt
+
+        #region Watchlist
+
+        /// <summary>
+        /// Sends movie sync data to Trakt Watchlist
         /// </summary>
-        /// <param name="data">The object containing the list of episodes to be rated</param>       
+        /// <param name="syncData">The sync data to send</param>
         /// <returns>The response from trakt</returns>
-        public static TraktRatingsResponse RateEpisodes(TraktEpisodes data)
+        public static TraktSyncResponse SyncMovieWatchlist(TraktMovieSync syncData)
         {
             // check that we have everything we need
-            if (data == null || data.Episodes.Count == 0)
+            if (syncData == null || syncData.Movies == null || syncData.Movies.Count == 0)
                 return null;
 
             // serialize data to JSON and send to server
-            string response = TraktWeb.Transmit(TraktURIs.RateEpisodes, data.ToJSON());
-      
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncWatchlist, syncData.ToJSON());
+
             // return success or failure
-            return response.FromJSON<TraktRatingsResponse>();
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        /// <summary>
+        /// Sends show sync data to Trakt Watchlist
+        /// </summary>
+        /// <param name="syncData">The sync data to send</param>
+        /// <returns>The response from trakt</returns>
+        public static TraktSyncResponse SyncShowWatchlist(TraktShowSync syncData)
+        {
+            // check that we have everything we need
+            if (syncData == null || syncData.Shows == null || syncData.Shows.Count == 0)
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncWatchlist, syncData.ToJSON());
+
+            // return success or failure
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        /// <summary>
+        /// Sends episode sync data to Trakt Watchlist
+        /// </summary>
+        /// <param name="syncData">The sync data to send</param>
+        /// <returns>The response from trakt</returns>
+        public static TraktSyncResponse SyncEpisodeWatchlistEx(TraktEpisodeSyncEx syncData)
+        {
+            // check that we have everything we need
+            if (syncData == null || syncData.Shows == null || syncData.Shows.Count == 0)
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncWatchlist, syncData.ToJSON());
+
+            // return success or failure
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        /// <summary>
+        /// Sends episode sync data to Trakt Watchlist
+        /// </summary>
+        /// <param name="syncData">The sync data to send</param>
+        /// <returns>The response from trakt</returns>
+        public static TraktSyncResponse SyncEpisodeWatchlist(TraktEpisodeSync syncData)
+        {
+            // check that we have everything we need
+            if (syncData == null || syncData.Episodes == null || syncData.Episodes.Count == 0)
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncWatchlist, syncData.ToJSON());
+
+            // return success or failure
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        #endregion
+
+        #region Watched
+
+        /// <summary>
+        /// Sends episode watched sync data to Trakt
+        /// </summary>
+        /// <param name="syncData">The sync data to send</param>
+        public static TraktSyncResponse SyncEpisodesWatchedEx(TraktEpisodeWatchedSyncEx syncData)
+        {
+            // check that we have everything we need
+            if (syncData == null || syncData.shows == null || syncData.shows.Count == 0)
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncWatched, syncData.ToJSON());
+
+            // return success or failure
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        /// <summary>
+        /// Sends episode watched sync data to Trakt
+        /// </summary>
+        /// <param name="syncData">The sync data to send</param>
+        public static TraktSyncResponse SyncEpisodesWatched(TraktEpisodeWatchedSync syncData)
+        {
+            // check that we have everything we need
+            if (syncData == null || syncData.Episodes == null || syncData.Episodes.Count == 0)
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncWatched, syncData.ToJSON());
+
+            // return success or failure
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        /// <summary>
+        /// Sends movies watched sync data to Trakt
+        /// </summary>
+        /// <param name="syncData">The sync data to send</param>
+        public static TraktSyncResponse SyncMoviesWatched(TraktMovieWatchedSync syncData)
+        {
+            // check that we have everything we need
+            if (syncData == null || syncData.Movies == null || syncData.Movies.Count == 0)
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncWatched, syncData.ToJSON());
+
+            // return success or failure
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        #endregion
+
+        #region Rated
+
+        /// <summary>
+        /// Rates a list of movies on trakt
+        /// </summary>
+        /// <param name="data">The object containing the list of movies to be rated</param>       
+        /// <returns>The response from trakt</returns>
+        public static TraktSyncResponse SyncMoviesRated(TraktMovieRatingSync data)
+        {
+            // check that we have everything we need
+            if (data == null || data.movies == null || data.movies.Count == 0)
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncRatings, data.ToJSON());
+
+            // return success or failure
+            return response.FromJSON<TraktSyncResponse>();
         }
 
         /// <summary>
@@ -66,36 +214,151 @@ namespace TraktRater.TraktAPI
         /// </summary>
         /// <param name="data">The object containing the list of shows to be rated</param>       
         /// <returns>The response from trakt</returns>
-        public static TraktRatingsResponse RateShows(TraktShows data)
+        public static TraktSyncResponse SyncShowsRated(TraktShowRatingSync data)
         {
             // check that we have everything we need
-            if (data == null || data.Shows.Count == 0)
+            if (data == null || data.shows == null || data.shows.Count == 0)
                 return null;
 
             // serialize data to JSON and send to server
-            string response = TraktWeb.Transmit(TraktURIs.RateShows, data.ToJSON());
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncRatings, data.ToJSON());
 
             // return success or failure
-            return response.FromJSON<TraktRatingsResponse>();
+            return response.FromJSON<TraktSyncResponse>();
         }
         
         /// <summary>
-        /// Rates a list of movies on trakt
+        /// Rates a list of episodes on trakt
         /// </summary>
-        /// <param name="data">The object containing the list of movies to be rated</param>       
+        /// <param name="data">The object containing the list of episodes to be rated</param>       
         /// <returns>The response from trakt</returns>
-        public static TraktRatingsResponse RateMovies(TraktMovies data)
+        public static TraktSyncResponse SyncEpisodesRatedEx(TraktEpisodeRatingSyncEx data)
         {
             // check that we have everything we need
-            if (data == null || data.Movies.Count == 0)
+            if (data == null || data.Shows == null || data.Shows.Count == 0)
                 return null;
 
             // serialize data to JSON and send to server
-            string response = TraktWeb.Transmit(TraktURIs.RateMovies, data.ToJSON());
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncRatings, data.ToJSON());
+      
+            // return success or failure
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        /// <summary>
+        /// Rates a list of episodes on trakt
+        /// </summary>
+        /// <param name="data">The object containing the list of episodes to be rated</param>       
+        /// <returns>The response from trakt</returns>
+        public static TraktSyncResponse SyncEpisodesRated(TraktEpisodeRatingSync data)
+        {
+            // check that we have everything we need
+            if (data == null || data.Episodes == null || data.Episodes.Count == 0)
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncRatings, data.ToJSON());
 
             // return success or failure
-            return response.FromJSON<TraktRatingsResponse>();
+            return response.FromJSON<TraktSyncResponse>();
         }
+
+        #endregion
+
+        #endregion
+
+        #region Get Current User Data
+
+        #region Ratings
+
+        /// <summary>
+        /// Returns the current users Rated Movies
+        /// </summary>
+        /// <param name="user">username of person</param>
+        public static IEnumerable<TraktUserMovieRating> GetRatedMovies()
+        {
+            string ratedMovies = TraktWeb.GetFromTrakt(TraktURIs.RatedMoviesList);
+            return ratedMovies.FromJSONArray<TraktUserMovieRating>();
+        }
+
+        /// <summary>
+        /// Returns the current users Rated Shows
+        /// </summary>
+        /// <param name="user">username of person</param>
+        public static IEnumerable<TraktUserShowRating> GetRatedShows()
+        {
+            string ratedShows = TraktWeb.GetFromTrakt(TraktURIs.RatedShowsList);
+            return ratedShows.FromJSONArray<TraktUserShowRating>();
+        }
+
+        /// <summary>
+        /// Returns the current users Rated Episodes
+        /// </summary>
+        /// <param name="user">username of person</param>
+        public static IEnumerable<TraktUserEpisodeRating> GetRatedEpisodes()
+        {
+            string ratedEpisodes = TraktWeb.GetFromTrakt(TraktURIs.RatedEpisodesList);
+            return ratedEpisodes.FromJSONArray<TraktUserEpisodeRating>();
+        }
+
+        #endregion
+
+        #region Watched
+
+        /// <summary>
+        /// Returns the current users watched movies and play counts
+        /// </summary>
+        public static IEnumerable<TraktMoviePlays> GetWatchedMovies()
+        {
+            string watchedMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchedMoviesList);
+            return watchedMovies.FromJSONArray<TraktMoviePlays>();
+        }
+
+        /// <summary>
+        /// Returns the current users watched episodes and play counts
+        /// </summary>
+        public static IEnumerable<TraktShowPlays> GetWatchedEpisodes()
+        {
+            string watchedShows = TraktWeb.GetFromTrakt(TraktURIs.WatchedEpisodesList);
+            return watchedShows.FromJSONArray<TraktShowPlays>();
+        }
+
+        #endregion
+
+        #region Watchlist
+
+        /// <summary>
+        /// Returns the current users watchlist movies
+        /// </summary>
+        public static IEnumerable<TraktMovieWatchlist> GetWatchlistMovies()
+        {
+            string watchedMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchlistMoviesList);
+            return watchedMovies.FromJSONArray<TraktMovieWatchlist>();
+        }
+
+        /// <summary>
+        /// Returns the current users watchlist shows
+        /// </summary>
+        public static IEnumerable<TraktShowWatchlist> GetWatchlistShows()
+        {
+            string watchedMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchlistShowsList);
+            return watchedMovies.FromJSONArray<TraktShowWatchlist>();
+        }
+
+        /// <summary>
+        /// Returns the current users watchlist episodes
+        /// </summary>
+        public static IEnumerable<TraktEpisodeWatchlist> GetWatchlistEpisodes()
+        {
+            string watchedMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchlistEpisodesList);
+            return watchedMovies.FromJSONArray<TraktEpisodeWatchlist>();
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Summary Data
 
         public static TraktShowSummary GetShowSummary(string slug)
         {
@@ -108,7 +371,7 @@ namespace TraktRater.TraktAPI
             if (string.IsNullOrEmpty(response))
             {
                 // serialize data to JSON and send to server
-                response = TraktWeb.Transmit(string.Format(TraktURIs.ShowSummary, slug), string.Empty);
+                response = TraktWeb.GetFromTrakt(string.Format(TraktURIs.ShowSummary, slug));
                 TraktCache.CacheResponse(response, fileCache);
                 if (response.FromJSON<TraktShowSummary>() == null)
                 {
@@ -120,139 +383,7 @@ namespace TraktRater.TraktAPI
             return response.FromJSON<TraktShowSummary>();
         }
 
-        /// <summary>
-        /// Sends movie sync data to Trakt
-        /// </summary>
-        /// <param name="syncData">The sync data to send</param>
-        /// <param name="mode">The sync mode to use</param>
-        /// <returns>The response from trakt</returns>
-        public static TraktMovieSyncResponse SyncMovieLibrary(TraktMovieSync syncData, TraktSyncModes mode)
-        {
-            // check that we have everything we need
-            if (syncData == null || syncData.MovieList.Count == 0)
-                return null;
-
-            // serialize data to JSON and send to server
-            string response = TraktWeb.Transmit(string.Format(TraktURIs.SyncMovieLibrary, mode.ToString()), syncData.ToJSON());
-
-            // return success or failure
-            return response.FromJSON<TraktMovieSyncResponse>();
-        }
-
-        /// <summary>
-        /// Sends episode sync data to Trakt
-        /// </summary>
-        /// <param name="syncData">The sync data to send</param>
-        /// <param name="mode">The sync mode to use</param>
-        public static TraktResponse SyncEpisodeLibrary(TraktEpisodeSync syncData, TraktSyncModes mode)
-        {
-            // check that we have everything we need
-            if (syncData == null || string.IsNullOrEmpty(syncData.SeriesID))
-                return null;
-
-            // serialize data to JSON and send to server
-            string response = TraktWeb.Transmit(string.Format(TraktURIs.SyncEpisodeLibrary, mode.ToString()), syncData.ToJSON());
-
-            // return success or failure
-            return response.FromJSON<TraktResponse>();
-        }
-
-        public static TraktResponse SyncShowLibrary(TraktShowSync syncData, TraktSyncModes mode)
-        {
-            // check that we have everything we need
-            if (syncData == null)
-                return null;
-
-            // serialize data to JSON and send to server
-            string response = TraktWeb.Transmit(string.Format(TraktURIs.SyncShowLibrary, mode.ToString()), syncData.ToJSON());
-
-            // return success or failure
-            return response.FromJSON<TraktResponse>();
-        }
-
-        /// <summary>
-        /// Returns the users Rated Movies
-        /// </summary>
-        /// <param name="user">username of person</param>
-        public static IEnumerable<TraktUserMovieRating> GetUserRatedMovies(string user)
-        {
-            string ratedMovies = TraktWeb.Transmit(string.Format(TraktURIs.UserRatedMoviesList, user), GetUserAuthentication());
-
-            // if we timeout we will return an error response
-            TraktResponse response = ratedMovies.FromJSON<TraktResponse>();
-            if (response == null || response.Error != null) return null;
-
-            return ratedMovies.FromJSONArray<TraktUserMovieRating>();
-        }
-
-        /// <summary>
-        /// Returns the users Rated Shows
-        /// </summary>
-        /// <param name="user">username of person</param>
-        public static IEnumerable<TraktUserShowRating> GetUserRatedShows(string user)
-        {
-            string ratedShows = TraktWeb.Transmit(string.Format(TraktURIs.UserRatedShowsList, user), GetUserAuthentication());
-
-            // if we timeout we will return an error response
-            TraktResponse response = ratedShows.FromJSON<TraktResponse>();
-            if (response == null || response.Error != null) return null;
-
-            return ratedShows.FromJSONArray<TraktUserShowRating>();
-        }
-
-        /// <summary>
-        /// Returns the users Rated Episodes
-        /// </summary>
-        /// <param name="user">username of person</param>
-        public static IEnumerable<TraktUserEpisodeRating> GetUserRatedEpisodes(string user)
-        {
-            string ratedEpisodes = TraktWeb.Transmit(string.Format(TraktURIs.UserRatedEpisodesList, user), GetUserAuthentication());
-
-            // if we timeout we will return an error response
-            TraktResponse response = ratedEpisodes.FromJSON<TraktResponse>();
-            if (response == null || response.Error != null) return null;
-
-            return ratedEpisodes.FromJSONArray<TraktUserEpisodeRating>();
-        }
-
-        /// <summary>
-        /// Returns the users Watched Movies
-        /// </summary>
-        /// <param name="user">username of person</param>
-        public static IEnumerable<TraktMovie> GetUserWatchedMovies(string user)
-        {
-            string watchedMovies = TraktWeb.Transmit(string.Format(TraktURIs.UserWatchedMoviesList, user), GetUserAuthentication());
-
-            // if we timeout we will return an error response
-            var response = watchedMovies.FromJSON<TraktResponse>();
-            if (response == null || response.Error != null) return null;
-
-            return watchedMovies.FromJSONArray<TraktMovie>();
-        }
-
-        /// <summary>
-        /// Returns the users Watched Shows
-        /// </summary>
-        /// <param name="user">username of person</param>
-        public static IEnumerable<TraktShowWatched> GetUserWatchedShows(string user)
-        {
-            string watchedShows = TraktWeb.Transmit(string.Format(TraktURIs.UserWatchedShowsList, user), GetUserAuthentication());
-
-            // if we timeout we will return an error response
-            var response = watchedShows.FromJSON<TraktResponse>();
-            if (response == null || response.Error != null) return null;
-
-            return watchedShows.FromJSONArray<TraktShowWatched>();
-        }
-
-        /// <summary>
-        /// Gets a User Authentication object
-        /// </summary>       
-        /// <returns>The User Authentication json string</returns>
-        private static string GetUserAuthentication()
-        {
-            return new TraktAuthentication { Username = TraktAPI.Username, Password = TraktAPI.Password }.ToJSON();
-        }
+        #endregion
 
     }
 }

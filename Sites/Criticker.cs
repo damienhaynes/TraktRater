@@ -60,8 +60,8 @@ namespace TraktRater.Sites
             if (criticker.Films.Count > 0)
             {
                 // get current trakt ratings
-                UIUtils.UpdateStatus("Retreiving existing movie ratings from trakt.tv.");
-                var currentUserMovieRatings = TraktAPI.TraktAPI.GetUserRatedMovies(AppSettings.TraktUsername);
+                UIUtils.UpdateStatus("Retrieving existing movie ratings from trakt.tv.");
+                var currentUserMovieRatings = TraktAPI.TraktAPI.GetRatedMovies();
                 if (ImportCancelled) return;
 
                 if (currentUserMovieRatings != null)
@@ -70,7 +70,7 @@ namespace TraktRater.Sites
 
                     // filter out movies to rate from existing ratings online
                     UIUtils.UpdateStatus("Filtering out movies which are already rated");
-                    criticker.Films.RemoveAll(m => currentUserMovieRatings.Any(c => c.Title.ToLowerInvariant() == m.Title.ToLowerInvariant() && c.Year == m.Year.ToString()));
+                    criticker.Films.RemoveAll(m => currentUserMovieRatings.Any(c => c.Movie.Title.ToLowerInvariant() == m.Title.ToLowerInvariant() && c.Movie.Year == m.Year));
                 }
 
                 UIUtils.UpdateStatus(string.Format("Importing {0} Criticker movie ratings...", criticker.Films.Count));
@@ -83,13 +83,19 @@ namespace TraktRater.Sites
                         UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Criticker movie ratings...", i + 1, pages));
 
                         var movies = GetRateMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList());
-                        var response = TraktAPI.TraktAPI.RateMovies(movies);
-                        if (response == null || response.Status != "success")
+                        var response = TraktAPI.TraktAPI.SyncMoviesRated(movies);
+                        if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send ratings for Criticker movies.", true);
                             Thread.Sleep(2000);
-                            if (ImportCancelled) return;
                         }
+                        else if (response.NotFound.Movies.Count > 0)
+                        {
+                            UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
+                            Thread.Sleep(1000);
+                        }
+
+                        if (ImportCancelled) return;
                     }
                 }
             }
@@ -112,13 +118,19 @@ namespace TraktRater.Sites
                     {
                         UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Criticker movies as watched...", i + 1, pages));
 
-                        var watchedResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList()), TraktSyncModes.seen);
-                        if (watchedResponse == null || watchedResponse.Status != "success")
+                        var watchedResponse = TraktAPI.TraktAPI.SyncMoviesWatched(GetSyncMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList()));
+                        if (watchedResponse == null)
                         {
                             UIUtils.UpdateStatus("Failed to send watched status for Criticker movies.", true);
                             Thread.Sleep(2000);
-                            if (ImportCancelled) return;
                         }
+                        else if (watchedResponse.NotFound.Movies.Count > 0)
+                        {
+                            UIUtils.UpdateStatus(string.Format("Unable to sync watched for {0} movies as they're not found on trakt.tv!", watchedResponse.NotFound.Movies.Count));
+                            Thread.Sleep(1000);
+                        }
+
+                        if (ImportCancelled) return;
                     }
                 }
             }
@@ -137,45 +149,42 @@ namespace TraktRater.Sites
 
         #region Private Methods
 
-        private TraktMovies GetRateMoviesData(List<CritickerFilmRankings.Film> movies)
+        private TraktMovieRatingSync GetRateMoviesData(List<CritickerFilmRankings.Film> movies)
         {
-            var traktMovies = new List<TraktMovie>();
+            var traktMovies = new List<TraktMovieRating>();
 
             traktMovies.AddRange(from movie in movies
-                                 select new TraktMovie
+                                 select new TraktMovieRating
                                  {
                                      Title = movie.Title,
                                      Year = movie.Year,
-                                     Rating = Convert.ToInt32(Math.Round(movie.Score / 10.0, MidpointRounding.AwayFromZero))
+                                     Rating = Convert.ToInt32(Math.Round(movie.Score / 10.0, MidpointRounding.AwayFromZero)),
+                                     RatedAt = movie.ReviewDate.ToISO8601()
                                  });
 
-            var movieRateData = new TraktMovies
+            var movieRateData = new TraktMovieRatingSync
             {
-                Username = AppSettings.TraktUsername,
-                Password = AppSettings.TraktPassword,
-                Movies = traktMovies
+                movies = traktMovies
             };
 
             return movieRateData;
         }
 
-        private TraktMovieSync GetSyncMoviesData(List<CritickerFilmRankings.Film> movies)
+        private TraktMovieWatchedSync GetSyncMoviesData(List<CritickerFilmRankings.Film> movies)
         {
-            var traktMovies = new List<TraktMovieSync.Movie>();
+            var traktMovies = new List<TraktMovieWatched>();
 
             traktMovies.AddRange(from movie in movies
-                                 select new TraktMovieSync.Movie
+                                 select new TraktMovieWatched
                                  {
                                      Title = movie.Title,
-                                     Year = movie.Year.ToString(),
-                                     LastPlayed = movie.ReviewDate.ToEpoch()
+                                     Year = movie.Year,
+                                     WatchedAt = movie.ReviewDate.ToISO8601()
                                  });
 
-            var movieWatchedData = new TraktMovieSync
+            var movieWatchedData = new TraktMovieWatchedSync
             {
-                Username = AppSettings.TraktUsername,
-                Password = AppSettings.TraktPassword,
-                MovieList = traktMovies
+                Movies = traktMovies
             };
 
             return movieWatchedData;

@@ -48,5 +48,15 @@ namespace TraktRater.Extensions
             byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(txt);
             return System.Text.Encoding.ASCII.GetString(bytes);
         }
+
+        public static string ReplaceInvalidFileChars(this string filename)
+        {
+            foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+            {
+                filename = filename.Replace(c, '_');
+            }
+
+            return filename;
+        }
     }
 }

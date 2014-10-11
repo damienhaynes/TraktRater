@@ -6,10 +6,9 @@ using System.Runtime.Serialization;
 
 namespace TraktRater.TraktAPI.DataStructures
 {
-    [DataContract]
-    public class TraktEpisode
+    public class TraktMovieRatingSync
     {
-        [DataMember(Name = "ids")]
-        public TraktEpisodeId Ids { get; set; }
+        [DataMember(Name = "movies")]
+        public List<TraktMovieRating> movies { get; set; }
     }
 }

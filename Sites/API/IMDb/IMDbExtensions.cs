@@ -38,5 +38,16 @@ namespace TraktRater.Sites.API.IMDb
             }
             return retValue;
         }
+
+        public static bool IsValidYear(this string year)
+        {
+            int result = 0;
+            return int.TryParse(year, out result);
+        }
+
+        public static bool IsCSVExport(this string provider)
+        {
+            return provider != "web";
+        }
     }
 }

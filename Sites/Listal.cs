@@ -80,7 +80,7 @@ namespace TraktRater.Sites
             // check if everything we need was read okay
             if (listal == null || listal.Channel == null || listal.Channel.Items == null)
             {
-                UI.UIUtils.UpdateStatus("Error reading Listal movie XML file.", true);
+                UI.UIUtils.UpdateStatus("Error reading Listal movie XML file", true);
                 return;
             }
 
@@ -90,13 +90,13 @@ namespace TraktRater.Sites
             #region Ratings
 
             var listalMovieRatings = listal.Channel.Items.Where(m => m.Rating > 0).ToList();
-            UIUtils.UpdateStatus(string.Format("Found {0} movies with ratings.", listalMovieRatings.Count));
+            UIUtils.UpdateStatus(string.Format("Found {0} movies with ratings", listalMovieRatings.Count));
 
             if (listalMovieRatings.Count > 0)
             {
                 // get current trakt ratings
-                UIUtils.UpdateStatus("Retreiving existing movie ratings from trakt.tv.");
-                var currentUserMovieRatings = TraktAPI.TraktAPI.GetUserRatedMovies(AppSettings.TraktUsername);
+                UIUtils.UpdateStatus("Retrieving existing movie ratings from trakt.tv");
+                var currentUserMovieRatings = TraktAPI.TraktAPI.GetRatedMovies();
                 if (ImportCancelled) return;
 
                 if (currentUserMovieRatings != null)
@@ -104,10 +104,10 @@ namespace TraktRater.Sites
                     UIUtils.UpdateStatus(string.Format("Found {0} user movie ratings on trakt.tv", currentUserMovieRatings.Count()));
 
                     // filter out movies to rate from existing ratings online
-                    listalMovieRatings.RemoveAll(m => currentUserMovieRatings.Any(c => c.IMDBID == "tt" + m.IMDbId.ToString()));
+                    listalMovieRatings.RemoveAll(m => currentUserMovieRatings.Any(c => c.Movie.Ids.ImdbId == "tt" + m.IMDbId.ToString()));
                 }
 
-                UIUtils.UpdateStatus(string.Format("Importing {0} Listal movie ratings...", listalMovieRatings.Count));
+                UIUtils.UpdateStatus(string.Format("Importing {0} new Listal movie ratings...", listalMovieRatings.Count));
                 if (listalMovieRatings.Count > 0)
                 {
                     int pageSize = AppSettings.BatchSize;
@@ -116,11 +116,16 @@ namespace TraktRater.Sites
                     {
                         UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Listal rated movies...", i + 1, pages));
 
-                        var response = TraktAPI.TraktAPI.RateMovies(GetRateMoviesData(listalMovieRatings.Skip(i * pageSize).Take(pageSize).ToList()));
-                        if (response == null || response.Status != "success")
+                        var response = TraktAPI.TraktAPI.SyncMoviesRated(GetRateMoviesData(listalMovieRatings.Skip(i * pageSize).Take(pageSize).ToList()));
+                        if (response == null)
                         {
-                            UIUtils.UpdateStatus("Failed to send ratings for Listal movies.", true);
+                            UIUtils.UpdateStatus("Failed to send ratings for Listal movies", true);
                             Thread.Sleep(2000);
+                        }
+                        else if (response.NotFound.Movies.Count > 0)
+                        {
+                            UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
+                            Thread.Sleep(1000);
                         }
 
                         if (ImportCancelled) return;
@@ -145,11 +150,16 @@ namespace TraktRater.Sites
                     {
                         UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Listal movies as watched...", i + 1, pages));
 
-                        var watchedResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(listalMovieRatings.Skip(i * pageSize).Take(pageSize).ToList()), TraktSyncModes.seen);
-                        if (watchedResponse == null || watchedResponse.Status != "success")
+                        var watchedResponse = TraktAPI.TraktAPI.SyncMoviesWatched(GetWatchedMoviesData(listalMovieRatings.Skip(i * pageSize).Take(pageSize).ToList()));
+                        if (watchedResponse == null)
                         {
-                            UIUtils.UpdateStatus("Failed to send watched status for Listal movies.", true);
+                            UIUtils.UpdateStatus("Failed to send watched status for Listal movies", true);
                             Thread.Sleep(2000);
+                        }
+                        else if (watchedResponse.NotFound.Movies.Count > 0)
+                        {
+                            UIUtils.UpdateStatus(string.Format("Unable to sync watched for {0} movies as they're not found on trakt.tv!", watchedResponse.NotFound.Movies.Count));
+                            Thread.Sleep(1000);
                         }
 
                         if (ImportCancelled) return;
@@ -159,6 +169,7 @@ namespace TraktRater.Sites
             #endregion
 
             #region Watchlist
+
             // Convert Listal Wantlist to a Trakt Watchlist
             if (ImportWantlist)
             {
@@ -168,18 +179,28 @@ namespace TraktRater.Sites
 
                 if (wantList.Count > 0)
                 {
+                    UIUtils.UpdateStatus("Requesting existing watchlist movies from trakt...");
+                    var watchlistTraktMovies = TraktAPI.TraktAPI.GetWatchlistMovies();
+                    if (watchlistTraktMovies != null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("Found {0} watchlist movies on trakt", watchlistTraktMovies.Count()));
+                        UIUtils.UpdateStatus("Filtering out watchlist movies that are already in watchlist on trakt.tv");
+                        wantList.RemoveAll(w => watchlistTraktMovies.FirstOrDefault(t => t.Movie.Ids.ImdbId == "tt" + w.IMDbId) != null);
+                    }
+                    if (ImportCancelled) return;
+
                     if (AppSettings.IgnoreWatchedForWatchlist)
                     {
                         UIUtils.UpdateStatus("Requesting watched movies from trakt...");
 
                         // get watched movies from trakt so we don't import movies into watchlist that are already watched
-                        var watchedTraktMovies = TraktAPI.TraktAPI.GetUserWatchedMovies(AppSettings.TraktUsername);
+                        var watchedTraktMovies = TraktAPI.TraktAPI.GetWatchedMovies();
                         if (watchedTraktMovies != null)
                         {
                             UIUtils.UpdateStatus(string.Format("Found {0} watched movies on trakt", watchedTraktMovies.Count()));
 
                             // remove movies from sync list which are watched already
-                            wantList.RemoveAll(w => watchedTraktMovies.Count(t => t.IMDbId == "tt" + w.IMDbId) != 0);
+                            wantList.RemoveAll(w => watchedTraktMovies.FirstOrDefault(t => t.Movie.Ids.ImdbId == "tt" + w.IMDbId) != null);
                         }
                         if (ImportCancelled) return;
                     }
@@ -195,10 +216,10 @@ namespace TraktRater.Sites
                         {
                             UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Listal wantlist movies to trakt.tv watchlist...", i + 1, pages));
 
-                            var watchlistMoviesResponse = TraktAPI.TraktAPI.SyncMovieLibrary(GetSyncMoviesData(wantList.Skip(i * pageSize).Take(pageSize).ToList()), TraktSyncModes.watchlist);
-                            if (watchlistMoviesResponse == null || watchlistMoviesResponse.Status != "success")
+                            var watchlistMoviesResponse = TraktAPI.TraktAPI.SyncMovieWatchlist(GetMoviesData(wantList.Skip(i * pageSize).Take(pageSize).ToList()));
+                            if (watchlistMoviesResponse == null)
                             {
-                                UIUtils.UpdateStatus("Failed to send watchlist for Listal movies.", true);
+                                UIUtils.UpdateStatus("Failed to send watchlist for Listal movies", true);
                                 Thread.Sleep(2000);
                             }
 
@@ -220,7 +241,7 @@ namespace TraktRater.Sites
             // check if everything we need was read okay
             if (listal == null || listal.Channel == null || listal.Channel.Items == null)
             {
-                UI.UIUtils.UpdateStatus("Error reading Listal tv show XML file.", true);
+                UI.UIUtils.UpdateStatus("Error reading Listal tv show XML file", true);
                 return;
             }
 
@@ -230,13 +251,13 @@ namespace TraktRater.Sites
             #region Ratings
 
             var listalShowRatings = listal.Channel.Items.Where(m => m.Rating > 0).ToList();
-            UIUtils.UpdateStatus(string.Format("Found {0} tv shows with ratings.", listalShowRatings.Count), true);
+            UIUtils.UpdateStatus(string.Format("Found {0} tv shows with ratings", listalShowRatings.Count), true);
 
             if (listalShowRatings.Count > 0)
             {
                 // get current trakt ratings
-                UIUtils.UpdateStatus("Retreiving existing tv show ratings from trakt.tv.");
-                var currentUserShowRatings = TraktAPI.TraktAPI.GetUserRatedShows(AppSettings.TraktUsername);
+                UIUtils.UpdateStatus("Retrieving existing tv show ratings from trakt.tv");
+                var currentUserShowRatings = TraktAPI.TraktAPI.GetRatedShows();
                 if (ImportCancelled) return;
 
                 if (currentUserShowRatings != null)
@@ -244,7 +265,7 @@ namespace TraktRater.Sites
                     UIUtils.UpdateStatus(string.Format("Found {0} user tv show ratings on trakt.tv", currentUserShowRatings.Count()));
 
                     // filter out shows to rate from existing ratings online
-                    listalShowRatings.RemoveAll(m => currentUserShowRatings.Any(c => c.IMDBID == "tt" + m.IMDbId.ToString()));
+                    listalShowRatings.RemoveAll(m => currentUserShowRatings.Any(c => c.Show.Ids.ImdbId == "tt" + m.IMDbId.ToString()));
                 }
 
                 UIUtils.UpdateStatus(string.Format("Importing {0} Listal tv show ratings...", listalShowRatings.Count));
@@ -256,11 +277,16 @@ namespace TraktRater.Sites
                     {
                         UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Listal show ratings...", i + 1, pages));
 
-                        var response = TraktAPI.TraktAPI.RateShows(GetRateShowsData(listalShowRatings.Skip(i * pageSize).Take(pageSize).ToList()));
-                        if (response == null || response.Status != "success")
+                        var response = TraktAPI.TraktAPI.SyncShowsRated(GetRateShowsData(listalShowRatings.Skip(i * pageSize).Take(pageSize).ToList()));
+                        if (response == null)
                         {
-                            UIUtils.UpdateStatus("Failed to send ratings for Listal tv shows.", true);
+                            UIUtils.UpdateStatus("Failed to send ratings for Listal tv shows", true);
                             Thread.Sleep(2000);
+                        }
+                        else if (response.NotFound.Shows.Count > 0)
+                        {
+                            UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count));
+                            Thread.Sleep(1000);
                         }
 
                         if (ImportCancelled) return;
@@ -280,20 +306,31 @@ namespace TraktRater.Sites
 
                 if (wantList.Count > 0)
                 {
+                    UIUtils.UpdateStatus("Requesting existing watchlist shows from trakt...");
+                    var watchlistTraktShows = TraktAPI.TraktAPI.GetWatchlistShows();
+                    if (watchlistTraktShows != null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("Found {0} watchlist shows on trakt", watchlistTraktShows.Count()));
+                        UIUtils.UpdateStatus("Filtering out watchlist shows that are already in watchlist on trakt.tv");
+                        wantList.RemoveAll(w => watchlistTraktShows.FirstOrDefault(t => t.Show.Ids.ImdbId == "tt" + w.IMDbId) != null);
+                    }
+                    if (ImportCancelled) return;
+
                     if (AppSettings.IgnoreWatchedForWatchlist)
                     {
                         UIUtils.UpdateStatus("Requesting watched shows from trakt...");
 
-                        // get watched tv shows from trakt so we don't import shows into watchlist that are already watched
-                        // here we're really just checking if at least a single episode is watched on trakt as that's what we get back from the API
-                        var watchedTraktShows = TraktAPI.TraktAPI.GetUserWatchedShows(AppSettings.TraktUsername);
+                        // get watched movies from trakt so we don't import shows into watchlist that are already watched
+                        var watchedTraktShows = TraktAPI.TraktAPI.GetWatchedEpisodes();
                         if (watchedTraktShows != null)
                         {
-                            UIUtils.UpdateStatus(string.Format("Found {0} watched tv shows on trakt", watchedTraktShows.Count()));
+                            UIUtils.UpdateStatus(string.Format("Found {0} watched shows on trakt", watchedTraktShows.Count()));
+                            UIUtils.UpdateStatus("Filtering out watchlist shows containing watched episodes on trakt.tv.");
 
                             // remove shows from sync list which are watched already
-                            wantList.RemoveAll(w => watchedTraktShows.Count(t => t.IMDbId == "tt" + w.IMDbId) != 0);
+                            wantList.RemoveAll(w => watchedTraktShows.FirstOrDefault(t => t.Show.Ids.ImdbId == "tt" + w.IMDbId) != null);
                         }
+
                         if (ImportCancelled) return;
                     }
 
@@ -308,10 +345,10 @@ namespace TraktRater.Sites
                         {
                             UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Listal wantlist tv shows to trakt.tv watchlist...", i + 1, pages));
 
-                            var watchlistShowsResponse = TraktAPI.TraktAPI.SyncShowLibrary(GetSyncShowsData(wantList.Skip(i * pageSize).Take(pageSize).ToList()), TraktSyncModes.watchlist);
-                            if (watchlistShowsResponse == null || watchlistShowsResponse.Status != "success")
+                            var watchlistShowsResponse = TraktAPI.TraktAPI.SyncShowWatchlist(GetSyncShowsData(wantList.Skip(i * pageSize).Take(pageSize).ToList()));
+                            if (watchlistShowsResponse == null)
                             {
-                                UIUtils.UpdateStatus("Failed to send watchlist for Listal tv shows.", true);
+                                UIUtils.UpdateStatus("Failed to send watchlist for Listal tv shows", true);
                                 Thread.Sleep(2000);
                             }
 
@@ -324,7 +361,48 @@ namespace TraktRater.Sites
             #endregion
         }
 
-        private TraktMovies GetRateMoviesData(List<ListalExport.RSSChannel.Item> movies)
+        private TraktMovieRatingSync GetRateMoviesData(List<ListalExport.RSSChannel.Item> movies)
+        {
+            var traktMovies = new List<TraktMovieRating>();
+
+            traktMovies.AddRange(from movie in movies
+                                 select new TraktMovieRating
+                                 {
+                                     Ids = new TraktMovieId { ImdbId = "tt" + movie.IMDbId },
+                                     Title = movie.Title,
+                                     Rating = movie.Rating,
+                                     RatedAt = movie.PublishedDate.ToISO8601(-5) // bug with Listal's GMT conversion
+                                 });
+
+            var movieRateData = new TraktMovieRatingSync
+            {
+                movies = traktMovies
+            };
+
+            return movieRateData;
+        }
+
+        private TraktMovieWatchedSync GetWatchedMoviesData(List<ListalExport.RSSChannel.Item> movies)
+        {
+            var traktMovies = new List<TraktMovieWatched>();
+
+            traktMovies.AddRange(from movie in movies
+                                 select new TraktMovieWatched
+                                 {
+                                     Title = movie.Title,
+                                     Ids = new TraktMovieId { ImdbId = "tt" + movie.IMDbId },
+                                     WatchedAt = movie.PublishedDate.ToISO8601(-5) // bug with Listal's GMT conversion
+                                 });
+
+            var movieWatchedData = new TraktMovieWatchedSync
+            {
+                Movies = traktMovies
+            };
+
+            return movieWatchedData;
+        }
+
+        private TraktMovieSync GetMoviesData(List<ListalExport.RSSChannel.Item> movies)
         {
             var traktMovies = new List<TraktMovie>();
 
@@ -332,84 +410,57 @@ namespace TraktRater.Sites
                                  select new TraktMovie
                                  {
                                      Title = movie.Title,
-                                     IMDbId = "tt" + movie.IMDbId,
-                                     Rating = movie.Rating
+                                     Ids = new TraktMovieId { ImdbId = "tt" + movie.IMDbId },
                                  });
 
-            var movieRateData = new TraktMovies
+            var movieData = new TraktMovieSync
             {
-                Username = AppSettings.TraktUsername,
-                Password = AppSettings.TraktPassword,
                 Movies = traktMovies
             };
 
-            return movieRateData;
+            return movieData;
         }
 
-        private TraktMovieSync GetSyncMoviesData(List<ListalExport.RSSChannel.Item> movies)
+        private TraktShowRatingSync GetRateShowsData(List<ListalExport.RSSChannel.Item> shows)
         {
-            var traktMovies = new List<TraktMovieSync.Movie>();
+            var traktShows = new List<TraktShowRating>();
 
-            traktMovies.AddRange(from movie in movies
-                                 select new TraktMovieSync.Movie
-                                 {
-                                     Title = movie.Title,
-                                     IMDBID = "tt" + movie.IMDbId,
-                                     LastPlayed = movie.PublishedDate.ToEpoch(-5) // bug with Listal's GMT conversion
-                                 });
+            traktShows.AddRange(from show in shows
+                                select new TraktShowRating
+                                {
+                                    Ids = new TraktShowId { ImdbId = "tt" + show.IMDbId },
+                                    Title = show.Title,
+                                    Rating = show.Rating,
+                                    RatedAt = show.PublishedDate.ToISO8601(-5) // bug with Listal's GMT conversion
+                                });
 
-            var movieWatchedData = new TraktMovieSync
+            var showRateData = new TraktShowRatingSync
             {
-                Username = AppSettings.TraktUsername,
-                Password = AppSettings.TraktPassword,
-                MovieList = traktMovies
+                shows = traktShows               
             };
 
-            return movieWatchedData;
+            return showRateData;
         }
 
-        private TraktShows GetRateShowsData(List<ListalExport.RSSChannel.Item> shows)
+        private TraktShowSync GetSyncShowsData(List<ListalExport.RSSChannel.Item> shows)
         {
             var traktShows = new List<TraktShow>();
 
             traktShows.AddRange(from show in shows
                                 select new TraktShow
-                                {
-                                    IMDbId = "tt" + show.IMDbId,
-                                    Title = show.Title,
-                                    Rating = show.Rating
-                                });
-
-            var movieRateData = new TraktShows
-            {
-                Username = AppSettings.TraktUsername,
-                Password = AppSettings.TraktPassword,
-                Shows = traktShows
-            };
-
-            return movieRateData;
-        }
-
-        private TraktShowSync GetSyncShowsData(List<ListalExport.RSSChannel.Item> shows)
-        {
-            var traktShows = new List<TraktShowSync.Show>();
-
-            traktShows.AddRange(from show in shows
-                                select new TraktShowSync.Show
                                  {
                                      Title = show.Title,
-                                     IMDbId = "tt" + show.IMDbId                                     
+                                     Ids = new TraktShowId { ImdbId = "tt" + show.IMDbId }
                                  });
 
             var showWatchedData = new TraktShowSync
             {
-                Username = AppSettings.TraktUsername,
-                Password = AppSettings.TraktPassword,
-                Showlist = traktShows
+                Shows = traktShows
             };
 
             return showWatchedData;
         }
+
         #endregion
     }
 }

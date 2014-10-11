@@ -36,6 +36,9 @@ namespace TraktRater.Sites.API.TVDb
 
             [XmlElement("EpisodeName")]
             public string Name { get; set; }
+
+            [XmlElement("FirstAired")]
+            public string AirDate { get; set; }
         }
     }
 

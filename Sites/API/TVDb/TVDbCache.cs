@@ -13,6 +13,7 @@ namespace TraktRater.Sites.API.TVDb
         public static string cEpisodeRatingsFileCache = cAppDir + @"\TraktRater\Ratings\{0}.xml";
         public static string cShowRatingsFileCache = cAppDir + @"\TraktRater\Ratings\series.xml";
         public static string cShowInfoFileCache = cAppDir + @"\TraktRater\Series\{0}.xml";
+        public static string cShowSearchFileCache = cAppDir + @"\TraktRater\SearchResults\tvdb_{0}.xml";
 
         public static string GetFromCache(string filename)
         {

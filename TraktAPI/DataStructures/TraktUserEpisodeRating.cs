@@ -9,54 +9,32 @@ namespace TraktRater.TraktAPI.DataStructures
     [DataContract]
     public class TraktUserEpisodeRating
     {
-        [DataMember(Name = "inserted")]
-        public long Inserted { get; set; }
+        [DataMember(Name = "rated_at")]
+        public string RatedAt { get; set; }
 
         [DataMember(Name = "rating")]
-        public string Rating { get; set; }
-
-        [DataMember(Name = "rating_advanced")]
-        public int RatingAdvanced { get; set; }
+        public int Rating { get; set; }
 
         [DataMember(Name = "show")]
-        public Show ShowDetails { get; set; }
+        public TraktShow Show { get; set; }
 
         [DataMember(Name = "episode")]
-        public Episode EpisodeDetails { get; set; }
+        public TraktEpisodeSyncSummary Episode { get; set; }
 
         [DataContract]
-        public class Show
+        public class TraktEpisodeSyncSummary
         {
-            [DataMember(Name = "title")]
-            public string Title { get; set; }
-
-            [DataMember(Name = "year")]
-            public int Year { get; set; }
-
-            [DataMember(Name = "imdb_id")]
-            public string IMDBID { get; set; }
-
-            [DataMember(Name = "tvdb_id")]
-            public string TVDBID { get; set; }
-
-            [DataMember(Name = "tvrage_id")]
-            public string TVRageID { get; set; }
-        }
-
-        [DataContract]
-        public class Episode
-        {
-            [DataMember(Name = "title")]
-            public string Title { get; set; }
-
-            [DataMember(Name = "season")]
-            public int SeasonNumber { get; set; }
+            [DataMember(Name = "ids")]
+            public TraktEpisodeId Ids { get; set; }
 
             [DataMember(Name = "number")]
-            public int EpisodeNumber { get; set; }
+            public int Number { get; set; }
 
-            [DataMember(Name = "tvdb_id")]
-            public string TVDBID { get; set; }
+            [DataMember(Name = "season")]
+            public int Season { get; set; }
+
+            [DataMember(Name = "title")]
+            public string Title { get; set; }
         }
     }
 }

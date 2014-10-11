@@ -96,9 +96,6 @@ namespace TraktRater
             {
                 EnableImdbCSVControls(rdnImdbCSV.Checked);
             }
-
-            // prevent re-hash and subscribe after setting password in box
-            txtTraktPassword.TextChanged += new EventHandler(txtTraktPassword_TextChanged);
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -131,12 +128,7 @@ namespace TraktRater
 
         private void txtTraktPassword_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtTraktPassword.Text))
-            {
-                AppSettings.TraktPassword = string.Empty;
-                return;
-            }
-            AppSettings.TraktPassword = txtTraktPassword.Text.ToShaHash();
+            AppSettings.TraktPassword = txtTraktPassword.Text;
         }
 
         private void txtTraktUsername_TextChanged(object sender, EventArgs e)
@@ -373,11 +365,10 @@ namespace TraktRater
 
                 #region Login to trakt
                 UIUtils.UpdateStatus("Logging in to trakt.tv...");
-                var accountDetails = new TraktAuthentication { Username = AppSettings.TraktUsername, Password = AppSettings.TraktPassword };
-                var response = TraktAPI.TraktAPI.TestAccount(accountDetails);
-                if (response == null || response.Status != "success")
+                var response = TraktAPI.TraktAPI.GetUserToken();
+                if (response == null || string.IsNullOrEmpty(response.Token))
                 {
-                    UIUtils.UpdateStatus("Unable to login to trakt, check username and password!", true);
+                    UIUtils.UpdateStatus("Unable to login to trakt, check log for details.", true);
                     SetControlState(true);
                     ImportRunning = false;
                     ImportCancelled = false;

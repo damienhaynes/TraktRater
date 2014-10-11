@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
 using TraktRater.Web;
 using TraktRater.Extensions;
 
@@ -58,6 +59,23 @@ namespace TraktRater.Sites.API.TVDb
                 }
             }
             return response.FromXML<TVDbShow>();
+        }
+
+        public static TVDbShowSearch SearchShow(string showName)
+        {
+            string fileCache = string.Format(TVDbCache.cShowSearchFileCache, showName.ReplaceInvalidFileChars());
+            string response = TVDbCache.GetFromCache(fileCache, 7);
+            if (string.IsNullOrEmpty(response))
+            {
+                response = TraktWeb.Transmit(string.Format(TVDbURIs.SeriesSearch, WebUtility.HtmlEncode(showName)), string.Empty);
+                TVDbCache.CacheResponse(response, fileCache);
+                if (response.FromXML<TVDbShowSearch>() == null)
+                {
+                    TVDbCache.DeleteFromCache(fileCache);
+                    return null;
+                }
+            }
+            return response.FromXML<TVDbShowSearch>();
         }
     }
 }

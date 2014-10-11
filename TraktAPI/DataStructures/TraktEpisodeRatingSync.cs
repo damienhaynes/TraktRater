@@ -7,33 +7,33 @@ using System.Runtime.Serialization;
 namespace TraktRater.TraktAPI.DataStructures
 {
     [DataContract]
-    public class TraktEpisodeSyncEx
+    public class TraktEpisodeRatingSyncEx
     {
         [DataMember(Name = "shows")]
-        public List<TraktShowSeasons> Shows { get; set; }
+        public List<TraktShowSeasonsRating> Shows { get; set; }
 
         [DataContract]
-        public class TraktShowSeasons : TraktShow
+        public class TraktShowSeasonsRating : TraktShow
         {
             [DataMember(Name = "seasons")]
-            public List<TraktSeasonEpisodes> Seasons { get; set; }
+            public List<TraktSeasonEpisodesRating> Seasons { get; set; }
 
             [DataContract]
-            public class TraktSeasonEpisodes
+            public class TraktSeasonEpisodesRating
             {
                 [DataMember(Name = "number")]
                 public int Number { get; set; }
 
                 [DataMember(Name = "episodes")]
-                public List<TraktEpisodeEx> Episodes { get; set; }
+                public List<TraktEpisodeRatingEx> Episodes { get; set; }
             }
         }
     }
 
     [DataContract]
-    public class TraktEpisodeSync
+    public class TraktEpisodeRatingSync
     {
         [DataMember(Name = "episodes")]
-        public List<TraktEpisode> Episodes { get; set; }
+        public List<TraktEpisodeRating> Episodes { get; set; }
     }
 }

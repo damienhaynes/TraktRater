@@ -7,15 +7,12 @@ using System.Runtime.Serialization;
 namespace TraktRater.TraktAPI.DataStructures
 {
     [DataContract]
-    public class TraktUserShowRating 
+    public class TraktShowWatchlist
     {
-        [DataMember(Name = "rated_at")]
-        public string RatedAt { get; set; }
-
-        [DataMember(Name = "rating")]
-        public float Rating { get; set; }
-
         [DataMember(Name = "show")]
         public TraktShow Show { get; set; }
+
+        [DataMember(Name = "inserted_at")]
+        public string InsertedAt { get; set; }
     }
 }

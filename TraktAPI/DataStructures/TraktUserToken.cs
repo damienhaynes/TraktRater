@@ -7,9 +7,9 @@ using System.Runtime.Serialization;
 namespace TraktRater.TraktAPI.DataStructures
 {
     [DataContract]
-    public class TraktEpisode
+    public class TraktUserToken
     {
-        [DataMember(Name = "ids")]
-        public TraktEpisodeId Ids { get; set; }
+        [DataMember(Name = "token")]
+        public string Token { get; set; }
     }
 }

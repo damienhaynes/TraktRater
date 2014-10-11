@@ -28,6 +28,8 @@ namespace TraktRater.Web
 
     public static class TraktWeb
     {
+        public static Dictionary<string, string> CustomRequestHeaders = new Dictionary<string, string>();
+
         #region Events
         internal delegate void OnDataSendDelegate(string url, string postData);
         internal delegate void OnDataReceivedDelegate(string response);
@@ -53,10 +55,10 @@ namespace TraktRater.Web
             {
                 ServicePointManager.Expect100Continue = false;
                 ExtendedWebClient client = new ExtendedWebClient();
-                client.Timeout = 90000;
+                client.Timeout = 120000;
                 client.Encoding = Encoding.UTF8;
                 client.Headers.Add("user-agent", AppSettings.UserAgent);
-                
+
                 string response = string.Empty;
 
                 if (string.IsNullOrEmpty(data))
@@ -125,6 +127,105 @@ namespace TraktRater.Web
                 return strResponse;
             }
             catch (Exception e)
+            {
+                if (OnDataErrorReceived != null)
+                    OnDataErrorReceived(e.Message);
+
+                return null;
+            }
+        }
+
+        public static string GetFromTrakt(string address)
+        {
+            if (OnDataSend != null)
+                OnDataSend(address, null);
+
+            var request = WebRequest.Create(address) as HttpWebRequest;
+
+            request.KeepAlive = true;
+            request.Method = "GET";
+            request.ContentLength = 0;
+            request.Timeout = 120000;
+            request.ContentType = "application/json";
+            request.UserAgent = AppSettings.UserAgent;
+            foreach (var header in CustomRequestHeaders)
+            {
+                request.Headers.Add(header.Key, header.Value);
+            }
+
+            try
+            {
+                WebResponse response = (HttpWebResponse)request.GetResponse();
+                if (response == null) return null;
+
+                Stream stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                string strResponse = reader.ReadToEnd();
+
+                if (OnDataReceived != null)
+                    OnDataReceived(strResponse);
+
+                stream.Close();
+                reader.Close();
+                response.Close();
+
+                return strResponse;
+            }
+            catch (WebException e)
+            {
+                if (OnDataErrorReceived != null)
+                    OnDataErrorReceived(e.Message);
+
+                return null;
+            }
+        }
+
+        public static string PostToTrakt(string address, string postData)
+        {
+            if (OnDataSend != null)
+                OnDataSend(address, postData);
+
+            byte[] data = new UTF8Encoding().GetBytes(postData);
+
+            var request = WebRequest.Create(address) as HttpWebRequest;
+            request.KeepAlive = true;
+
+            request.Method = "POST";
+            request.ContentLength = data.Length;
+            request.Timeout = 120000;
+            request.ContentType = "application/json";
+            request.UserAgent = AppSettings.UserAgent;
+            foreach (var header in CustomRequestHeaders)
+            {
+                request.Headers.Add(header.Key, header.Value);
+            }
+
+            try
+            {
+                // post to trakt
+                Stream postStream = request.GetRequestStream();
+                postStream.Write(data, 0, data.Length);
+                
+                // get the response
+                var response = (HttpWebResponse)request.GetResponse();
+                if (response == null) return null;
+
+                Stream responseStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(responseStream);
+                string strResponse = reader.ReadToEnd();
+
+                if (OnDataReceived != null)
+                    OnDataReceived(strResponse);
+
+                // cleanup
+                postStream.Close();
+                responseStream.Close();
+                reader.Close();
+                response.Close();
+
+                return strResponse;
+            }
+            catch (WebException e)
             {
                 if (OnDataErrorReceived != null)
                     OnDataErrorReceived(e.Message);
