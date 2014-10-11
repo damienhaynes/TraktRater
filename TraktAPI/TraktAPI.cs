@@ -35,7 +35,7 @@ namespace TraktRater.TraktAPI
             TraktWeb.CustomRequestHeaders.Add("trakt-api-version", "2");
             TraktWeb.CustomRequestHeaders.Add("trakt-user-login", Username);
 
-            string response = TraktWeb.PostToTrakt(TraktURIs.Login, GetUserLogin());
+            string response = TraktWeb.PostToTrakt(TraktURIs.Login, GetUserLogin(), false);
             var loginResponse = response.FromJSON<TraktUserToken>();
             
             if (loginResponse == null)

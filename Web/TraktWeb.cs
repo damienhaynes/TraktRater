@@ -180,9 +180,9 @@ namespace TraktRater.Web
             }
         }
 
-        public static string PostToTrakt(string address, string postData)
+        public static string PostToTrakt(string address, string postData, bool logRequest = true)
         {
-            if (OnDataSend != null)
+            if (OnDataSend != null && logRequest)
                 OnDataSend(address, postData);
 
             byte[] data = new UTF8Encoding().GetBytes(postData);
