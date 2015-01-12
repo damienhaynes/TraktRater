@@ -13,7 +13,7 @@ namespace TraktRater.TraktAPI.DataStructures
         public string RatedAt { get; set; }
 
         [DataMember(Name = "rating")]
-        public float Rating { get; set; }
+        public int Rating { get; set; }
 
         [DataMember(Name = "movie")]
         public TraktMovie Movie { get; set; }

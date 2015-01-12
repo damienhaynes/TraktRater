@@ -13,7 +13,7 @@ namespace TraktRater.TraktAPI.DataStructures
         public string Title { get; set; }
 
         [DataMember(Name = "year")]
-        public int Year { get; set; }
+        public int? Year { get; set; }
 
         [DataMember(Name = "ids")]
         public TraktShowId Ids { get; set; }
