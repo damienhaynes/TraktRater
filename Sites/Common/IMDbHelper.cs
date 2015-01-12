@@ -24,7 +24,7 @@ namespace TraktRater.Sites.Common.IMDb
                                  {
                                      Ids = new TraktMovieId { ImdbId = movie[IMDbFieldMapping.cIMDbID] },
                                      Title = movie[IMDbFieldMapping.cTitle],
-                                     Year = movie[IMDbFieldMapping.cYear].IsValidYear() ? int.Parse(movie[IMDbFieldMapping.cYear]) : 0
+                                     Year = movie[IMDbFieldMapping.cYear].ToYear()
                                  });
 
             var movieData = new TraktMovieSync
@@ -44,7 +44,7 @@ namespace TraktRater.Sites.Common.IMDb
                                  {
                                      Ids = new TraktMovieId { ImdbId = movie[IMDbFieldMapping.cIMDbID] },
                                      Title = movie[IMDbFieldMapping.cTitle],
-                                     Year = movie[IMDbFieldMapping.cYear].IsValidYear() ? int.Parse(movie[IMDbFieldMapping.cYear]) : 0,
+                                     Year = movie[IMDbFieldMapping.cYear].ToYear(),
                                      WatchedAt = GetLastCreatedDate(movie)
                                  });
 
@@ -65,7 +65,7 @@ namespace TraktRater.Sites.Common.IMDb
                                 {
                                     Ids = new TraktShowId { ImdbId = show[IMDbFieldMapping.cIMDbID] },
                                     Title = show[IMDbFieldMapping.cTitle],
-                                    Year = show[IMDbFieldMapping.cYear].IsValidYear() ? int.Parse(show[IMDbFieldMapping.cYear]) : 0
+                                    Year = show[IMDbFieldMapping.cYear].ToYear()
                                 });
 
             var traktShowsData = new TraktShowSync
@@ -86,7 +86,7 @@ namespace TraktRater.Sites.Common.IMDb
                                  {
                                      Ids = new TraktMovieId { ImdbId = movie[IMDbFieldMapping.cIMDbID] },
                                      Title = movie[IMDbFieldMapping.cTitle],
-                                     Year = movie[IMDbFieldMapping.cYear].IsValidYear() ? int.Parse(movie[IMDbFieldMapping.cYear]) : 0,
+                                     Year = movie[IMDbFieldMapping.cYear].ToYear(),
                                      Rating = int.Parse(movie[IMDbFieldMapping.cRating]),
                                      RatedAt = GetLastCreatedDate(movie)
                                  });
@@ -109,7 +109,7 @@ namespace TraktRater.Sites.Common.IMDb
                                 {
                                     Ids = new TraktShowId { ImdbId = show[IMDbFieldMapping.cIMDbID] },
                                     Title = show[IMDbFieldMapping.cTitle],
-                                    Year = show[IMDbFieldMapping.cYear].IsValidYear() ? int.Parse(show[IMDbFieldMapping.cYear]) : 0,
+                                    Year = show[IMDbFieldMapping.cYear].ToYear(),
                                     Rating = int.Parse(show[IMDbFieldMapping.cRating]),
                                     RatedAt = GetLastCreatedDate(show)
                                 });
