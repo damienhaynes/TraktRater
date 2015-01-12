@@ -16,7 +16,7 @@ namespace TraktRater.TraktAPI
     /// </summary>
     public class TraktAPI
     {
-        const string ApplicationId = "def4d8e1118401d858c3c6c9d18149f99704d1312914ddd2a51beb9bb4ebf13a";
+        const string ApplicationId = "4feebb4e3791029816a401952c09fa5b446ed4a81b01d600031e422f0d3ae86d";
 
         public static string Username { get; set; }
         public static string Password { get; set; }
@@ -43,7 +43,7 @@ namespace TraktRater.TraktAPI
 
             // add the token for authenticated methods
             TraktWeb.CustomRequestHeaders.Add("trakt-user-token", loginResponse.Token);
-            
+
             return loginResponse;
         }
 
