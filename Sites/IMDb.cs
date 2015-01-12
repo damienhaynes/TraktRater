@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using TraktRater.Extensions;
-using TraktRater.UI;
-using TraktRater.TraktAPI;
-using TraktRater.TraktAPI.DataStructures;
+using Microsoft.VisualBasic.FileIO;
+using TraktRater.Logger;
+using TraktRater.Settings;
 using TraktRater.Sites.API.IMDb;
 using TraktRater.Sites.Common.IMDb;
-using Microsoft.VisualBasic.FileIO;
-using TraktRater.Settings;
+using TraktRater.TraktAPI.DataStructures;
+using TraktRater.UI;
 
 namespace TraktRater.Sites
 {
@@ -87,7 +84,8 @@ namespace TraktRater.Sites
             var movies = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie).ToList();
             if (movies.Count() > 0)
             {
-                UIUtils.UpdateStatus("Retrieving existing movie ratings from trakt.tv.");
+                FileLog.Info("Found {0} movie ratings in CSV file", movies.Count);
+                UIUtils.UpdateStatus("Retrieving existing movie ratings from trakt.tv");
                 var currentUserMovieRatings = TraktAPI.TraktAPI.GetRatedMovies();
 
                 if (currentUserMovieRatings != null)
@@ -97,7 +95,7 @@ namespace TraktRater.Sites
                     movies.RemoveAll(m => currentUserMovieRatings.Any(c => c.Movie.Ids.ImdbId == m[IMDbFieldMapping.cIMDbID]));
                 }
 
-                UIUtils.UpdateStatus(string.Format("Importing {0} new movie ratings to trakt.tv.", movies.Count()));
+                UIUtils.UpdateStatus(string.Format("Importing {0} new movie ratings to trakt.tv", movies.Count()));
 
                 if (movies.Count > 0)
                 {
@@ -130,6 +128,7 @@ namespace TraktRater.Sites
             var shows = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show).ToList();
             if (shows.Count() > 0)
             {
+                FileLog.Info("Found {0} tv show ratings in CSV file", shows.Count);
                 UIUtils.UpdateStatus("Retrieving existing tv show ratings from trakt.tv");
                 var currentUserShowRatings = TraktAPI.TraktAPI.GetRatedShows();
 
@@ -174,6 +173,8 @@ namespace TraktRater.Sites
             var imdbCSVEpisodes = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode).ToList();
             if (imdbCSVEpisodes.Count() > 0)
             {
+                FileLog.Info("Found {0} tv episode ratings in CSV file", imdbCSVEpisodes.Count);
+
                 // we can't rely on the imdb id as trakt most likely wont have the info for episodes
 
                 // search and cache all series info needed for syncing
@@ -297,6 +298,7 @@ namespace TraktRater.Sites
             movies = WatchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie).ToList();
             if (movies.Count() > 0)
             {
+                FileLog.Info("Found {0} movies watchlisted in CSV file", movies.Count);
                 UIUtils.UpdateStatus("Requesting existing watchlist movies from trakt...");
                 var watchlistTraktMovies = TraktAPI.TraktAPI.GetWatchlistMovies();
                 if (watchlistTraktMovies != null)
@@ -354,6 +356,7 @@ namespace TraktRater.Sites
             shows = WatchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show).ToList();
             if (shows.Count() > 0)
             {
+                FileLog.Info("Found {0} tv shows watchlisted in CSV file", shows.Count);
                 UIUtils.UpdateStatus("Requesting existing watchlist shows from trakt...");
                 var watchlistTraktShows = TraktAPI.TraktAPI.GetWatchlistShows();
                 if (watchlistTraktShows != null)
@@ -411,6 +414,7 @@ namespace TraktRater.Sites
             imdbCSVEpisodes = WatchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode).ToList();
             if (imdbCSVEpisodes.Count() > 0)
             {
+                FileLog.Info("Found {0} tv episodes watchlisted in CSV file", imdbCSVEpisodes.Count);
                 UIUtils.UpdateStatus(string.Format("Found {0} IMDb watchlist episodes", imdbCSVEpisodes.Count()));
 
                 foreach (var episode in imdbCSVEpisodes)
