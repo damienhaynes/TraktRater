@@ -81,7 +81,6 @@ namespace TraktRater.Sites.Common.IMDb
             var traktMovies = new List<TraktMovieRating>();
 
             traktMovies.AddRange(from movie in movies
-                                 where !string.IsNullOrEmpty(movie[IMDbFieldMapping.cRating])
                                  select new TraktMovieRating
                                  {
                                      Ids = new TraktMovieId { ImdbId = movie[IMDbFieldMapping.cIMDbID] },
@@ -104,7 +103,6 @@ namespace TraktRater.Sites.Common.IMDb
             var traktShows = new List<TraktShowRating>();
 
             traktShows.AddRange(from show in shows
-                                where !string.IsNullOrEmpty(show[IMDbFieldMapping.cRating])
                                 select new TraktShowRating
                                 {
                                     Ids = new TraktShowId { ImdbId = show[IMDbFieldMapping.cIMDbID] },

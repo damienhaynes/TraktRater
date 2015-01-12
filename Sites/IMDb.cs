@@ -81,7 +81,7 @@ namespace TraktRater.Sites
             #endregion
 
             #region Import Rated Movies
-            var movies = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie).ToList();
+            var movies = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie && !string.IsNullOrEmpty(r[IMDbFieldMapping.cRating])).ToList();
             if (movies.Count() > 0)
             {
                 FileLog.Info("Found {0} movie ratings in CSV file", movies.Count);
@@ -125,7 +125,7 @@ namespace TraktRater.Sites
             #endregion
 
             #region Import Rated TV Shows
-            var shows = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show).ToList();
+            var shows = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show && !string.IsNullOrEmpty(r[IMDbFieldMapping.cRating])).ToList();
             if (shows.Count() > 0)
             {
                 FileLog.Info("Found {0} tv show ratings in CSV file", shows.Count);

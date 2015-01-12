@@ -192,7 +192,7 @@ namespace TraktRater.Sites
 
             #region Sync Ratings
             #region Movies
-            var movies = ratedItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie).ToList();
+            var movies = ratedItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie && !string.IsNullOrEmpty(r[IMDbFieldMapping.cRating])).ToList();
             if (movies.Count() > 0)
             {
                 UIUtils.UpdateStatus("Retrieving existing movie ratings from trakt.tv");
@@ -235,7 +235,7 @@ namespace TraktRater.Sites
             #endregion
 
             #region TV Shows
-            var shows = ratedItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show).ToList();
+            var shows = ratedItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show && !string.IsNullOrEmpty(r[IMDbFieldMapping.cRating])).ToList();
             if (shows.Count() > 0)
             {
                 UIUtils.UpdateStatus("Retrieving existing tv show ratings from trakt.tv");
