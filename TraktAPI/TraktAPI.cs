@@ -278,7 +278,11 @@ namespace TraktRater.TraktAPI
         public static IEnumerable<TraktUserMovieRating> GetRatedMovies()
         {
             string ratedMovies = TraktWeb.GetFromTrakt(TraktURIs.RatedMoviesList);
-            return ratedMovies.FromJSONArray<TraktUserMovieRating>();
+            var result = ratedMovies.FromJSONArray<TraktUserMovieRating>();
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Movie.Title != null && r.Movie.Ids != null);
         }
 
         /// <summary>
@@ -288,7 +292,11 @@ namespace TraktRater.TraktAPI
         public static IEnumerable<TraktUserShowRating> GetRatedShows()
         {
             string ratedShows = TraktWeb.GetFromTrakt(TraktURIs.RatedShowsList);
-            return ratedShows.FromJSONArray<TraktUserShowRating>();
+            var result = ratedShows.FromJSONArray<TraktUserShowRating>();
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
         }
 
         /// <summary>
@@ -298,7 +306,11 @@ namespace TraktRater.TraktAPI
         public static IEnumerable<TraktUserEpisodeRating> GetRatedEpisodes()
         {
             string ratedEpisodes = TraktWeb.GetFromTrakt(TraktURIs.RatedEpisodesList);
-            return ratedEpisodes.FromJSONArray<TraktUserEpisodeRating>();
+            var result = ratedEpisodes.FromJSONArray<TraktUserEpisodeRating>();
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
         }
 
         #endregion
@@ -311,7 +323,11 @@ namespace TraktRater.TraktAPI
         public static IEnumerable<TraktMoviePlays> GetWatchedMovies()
         {
             string watchedMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchedMoviesList);
-            return watchedMovies.FromJSONArray<TraktMoviePlays>();
+            var result = watchedMovies.FromJSONArray<TraktMoviePlays>();
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Movie.Title != null && r.Movie.Ids != null);
         }
 
         /// <summary>
@@ -320,7 +336,11 @@ namespace TraktRater.TraktAPI
         public static IEnumerable<TraktShowPlays> GetWatchedEpisodes()
         {
             string watchedShows = TraktWeb.GetFromTrakt(TraktURIs.WatchedEpisodesList);
-            return watchedShows.FromJSONArray<TraktShowPlays>();
+            var result = watchedShows.FromJSONArray<TraktShowPlays>();
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
         }
 
         #endregion
@@ -332,8 +352,12 @@ namespace TraktRater.TraktAPI
         /// </summary>
         public static IEnumerable<TraktMovieWatchlist> GetWatchlistMovies()
         {
-            string watchedMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchlistMoviesList);
-            return watchedMovies.FromJSONArray<TraktMovieWatchlist>();
+            string watchlistMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchlistMoviesList);
+            var result = watchlistMovies.FromJSONArray<TraktMovieWatchlist>();
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Movie.Title != null && r.Movie.Ids != null);
         }
 
         /// <summary>
@@ -341,8 +365,12 @@ namespace TraktRater.TraktAPI
         /// </summary>
         public static IEnumerable<TraktShowWatchlist> GetWatchlistShows()
         {
-            string watchedMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchlistShowsList);
-            return watchedMovies.FromJSONArray<TraktShowWatchlist>();
+            string watchlistShows = TraktWeb.GetFromTrakt(TraktURIs.WatchlistShowsList);
+            var result = watchlistShows.FromJSONArray<TraktShowWatchlist>();
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
         }
 
         /// <summary>
@@ -350,8 +378,13 @@ namespace TraktRater.TraktAPI
         /// </summary>
         public static IEnumerable<TraktEpisodeWatchlist> GetWatchlistEpisodes()
         {
-            string watchedMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchlistEpisodesList);
-            return watchedMovies.FromJSONArray<TraktEpisodeWatchlist>();
+            string watchlistEpisodes = TraktWeb.GetFromTrakt(TraktURIs.WatchlistEpisodesList);
+            var result = watchlistEpisodes.FromJSONArray<TraktEpisodeWatchlist>();
+
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
         }
 
         #endregion

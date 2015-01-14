@@ -483,7 +483,7 @@ namespace TraktRater.Sites
                         if (watchedTraktShows != null)
                         {
                             UIUtils.UpdateStatus(string.Format("Found {0} watched shows on trakt", watchedTraktShows.Count()));
-                            UIUtils.UpdateStatus("Filtering out watchlist shows containing watched episodes on trakt.tv.");
+                            UIUtils.UpdateStatus("Filtering out watchlist shows containing watched episodes on trakt.tv");
 
                             // remove shows from sync list which are watched already
                             watchlistShows.RemoveAll(w => watchedTraktShows.Count(t => (t.Show.Ids.ImdbId == w[IMDbFieldMapping.cIMDbID]) || (t.Show.Title.ToLowerInvariant() == w[IMDbFieldMapping.cTitle].ToLowerInvariant() && t.Show.Year.ToString() == w[IMDbFieldMapping.cYear])) != 0);
@@ -491,7 +491,7 @@ namespace TraktRater.Sites
                     }
 
                     //add all shows to watchlist
-                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist shows to trakt.tv ...", watchlistShows.Count()));
+                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist shows to trakt.tv...", watchlistShows.Count()));
 
                     int pageSize = AppSettings.BatchSize;
                     int pages = (int)Math.Ceiling((double)watchlistShows.Count / pageSize);
@@ -502,7 +502,7 @@ namespace TraktRater.Sites
                         var response = TraktAPI.TraktAPI.SyncShowWatchlist(Helper.GetSyncShowsData(watchlistShows.Skip(i * pageSize).Take(pageSize)));
                         if (response == null)
                         {
-                            UIUtils.UpdateStatus("Failed to send watchlist for IMDb tv shows.", true);
+                            UIUtils.UpdateStatus("Failed to send watchlist for IMDb tv shows", true);
                             Thread.Sleep(2000);
                         }
                         else if (response.NotFound.Shows.Count > 0)
