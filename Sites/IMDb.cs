@@ -234,32 +234,54 @@ namespace TraktRater.Sites
             #endregion
 
             #region Mark Rated Items as Watched
+            IEnumerable<TraktMoviePlays> watchedTraktMovies = null;
+
             if (AppSettings.MarkAsWatched)
             {
                 #region Movies
+                // compare all movies rated against what's not watched on trakt
+                movies = RateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie && !string.IsNullOrEmpty(r[IMDbFieldMapping.cRating])).ToList();
                 if (movies.Count > 0)
                 {
-                    // mark all rated movies as watched
-                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb movies as watched...", movies.Count));
-
-                    int pageSize = AppSettings.BatchSize;
-                    int pages = (int)Math.Ceiling((double)movies.Count / pageSize);
-                    for (int i = 0; i < pages; i++)
+                    // get watched movies from trakt.tv
+                    UIUtils.UpdateStatus("Requesting watched movies from trakt...");
+                    watchedTraktMovies = TraktAPI.TraktAPI.GetWatchedMovies();
+                    if (watchedTraktMovies == null)
                     {
-                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb movies as watched...", i + 1, pages));
-
-                        var response = TraktAPI.TraktAPI.SyncMoviesWatched(Helper.GetSyncWatchedMoviesData(movies.Skip(i * pageSize).Take(pageSize).ToList()));
-                        if (response == null)
-                        {
-                            UIUtils.UpdateStatus("Failed to send watched status for IMDb movies to trakt.tv", true);
-                            Thread.Sleep(2000);
-                        }
-                        else if (response.NotFound.Movies.Count > 0)
-                        {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync watched states for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
-                            Thread.Sleep(1000);
-                        }
+                        UIUtils.UpdateStatus("Failed to get watched movies from trakt.tv, skipping watched movie import", true);
+                        Thread.Sleep(2000);
+                    }
+                    else
+                    {
                         if (ImportCancelled) return;
+
+                        UIUtils.UpdateStatus(string.Format("Found {0} watched movies on trakt", watchedTraktMovies.Count()));
+                        UIUtils.UpdateStatus("Filtering out watched movies that are already watched on trakt.tv");
+
+                        movies.RemoveAll(w => watchedTraktMovies.FirstOrDefault(t => t.Movie.Ids.ImdbId == w[IMDbFieldMapping.cIMDbID] || (t.Movie.Title.ToLowerInvariant() == w[IMDbFieldMapping.cTitle] && t.Movie.Year.ToString() == w[IMDbFieldMapping.cYear])) != null);
+
+                        // mark all rated movies as watched
+                        UIUtils.UpdateStatus(string.Format("Importing {0} IMDb movies as watched...", movies.Count));
+
+                        int pageSize = AppSettings.BatchSize;
+                        int pages = (int)Math.Ceiling((double)movies.Count / pageSize);
+                        for (int i = 0; i < pages; i++)
+                        {
+                            UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb movies as watched...", i + 1, pages));
+
+                            var response = TraktAPI.TraktAPI.SyncMoviesWatched(Helper.GetSyncWatchedMoviesData(movies.Skip(i * pageSize).Take(pageSize).ToList()));
+                            if (response == null)
+                            {
+                                UIUtils.UpdateStatus("Failed to send watched status for IMDb movies to trakt.tv", true);
+                                Thread.Sleep(2000);
+                            }
+                            else if (response.NotFound.Movies.Count > 0)
+                            {
+                                UIUtils.UpdateStatus(string.Format("Unable to sync watched states for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
+                                Thread.Sleep(1000);
+                            }
+                            if (ImportCancelled) return;
+                        }
                     }
                 }
                 #endregion
@@ -313,7 +335,16 @@ namespace TraktRater.Sites
                     UIUtils.UpdateStatus("Requesting watched movies from trakt...");
 
                     // get watched movies from trakt so we don't import movies into watchlist that are already watched
-                    var watchedTraktMovies = TraktAPI.TraktAPI.GetWatchedMovies();
+                    if (watchedTraktMovies != null)
+                    {
+                        watchedTraktMovies = TraktAPI.TraktAPI.GetWatchedMovies();
+                        if (watchedTraktMovies == null)
+                        {
+                            UIUtils.UpdateStatus("Failed to get watched movies from trakt.tv", true);
+                            Thread.Sleep(2000);
+                        }
+                    }
+
                     if (watchedTraktMovies != null)
                     {
                         UIUtils.UpdateStatus(string.Format("Found {0} watched movies on trakt", watchedTraktMovies.Count()));
