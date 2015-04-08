@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using TraktRater.Settings;
-using TraktRater.Web;
-using System.Threading;
-
-namespace TraktRater.Logger
+﻿namespace TraktRater.Logger
 {
+    using System;
+    using System.IO;
+    using System.Threading;
+
+    using global::TraktRater.Settings;
+    using global::TraktRater.Web;
+
     internal static class FileLog
     {
         private static Object lockObject = new object();
 
-        internal static string LogDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TraktRater\Logs";
-        internal static string LogFileName { get; set; }
+        internal static readonly string LogDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TraktRater\Logs";
+        internal static string LogFileName { private get; set; }
 
         static FileLog()
         {
@@ -26,9 +24,9 @@ namespace TraktRater.Logger
                 Directory.CreateDirectory(LogDirectory);
 
             // listen to web events so we can provide useful logging            
-            TraktWeb.OnDataSend += new TraktWeb.OnDataSendDelegate(WebRequest_OnDataSend);
-            TraktWeb.OnDataReceived += new TraktWeb.OnDataReceivedDelegate(WebRequest_OnDataReceived);
-            TraktWeb.OnDataErrorReceived += new TraktWeb.OnDataErrorReceivedDelegate(WebRequest_OnDataErrorReceived);
+            TraktWeb.OnDataSend += WebRequest_OnDataSend;
+            TraktWeb.OnDataReceived += WebRequest_OnDataReceived;
+            TraktWeb.OnDataErrorReceived += WebRequest_OnDataErrorReceived;
         }
 
         internal static void Info(String log)
@@ -42,18 +40,18 @@ namespace TraktRater.Logger
             Info(String.Format(format, args));
         }
 
-        internal static void Debug(String log)
+        private static void Debug(String log)
         {
             if ((int)AppSettings.LogSeverityLevel >= 3)
                 WriteToFile(String.Format(CreatePrefix(), "DEBG", log));
         }
 
-        internal static void Debug(String format, params Object[] args)
+        private static void Debug(String format, params Object[] args)
         {
             Debug(String.Format(format, args));
         }
 
-        internal static void Trace(String log)
+        private static void Trace(String log)
         {
             if ((int)AppSettings.LogSeverityLevel >= 4)
                 WriteToFile(String.Format(CreatePrefix(), "TRACE", log));
@@ -70,20 +68,9 @@ namespace TraktRater.Logger
                 WriteToFile(String.Format(CreatePrefix(), "ERR ", log));
         }
 
-        internal static void Error(String format, params Object[] args)
+        private static void Error(String format, params Object[] args)
         {
             Error(String.Format(format, args));
-        }
-
-        internal static void Warning(String log)
-        {
-            if ((int)AppSettings.LogSeverityLevel >= 1)
-                WriteToFile(String.Format(CreatePrefix(), "WARN", log));
-        }
-
-        internal static void Warning(String format, params Object[] args)
-        {
-            Warning(String.Format(format, args));
         }
 
         private static String CreatePrefix()

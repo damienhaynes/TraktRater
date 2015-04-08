@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-
-namespace TraktRater.Sites.API.Listal
+﻿namespace TraktRater.Sites.API.Listal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml.Serialization;
+
     [XmlRoot("rss")]
     public class ListalExport
     {

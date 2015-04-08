@@ -1,24 +1,25 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using TraktRater.Extensions;
-using TraktRater.TraktAPI;
-using TraktRater.TraktAPI.DataStructures;
-using TraktRater.Settings;
-using TraktRater.Sites.API.Criticker;
-using TraktRater.UI;
-
-namespace TraktRater.Sites
+﻿namespace TraktRater.Sites
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+
+    using global::TraktRater.Extensions;
+    using global::TraktRater.Settings;
+    using global::TraktRater.Sites.API.Criticker;
+    using global::TraktRater.TraktAPI;
+    using global::TraktRater.TraktAPI.DataStructures;
+    using global::TraktRater.UI;
+
     internal class Criticker : IRateSite
     {
         #region Variables
 
-        bool ImportCancelled = false;
-        string CritickerMovieFile = null;
+        bool importCancelled = false;
+
+        readonly string critickerMovieFile = null;
 
         #endregion
         
@@ -26,8 +27,8 @@ namespace TraktRater.Sites
 
         public Criticker(string exportMovieFile)
         {
-            CritickerMovieFile = exportMovieFile;
-            Enabled = File.Exists(CritickerMovieFile);
+            critickerMovieFile = exportMovieFile;
+            Enabled = File.Exists(critickerMovieFile);
         }
 
         #endregion
@@ -43,17 +44,17 @@ namespace TraktRater.Sites
 
         public void ImportRatings()
         {
-            var criticker = CritickerAPI.ReadCritickerMovieExportFile(CritickerMovieFile);
+            var criticker = CritickerAPI.ReadCritickerMovieExportFile(critickerMovieFile);
 
             // check if everything we need was read okay
             if (criticker == null || criticker.Films == null)
             {
-                UI.UIUtils.UpdateStatus("Error reading Criticker movie XML file.", true);
+                UIUtils.UpdateStatus("Error reading Criticker movie XML file.", true);
                 return;
             }
 
             UIUtils.UpdateStatus(string.Format("Found {0} movies with ratings.", criticker.Films.Count));
-            if (ImportCancelled) return;
+            if (importCancelled) return;
 
             #region Import Ratings
 
@@ -61,8 +62,8 @@ namespace TraktRater.Sites
             {
                 // get current trakt ratings
                 UIUtils.UpdateStatus("Retrieving existing movie ratings from trakt.tv.");
-                var currentUserMovieRatings = TraktAPI.TraktAPI.GetRatedMovies();
-                if (ImportCancelled) return;
+                var currentUserMovieRatings = TraktAPI.GetRatedMovies();
+                if (importCancelled) return;
 
                 if (currentUserMovieRatings != null)
                 {
@@ -83,7 +84,7 @@ namespace TraktRater.Sites
                         UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Criticker movie ratings...", i + 1, pages));
 
                         var movies = GetRateMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList());
-                        var response = TraktAPI.TraktAPI.SyncMoviesRated(movies);
+                        var response = TraktAPI.SyncMoviesRated(movies);
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send ratings for Criticker movies.", true);
@@ -95,7 +96,7 @@ namespace TraktRater.Sites
                             Thread.Sleep(1000);
                         }
 
-                        if (ImportCancelled) return;
+                        if (importCancelled) return;
                     }
                 }
             }
@@ -106,7 +107,7 @@ namespace TraktRater.Sites
 
             if (AppSettings.MarkAsWatched)
             {
-                if (ImportCancelled) return;
+                if (importCancelled) return;
 
                 // mark all movies as watched if rated
                 UIUtils.UpdateStatus(string.Format("Importing {0} Criticker movies as watched...", criticker.Films.Count));
@@ -118,7 +119,7 @@ namespace TraktRater.Sites
                     {
                         UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Criticker movies as watched...", i + 1, pages));
 
-                        var watchedResponse = TraktAPI.TraktAPI.SyncMoviesWatched(GetSyncMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList()));
+                        var watchedResponse = TraktAPI.SyncMoviesWatched(GetSyncMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList()));
                         if (watchedResponse == null)
                         {
                             UIUtils.UpdateStatus("Failed to send watched status for Criticker movies.", true);
@@ -130,19 +131,17 @@ namespace TraktRater.Sites
                             Thread.Sleep(1000);
                         }
 
-                        if (ImportCancelled) return;
+                        if (importCancelled) return;
                     }
                 }
             }
 
             #endregion
-
-            return;
         }
 
         public void Cancel()
         {
-            ImportCancelled = true;
+            importCancelled = true;
         }
 
         #endregion

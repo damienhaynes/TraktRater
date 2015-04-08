@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml.Serialization;
-
-namespace TraktRater.Sites.API.Criticker
+﻿namespace TraktRater.Sites.API.Criticker
 {
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Xml.Serialization;
+
     [XmlRoot("recentrankings")]
     public class CritickerFilmRankings
     {
@@ -46,7 +43,7 @@ namespace TraktRater.Sites.API.Criticker
             {
                 get
                 {
-                    var regMatch = Regex.Match(this.FilmName, @"^(?<title>.+?)(?:\s*[\(\[](?<year>\d{4})[\]\)])?$");
+                    var regMatch = Regex.Match(FilmName, @"^(?<title>.+?)(?:\s*[\(\[](?<year>\d{4})[\]\)])?$");
                     return regMatch.Groups["title"].Value;
                 }
             }
@@ -59,7 +56,7 @@ namespace TraktRater.Sites.API.Criticker
                 get
                 {
                     int iYear = 0;
-                    var regMatch = Regex.Match(this.FilmName, @"^(?<title>.+?)(?:\s*[\(\[](?<year>\d{4})[\]\)])?$");
+                    var regMatch = Regex.Match(FilmName, @"^(?<title>.+?)(?:\s*[\(\[](?<year>\d{4})[\]\)])?$");
                     string year = regMatch.Groups["year"].Value;
                     
                     int.TryParse(year, out iYear);                    

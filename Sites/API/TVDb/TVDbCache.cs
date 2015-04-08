@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-
-namespace TraktRater.Sites.API.TVDb
+﻿namespace TraktRater.Sites.API.TVDb
 {
+    using System;
+    using System.IO;
+
     public static class TVDbCache
     {
-        static string cAppDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        static readonly string cAppDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-        public static string cEpisodeRatingsFileCache = cAppDir + @"\TraktRater\Ratings\{0}.xml";
-        public static string cShowRatingsFileCache = cAppDir + @"\TraktRater\Ratings\series.xml";
-        public static string cShowInfoFileCache = cAppDir + @"\TraktRater\Series\{0}.xml";
-        public static string cShowSearchFileCache = cAppDir + @"\TraktRater\SearchResults\tvdb_{0}.xml";
+        public static readonly string cEpisodeRatingsFileCache = cAppDir + @"\TraktRater\Ratings\{0}.xml";
+        public static readonly string cShowRatingsFileCache = cAppDir + @"\TraktRater\Ratings\series.xml";
+        public static readonly string cShowInfoFileCache = cAppDir + @"\TraktRater\Series\{0}.xml";
+        public static readonly string cShowSearchFileCache = cAppDir + @"\TraktRater\SearchResults\tvdb_{0}.xml";
 
-        public static string GetFromCache(string filename)
-        {
-            return GetFromCache(filename, 1);
-        }
-        public static string GetFromCache(string filename, int expiresInDays)
+        public static string GetFromCache(string filename, int expiresInDays = 1)
         {
             try
             {
@@ -46,7 +39,9 @@ namespace TraktRater.Sites.API.TVDb
 
                 File.WriteAllText(filename, response);
             }
-            catch { return; }
+            catch (Exception)
+            {
+            }
         }
 
         public static void DeleteFromCache(string filename)
@@ -55,7 +50,9 @@ namespace TraktRater.Sites.API.TVDb
             {
                 File.Delete(filename);
             }
-            catch { return; }
+            catch (Exception)
+            {
+            }
         }
     }
 }

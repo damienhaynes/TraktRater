@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using TraktRater.Settings.XML;
-
-namespace TraktRater.Settings
+﻿namespace TraktRater.Settings
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+
+    using global::TraktRater.Settings.XML;
+    using global::TraktRater.TraktAPI;
+
     internal class AppSettings
     {
         public enum LoggingSeverity
@@ -49,29 +48,29 @@ namespace TraktRater.Settings
         {
             get
             {
-                return _traktUsername;
+                return traktUsername;
             }
             set
             {
-                _traktUsername = value;
-                TraktAPI.TraktAPI.Username = _traktUsername;
+                traktUsername = value;
+                TraktAPI.Username = traktUsername;
             }
         }
-        static string _traktUsername = null;
+        static string traktUsername = null;
 
         public static string TraktPassword
         {
             get
             {
-                return _traktPassword;
+                return traktPassword;
             }
             set
             {
-                _traktPassword = value;
-                TraktAPI.TraktAPI.Password = _traktPassword;
+                traktPassword = value;
+                TraktAPI.Password = traktPassword;
             }
         }
-        static string _traktPassword = null;
+        static string traktPassword = null;
         
         public static string TVDbAccountIdentifier { get; set; }
 
@@ -111,7 +110,7 @@ namespace TraktRater.Settings
 
         public static LoggingSeverity LogSeverityLevel { get; set; }
 
-        public static string SettingsFile
+        private static string SettingsFile
         {
             get
             {
@@ -127,7 +126,7 @@ namespace TraktRater.Settings
             }
         }
 
-        public static string Version
+        private static string Version
         {
             get
             {

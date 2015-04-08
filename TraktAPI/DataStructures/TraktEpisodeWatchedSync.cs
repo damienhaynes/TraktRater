@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
-
-namespace TraktRater.TraktAPI.DataStructures
+﻿namespace TraktRater.TraktAPI.DataStructures
 {
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+
     [DataContract]
     public class TraktEpisodeWatchedSyncEx
     {
         [DataMember(Name = "shows")]
-        public List<TraktShowSeasonsWatched> shows { get; set; }
+        public List<TraktShowSeasonsWatched> Shows { get; set; }
 
         [DataContract]
         public class TraktShowSeasonsWatched : TraktShow
         {
             [DataMember(Name = "seasons")]
-            public List<TraktSeasonEpisodesWatched> seasons { get; set; }
+            public List<TraktSeasonEpisodesWatched> Seasons { get; set; }
 
             [DataContract]
             public class TraktSeasonEpisodesWatched

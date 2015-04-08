@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.IO;
-
-namespace TraktRater.Settings.XML
+﻿namespace TraktRater.Settings.XML
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
+
     public class XmlWriter
     {
-        XmlDocument Document = new XmlDocument();
+        XmlDocument document = new XmlDocument();
 
         public void CreateXmlSettings(string file)
         {
@@ -29,7 +27,6 @@ namespace TraktRater.Settings.XML
             }
             catch (Exception)
             {
-                return;
             }
         }
 
@@ -39,11 +36,11 @@ namespace TraktRater.Settings.XML
 
             try
             {
-                Document.Load(file);
+                document.Load(file);
             }
             catch (XmlException)
             {
-                Document = null;
+                document = null;
                 return false;
             }
             return true;
@@ -55,7 +52,7 @@ namespace TraktRater.Settings.XML
 
             try
             {
-                Document.Save(file);
+                document.Save(file);
             }
             catch (Exception)
             {
@@ -67,30 +64,30 @@ namespace TraktRater.Settings.XML
         #region Settings Helper
         public bool WriteSetting(string name, string value)
         {
-            if (Document == null) return false;
+            if (document == null) return false;
 
             try
             {
                 value = value == null ? string.Empty : value.Trim();
 
                 XmlNode node = null;
-                node = Document.SelectSingleNode(string.Format("/settings//setting[@name='{0}']", name));
+                node = document.SelectSingleNode(string.Format("/settings//setting[@name='{0}']", name));
                 if (node == null)
                 {
                     // select root node
-                    node = Document.SelectSingleNode("/settings");
+                    node = document.SelectSingleNode("/settings");
 
                     // create new section node
-                    XmlNode newNode = Document.CreateElement("setting");
+                    XmlNode newNode = document.CreateElement("setting");
 
                     // create name attribute
-                    XmlAttribute newAttribute = Document.CreateAttribute("name");
+                    XmlAttribute newAttribute = document.CreateAttribute("name");
                     newAttribute.Value = name;
                     newNode.Attributes.Append(newAttribute);
                     node.AppendChild(newNode);
 
                     // create value attribute
-                    newAttribute = Document.CreateAttribute("value");
+                    newAttribute = document.CreateAttribute("value");
                     newAttribute.Value = value;
                     newNode.Attributes.Append(newAttribute);
                     node.AppendChild(newNode);

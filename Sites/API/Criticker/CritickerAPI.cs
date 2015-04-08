@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using TraktRater.Web;
-using TraktRater.Extensions;
-
-namespace TraktRater.Sites.API.Criticker
+﻿namespace TraktRater.Sites.API.Criticker
 {
+    using System.IO;
+
+    using global::TraktRater.Extensions;
+
     internal static class CritickerAPI
     {
         public static CritickerFilmRankings ReadCritickerMovieExportFile(string exportFile)

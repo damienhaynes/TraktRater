@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TraktRater.TraktAPI
+﻿namespace TraktRater.TraktAPI
 {
     /// <summary>
     /// List of URIs for the Trakt API

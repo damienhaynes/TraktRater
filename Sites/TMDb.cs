@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using TraktRater.UI;
-using TraktRater.TraktAPI;
-using TraktRater.TraktAPI.DataStructures;
-using TraktRater.Sites.API.TMDb;
-using TraktRater.Settings;
-
-namespace TraktRater.Sites
+﻿namespace TraktRater.Sites
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading;
+
+    using global::TraktRater.Settings;
+    using global::TraktRater.Sites.API.TMDb;
+    using global::TraktRater.TraktAPI;
+    using global::TraktRater.TraktAPI.DataStructures;
+    using global::TraktRater.UI;
+
     internal class TMDb : IRateSite
     {
         #region Variables
 
-        bool ImportCancelled = false;
+        bool importCancelled = false;
 
         #endregion
 
@@ -37,7 +37,7 @@ namespace TraktRater.Sites
 
         public void ImportRatings()
         {
-            ImportCancelled = false;
+            importCancelled = false;
             List<TMDbMovie> watchedMovies = new List<TMDbMovie>();
 
             #region Session Id
@@ -55,7 +55,7 @@ namespace TraktRater.Sites
                 }
                 AppSettings.TMDbSessionId = sessionResponse.SessionId;
             }
-            if (ImportCancelled) return;
+            if (importCancelled) return;
             #endregion
 
             #region Account Information
@@ -67,13 +67,13 @@ namespace TraktRater.Sites
                 Thread.Sleep(2000);
                 return;
             }
-            if (ImportCancelled) return;
+            if (importCancelled) return;
             #endregion
 
             #region Get Rated Movies
             UIUtils.UpdateStatus("Getting first batch of TMDb rated movies...");
             var movieRatings = TMDbAPI.GetRatedMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, 1);
-            if (ImportCancelled) return;
+            if (importCancelled) return;
             #endregion
 
             #region Import Movie Ratings
@@ -81,7 +81,7 @@ namespace TraktRater.Sites
             if (movieRatings != null && movieRatings.TotalResults > 0)
             {
                 UIUtils.UpdateStatus("Retrieving existing movie ratings from trakt.tv");
-                var currentUserMovieRatings = TraktAPI.TraktAPI.GetRatedMovies();
+                var currentUserMovieRatings = TraktAPI.GetRatedMovies();
 
                 if (currentUserMovieRatings != null)
                 {
@@ -94,7 +94,7 @@ namespace TraktRater.Sites
 
                 if (movieRatings.Movies.Count > 0)
                 {
-                    var response = TraktAPI.TraktAPI.SyncMoviesRated(GetRateMoviesData(movieRatings.Movies));
+                    var response = TraktAPI.SyncMoviesRated(GetRateMoviesData(movieRatings.Movies));
                     if (response == null)
                     {
                         UIUtils.UpdateStatus("Failed to send ratings for TMDb movies", true);
@@ -105,7 +105,7 @@ namespace TraktRater.Sites
                         UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
                         Thread.Sleep(1000);
                     }
-                    if (ImportCancelled) return;
+                    if (importCancelled) return;
 
                     // add to list of movies to mark as watched
                     watchedMovies.AddRange(movieRatings.Movies);
@@ -116,7 +116,7 @@ namespace TraktRater.Sites
                 {
                     UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb Rated Movies...", movieRatings.Page, movieRatings.TotalPages));
                     movieRatings = TMDbAPI.GetRatedMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
-                    if (movieRatings == null || movieRatings.TotalResults == 0 || ImportCancelled) return;
+                    if (movieRatings == null || movieRatings.TotalResults == 0 || importCancelled) return;
 
                     if (currentUserMovieRatings != null)
                     {
@@ -128,7 +128,7 @@ namespace TraktRater.Sites
 
                     if (movieRatings.Movies.Count > 0)
                     {
-                        var response = TraktAPI.TraktAPI.SyncMoviesRated(GetRateMoviesData(movieRatings.Movies));
+                        var response = TraktAPI.SyncMoviesRated(GetRateMoviesData(movieRatings.Movies));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send ratings for TMDb movies", true);
@@ -139,14 +139,14 @@ namespace TraktRater.Sites
                             UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
                             Thread.Sleep(1000);
                         }
-                        if (ImportCancelled) return;
+                        if (importCancelled) return;
 
                         // add to list of movies to mark as watched
                         watchedMovies.AddRange(movieRatings.Movies);
                     }
                 }
             }
-            if (ImportCancelled) return;
+            if (importCancelled) return;
 
             #endregion
 
@@ -162,7 +162,7 @@ namespace TraktRater.Sites
                 {
                     UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} TMDb movies as watched...", i + 1, pages));
 
-                    var response = TraktAPI.TraktAPI.SyncMoviesWatched(GetSyncWatchedMoviesData(watchedMovies.Skip(i * pageSize).Take(pageSize).ToList()));
+                    var response = TraktAPI.SyncMoviesWatched(GetSyncWatchedMoviesData(watchedMovies.Skip(i * pageSize).Take(pageSize).ToList()));
                     if (response == null)
                     {
                         UIUtils.UpdateStatus("Failed to send watched status for TMDb movies to trakt.tv", true);
@@ -173,7 +173,7 @@ namespace TraktRater.Sites
                         UIUtils.UpdateStatus(string.Format("Unable to sync watched states for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
                         Thread.Sleep(1000);
                     }
-                    if (ImportCancelled) return;
+                    if (importCancelled) return;
                 }
             }
             #endregion
@@ -181,14 +181,14 @@ namespace TraktRater.Sites
             #region Get Rated Shows
             UIUtils.UpdateStatus("Getting first batch of TMDb rated shows...");
             var showRatings = TMDbAPI.GetRatedShows(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, 1);
-            if (ImportCancelled) return;
+            if (importCancelled) return;
             #endregion
 
             #region Import Show Ratings
             if (showRatings != null && showRatings.TotalResults > 0) return;
             {
                 UIUtils.UpdateStatus("Retrieving existing show ratings from trakt.tv");
-                var currentUserShowRatings = TraktAPI.TraktAPI.GetRatedShows();
+                var currentUserShowRatings = TraktAPI.GetRatedShows();
 
                 if (currentUserShowRatings != null)
                 {
@@ -201,7 +201,7 @@ namespace TraktRater.Sites
 
                 if (showRatings == null || showRatings.Shows.Count > 0)
                 {
-                    var response = TraktAPI.TraktAPI.SyncShowsRated(GetRateShowsData(showRatings.Shows));
+                    var response = TraktAPI.SyncShowsRated(GetRateShowsData(showRatings.Shows));
                     if (response == null)
                     {
                         UIUtils.UpdateStatus("Failed to send ratings for TMDb shows", true);
@@ -213,7 +213,7 @@ namespace TraktRater.Sites
                         Thread.Sleep(1000);
                     }
 
-                    if (ImportCancelled) return;
+                    if (importCancelled) return;
                 }
 
                 // get each page of movies
@@ -221,7 +221,7 @@ namespace TraktRater.Sites
                 {
                     UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb rated shows...", showRatings.Page, showRatings.TotalPages));
                     showRatings = TMDbAPI.GetRatedShows(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
-                    if (ImportCancelled) return;
+                    if (importCancelled) return;
 
                     if (currentUserShowRatings != null)
                     {
@@ -233,7 +233,7 @@ namespace TraktRater.Sites
 
                     if (showRatings == null || showRatings.Shows.Count > 0)
                     {
-                        var response = TraktAPI.TraktAPI.SyncShowsRated(GetRateShowsData(showRatings.Shows));
+                        var response = TraktAPI.SyncShowsRated(GetRateShowsData(showRatings.Shows));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send ratings for TMDb shows.", true);
@@ -245,11 +245,11 @@ namespace TraktRater.Sites
                             Thread.Sleep(1000);
                         }
 
-                        if (ImportCancelled) return;
+                        if (importCancelled) return;
                     }
                 }
             }
-            if (ImportCancelled) return;
+            if (importCancelled) return;
             #endregion
 
             #region Import Watchlist
@@ -261,24 +261,24 @@ namespace TraktRater.Sites
 
                 UIUtils.UpdateStatus("Getting first batch of TMDb watchlist movies...");
                 var moviesInWatchlist = TMDbAPI.GetWatchlistMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, 1);
-                if (ImportCancelled) return;
+                if (importCancelled) return;
 
                 if (moviesInWatchlist != null && moviesInWatchlist.TotalResults > 0)
                 {
                     UIUtils.UpdateStatus("Requesting existing watchlist movies from trakt...");
-                    var traktWatchlistMovies = TraktAPI.TraktAPI.GetWatchlistMovies();
+                    var traktWatchlistMovies = TraktAPI.GetWatchlistMovies();
                     if (traktWatchlistMovies != null)
                     {
                         UIUtils.UpdateStatus(string.Format("Found {0} watchlist movies on trakt", traktWatchlistMovies.Count()));
                         UIUtils.UpdateStatus("Filtering out watchlist movies that are already in watchlist on trakt.tv");
                         moviesInWatchlist.Movies.RemoveAll(w => traktWatchlistMovies.FirstOrDefault(t => t.Movie.Ids.TmdbId == w.Id) != null);
                     }
-                    if (ImportCancelled) return;
+                    if (importCancelled) return;
 
                     if (AppSettings.IgnoreWatchedForWatchlist)
                     {
                         UIUtils.UpdateStatus("Retrieving existing watched movies from trakt.tv");
-                        traktWatchedMovies = TraktAPI.TraktAPI.GetWatchedMovies();
+                        traktWatchedMovies = TraktAPI.GetWatchedMovies();
 
                         if (traktWatchedMovies != null)
                         {
@@ -287,13 +287,13 @@ namespace TraktRater.Sites
                             moviesInWatchlist.Movies.RemoveAll(m => traktWatchedMovies.Any(c => c.Movie.Ids.TmdbId == m.Id));
                         }
                     }
-                    if (ImportCancelled) return;
+                    if (importCancelled) return;
 
                     UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb watchlist movies...", moviesInWatchlist.Page, moviesInWatchlist.TotalPages, moviesInWatchlist.Movies.Count));
 
                     if (moviesInWatchlist.Movies.Count > 0)
                     {
-                        var response = TraktAPI.TraktAPI.SyncMovieWatchlist(GetSyncMoviesData(moviesInWatchlist.Movies));
+                        var response = TraktAPI.SyncMovieWatchlist(GetSyncMoviesData(moviesInWatchlist.Movies));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send watchlist for TMDb movies", true);
@@ -305,7 +305,7 @@ namespace TraktRater.Sites
                             Thread.Sleep(1000);
                         }
 
-                        if (ImportCancelled) return;
+                        if (importCancelled) return;
                     }
 
                     // get each page of movies
@@ -313,7 +313,7 @@ namespace TraktRater.Sites
                     {
                         UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb watchlist movies...", moviesInWatchlist.Page, moviesInWatchlist.TotalPages));
                         moviesInWatchlist = TMDbAPI.GetWatchlistMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
-                        if (ImportCancelled) return;
+                        if (importCancelled) return;
 
                         if (moviesInWatchlist != null && moviesInWatchlist.TotalResults > 0)
                         {
@@ -333,7 +333,7 @@ namespace TraktRater.Sites
 
                             if (moviesInWatchlist.Movies.Count > 0)
                             {
-                                var response = TraktAPI.TraktAPI.SyncMovieWatchlist(GetSyncMoviesData(moviesInWatchlist.Movies));
+                                var response = TraktAPI.SyncMovieWatchlist(GetSyncMoviesData(moviesInWatchlist.Movies));
                                 if (response == null)
                                 {
                                     UIUtils.UpdateStatus("Failed to send watchlist for TMDb movies", true);
@@ -344,12 +344,12 @@ namespace TraktRater.Sites
                                     UIUtils.UpdateStatus(string.Format("Unable to sync watchlist for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
                                     Thread.Sleep(1000);
                                 }
-                                if (ImportCancelled) return;
+                                if (importCancelled) return;
                             }
                         }
                     }
                 }
-                if (ImportCancelled) return;
+                if (importCancelled) return;
                 #endregion
 
                 #region Shows
@@ -357,12 +357,12 @@ namespace TraktRater.Sites
 
                 UIUtils.UpdateStatus("Getting first batch of TMDb watchlist shows...");
                 var showsInWatchlist = TMDbAPI.GetWatchlistShows(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, 1);
-                if (ImportCancelled) return;
+                if (importCancelled) return;
 
                 if (showsInWatchlist != null || showsInWatchlist.TotalResults > 0)
                 {
                     UIUtils.UpdateStatus("Requesting existing watchlist shows from trakt...");
-                    var traktWatchlistShows = TraktAPI.TraktAPI.GetWatchlistShows();
+                    var traktWatchlistShows = TraktAPI.GetWatchlistShows();
                     if (traktWatchlistShows != null)
                     {
                         UIUtils.UpdateStatus(string.Format("Found {0} watchlist shows on trakt", traktWatchlistShows.Count()));
@@ -373,7 +373,7 @@ namespace TraktRater.Sites
                     if (AppSettings.IgnoreWatchedForWatchlist)
                     {
                         UIUtils.UpdateStatus("Retrieving existing watched shows from trakt.tv.");
-                        traktWatchedShows = TraktAPI.TraktAPI.GetWatchedEpisodes();
+                        traktWatchedShows = TraktAPI.GetWatchedEpisodes();
 
                         if (traktWatchedShows != null)
                         {
@@ -387,7 +387,7 @@ namespace TraktRater.Sites
 
                     if (showsInWatchlist.Shows.Count > 0)
                     {
-                        var response = TraktAPI.TraktAPI.SyncShowWatchlist(GetSyncShowsData(showsInWatchlist.Shows));
+                        var response = TraktAPI.SyncShowWatchlist(GetSyncShowsData(showsInWatchlist.Shows));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send watchlist for TMDb shows.", true);
@@ -398,7 +398,7 @@ namespace TraktRater.Sites
                             UIUtils.UpdateStatus(string.Format("Unable to sync watchlist for {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count));
                             Thread.Sleep(1000);
                         }
-                        if (ImportCancelled) return;
+                        if (importCancelled) return;
                     }
 
                     // get each page of movies
@@ -406,7 +406,7 @@ namespace TraktRater.Sites
                     {
                         UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb watchlist shows...", showsInWatchlist.Page, showsInWatchlist.TotalPages));
                         showsInWatchlist = TMDbAPI.GetWatchlistShows(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
-                        if (ImportCancelled) return;
+                        if (importCancelled) return;
 
                         if (showsInWatchlist != null || showsInWatchlist.TotalResults > 0)
                         {
@@ -427,7 +427,7 @@ namespace TraktRater.Sites
 
                             if (showsInWatchlist.Shows.Count > 0)
                             {
-                                var response = TraktAPI.TraktAPI.SyncShowWatchlist(GetSyncShowsData(showsInWatchlist.Shows));
+                                var response = TraktAPI.SyncShowWatchlist(GetSyncShowsData(showsInWatchlist.Shows));
                                 if (response == null)
                                 {
                                     UIUtils.UpdateStatus("Failed to send watchlist for TMDb shows", true);
@@ -438,24 +438,22 @@ namespace TraktRater.Sites
                                     UIUtils.UpdateStatus(string.Format("Unable to sync watchlist for {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count));
                                     Thread.Sleep(1000);
                                 }
-                                if (ImportCancelled) return;
+                                if (importCancelled) return;
                             }
                         }
                     }
                 }
-                if (ImportCancelled) return;
+                if (importCancelled) return;
                 #endregion
             }
 
             #endregion
-
-            return;
         }
 
         public void Cancel()
         {
             // signals to cancel import
-            ImportCancelled = true;
+            importCancelled = true;
         }
 
         #endregion
@@ -582,7 +580,7 @@ namespace TraktRater.Sites
 
             UIUtils.UpdateStatus("Launching default browser for Authentication Request...");
 
-            System.Diagnostics.Process.Start(string.Format(TMDbURIs.Authenticate, requestToken));
+            Process.Start(string.Format(TMDbURIs.Authenticate, requestToken));
 
             UIUtils.UpdateStatus("Click on the 'Allow' button in webbrowser then start import.");
         }

@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using TraktRater.Settings;
-
-namespace TraktRater.Web
+﻿namespace TraktRater.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Text;
+
+    using global::TraktRater.Settings;
+
     public class ExtendedWebClient : WebClient
     {
-        public int Timeout { get; set; }
+        public int Timeout { private get; set; }
 
         protected override WebRequest GetWebRequest(Uri address)
         {
@@ -28,7 +28,7 @@ namespace TraktRater.Web
 
     public static class TraktWeb
     {
-        public static Dictionary<string, string> CustomRequestHeaders = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> CustomRequestHeaders = new Dictionary<string, string>();
 
         #region Events
         internal delegate void OnDataSendDelegate(string url, string postData);
@@ -45,6 +45,7 @@ namespace TraktRater.Web
         /// </summary>
         /// <param name="address">The URI to use</param>
         /// <param name="data">The Data to send</param>
+        /// <param name="logResponse">Shall we log the response?</param>
         /// <returns>The response from Server</returns>
         public static string Transmit(string address, string data, bool logResponse = true)
         {
@@ -54,12 +55,10 @@ namespace TraktRater.Web
             try
             {
                 ServicePointManager.Expect100Continue = false;
-                ExtendedWebClient client = new ExtendedWebClient();
-                client.Timeout = 120000;
-                client.Encoding = Encoding.UTF8;
+                var client = new ExtendedWebClient { Timeout = 120000, Encoding = Encoding.UTF8 };
                 client.Headers.Add("user-agent", AppSettings.UserAgent);
 
-                string response = string.Empty;
+                var response = string.Empty;
 
                 if (string.IsNullOrEmpty(data))
                     response = client.DownloadString(address);

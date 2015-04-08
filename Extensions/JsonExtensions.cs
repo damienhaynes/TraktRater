@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text.RegularExpressions;
-
-namespace TraktRater.Extensions
+﻿namespace TraktRater.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Runtime.Serialization.Json;
+    using System.Text;
+
     public static class JsonExtensions
     {
         /// <summary>
