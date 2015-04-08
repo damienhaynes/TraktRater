@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using TraktRater;
-using TraktRater.TraktAPI;
-using TraktRater.TraktAPI.DataStructures;
-using TraktRater.Sites.API.TVDb;
-using TraktRater.UI;
-using TraktRater.Settings;
-
-namespace TraktRater.Sites
+﻿namespace TraktRater.Sites
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+
+    using global::TraktRater.Settings;
+    using global::TraktRater.Sites.API.TVDb;
+    using global::TraktRater.TraktAPI;
+    using global::TraktRater.TraktAPI.DataStructures;
+    using global::TraktRater.UI;
+
     public class TVDb : IRateSite
     {
         #region Variables
 
-        string AccountId = string.Empty;
-        bool ImportCancelled = false;
+        readonly string accountId = string.Empty;
+        bool importCancelled = false;
     
         #endregion
 
@@ -25,7 +24,7 @@ namespace TraktRater.Sites
 
         public TVDb(string accountId)
         {
-            AccountId = accountId;
+            this.accountId = accountId;
             Enabled = !string.IsNullOrEmpty(accountId) && accountId.Length == 16;
         }
 
@@ -39,12 +38,12 @@ namespace TraktRater.Sites
 
         public void ImportRatings()
         {
-            ImportCancelled = false;
+            importCancelled = false;
 
             // get show userratings from theTVDb.com first
             UIUtils.UpdateStatus("Getting show ratings from theTVDb.com");
 
-            TVDbShowRatings showRatings = TVDbAPI.GetShowRatings(AccountId);
+            TVDbShowRatings showRatings = TVDbAPI.GetShowRatings(accountId);
 
             // if there are no show ratings quit
             if (showRatings == null || showRatings.Shows.Count == 0)
@@ -54,9 +53,9 @@ namespace TraktRater.Sites
             }
 
             #region Import Show Ratings
-            if (ImportCancelled) return;
+            if (importCancelled) return;
             UIUtils.UpdateStatus("Retrieving existing tv show ratings from trakt.tv");
-            var currentUserShowRatings = TraktAPI.TraktAPI.GetRatedShows();
+            var currentUserShowRatings = TraktAPI.GetRatedShows();
 
             var filteredShows = new TVDbShowRatings();
             filteredShows.Shows.AddRange(showRatings.Shows);
@@ -80,7 +79,7 @@ namespace TraktRater.Sites
                 {
                     UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} TVDb rated shows...", i + 1, pages));
 
-                    TraktSyncResponse response = TraktAPI.TraktAPI.SyncShowsRated(GetRateShowsData(filteredShows.Shows.Skip(i * pageSize).Take(pageSize).ToList()));
+                    TraktSyncResponse response = TraktAPI.SyncShowsRated(GetRateShowsData(filteredShows.Shows.Skip(i * pageSize).Take(pageSize).ToList()));
                     if (response == null)
                     {
                         UIUtils.UpdateStatus("Error importing show ratings to trakt.tv", true);
@@ -91,7 +90,7 @@ namespace TraktRater.Sites
                         UIUtils.UpdateStatus(string.Format("Unable to sync ratings of {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count));
                         Thread.Sleep(1000);
                     }
-                    if (ImportCancelled) return;
+                    if (importCancelled) return;
                 }
             }
             #endregion
@@ -102,7 +101,7 @@ namespace TraktRater.Sites
 
             // get all existing user ratings from trakt.tv
             UIUtils.UpdateStatus("Retrieving existing episode ratings from trakt.tv");
-            var currentUserEpisodeRatings = TraktAPI.TraktAPI.GetRatedEpisodes();
+            var currentUserEpisodeRatings = TraktAPI.GetRatedEpisodes();
 
             if (currentUserEpisodeRatings != null)
             {
@@ -111,7 +110,7 @@ namespace TraktRater.Sites
 
             foreach (var show in showRatings.Shows)
             {
-                if (ImportCancelled) return;
+                if (importCancelled) return;
                 iCounter++;
 
                 UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting show info for tvdb series id {2}", iCounter, showRatings.Shows.Count, show.Id));
@@ -125,18 +124,18 @@ namespace TraktRater.Sites
                     Thread.Sleep(2000);
                     continue;
                 }
-                if (ImportCancelled) return;
+                if (importCancelled) return;
                 UIUtils.UpdateStatus(string.Format("[{0}/{1}] Requesting episode ratings for {2} from theTVDb.com", iCounter, showRatings.Shows.Count, showInfo.Show.Name));
 
                 // get episode ratings for each show in showratings
-                TVDbEpisodeRatings episodeRatings = TVDbAPI.GetEpisodeRatings(AccountId, show.Id.ToString());
+                TVDbEpisodeRatings episodeRatings = TVDbAPI.GetEpisodeRatings(accountId, show.Id.ToString());
                 if (episodeRatings == null)
                 {
                     UIUtils.UpdateStatus(string.Format("Unable to get episode ratings for {0} [{1}] from theTVDb.com", showInfo.Show.Name, show.Id), true);
                     Thread.Sleep(2000);
                     continue;
                 }
-                if (ImportCancelled) return;
+                if (importCancelled) return;
 
                 UIUtils.UpdateStatus(string.Format("Found {0} episode ratings for {1} on theTVDb.com", episodeRatings.Episodes.Count, showInfo.Show.Name));
 
@@ -153,7 +152,7 @@ namespace TraktRater.Sites
 
                 // submit one series at a time
                 var episodesToRate = GetRateEpisodeData(episodeRatings);
-                var response = TraktAPI.TraktAPI.SyncEpisodesRated(episodesToRate);
+                var response = TraktAPI.SyncEpisodesRated(episodesToRate);
                 if (response == null)
                 {
                     UIUtils.UpdateStatus(string.Format("Error importing {0} episode ratings to trakt.tv", showInfo.Show.Name), true);
@@ -171,22 +170,21 @@ namespace TraktRater.Sites
 
             #region Mark As Watched
 
-            if (AppSettings.MarkAsWatched && episodesRated.Count() > 0)
+            if (AppSettings.MarkAsWatched && episodesRated.Any())
             {
                 int i = 0;
                 foreach (var show in episodesRated)
                 {
-                    if (ImportCancelled) return;
+                    if (importCancelled) return;
 
                     // mark all episodes as watched if rated                
                     UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TVDb episodes of {3} as watched to trakt.tv...", i++, episodesRated.Count , show.Value.Count, show.Key));
                     var watchedEpisodes = GetWatchedEpisodeData(show.Value);                 
-                    var response = TraktAPI.TraktAPI.SyncEpisodesWatched(watchedEpisodes);
+                    var response = TraktAPI.SyncEpisodesWatched(watchedEpisodes);
                     if (response == null)
                     {
                         UIUtils.UpdateStatus(string.Format("Failed to send watched status for TVDb '{0}' episodes", show.Key), true);
                         Thread.Sleep(2000);
-                        continue;
                     }
                     else if (response.NotFound.Episodes.Count > 0)
                     {
@@ -197,14 +195,12 @@ namespace TraktRater.Sites
             }
 
             #endregion
-
-            return;
         }
 
         public void Cancel()
         {
             // signals to cancel import
-            ImportCancelled = true;
+            importCancelled = true;
         }
 
         #endregion
@@ -229,49 +225,7 @@ namespace TraktRater.Sites
 
             return showRateData;
         }
-
-        /// <summary>
-        /// returns a list of shows with episodes to rate
-        /// </summary>
-        //private TraktEpisodeRatingSyncEx GetRateEpisodeDataEx(TVDbEpisodeRatings episodeRatings, TVDbShow showInfo)
-        //{
-        //    // we're only syncing one series of episodes at a time
-        //    var showData = new TraktEpisodeRatingSyncEx.TraktShowSeasonsRating
-        //    {
-        //        Ids = new TraktShowId { TvdbId = episodeRatings.Show.Id },
-        //        Title = showInfo.Show.Name,
-        //        Seasons = new List<TraktEpisodeRatingSyncEx.TraktShowSeasonsRating.TraktSeasonEpisodesRating>()
-        //    };            
-
-        //    foreach (var episode in episodeRatings.Episodes)
-        //    {
-        //        // get season/episode info from showInfo object
-        //        var tvdbEpisode = showInfo.Episodes.Find(e => e.Id == episode.Id);
-        //        if (tvdbEpisode == null) continue;
-                
-        //        // check if we already have the season object
-        //        if (!showData.Seasons.Exists(s => s.Number == tvdbEpisode.SeasonNumber))
-        //        {
-        //            showData.Seasons.Add(new TraktEpisodeRatingSyncEx.TraktShowSeasonsRating.TraktSeasonEpisodesRating { Number = tvdbEpisode.SeasonNumber, Episodes = new List<TraktEpisodeRatingEx>() });
-        //        };
-
-        //        // add the episode to the episodes list
-        //        var season = showData.Seasons.Find(s => s.Number == tvdbEpisode.SeasonNumber);
-        //        if (season == null) continue;
-
-        //        season.Episodes.Add(new TraktEpisodeRatingEx { Number = tvdbEpisode.EpisodeNumber, Rating = episode.UserRating });
-        //    }
-
-        //    var episodeRateData = new TraktEpisodeRatingSyncEx
-        //    {
-        //        // we're only syncing one series of episodes at a time
-        //        // i.e. new up a list but only add one series worth of episodes
-        //        Shows = new List<TraktEpisodeRatingSyncEx.TraktShowSeasonsRating> { showData }
-        //    };
-
-        //    return episodeRateData;
-        //}
-
+        
         private TraktEpisodeRatingSync GetRateEpisodeData(TVDbEpisodeRatings episodeRatings)
         {
             var episodeRateData = new TraktEpisodeRatingSync { Episodes = new List<TraktEpisodeRating>() };
@@ -283,46 +237,6 @@ namespace TraktRater.Sites
 
             return episodeRateData;
         }
-
-
-        /// <summary>
-        /// returns a list of shows with episodes to mark as watched
-        /// </summary>
-        //private TraktEpisodeWatchedSyncEx GetWatchedEpisodeDataEx(TraktEpisodeRatingSyncEx episodes)
-        //{
-        //    var show = episodes.Shows.First();
-
-        //    // we're only syncing one series of episodes at a time
-        //    var showData = new TraktEpisodeWatchedSyncEx.TraktShowSeasonsWatched
-        //    {
-        //        Ids = new TraktShowId { TvdbId = show.Ids.TvdbId },
-        //        Title = show.Title,
-        //        seasons = new List<TraktEpisodeWatchedSyncEx.TraktShowSeasonsWatched.TraktSeasonEpisodesWatched>()
-        //    };
-
-        //    foreach (var season in show.Seasons)
-        //    {
-        //        showData.seasons.Add(new TraktEpisodeWatchedSyncEx.TraktShowSeasonsWatched.TraktSeasonEpisodesWatched { Number = season.Number, Episodes = new List<TraktEpisodeWatchedEx>() });
-
-        //        // add the episodes to the season
-        //        var currSeason = showData.seasons.Find(s => s.Number == season.Number);
-        //        if (currSeason == null) continue;
-
-        //        foreach (var episode in season.Episodes)
-        //        {
-        //            currSeason.Episodes.Add(new TraktEpisodeWatchedEx { Number = episode.Number });
-        //        }
-        //    }
-
-        //    var episodeWatchedData = new TraktEpisodeWatchedSyncEx
-        //    {
-        //        // we're only syncing one series of episodes at a time
-        //        // i.e. new up a list but only add one series worth of episodes
-        //        shows = new List<TraktEpisodeWatchedSyncEx.TraktShowSeasonsWatched> { showData }
-        //    };
-
-        //    return episodeWatchedData;
-        //}
 
         private TraktEpisodeWatchedSync GetWatchedEpisodeData(List<TraktEpisodeRating> ratedEpisodes)
         {

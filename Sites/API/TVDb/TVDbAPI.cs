@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using TraktRater.Web;
-using TraktRater.Extensions;
-
-namespace TraktRater.Sites.API.TVDb
+﻿namespace TraktRater.Sites.API.TVDb
 {
+    using System.Net;
+
+    using global::TraktRater.Extensions;
+    using global::TraktRater.Web;
+
     public static class TVDbAPI
     {
         public static TVDbShowRatings GetShowRatings(string accountId)

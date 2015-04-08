@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TraktRater.Web;
-using TraktRater.Extensions;
-using TraktRater.Sites.API.TMDb;
-
-namespace TraktRater.Sites.API.TMDb
+﻿namespace TraktRater.Sites.API.TMDb
 {
+    using global::TraktRater.Extensions;
+    using global::TraktRater.Web;
+
     /// <summary>
     /// Object that communicates with the TMDb API
     /// </summary>

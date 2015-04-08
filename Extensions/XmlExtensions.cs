@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
-
-namespace TraktRater.Extensions
+﻿namespace TraktRater.Extensions
 {
+    using System;
+    using System.IO;
+    using System.Xml.Serialization;
+
     public static class XmlExtensions
     {
         /// <summary>

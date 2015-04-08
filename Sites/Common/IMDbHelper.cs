@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TraktRater.Extensions;
-using TraktRater.UI;
-using TraktRater.TraktAPI;
-using TraktRater.TraktAPI.DataStructures;
-using TraktRater.Sites.API.IMDb;
-using TraktRater.Sites.API.TVDb;
-using TraktRater.Settings;
-using System.Threading;
-
-namespace TraktRater.Sites.Common.IMDb
+﻿namespace TraktRater.Sites.Common
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+
+    using global::TraktRater.Extensions;
+    using global::TraktRater.Sites.API.IMDb;
+    using global::TraktRater.Sites.API.TVDb;
+    using global::TraktRater.TraktAPI.DataStructures;
+    using global::TraktRater.UI;
+
     public class Helper
     {
         public static TraktMovieSync GetSyncMoviesData(List<Dictionary<string, string>> movies)
@@ -190,7 +188,7 @@ namespace TraktRater.Sites.Common.IMDb
         /// <summary>
         /// Removes the episode name and returns only the show title
         /// </summary>
-        public static string GetShowName(string title)
+        private static string GetShowName(string title)
         {
             if (string.IsNullOrEmpty(title)) return null;
 
@@ -210,7 +208,7 @@ namespace TraktRater.Sites.Common.IMDb
         /// <summary>
         /// returns only the episode name part of the title
         /// </summary>
-        public static string GetEpisodeName(string title)
+        private static string GetEpisodeName(string title)
         {
             if (string.IsNullOrEmpty(title)) return null;
 
@@ -228,8 +226,8 @@ namespace TraktRater.Sites.Common.IMDb
         {
             try
             {
-                string tvEpisodeName = Helper.GetEpisodeName(episode[IMDbFieldMapping.cTitle]);
-                string tvShowName = Helper.GetShowName(episode[IMDbFieldMapping.cTitle]);
+                string tvEpisodeName = GetEpisodeName(episode[IMDbFieldMapping.cTitle]);
+                string tvShowName = GetShowName(episode[IMDbFieldMapping.cTitle]);
                 string tvShowYear = episode[IMDbFieldMapping.cYear];
                 string tvShowImdbId = episode[IMDbFieldMapping.cIMDbID];
 
@@ -362,7 +360,7 @@ namespace TraktRater.Sites.Common.IMDb
             {
                 // date is in the form:
                 // Tue Mar  4 00:00:00 2014
-                string[] splits = imdbDateTime.Split(new string[] { " ", "  " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] splits = imdbDateTime.Split(new[] { " ", "  " }, StringSplitOptions.RemoveEmptyEntries);
                 if (splits.Count() == 5)
                 {
                     // make date in form DD MMM YYYY

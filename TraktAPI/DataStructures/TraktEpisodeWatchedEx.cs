@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
-
-namespace TraktRater.TraktAPI.DataStructures
+﻿namespace TraktRater.TraktAPI.DataStructures
 {
+    using System.Runtime.Serialization;
+
     [DataContract]
     public class TraktEpisodeWatchedEx : TraktEpisodeEx
     {
@@ -13,6 +9,6 @@ namespace TraktRater.TraktAPI.DataStructures
         public string WatchedAt { get; set; }
 
         [DataMember(Name = "plays")]
-        public int plays { get; set; }
+        public int Plays { get; set; }
     }
 }

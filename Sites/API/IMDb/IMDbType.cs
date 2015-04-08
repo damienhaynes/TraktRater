@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TraktRater.Sites.API.IMDb
+﻿namespace TraktRater.Sites.API.IMDb
 {
     /// <summary>
     /// http://www.imdb.com/search/title

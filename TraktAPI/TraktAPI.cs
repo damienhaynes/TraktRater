@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using TraktRater;
-using TraktRater.Extensions;
-using TraktRater.TraktAPI;
-using TraktRater.TraktAPI.DataStructures;
-using TraktRater.Web;
-
-namespace TraktRater.TraktAPI
+﻿namespace TraktRater.TraktAPI
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using global::TraktRater.Extensions;
+    using global::TraktRater.TraktAPI.DataStructures;
+    using global::TraktRater.Web;
+
     /// <summary>
     /// Object that communicates with the Trakt API
     /// </summary>
@@ -18,9 +14,8 @@ namespace TraktRater.TraktAPI
     {
         const string ApplicationId = "4feebb4e3791029816a401952c09fa5b446ed4a81b01d600031e422f0d3ae86d";
 
-        public static string Username { get; set; }
-        public static string Password { get; set; }
-        public static string UserAgent { get; set; }
+        public static string Username { private get; set; }
+        public static string Password { private get; set; }
 
         /// <summary>
         /// Login to trakt and to request a user token for all subsequent requests
@@ -53,7 +48,7 @@ namespace TraktRater.TraktAPI
         /// <returns>The User Login json string</returns>
         private static string GetUserLogin()
         {
-            return new TraktLogin { Login = TraktAPI.Username, Password = TraktAPI.Password }.ToJSON();
+            return new TraktLogin { Login = Username, Password = Password }.ToJSON();
         }
 
         #region Sync to Trakt
@@ -101,24 +96,6 @@ namespace TraktRater.TraktAPI
         /// </summary>
         /// <param name="syncData">The sync data to send</param>
         /// <returns>The response from trakt</returns>
-        public static TraktSyncResponse SyncEpisodeWatchlistEx(TraktEpisodeSyncEx syncData)
-        {
-            // check that we have everything we need
-            if (syncData == null || syncData.Shows == null || syncData.Shows.Count == 0)
-                return null;
-
-            // serialize data to JSON and send to server
-            string response = TraktWeb.PostToTrakt(TraktURIs.SyncWatchlist, syncData.ToJSON());
-
-            // return success or failure
-            return response.FromJSON<TraktSyncResponse>();
-        }
-
-        /// <summary>
-        /// Sends episode sync data to Trakt Watchlist
-        /// </summary>
-        /// <param name="syncData">The sync data to send</param>
-        /// <returns>The response from trakt</returns>
         public static TraktSyncResponse SyncEpisodeWatchlist(TraktEpisodeSync syncData)
         {
             // check that we have everything we need
@@ -135,23 +112,6 @@ namespace TraktRater.TraktAPI
         #endregion
 
         #region Watched
-
-        /// <summary>
-        /// Sends episode watched sync data to Trakt
-        /// </summary>
-        /// <param name="syncData">The sync data to send</param>
-        public static TraktSyncResponse SyncEpisodesWatchedEx(TraktEpisodeWatchedSyncEx syncData)
-        {
-            // check that we have everything we need
-            if (syncData == null || syncData.shows == null || syncData.shows.Count == 0)
-                return null;
-
-            // serialize data to JSON and send to server
-            string response = TraktWeb.PostToTrakt(TraktURIs.SyncWatched, syncData.ToJSON());
-
-            // return success or failure
-            return response.FromJSON<TraktSyncResponse>();
-        }
 
         /// <summary>
         /// Sends episode watched sync data to Trakt
@@ -226,24 +186,6 @@ namespace TraktRater.TraktAPI
             // return success or failure
             return response.FromJSON<TraktSyncResponse>();
         }
-        
-        /// <summary>
-        /// Rates a list of episodes on trakt
-        /// </summary>
-        /// <param name="data">The object containing the list of episodes to be rated</param>       
-        /// <returns>The response from trakt</returns>
-        public static TraktSyncResponse SyncEpisodesRatedEx(TraktEpisodeRatingSyncEx data)
-        {
-            // check that we have everything we need
-            if (data == null || data.Shows == null || data.Shows.Count == 0)
-                return null;
-
-            // serialize data to JSON and send to server
-            string response = TraktWeb.PostToTrakt(TraktURIs.SyncRatings, data.ToJSON());
-      
-            // return success or failure
-            return response.FromJSON<TraktSyncResponse>();
-        }
 
         /// <summary>
         /// Rates a list of episodes on trakt
@@ -274,7 +216,6 @@ namespace TraktRater.TraktAPI
         /// <summary>
         /// Returns the current users Rated Movies
         /// </summary>
-        /// <param name="user">username of person</param>
         public static IEnumerable<TraktUserMovieRating> GetRatedMovies()
         {
             string ratedMovies = TraktWeb.GetFromTrakt(TraktURIs.RatedMoviesList);
@@ -288,7 +229,6 @@ namespace TraktRater.TraktAPI
         /// <summary>
         /// Returns the current users Rated Shows
         /// </summary>
-        /// <param name="user">username of person</param>
         public static IEnumerable<TraktUserShowRating> GetRatedShows()
         {
             string ratedShows = TraktWeb.GetFromTrakt(TraktURIs.RatedShowsList);
@@ -302,7 +242,6 @@ namespace TraktRater.TraktAPI
         /// <summary>
         /// Returns the current users Rated Episodes
         /// </summary>
-        /// <param name="user">username of person</param>
         public static IEnumerable<TraktUserEpisodeRating> GetRatedEpisodes()
         {
             string ratedEpisodes = TraktWeb.GetFromTrakt(TraktURIs.RatedEpisodesList);
@@ -388,33 +327,6 @@ namespace TraktRater.TraktAPI
         }
 
         #endregion
-
-        #endregion
-
-        #region Summary Data
-
-        public static TraktShowSummary GetShowSummary(string slug)
-        {
-            // check that we have everything we need
-            if (string.IsNullOrEmpty(slug))
-                return null;
-            
-            string fileCache = string.Format(TraktCache.cShowInfoFileCache, slug);
-            string response = TraktCache.GetFromCache(fileCache, 1);
-            if (string.IsNullOrEmpty(response))
-            {
-                // serialize data to JSON and send to server
-                response = TraktWeb.GetFromTrakt(string.Format(TraktURIs.ShowSummary, slug));
-                TraktCache.CacheResponse(response, fileCache);
-                if (response.FromJSON<TraktShowSummary>() == null)
-                {
-                    TraktCache.DeleteFromCache(fileCache);
-                    return null;
-                }
-            }
-            // return success or failure
-            return response.FromJSON<TraktShowSummary>();
-        }
 
         #endregion
 

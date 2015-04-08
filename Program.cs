@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-
-namespace TraktRater
+﻿namespace TraktRater
 {
+    using System;
+    using System.Windows.Forms;
+
     static class Program
     {
         public static TraktRater MainWindow;

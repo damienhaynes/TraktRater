@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
-
-namespace TraktRater.Sites.API.TMDb
+﻿namespace TraktRater.Sites.API.TMDb
 {
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+
     [DataContract]
     public class TMDbRatedShows : TMDbPage
     {

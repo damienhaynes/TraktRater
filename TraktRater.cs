@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml.Serialization;
-using TraktRater.Sites;
-using TraktRater.Extensions;
-using TraktRater.TraktAPI.DataStructures;
-using TraktRater.UI;
-using TraktRater.Settings;
-using TraktRater.Logger;
-
-namespace TraktRater
+﻿namespace TraktRater
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Drawing;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading;
+    using System.Windows.Forms;
+
+    using global::TraktRater.Logger;
+    using global::TraktRater.Settings;
+    using global::TraktRater.Sites;
+    using global::TraktRater.UI;
+
     public partial class TraktRater : Form
     {
         #region UI Invoke Delegates
@@ -27,9 +24,10 @@ namespace TraktRater
         #endregion
 
         #region Variables
-        List<IRateSite> sites = new List<IRateSite>();
-        static bool ImportRunning = false;
-        static bool ImportCancelled = false;
+
+        readonly List<IRateSite> sites = new List<IRateSite>();
+        static bool importRunning = false;
+        static bool importCancelled = false;
         #endregion
 
         #region Constants
@@ -48,7 +46,7 @@ namespace TraktRater
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.Text = "TraktRater v" + Assembly.GetEntryAssembly().GetName().Version;
+            Text = "TraktRater v" + Assembly.GetEntryAssembly().GetName().Version;
             AppSettings.Load();
             ClearProgress();
 
@@ -98,7 +96,7 @@ namespace TraktRater
             }
         }
 
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
             CancelImport();
             AppSettings.Save();
@@ -115,7 +113,7 @@ namespace TraktRater
 
         private void btnImportRatings_Click(object sender, EventArgs e)
         {
-            if (!ImportRunning)
+            if (!importRunning)
                 StartImport();
             else
                 CancelImport();
@@ -249,7 +247,7 @@ namespace TraktRater
                 return;
             }
 
-            Thread tokenThread = new Thread((o) =>
+            Thread tokenThread = new Thread(o =>
                 {
                     // store token and parse into tmdb object later
                     // for request session id
@@ -268,7 +266,7 @@ namespace TraktRater
 
         private void lnkListalExport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.listal.com/user/export");
+            Process.Start("http://www.listal.com/user/export");
         }
 
         private void chkTVDbEnabled_CheckedChanged(object sender, EventArgs e)
@@ -312,7 +310,7 @@ namespace TraktRater
 
         private void lnkLogFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(FileLog.LogDirectory);
+            Process.Start(FileLog.LogDirectory);
         }
 
         private void nudBatchSize_ValueChanged(object sender, EventArgs e)
@@ -328,7 +326,7 @@ namespace TraktRater
             // update file log with new name
             FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
 
-            if (ImportRunning) return;
+            if (importRunning) return;
 
             if (string.IsNullOrEmpty(AppSettings.TraktUsername) || string.IsNullOrEmpty(AppSettings.TraktPassword))
             {
@@ -346,16 +344,16 @@ namespace TraktRater
             if (AppSettings.EnableListal)   sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
             if (AppSettings.EnableCriticker) sites.Add(new Criticker(AppSettings.CritickerMovieFilename));
 
-            if (sites.Where(s => s.Enabled).Count() == 0)
+            if (!sites.Any(s => s.Enabled))
             {
                 UIUtils.UpdateStatus("No sites enabled or incorrect site information supplied!", true);
                 return;
             }
 
             #region Import
-            Thread importThread = new Thread((o) =>
+            Thread importThread = new Thread(o =>
             {
-                ImportRunning = true;
+                importRunning = true;
 
                 // only one import at a time
                 SetControlState(false);
@@ -370,8 +368,8 @@ namespace TraktRater
                 {
                     UIUtils.UpdateStatus("Unable to login to trakt, check log for details.", true);
                     SetControlState(true);
-                    ImportRunning = false;
-                    ImportCancelled = false;
+                    importRunning = false;
+                    importCancelled = false;
                     return;
                 }
                 #endregion
@@ -382,7 +380,7 @@ namespace TraktRater
                     UIUtils.UpdateStatus(string.Format("Starting import from {0}", site.Name));
                     try
                     {   
-                        if (!ImportCancelled)
+                        if (!importCancelled)
                             site.ImportRatings();
                     }
                     catch (Exception e)
@@ -396,8 +394,8 @@ namespace TraktRater
                 // finished
                 SetControlState(true);
                 UIUtils.UpdateStatus("Import Complete!");
-                ImportRunning = false;
-                ImportCancelled = false;
+                importRunning = false;
+                importCancelled = false;
             });
 
             importThread.Start();
@@ -406,13 +404,13 @@ namespace TraktRater
 
         private void CancelImport()
         {
-            if (!ImportRunning) return;
+            if (!importRunning) return;
 
             UIUtils.UpdateStatus("Cancelling Import...");
 
-            ImportCancelled = true;
+            importCancelled = true;
 
-            Thread cancelThread = new Thread((o) =>
+            Thread cancelThread = new Thread(o =>
             {
                 // cancel import
                 foreach (var site in sites.Where(s => s.Enabled))
@@ -428,10 +426,10 @@ namespace TraktRater
         #region Private Methods
         private void SetControlState(bool enable)
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                SetControlStateDelegate setControlState = new SetControlStateDelegate(SetControlState);
-                this.Invoke(setControlState, enable);
+                SetControlStateDelegate setControlState = SetControlState;
+                Invoke(setControlState, enable);
                 return;
             }
 
@@ -449,10 +447,10 @@ namespace TraktRater
 
         private void ClearProgress()
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                ClearProgressDelegate clearProgress = new ClearProgressDelegate(ClearProgress);
-                this.Invoke(clearProgress);
+                ClearProgressDelegate clearProgress = ClearProgress;
+                Invoke(clearProgress);
                 return;
             }
             
@@ -462,10 +460,10 @@ namespace TraktRater
 
         private void SetTMDbControlState()
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                SetTMDbControlStateDelegate setTMDbState = new SetTMDbControlStateDelegate(SetTMDbControlState);
-                this.Invoke(setTMDbState);
+                SetTMDbControlStateDelegate setTMDbState = SetTMDbControlState;
+                Invoke(setTMDbState);
                 return;
             }
 

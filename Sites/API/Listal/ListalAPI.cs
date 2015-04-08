@@ -1,13 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TraktRater.Web;
-using TraktRater.Extensions;
-
-namespace TraktRater.Sites.API.Listal
+﻿namespace TraktRater.Sites.API.Listal
 {
+    using System.IO;
+
+    using global::TraktRater.Extensions;
+
     public enum ListType
     {
         owned,

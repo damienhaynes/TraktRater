@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-
-namespace TraktRater.Sites.API.TVDb
+﻿namespace TraktRater.Sites.API.TVDb
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml.Serialization;
+
     [XmlRoot("Data")]
     public class TVDbShowRatings
     {

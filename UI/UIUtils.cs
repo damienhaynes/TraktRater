@@ -1,27 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using TraktRater;
-using TraktRater.Logger;
-
-namespace TraktRater.UI
+﻿namespace TraktRater.UI
 {
+    using System.Drawing;
+
+    using global::TraktRater.Logger;
+
     delegate void UpdateProgressDelegate(string message, bool error);
 
     public static class UIUtils
     {
-        public static void UpdateStatus(string message)
-        {
-            UpdateStatus(message, false);
-        }
-
-        public static void UpdateStatus(string message, bool error)
+        public static void UpdateStatus(string message, bool error = false)
         {   
             if (Program.MainWindow.InvokeRequired)
             {
-                UpdateProgressDelegate updateProgress = new UpdateProgressDelegate(UpdateStatus);
+                UpdateProgressDelegate updateProgress = UpdateStatus;
                 object[] args = { message, error };
                 Program.MainWindow.Invoke(updateProgress, args);
                 return;

@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-
-namespace TraktRater.TraktAPI
+﻿namespace TraktRater.TraktAPI
 {
+    using System;
+    using System.IO;
+
     public static class TraktCache
     {
         static string cAppDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         
         public static string cShowInfoFileCache = cAppDir + @"\TraktRater\Series\{0}.json";
 
-        public static string GetFromCache(string filename)
-        {
-            return GetFromCache(filename, 1);
-        }
         public static string GetFromCache(string filename, int expiresInDays)
         {
             try
@@ -43,7 +36,9 @@ namespace TraktRater.TraktAPI
 
                 File.WriteAllText(filename, response);
             }
-            catch { return; }
+            catch (Exception)
+            {
+            }
         }
 
         public static void DeleteFromCache(string filename)
@@ -52,7 +47,9 @@ namespace TraktRater.TraktAPI
             {
                 File.Delete(filename);
             }
-            catch { return; }
+            catch (Exception)
+            {
+            }
         }
     }
 }

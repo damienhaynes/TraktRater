@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.IO;
-
-namespace TraktRater.Settings.XML
+﻿namespace TraktRater.Settings.XML
 {
+    using System;
+    using System.IO;
+    using System.Xml;
+
     class XmlReader
     {
-        XmlDocument Document = new XmlDocument();
+        XmlDocument document = new XmlDocument();
 
         #region Settings Helper
         public bool GetSettingValueAsBool(string name, bool defaultvalue)
         {
-            if (Document == null) return defaultvalue;
+            if (document == null) return defaultvalue;
 
             XmlNode node = null;
-            node = Document.DocumentElement.SelectSingleNode(string.Format("/settings//setting[@name='{0}']", name));
+            node = document.DocumentElement.SelectSingleNode(string.Format("/settings//setting[@name='{0}']", name));
             if (node == null) return defaultvalue;
 
             try
@@ -36,10 +33,10 @@ namespace TraktRater.Settings.XML
 
         public string GetSettingValueAsString(string name, string defaultvalue)
         {
-            if (Document == null) return defaultvalue;
+            if (document == null) return defaultvalue;
 
             XmlNode node = null;
-            node = Document.DocumentElement.SelectSingleNode(string.Format("/settings//setting[@name='{0}']", name));
+            node = document.DocumentElement.SelectSingleNode(string.Format("/settings//setting[@name='{0}']", name));
             if (node == null) return defaultvalue;
 
             try
@@ -54,10 +51,10 @@ namespace TraktRater.Settings.XML
 
         public int GetSettingValueAsInt(string name, int defaultvalue)
         {
-            if (Document == null) return defaultvalue;
+            if (document == null) return defaultvalue;
 
             XmlNode node = null;
-            node = Document.DocumentElement.SelectSingleNode(string.Format("/settings//setting[@name='{0}']", name));
+            node = document.DocumentElement.SelectSingleNode(string.Format("/settings//setting[@name='{0}']", name));
             if (node == null) return defaultvalue;
 
             try
@@ -75,17 +72,17 @@ namespace TraktRater.Settings.XML
         {
             if (!File.Exists(file))
             {
-                Document = null;
+                document = null;
                 return false;
             }
 
             try
             {
-                Document.Load(file);
+                document.Load(file);
             }
             catch (Exception)
             {
-                Document = null;
+                document = null;
                 return false;
             }
             return true;
