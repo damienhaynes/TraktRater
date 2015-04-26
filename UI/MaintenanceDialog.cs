@@ -22,8 +22,14 @@
         #region Form Events
         private void btnStart_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
-            Close();
+            string warning = "Are you really sure you want to remove the selected items from your trakt account?";
+
+            // give user a warning about what they about to do!
+            if (MessageBox.Show(warning, "Maintenance", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
