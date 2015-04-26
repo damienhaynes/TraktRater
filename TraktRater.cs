@@ -455,7 +455,15 @@
                 {
                     Maintenance.RemoveMoviesFromWatchedHistory();
                 }
-                
+                if (settings.CollectedEpisodes)
+                {
+                    Maintenance.RemoveEpisodesFromCollection();
+                }
+                if (settings.CollectedMovies)
+                {
+                    Maintenance.RemoveMoviesFromCollection();
+                }
+
                 // finished
                 SetControlState(true);
                 UIUtils.UpdateStatus("Maintenance Complete!");

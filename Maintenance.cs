@@ -66,7 +66,7 @@
             // get current watched movies
             UIUtils.UpdateStatus("Getting watched movies from trakt.tv");
             var watchedMovies = TraktAPI.TraktAPI.GetWatchedMovies();
-            if (watchedMovies != null && watchedMovies.Count() > 0)
+            if (watchedMovies != null)
             {
                 UIUtils.UpdateStatus("Found {0} movies watched ({1} plays) on trakt.tv", watchedMovies.Count(), watchedMovies.Sum(s => s.Plays));
                 
@@ -94,6 +94,91 @@
             else
             {
                 UIUtils.UpdateStatus("Failed to get current list of watched movies from trakt.tv", true);
+                Thread.Sleep(1000);
+            }
+        }
+
+        public static void RemoveEpisodesFromCollection()
+        {
+            // get current watched shows
+            UIUtils.UpdateStatus("Getting collected shows from trakt.tv");
+            var collectedShows = TraktAPI.TraktAPI.GetCollectedShows();
+            if (collectedShows != null)
+            {
+                int i = 0;
+                int count = collectedShows.Count();
+                UIUtils.UpdateStatus("Found {0} shows with {1} episodes collected on trakt.tv", count, collectedShows.Sum(s => s.Seasons.Sum(se => se.Episodes.Count())));
+
+                // remove one show at a time
+                // there could be many underlying episodes per show
+                foreach (var collectedShow in collectedShows)
+                {
+                    if (Cancel) return;
+
+                    var syncData = new TraktShowSync
+                    {
+                        Shows = new List<TraktShow>
+                        {
+                            new TraktShow
+                            {
+                                Ids = new TraktShowId
+                                { 
+                                    Trakt = collectedShow.Show.Ids.Trakt
+                                }
+                            }
+                        }
+                    };
+
+                    UIUtils.UpdateStatus("[{0}/{1}] Removing all episodes of {2} from trakt.tv collection", ++i, count, collectedShow.Show.Title);
+                    var syncResponse = TraktAPI.TraktAPI.RemoveShowsFromCollection(syncData);
+                    if (syncResponse == null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("Failed to remove episodes of {0} from trakt.tv collection", collectedShow.Show.Title), true);
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of collected shows from trakt.tv", true);
+                Thread.Sleep(1000);
+            }
+        }
+
+        public static void RemoveMoviesFromCollection()
+        {
+            // get current watched movies
+            UIUtils.UpdateStatus("Getting collected movies from trakt.tv");
+            var collectedMovies = TraktAPI.TraktAPI.GetCollectedMovies();
+            if (collectedMovies != null)
+            {
+                UIUtils.UpdateStatus("Found {0} movies collected on trakt.tv", collectedMovies.Count());
+
+                int pageSize = AppSettings.BatchSize;
+                int pages = (int)Math.Ceiling((double)collectedMovies.Count() / pageSize);
+                for (int i = 0; i < pages; i++)
+                {
+                    if (Cancel) return;
+
+                    var syncData = new TraktMovieSync
+                    {
+                        Movies = collectedMovies.Select(w => w.Movie).Skip(i * pageSize).Take(pageSize).ToList()
+                    };
+
+                    UIUtils.UpdateStatus("[{0}/{1}] Removing movies from trakt.tv collection", i + 1, pages);
+                    var syncResponse = TraktAPI.TraktAPI.RemoveMoviesFromCollection(syncData);
+                    if (syncResponse == null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove movies from trakt.tv collection", i + 1, pages), true);
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of collected movies from trakt.tv", true);
                 Thread.Sleep(1000);
             }
         }

@@ -172,6 +172,7 @@
             var response = TraktWeb.PostToTrakt(TraktURIs.SyncWatchedRemove, syncData.ToJSON());
             return response.FromJSON<TraktSyncResponse>();
         }
+
         #endregion
 
         #region Rated
@@ -227,6 +228,36 @@
             string response = TraktWeb.PostToTrakt(TraktURIs.SyncRatings, data.ToJSON());
 
             // return success or failure
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        #endregion
+
+        #region Collection
+
+        /// <summary>
+        /// Removes all episodes for each show in users collection
+        /// </summary>
+        /// <param name="syncData">list of shows</param>
+        public static TraktSyncResponse RemoveShowsFromCollection(TraktShowSync syncData)
+        {
+            if (syncData == null)
+                return null;
+
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncCollectedRemove, syncData.ToJSON());
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        /// <summary>
+        /// Removes movies from users collection
+        /// </summary>
+        /// <param name="syncData">list of shows</param>
+        public static TraktSyncResponse RemoveMoviesFromCollection(TraktMovieSync syncData)
+        {
+            if (syncData == null)
+                return null;
+
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncCollectedRemove, syncData.ToJSON());
             return response.FromJSON<TraktSyncResponse>();
         }
 
@@ -345,6 +376,36 @@
             string watchlistEpisodes = TraktWeb.GetFromTrakt(TraktURIs.WatchlistEpisodes);
             var result = watchlistEpisodes.FromJSONArray<TraktEpisodeWatchlist>();
 
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
+        }
+
+        #endregion
+
+        #region Collection
+
+        /// <summary>
+        /// Returns the current users collected movies
+        /// </summary>
+        public static IEnumerable<TraktMovieCollected> GetCollectedMovies()
+        {
+            string collectedMovies = TraktWeb.GetFromTrakt(TraktURIs.CollectedMovies);
+            var result = collectedMovies.FromJSONArray<TraktMovieCollected>();
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Movie.Title != null && r.Movie.Ids != null);
+        }
+
+        /// <summary>
+        /// Returns the current users collected episodes
+        /// </summary>
+        public static IEnumerable<TraktShowCollected> GetCollectedShows()
+        {
+            string collectedShows = TraktWeb.GetFromTrakt(TraktURIs.CollectedShows);
+            var result = collectedShows.FromJSONArray<TraktShowCollected>();
             if (result == null) return null;
 
             // filter out anything invalid
