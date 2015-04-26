@@ -231,6 +231,19 @@
             return response.FromJSON<TraktSyncResponse>();
         }
 
+        /// <summary>
+        /// Removes all episode ratings from trakt
+        /// </summary>
+        /// <param name="syncData">list of shows</param>
+        public static TraktSyncResponse RemoveEpisodesFromRatings(TraktEpisodeSync syncData)
+        {
+            if (syncData == null)
+                return null;
+
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncRatingsRemove, syncData.ToJSON());
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
         #endregion
 
         #region Collection
@@ -244,7 +257,7 @@
             if (syncData == null)
                 return null;
 
-            var response = TraktWeb.PostToTrakt(TraktURIs.SyncCollectedRemove, syncData.ToJSON());
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncCollectionRemove, syncData.ToJSON());
             return response.FromJSON<TraktSyncResponse>();
         }
 
@@ -257,7 +270,7 @@
             if (syncData == null)
                 return null;
 
-            var response = TraktWeb.PostToTrakt(TraktURIs.SyncCollectedRemove, syncData.ToJSON());
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncCollectionRemove, syncData.ToJSON());
             return response.FromJSON<TraktSyncResponse>();
         }
 
@@ -302,6 +315,19 @@
         {
             string ratedEpisodes = TraktWeb.GetFromTrakt(TraktURIs.RatedEpisodes);
             var result = ratedEpisodes.FromJSONArray<TraktUserEpisodeRating>();
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
+        }
+
+        /// <summary>
+        /// Returns the current users Rated Seasons
+        /// </summary>
+        public static IEnumerable<TraktUserSeasonRating> GetRatedSeasons()
+        {
+            string ratedSeasons = TraktWeb.GetFromTrakt(TraktURIs.RatedSeasons);
+            var result = ratedSeasons.FromJSONArray<TraktUserSeasonRating>();
             if (result == null) return null;
 
             // filter out anything invalid

@@ -463,6 +463,10 @@
                 {
                     Maintenance.RemoveMoviesFromCollection();
                 }
+                if (settings.RatedEpisodes)
+                {
+                    Maintenance.RemoveEpisodesFromRatings();
+                }
 
                 // finished
                 SetControlState(true);

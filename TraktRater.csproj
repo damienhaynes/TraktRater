@@ -134,6 +134,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktShowSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktUserEpisodeRating.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktUserMovieRating.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktUserSeasonRating.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktUserShowRating.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktUserToken.cs" />
     <Compile Include="TraktAPI\TraktAPI.cs" />

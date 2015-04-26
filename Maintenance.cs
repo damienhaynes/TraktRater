@@ -22,7 +22,7 @@
             {
                 int i = 0;
                 int count = watchedShows.Count();
-                UIUtils.UpdateStatus("Found {0} shows with {1} episodes watched ({2} plays) on trakt.tv", count, watchedShows.Sum(s => s.Seasons.Sum(se => se.Episodes.Count())), watchedShows.Sum(s => s.Plays));
+                UIUtils.UpdateStatus("Found {0} shows with {1} episodes watched ({2} plays) on trakt.tv", count, watchedShows.Sum(w => w.Seasons.Sum(we => we.Episodes.Count())), watchedShows.Sum(s => s.Plays));
 
                 // remove one show at a time
                 // there could be many underlying episodes per show
@@ -107,7 +107,7 @@
             {
                 int i = 0;
                 int count = collectedShows.Count();
-                UIUtils.UpdateStatus("Found {0} shows with {1} episodes collected on trakt.tv", count, collectedShows.Sum(s => s.Seasons.Sum(se => se.Episodes.Count())));
+                UIUtils.UpdateStatus("Found {0} shows with {1} episodes collected on trakt.tv", count, collectedShows.Sum(c => c.Seasons.Sum(ce => ce.Episodes.Count())));
 
                 // remove one show at a time
                 // there could be many underlying episodes per show
@@ -163,7 +163,7 @@
 
                     var syncData = new TraktMovieSync
                     {
-                        Movies = collectedMovies.Select(w => w.Movie).Skip(i * pageSize).Take(pageSize).ToList()
+                        Movies = collectedMovies.Select(c => c.Movie).Skip(i * pageSize).Take(pageSize).ToList()
                     };
 
                     UIUtils.UpdateStatus("[{0}/{1}] Removing movies from trakt.tv collection", i + 1, pages);
@@ -179,6 +179,44 @@
             else
             {
                 UIUtils.UpdateStatus("Failed to get current list of collected movies from trakt.tv", true);
+                Thread.Sleep(1000);
+            }
+        }
+
+        public static void RemoveEpisodesFromRatings()
+        {
+            // get current rated episodes
+            UIUtils.UpdateStatus("Getting rated episodes from trakt.tv");
+            var ratedEpisodes = TraktAPI.TraktAPI.GetRatedEpisodes();
+            if (ratedEpisodes != null)
+            {
+                UIUtils.UpdateStatus("Found {0} episodes rated on trakt.tv", ratedEpisodes.Count());
+
+                int pageSize = AppSettings.BatchSize;
+                int pages = (int)Math.Ceiling((double)ratedEpisodes.Count() / pageSize);
+                for (int i = 0; i < pages; i++)
+                {
+                    if (Cancel) return;
+
+                    var syncData = new TraktEpisodeSync
+                    {
+                        Episodes = ratedEpisodes.Select(r => new TraktEpisode { Ids = r.Episode.Ids })
+                                                .Skip(i * pageSize).Take(pageSize).ToList()
+                    };
+
+                    UIUtils.UpdateStatus("[{0}/{1}] Removing episodes from trakt.tv ratings", i + 1, pages);
+                    var syncResponse = TraktAPI.TraktAPI.RemoveEpisodesFromRatings(syncData);
+                    if (syncResponse == null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove movies from trakt.tv collection", i + 1, pages), true);
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of rated episodes from trakt.tv", true);
                 Thread.Sleep(1000);
             }
         }
