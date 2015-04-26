@@ -14,7 +14,7 @@
     using global::TraktRater.Settings;
     using global::TraktRater.Sites;
     using global::TraktRater.UI;
-
+    
     public partial class TraktRater : Form
     {
         #region UI Invoke Delegates
@@ -31,8 +31,8 @@
         #endregion
 
         #region Constants
-        const string cImportReady = "Start Ratings Import";
-        const string cCancelImport = "Cancel Import";
+        const string cImportReadyText = "Start Ratings Import";
+        const string cCancelText = "Cancel";
         #endregion
 
         #region Constructor
@@ -318,21 +318,28 @@
             AppSettings.BatchSize = (int)nudBatchSize.Value;
         }
 
+        private void btnMaintenance_Click(object sender, EventArgs e)
+        {
+            MaintenanceDialog maintenanceDlg = new MaintenanceDialog();
+            DialogResult result = maintenanceDlg.ShowDialog(this);
+
+            if (result != DialogResult.OK)
+                return;
+
+            // perform maintenance for user
+            StartMaintenance(maintenanceDlg.Settings);
+        }
+
         #endregion
 
         #region Import Actions
         private void StartImport()
         {
+            if (!CheckAccountDetails() || importRunning)
+                return;
+
             // update file log with new name
             FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
-
-            if (importRunning) return;
-
-            if (string.IsNullOrEmpty(AppSettings.TraktUsername) || string.IsNullOrEmpty(AppSettings.TraktPassword))
-            {
-                UIUtils.UpdateStatus("You must enter in your trakt username and password!", true);
-                return;
-            }
 
             sites.Clear();
 
@@ -351,7 +358,7 @@
             }
 
             #region Import
-            Thread importThread = new Thread(o =>
+            var importThread = new Thread(o =>
             {
                 importRunning = true;
 
@@ -361,18 +368,9 @@
                 // Clear Progress
                 ClearProgress();
 
-                #region Login to trakt
-                UIUtils.UpdateStatus("Logging in to trakt.tv...");
-                var response = TraktAPI.TraktAPI.GetUserToken();
-                if (response == null || string.IsNullOrEmpty(response.Token))
-                {
-                    UIUtils.UpdateStatus("Unable to login to trakt, check log for details.", true);
-                    SetControlState(true);
-                    importRunning = false;
-                    importCancelled = false;
+                // Login to trakt.tv
+                if (!Login())
                     return;
-                }
-                #endregion
 
                 // import ratings
                 foreach (var site in sites.Where(s => s.Enabled))
@@ -388,7 +386,7 @@
                         UIUtils.UpdateStatus(string.Format("{0}:{1}", site.Name, e.Message), true);
                         Thread.Sleep(5000);
                     }
-                    UIUtils.UpdateStatus(string.Format("Finished import from {0}", site.Name));
+                    UIUtils.UpdateStatus("Finished import from {0}", site.Name);
                 }
 
                 // finished
@@ -423,7 +421,89 @@
         }
         #endregion
 
+        #region Maintenance Actions
+        private void StartMaintenance(MaintenanceSettings settings)
+        {
+            if (!CheckAccountDetails() || importRunning)
+                return;
+
+            // update file log with new name
+            FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
+
+            var maintThread = new Thread(o =>
+            {
+                Maintenance.Cancel = false;
+
+                importRunning = true;
+
+                // only one import at a time
+                SetControlState(false);
+
+                // Clear Progress
+                ClearProgress();
+
+                // Login to trakt.tv
+                if (!Login())
+                    return;
+
+                // Cleanup user data from trakt.tv
+                if (settings.WatchedHistoryEpisodes)
+                {
+                    Maintenance.RemoveEpisodesFromWatchedHistory();
+                }
+                if (settings.WatchedHistoryMovies)
+                {
+                    Maintenance.RemoveMoviesFromWatchedHistory();
+                }
+                
+                // finished
+                SetControlState(true);
+                UIUtils.UpdateStatus("Maintenance Complete!");
+                importRunning = false;
+                importCancelled = false;
+            });
+
+            maintThread.Start();
+        }
+
+        private void CancelMaintenance()
+        {
+            if (!importRunning) return;
+
+            UIUtils.UpdateStatus("Cancelling Maintenance...");
+            Maintenance.Cancel = true;
+
+            importCancelled = true;
+        }
+        #endregion
+
         #region Private Methods
+
+        private bool Login()
+        {
+            UIUtils.UpdateStatus("Logging in to trakt.tv...");
+            var response = TraktAPI.TraktAPI.GetUserToken();
+            if (response == null || string.IsNullOrEmpty(response.Token))
+            {
+                UIUtils.UpdateStatus("Unable to login to trakt, check log for details.", true);
+                SetControlState(true);
+                importRunning = false;
+                importCancelled = false;
+                return false;
+            }
+            return true;
+        }
+
+        private bool CheckAccountDetails()
+        {
+            if (string.IsNullOrEmpty(AppSettings.TraktUsername) || string.IsNullOrEmpty(AppSettings.TraktPassword))
+            {
+                UIUtils.UpdateStatus("You must enter in your trakt username and password!", true);
+                return false;
+            }
+            return true;
+        }
+
         private void SetControlState(bool enable)
         {
             if (InvokeRequired)
@@ -441,7 +521,7 @@
             grbTVDb.Enabled = enable;
             grbListal.Enabled = enable;
 
-            btnImportRatings.Text = enable ? cImportReady : cCancelImport;
+            btnImportRatings.Text = enable ? cImportReadyText : cCancelText;
             pbrImportProgress.Style = enable ? ProgressBarStyle.Continuous : ProgressBarStyle.Marquee;
         }
 

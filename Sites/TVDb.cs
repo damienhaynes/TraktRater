@@ -62,14 +62,14 @@
 
             if (currentUserShowRatings != null)
             {
-                UIUtils.UpdateStatus(string.Format("Found {0} user tv show ratings on trakt.tv", currentUserShowRatings.Count()));
+                UIUtils.UpdateStatus("Found {0} user tv show ratings on trakt.tv", currentUserShowRatings.Count());
                 UIUtils.UpdateStatus("Filtering out tvdb show ratings that already exist at trakt.tv");
 
                 // Filter out shows to rate from existing ratings online                
                 filteredShows.Shows.RemoveAll(s => currentUserShowRatings.Any(c => c.Show.Ids.TvdbId == s.Id));
             }
 
-            UIUtils.UpdateStatus(string.Format("Importing {0} show ratings to trakt.tv", filteredShows.Shows.Count));
+            UIUtils.UpdateStatus("Importing {0} show ratings to trakt.tv", filteredShows.Shows.Count);
 
             if (filteredShows.Shows.Count > 0)
             {
@@ -77,7 +77,7 @@
                 int pages = (int)Math.Ceiling((double)filteredShows.Shows.Count / pageSize);
                 for (int i = 0; i < pages; i++)
                 {
-                    UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} TVDb rated shows...", i + 1, pages));
+                    UIUtils.UpdateStatus("Importing page {0}/{1} TVDb rated shows...", i + 1, pages);
 
                     TraktSyncResponse response = TraktAPI.SyncShowsRated(GetRateShowsData(filteredShows.Shows.Skip(i * pageSize).Take(pageSize).ToList()));
                     if (response == null)
@@ -87,7 +87,7 @@
                     }
                     else if (response.NotFound.Shows.Count > 0)
                     {
-                        UIUtils.UpdateStatus(string.Format("Unable to sync ratings of {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count));
+                        UIUtils.UpdateStatus("Unable to sync ratings of {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count);
                         Thread.Sleep(1000);
                     }
                     if (importCancelled) return;
@@ -105,7 +105,7 @@
 
             if (currentUserEpisodeRatings != null)
             {
-                UIUtils.UpdateStatus(string.Format("Found {0} user tv episode ratings on trakt.tv", currentUserEpisodeRatings.Count()));
+                UIUtils.UpdateStatus("Found {0} user tv episode ratings on trakt.tv", currentUserEpisodeRatings.Count());
             }
 
             foreach (var show in showRatings.Shows)
@@ -113,7 +113,7 @@
                 if (importCancelled) return;
                 iCounter++;
 
-                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting show info for tvdb series id {2}", iCounter, showRatings.Shows.Count, show.Id));
+                UIUtils.UpdateStatus("[{0}/{1}] Getting show info for tvdb series id {2}", iCounter, showRatings.Shows.Count, show.Id);
 
                 // we need to get the episode/season numbers as trakt api requires this
                 // tvdb only returns episode ids, so user series info call to this info
@@ -125,7 +125,7 @@
                     continue;
                 }
                 if (importCancelled) return;
-                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Requesting episode ratings for {2} from theTVDb.com", iCounter, showRatings.Shows.Count, showInfo.Show.Name));
+                UIUtils.UpdateStatus("[{0}/{1}] Requesting episode ratings for {2} from theTVDb.com", iCounter, showRatings.Shows.Count, showInfo.Show.Name);
 
                 // get episode ratings for each show in showratings
                 TVDbEpisodeRatings episodeRatings = TVDbAPI.GetEpisodeRatings(accountId, show.Id.ToString());
@@ -137,17 +137,17 @@
                 }
                 if (importCancelled) return;
 
-                UIUtils.UpdateStatus(string.Format("Found {0} episode ratings for {1} on theTVDb.com", episodeRatings.Episodes.Count, showInfo.Show.Name));
+                UIUtils.UpdateStatus("Found {0} episode ratings for {1} on theTVDb.com", episodeRatings.Episodes.Count, showInfo.Show.Name);
 
                 if (currentUserEpisodeRatings != null)
                 {
-                    UIUtils.UpdateStatus(string.Format("Filtering out {0} tvdb episode ratings that already exist at trakt.tv", showInfo.Show.Name));
+                    UIUtils.UpdateStatus("Filtering out {0} tvdb episode ratings that already exist at trakt.tv", showInfo.Show.Name);
 
                     // Filter out episodes to rate from existing ratings online, using tvdb episode id's
                     episodeRatings.Episodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => ((c.Episode.Ids.TvdbId == e.Id))));
                 }
 
-                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} episode ratings for {3}", iCounter, showRatings.Shows.Count, episodeRatings.Episodes.Count, showInfo.Show.Name));
+                UIUtils.UpdateStatus("[{0}/{1}] Importing {2} episode ratings for {3}", iCounter, showRatings.Shows.Count, episodeRatings.Episodes.Count, showInfo.Show.Name);
                 if (episodeRatings.Episodes.Count == 0) continue;
 
                 // submit one series at a time
@@ -161,7 +161,7 @@
                 }
                 else if (response.NotFound.Episodes.Count > 0)
                 {
-                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Unable to sync ratings for {2} episodes of {3} as they're not found on trakt.tv!", iCounter, showRatings.Shows.Count, response.NotFound.Episodes.Count, showInfo.Show.Name));
+                    UIUtils.UpdateStatus("[{0}/{1}] Unable to sync ratings for {2} episodes of {3} as they're not found on trakt.tv!", iCounter, showRatings.Shows.Count, response.NotFound.Episodes.Count, showInfo.Show.Name);
                     Thread.Sleep(1000);
                 }
                 episodesRated.Add(showInfo.Show.Name, episodesToRate.Episodes);
@@ -178,9 +178,9 @@
                     if (importCancelled) return;
 
                     // mark all episodes as watched if rated                
-                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TVDb episodes of {3} as watched to trakt.tv...", i++, episodesRated.Count , show.Value.Count, show.Key));
+                    UIUtils.UpdateStatus("[{0}/{1}] Importing {2} TVDb episodes of {3} as watched to trakt.tv...", ++i, episodesRated.Count, show.Value.Count, show.Key);
                     var watchedEpisodes = GetWatchedEpisodeData(show.Value);                 
-                    var response = TraktAPI.SyncEpisodesWatched(watchedEpisodes);
+                    var response = TraktAPI.AddEpisodesToWatchedHistory(watchedEpisodes);
                     if (response == null)
                     {
                         UIUtils.UpdateStatus(string.Format("Failed to send watched status for TVDb '{0}' episodes", show.Key), true);
@@ -188,7 +188,7 @@
                     }
                     else if (response.NotFound.Episodes.Count > 0)
                     {
-                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Unable to sync {2} TVDb episodes of {3} as watched as they're not found on trakt.tv!", i, episodesRated.Count, response.NotFound.Episodes.Count, show.Key));
+                        UIUtils.UpdateStatus("[{0}/{1}] Unable to sync {2} TVDb episodes of {3} as watched as they're not found on trakt.tv!", i, episodesRated.Count, response.NotFound.Episodes.Count, show.Key);
                         Thread.Sleep(1000);
                     }
                 }

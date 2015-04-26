@@ -85,12 +85,12 @@
 
                 if (currentUserMovieRatings != null)
                 {
-                    UIUtils.UpdateStatus(string.Format("Found {0} user movie ratings on trakt.tv", currentUserMovieRatings.Count()));
+                    UIUtils.UpdateStatus("Found {0} user movie ratings on trakt.tv", currentUserMovieRatings.Count());
                     UIUtils.UpdateStatus("Filtering out movies already rated on trakt.tv");
                     movieRatings.Movies.RemoveAll(m => currentUserMovieRatings.Any(c => c.Movie.Ids.TmdbId == m.Id));
                 }
 
-                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", movieRatings.Page, movieRatings.TotalPages, movieRatings.Movies.Count));
+                UIUtils.UpdateStatus("[{0}/{1}] Importing {2} TMDb Movie Ratings...", movieRatings.Page, movieRatings.TotalPages, movieRatings.Movies.Count);
 
                 if (movieRatings.Movies.Count > 0)
                 {
@@ -102,7 +102,7 @@
                     }
                     else if (response.NotFound.Movies.Count > 0)
                     {
-                        UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
+                        UIUtils.UpdateStatus("Unable to sync ratings for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count);
                         Thread.Sleep(1000);
                     }
                     if (importCancelled) return;
@@ -114,7 +114,7 @@
                 // get each page of movies
                 for (int i = 2; i <= movieRatings.TotalPages; i++)
                 {
-                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb Rated Movies...", movieRatings.Page, movieRatings.TotalPages));
+                    UIUtils.UpdateStatus("[{0}/{1}] Getting next batch of TMDb Rated Movies...", movieRatings.Page, movieRatings.TotalPages);
                     movieRatings = TMDbAPI.GetRatedMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
                     if (movieRatings == null || movieRatings.TotalResults == 0 || importCancelled) return;
 
@@ -124,7 +124,7 @@
                         movieRatings.Movies.RemoveAll(m => currentUserMovieRatings.Any(c => c.Movie.Ids.TmdbId == m.Id));
                     }
 
-                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Movie Ratings...", movieRatings.Page, movieRatings.TotalPages, movieRatings.Movies.Count));
+                    UIUtils.UpdateStatus("[{0}/{1}] Importing {2} TMDb Movie Ratings...", movieRatings.Page, movieRatings.TotalPages, movieRatings.Movies.Count);
 
                     if (movieRatings.Movies.Count > 0)
                     {
@@ -136,7 +136,7 @@
                         }
                         else if (response.NotFound.Movies.Count > 0)
                         {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
+                            UIUtils.UpdateStatus("Unable to sync ratings for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count);
                             Thread.Sleep(1000);
                         }
                         if (importCancelled) return;
@@ -154,15 +154,15 @@
             if (AppSettings.MarkAsWatched && watchedMovies.Count > 0)
             {
                 // mark all rated movies as watched
-                UIUtils.UpdateStatus(string.Format("Importing {0} TMDb movies as watched...", watchedMovies.Count));
+                UIUtils.UpdateStatus("Importing {0} TMDb movies as watched...", watchedMovies.Count);
 
                 int pageSize = AppSettings.BatchSize;
                 int pages = (int)Math.Ceiling((double)watchedMovies.Count / pageSize);
                 for (int i = 0; i < pages; i++)
                 {
-                    UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} TMDb movies as watched...", i + 1, pages));
+                    UIUtils.UpdateStatus("Importing page {0}/{1} TMDb movies as watched...", i + 1, pages);
 
-                    var response = TraktAPI.SyncMoviesWatched(GetSyncWatchedMoviesData(watchedMovies.Skip(i * pageSize).Take(pageSize).ToList()));
+                    var response = TraktAPI.AddMoviesToWatchedHistory(GetSyncWatchedMoviesData(watchedMovies.Skip(i * pageSize).Take(pageSize).ToList()));
                     if (response == null)
                     {
                         UIUtils.UpdateStatus("Failed to send watched status for TMDb movies to trakt.tv", true);
@@ -170,7 +170,7 @@
                     }
                     else if (response.NotFound.Movies.Count > 0)
                     {
-                        UIUtils.UpdateStatus(string.Format("Unable to sync watched states for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
+                        UIUtils.UpdateStatus("Unable to sync watched states for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count);
                         Thread.Sleep(1000);
                     }
                     if (importCancelled) return;
@@ -192,12 +192,12 @@
 
                 if (currentUserShowRatings != null)
                 {
-                    UIUtils.UpdateStatus(string.Format("Found {0} user show ratings on trakt.tv", currentUserShowRatings.Count()));
+                    UIUtils.UpdateStatus("Found {0} user show ratings on trakt.tv", currentUserShowRatings.Count());
                     UIUtils.UpdateStatus("Filtering out shows already rated on trakt.tv");
                     showRatings.Shows.RemoveAll(s => currentUserShowRatings.Any(c => c.Show.Ids.TmdbId == s.Id));
                 }
 
-                UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb Show Ratings...", showRatings.Page, showRatings.TotalPages, showRatings.Shows.Count));
+                UIUtils.UpdateStatus("[{0}/{1}] Importing {2} TMDb Show Ratings...", showRatings.Page, showRatings.TotalPages, showRatings.Shows.Count);
 
                 if (showRatings == null || showRatings.Shows.Count > 0)
                 {
@@ -209,7 +209,7 @@
                     }
                     else if (response.NotFound.Shows.Count > 0)
                     {
-                        UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count));
+                        UIUtils.UpdateStatus("Unable to sync ratings for {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count);
                         Thread.Sleep(1000);
                     }
 
@@ -219,7 +219,7 @@
                 // get each page of movies
                 for (int i = 2; i <= showRatings.TotalPages; i++)
                 {
-                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb rated shows...", showRatings.Page, showRatings.TotalPages));
+                    UIUtils.UpdateStatus("[{0}/{1}] Getting next batch of TMDb rated shows...", showRatings.Page, showRatings.TotalPages);
                     showRatings = TMDbAPI.GetRatedShows(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
                     if (importCancelled) return;
 
@@ -229,7 +229,7 @@
                         showRatings.Shows.RemoveAll(s => currentUserShowRatings.Any(c => c.Show.Ids.TmdbId == s.Id));
                     }
 
-                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb show ratings...", showRatings.Page, showRatings.TotalPages, showRatings.Shows.Count));
+                    UIUtils.UpdateStatus("[{0}/{1}] Importing {2} TMDb show ratings...", showRatings.Page, showRatings.TotalPages, showRatings.Shows.Count);
 
                     if (showRatings == null || showRatings.Shows.Count > 0)
                     {
@@ -241,7 +241,7 @@
                         }
                         else if (response.NotFound.Shows.Count > 0)
                         {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count));
+                            UIUtils.UpdateStatus("Unable to sync ratings for {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count);
                             Thread.Sleep(1000);
                         }
 
@@ -269,7 +269,7 @@
                     var traktWatchlistMovies = TraktAPI.GetWatchlistMovies();
                     if (traktWatchlistMovies != null)
                     {
-                        UIUtils.UpdateStatus(string.Format("Found {0} watchlist movies on trakt", traktWatchlistMovies.Count()));
+                        UIUtils.UpdateStatus("Found {0} watchlist movies on trakt", traktWatchlistMovies.Count());
                         UIUtils.UpdateStatus("Filtering out watchlist movies that are already in watchlist on trakt.tv");
                         moviesInWatchlist.Movies.RemoveAll(w => traktWatchlistMovies.FirstOrDefault(t => t.Movie.Ids.TmdbId == w.Id) != null);
                     }
@@ -282,14 +282,14 @@
 
                         if (traktWatchedMovies != null)
                         {
-                            UIUtils.UpdateStatus(string.Format("Found {0} watched movies on trakt.tv", traktWatchedMovies.Count()));
+                            UIUtils.UpdateStatus("Found {0} watched movies on trakt.tv", traktWatchedMovies.Count());
                             UIUtils.UpdateStatus("Filtering out watchlist movies that are already in watched on trakt.tv");
                             moviesInWatchlist.Movies.RemoveAll(m => traktWatchedMovies.Any(c => c.Movie.Ids.TmdbId == m.Id));
                         }
                     }
                     if (importCancelled) return;
 
-                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb watchlist movies...", moviesInWatchlist.Page, moviesInWatchlist.TotalPages, moviesInWatchlist.Movies.Count));
+                    UIUtils.UpdateStatus("[{0}/{1}] Importing {2} TMDb watchlist movies...", moviesInWatchlist.Page, moviesInWatchlist.TotalPages, moviesInWatchlist.Movies.Count);
 
                     if (moviesInWatchlist.Movies.Count > 0)
                     {
@@ -311,7 +311,7 @@
                     // get each page of movies
                     for (int i = 2; i <= moviesInWatchlist.TotalPages; i++)
                     {
-                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb watchlist movies...", moviesInWatchlist.Page, moviesInWatchlist.TotalPages));
+                        UIUtils.UpdateStatus("[{0}/{1}] Getting next batch of TMDb watchlist movies...", moviesInWatchlist.Page, moviesInWatchlist.TotalPages);
                         moviesInWatchlist = TMDbAPI.GetWatchlistMovies(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
                         if (importCancelled) return;
 
@@ -329,7 +329,7 @@
                                 moviesInWatchlist.Movies.RemoveAll(m => traktWatchedMovies.Any(c => c.Movie.Ids.TmdbId == m.Id));
                             }
 
-                            UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb watchlist movies...", moviesInWatchlist.Page, moviesInWatchlist.TotalPages, moviesInWatchlist.Movies.Count));
+                            UIUtils.UpdateStatus("[{0}/{1}] Importing {2} TMDb watchlist movies...", moviesInWatchlist.Page, moviesInWatchlist.TotalPages, moviesInWatchlist.Movies.Count);
 
                             if (moviesInWatchlist.Movies.Count > 0)
                             {
@@ -341,7 +341,7 @@
                                 }
                                 else if (response.NotFound.Movies.Count > 0)
                                 {
-                                    UIUtils.UpdateStatus(string.Format("Unable to sync watchlist for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
+                                    UIUtils.UpdateStatus("Unable to sync watchlist for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count);
                                     Thread.Sleep(1000);
                                 }
                                 if (importCancelled) return;
@@ -365,7 +365,7 @@
                     var traktWatchlistShows = TraktAPI.GetWatchlistShows();
                     if (traktWatchlistShows != null)
                     {
-                        UIUtils.UpdateStatus(string.Format("Found {0} watchlist shows on trakt", traktWatchlistShows.Count()));
+                        UIUtils.UpdateStatus("Found {0} watchlist shows on trakt", traktWatchlistShows.Count());
                         UIUtils.UpdateStatus("Filtering out watchlist shows that are already in watchlist on trakt.tv");
                         showsInWatchlist.Shows.RemoveAll(w => traktWatchlistShows.FirstOrDefault(t => t.Show.Ids.TmdbId == w.Id) != null);
                     }
@@ -373,17 +373,17 @@
                     if (AppSettings.IgnoreWatchedForWatchlist)
                     {
                         UIUtils.UpdateStatus("Retrieving existing watched shows from trakt.tv.");
-                        traktWatchedShows = TraktAPI.GetWatchedEpisodes();
+                        traktWatchedShows = TraktAPI.GetWatchedShows();
 
                         if (traktWatchedShows != null)
                         {
-                            UIUtils.UpdateStatus(string.Format("Found {0} watched shows on trakt.tv", traktWatchedShows.Count()));
+                            UIUtils.UpdateStatus("Found {0} watched shows on trakt.tv", traktWatchedShows.Count());
                             UIUtils.UpdateStatus("Filtering out watchlist shows that are already in watched on trakt.tv");
                             showsInWatchlist.Shows.RemoveAll(s => traktWatchedShows.Any(c => c.Show.Ids.TmdbId == s.Id));
                         }
                     }
 
-                    UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb watchlist shows...", showsInWatchlist.Page, showsInWatchlist.TotalPages, showsInWatchlist.Shows.Count));
+                    UIUtils.UpdateStatus("[{0}/{1}] Importing {2} TMDb watchlist shows...", showsInWatchlist.Page, showsInWatchlist.TotalPages, showsInWatchlist.Shows.Count);
 
                     if (showsInWatchlist.Shows.Count > 0)
                     {
@@ -395,7 +395,7 @@
                         }
                         else if (response.NotFound.Shows.Count > 0)
                         {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync watchlist for {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count));
+                            UIUtils.UpdateStatus("Unable to sync watchlist for {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count);
                             Thread.Sleep(1000);
                         }
                         if (importCancelled) return;
@@ -404,7 +404,7 @@
                     // get each page of movies
                     for (int i = 2; i <= showsInWatchlist.TotalPages; i++)
                     {
-                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Getting next batch of TMDb watchlist shows...", showsInWatchlist.Page, showsInWatchlist.TotalPages));
+                        UIUtils.UpdateStatus("[{0}/{1}] Getting next batch of TMDb watchlist shows...", showsInWatchlist.Page, showsInWatchlist.TotalPages);
                         showsInWatchlist = TMDbAPI.GetWatchlistShows(accountInfo.Id.ToString(), AppSettings.TMDbSessionId, i);
                         if (importCancelled) return;
 
@@ -412,7 +412,7 @@
                         {
                             if (traktWatchlistShows != null)
                             {
-                                UIUtils.UpdateStatus(string.Format("Found {0} watchlist shows on trakt", traktWatchlistShows.Count()));
+                                UIUtils.UpdateStatus("Found {0} watchlist shows on trakt", traktWatchlistShows.Count());
                                 UIUtils.UpdateStatus("Filtering out watchlist shows that are already in watchlist on trakt.tv");
                                 showsInWatchlist.Shows.RemoveAll(w => traktWatchlistShows.FirstOrDefault(t => t.Show.Ids.TmdbId == w.Id) != null);
                             }
@@ -423,7 +423,7 @@
                                 showsInWatchlist.Shows.RemoveAll(s => traktWatchedShows.Any(c => c.Show.Ids.TmdbId == s.Id));
                             }
 
-                            UIUtils.UpdateStatus(string.Format("[{0}/{1}] Importing {2} TMDb watchlist shows...", showsInWatchlist.Page, showsInWatchlist.TotalPages, showsInWatchlist.Shows.Count));
+                            UIUtils.UpdateStatus("[{0}/{1}] Importing {2} TMDb watchlist shows...", showsInWatchlist.Page, showsInWatchlist.TotalPages, showsInWatchlist.Shows.Count);
 
                             if (showsInWatchlist.Shows.Count > 0)
                             {
@@ -435,7 +435,7 @@
                                 }
                                 else if (response.NotFound.Shows.Count > 0)
                                 {
-                                    UIUtils.UpdateStatus(string.Format("Unable to sync watchlist for {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count));
+                                    UIUtils.UpdateStatus("Unable to sync watchlist for {0} shows as they're not found on trakt.tv!", response.NotFound.Shows.Count);
                                     Thread.Sleep(1000);
                                 }
                                 if (importCancelled) return;

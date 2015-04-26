@@ -9,20 +9,35 @@
         [DataMember(Name = "plays")]
         public int Plays { get; set; }
 
+        [DataMember(Name = "last_watched_at")]
+        public string WatchedAt { get; set; }
+
         [DataMember(Name = "show")]
-        public TraktShowItem Show { get; set; }
+        public TraktShow Show { get; set; }
+
+        [DataMember(Name = "seasons")]
+        public List<Season> Seasons { get; set; }
 
         [DataContract]
-        public class TraktShowItem : TraktShow
+        public class Season
         {
-            [DataMember(Name = "seasons")]
-            public List<TraktSeasonItem> Seasons { get; set; }
+            [DataMember(Name = "number")]
+            public int Number { get; set; }
+
+            [DataMember(Name = "episodes")]
+            public List<Episode> Episodes { get; set; }
 
             [DataContract]
-            public class TraktSeasonItem : TraktSeason
+            public class Episode
             {
-                [DataMember(Name = "episodes")]
-                public List<TraktEpisodeWatchedEx> Episodes { get; set; }
+                [DataMember(Name = "number")]
+                public int Number { get; set; }
+
+                [DataMember(Name = "plays")]
+                public int Plays { get; set; }
+
+                [DataMember(Name = "last_watched_at")]
+                public string WatchedAt { get; set; }
             }
         }
     }

@@ -56,7 +56,7 @@
             do
             {
                 count = ratedItems.Count;
-                UIUtils.UpdateStatus(string.Format("Requesting ratings {0} - {1}, Total Results: {2}", movieIndex, (movieIncrement + movieIndex - 1), count));
+                UIUtils.UpdateStatus("Requesting ratings {0} - {1}, Total Results: {2}", movieIndex, (movieIncrement + movieIndex - 1), count);
                 string url = "http://www.imdb.com/user/" + username + "/ratings?start=" + movieIndex + "&view=compact";                
                 string response = TraktWeb.Transmit(url, null, false);
                 if (response == null) break;
@@ -125,7 +125,7 @@
                 do
                 {
                     count = watchlistItems.Count;
-                    UIUtils.UpdateStatus(string.Format("Requesting watchlist items {0} - {1}, Total Results: {2}", movieIndex, (movieIncrement + movieIndex - 1), count));
+                    UIUtils.UpdateStatus("Requesting watchlist items {0} - {1}, Total Results: {2}", movieIndex, (movieIncrement + movieIndex - 1), count);
                     string url = "http://www.imdb.com/user/" + username + "/watchlist?start=" + movieIndex + "&view=compact";
                     string response = TraktWeb.Transmit(url, null, false);
                     if (response == null) break;
@@ -200,7 +200,7 @@
                     movies.RemoveAll(m => currentUserMovieRatings.Any(c => c.Movie.Ids.ImdbId == m[IMDbFieldMapping.cIMDbID]));
                 }
 
-                UIUtils.UpdateStatus(string.Format("Importing {0} new IMDb movie ratings to trakt.tv", movies.Count()));
+                UIUtils.UpdateStatus("Importing {0} new IMDb movie ratings to trakt.tv", movies.Count());
 
                 if (movies.Count > 0)
                 {
@@ -208,7 +208,7 @@
                     int pages = (int)Math.Ceiling((double)movies.Count / pageSize);
                     for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb rated movies...", i + 1, pages));
+                        UIUtils.UpdateStatus("Importing page {0}/{1} IMDb rated movies...", i + 1, pages);
 
                         TraktSyncResponse response = TraktAPI.SyncMoviesRated(Helper.GetRateMoviesData(movies.Skip(i * pageSize).Take(pageSize)));
                         if (response == null)
@@ -218,7 +218,7 @@
                         }
                         else if (response.NotFound.Movies.Count > 0)
                         {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} IMDb movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
+                            UIUtils.UpdateStatus("Unable to sync ratings for {0} IMDb movies as they're not found on trakt.tv!", response.NotFound.Movies.Count);
                             Thread.Sleep(1000);
                         }
 
@@ -238,20 +238,20 @@
 
                 if (currentUserShowRatings != null)
                 {
-                    UIUtils.UpdateStatus(string.Format("Found {0} user tv show ratings on trakt.tv", currentUserShowRatings.Count()));
+                    UIUtils.UpdateStatus("Found {0} user tv show ratings on trakt.tv", currentUserShowRatings.Count());
                     // Filter out shows to rate from existing ratings online
                     shows.RemoveAll(s => currentUserShowRatings.Any(c => (c.Show.Ids.ImdbId == s[IMDbFieldMapping.cIMDbID]) || (c.Show.Title == s[IMDbFieldMapping.cTitle] && c.Show.Year.ToString() == s[IMDbFieldMapping.cYear])));
                 }
 
                 if (shows.Count > 0)
                 {
-                    UIUtils.UpdateStatus(string.Format("Importing {0} new IMDb tv show ratings to trakt.tv", shows.Count()));
+                    UIUtils.UpdateStatus("Importing {0} new IMDb tv show ratings to trakt.tv", shows.Count());
 
                     int pageSize = AppSettings.BatchSize;
                     int pages = (int)Math.Ceiling((double)shows.Count / pageSize);
                     for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb rated shows...", i + 1, pages));
+                        UIUtils.UpdateStatus("Importing page {0}/{1} IMDb rated shows...", i + 1, pages);
 
                         TraktSyncResponse response = TraktAPI.SyncShowsRated(Helper.GetRateShowsData(shows.Skip(i * pageSize).Take(pageSize)));
                         if (response == null)
@@ -261,7 +261,7 @@
                         }
                         else if (response.NotFound.Shows.Count > 0)
                         {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} IMDb shows as they're not found on trakt.tv!", response.NotFound.Shows.Count));
+                            UIUtils.UpdateStatus("Unable to sync ratings for {0} IMDb shows as they're not found on trakt.tv!", response.NotFound.Shows.Count);
                             Thread.Sleep(1000);
                         }
 
@@ -291,13 +291,13 @@
 
                 if (currentUserEpisodeRatings != null)
                 {
-                    UIUtils.UpdateStatus(string.Format("Found {0} user tv episode ratings on trakt.tv", currentUserEpisodeRatings.Count()));
+                    UIUtils.UpdateStatus("Found {0} user tv episode ratings on trakt.tv", currentUserEpisodeRatings.Count());
 
                     // Filter out episodes to rate from existing ratings online
                     imdbEpisodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => c.Episode.Ids.TvdbId == e.TvdbId));
                 }
 
-                UIUtils.UpdateStatus(string.Format("Importing {0} episode ratings to trakt.tv", imdbEpisodes.Count()));
+                UIUtils.UpdateStatus("Importing {0} episode ratings to trakt.tv", imdbEpisodes.Count());
 
                 if (imdbEpisodes.Count > 0)
                 {
@@ -307,7 +307,7 @@
                     {
                         var episodesRated = Helper.GetTraktEpisodeRateData(imdbEpisodes.Skip(i * pageSize).Take(pageSize));
 
-                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb rated episodes...", i + 1, pages));
+                        UIUtils.UpdateStatus("Importing page {0}/{1} IMDb rated episodes...", i + 1, pages);
 
                         var response = TraktAPI.SyncEpisodesRated(episodesRated);
                         if (response == null)
@@ -317,7 +317,7 @@
                         }
                         else if (response.NotFound.Episodes.Count > 0)
                         {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} IMDb episodes as they're not found on trakt.tv!", response.NotFound.Episodes.Count));
+                            UIUtils.UpdateStatus("Unable to sync ratings for {0} IMDb episodes as they're not found on trakt.tv!", response.NotFound.Episodes.Count);
                             Thread.Sleep(1000);
                         }
 
@@ -351,21 +351,21 @@
                     {
                         if (importCancelled) return;
 
-                        UIUtils.UpdateStatus(string.Format("Found {0} watched movies on trakt", watchedTraktMovies.Count()));
+                        UIUtils.UpdateStatus("Found {0} watched movies on trakt", watchedTraktMovies.Count());
                         UIUtils.UpdateStatus("Filtering out watched movies that are already watched on trakt.tv");
 
                         movies.RemoveAll(w => watchedTraktMovies.FirstOrDefault(t => t.Movie.Ids.ImdbId == w[IMDbFieldMapping.cIMDbID] || (t.Movie.Title.ToLowerInvariant() == w[IMDbFieldMapping.cTitle] && t.Movie.Year.ToString() == w[IMDbFieldMapping.cYear])) != null);
 
                         // mark all rated movies as watched
-                        UIUtils.UpdateStatus(string.Format("Importing {0} IMDb movies as watched...", movies.Count));
+                        UIUtils.UpdateStatus("Importing {0} IMDb movies as watched...", movies.Count);
 
                         int pageSize = AppSettings.BatchSize;
                         int pages = (int)Math.Ceiling((double)movies.Count / pageSize);
                         for (int i = 0; i < pages; i++)
                         {
-                            UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb movies as watched...", i + 1, pages));
+                            UIUtils.UpdateStatus("Importing page {0}/{1} IMDb movies as watched...", i + 1, pages);
 
-                            var response = TraktAPI.SyncMoviesWatched(Helper.GetSyncWatchedMoviesData(movies.Skip(i * pageSize).Take(pageSize).ToList()));
+                            var response = TraktAPI.AddMoviesToWatchedHistory(Helper.GetSyncWatchedMoviesData(movies.Skip(i * pageSize).Take(pageSize).ToList()));
                             if (response == null)
                             {
                                 UIUtils.UpdateStatus("Failed to send watched status for IMDb movies", true);
@@ -373,7 +373,7 @@
                             }
                             else if (response.NotFound.Movies.Count > 0)
                             {
-                                UIUtils.UpdateStatus(string.Format("Unable to sync watched state for {0} IMDb movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
+                                UIUtils.UpdateStatus("Unable to sync watched state for {0} IMDb movies as they're not found on trakt.tv!", response.NotFound.Movies.Count);
                                 Thread.Sleep(1000);
                             }
 
@@ -393,9 +393,9 @@
                     {
                         var episodesWatched = Helper.GetTraktEpisodeWatchedData(imdbEpisodes.Skip(i * pageSize).Take(pageSize));
 
-                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb watched episodes...", i + 1, pages));
+                        UIUtils.UpdateStatus("Importing page {0}/{1} IMDb watched episodes...", i + 1, pages);
 
-                        var response = TraktAPI.SyncEpisodesWatched(episodesWatched);
+                        var response = TraktAPI.AddEpisodesToWatchedHistory(episodesWatched);
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Error importing IMDb episodes as watched to trakt.tv", true);
@@ -403,7 +403,7 @@
                         }
                         else if (response.NotFound.Episodes.Count > 0)
                         {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync {0} IMDb episodes as watched, as they're not found on trakt.tv!", response.NotFound.Episodes.Count));
+                            UIUtils.UpdateStatus("Unable to sync {0} IMDb episodes as watched, as they're not found on trakt.tv!", response.NotFound.Episodes.Count);
                             Thread.Sleep(1000);
                         }
 
@@ -425,7 +425,7 @@
                     var watchlistTraktMovies = TraktAPI.GetWatchlistMovies();
                     if (watchlistTraktMovies != null)
                     {
-                        UIUtils.UpdateStatus(string.Format("Found {0} watchlist movies on trakt", watchlistTraktMovies.Count()));
+                        UIUtils.UpdateStatus("Found {0} watchlist movies on trakt", watchlistTraktMovies.Count());
                         UIUtils.UpdateStatus("Filtering out watchlist movies that are already in watchlist on trakt.tv");
                         watchlistMovies.RemoveAll(w => watchlistTraktMovies.FirstOrDefault(t => t.Movie.Ids.ImdbId == w[IMDbFieldMapping.cIMDbID] || (t.Movie.Title.ToLowerInvariant() == w[IMDbFieldMapping.cTitle] && t.Movie.Year.ToString() == w[IMDbFieldMapping.cYear])) != null);
                     }
@@ -445,7 +445,7 @@
                             }
                             else
                             {
-                                UIUtils.UpdateStatus(string.Format("Found {0} watched movies on trakt", watchedTraktMovies.Count()));
+                                UIUtils.UpdateStatus("Found {0} watched movies on trakt", watchedTraktMovies.Count());
                                 UIUtils.UpdateStatus("Filtering out watchlist movies that are watched on trakt.tv");
 
                                 // remove movies from sync list which are watched already
@@ -455,13 +455,13 @@
                     }
 
                     // add all movies to watchlist
-                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist movies to trakt.tv ...", watchlistMovies.Count()));
+                    UIUtils.UpdateStatus("Importing {0} IMDb watchlist movies to trakt.tv ...", watchlistMovies.Count());
 
                     int pageSize = AppSettings.BatchSize;
                     int pages = (int)Math.Ceiling((double)watchlistMovies.Count / pageSize);
                     for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb movies into watchlist...", i + 1, pages));
+                        UIUtils.UpdateStatus("Importing page {0}/{1} IMDb movies into watchlist...", i + 1, pages);
 
                         var response = TraktAPI.SyncMovieWatchlist(Helper.GetSyncMoviesData(watchlistMovies.Skip(i * pageSize).Take(pageSize).ToList()));
                         if (response == null)
@@ -471,7 +471,7 @@
                         }
                         else if (response.NotFound.Movies.Count > 0)
                         {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync watchlist for {0} IMDb movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
+                            UIUtils.UpdateStatus("Unable to sync watchlist for {0} IMDb movies as they're not found on trakt.tv!", response.NotFound.Movies.Count);
                             Thread.Sleep(1000);
                         }
 
@@ -489,7 +489,7 @@
                     var watchlistTraktShows = TraktAPI.GetWatchlistShows();
                     if (watchlistTraktShows != null)
                     {
-                        UIUtils.UpdateStatus(string.Format("Found {0} watchlist shows on trakt", watchlistTraktShows.Count()));
+                        UIUtils.UpdateStatus("Found {0} watchlist shows on trakt", watchlistTraktShows.Count());
                         UIUtils.UpdateStatus("Filtering out watchlist shows that are already in watchlist on trakt.tv");
                         watchlistShows.RemoveAll(w => watchlistTraktShows.FirstOrDefault(t => t.Show.Ids.ImdbId == w[IMDbFieldMapping.cIMDbID] || (t.Show.Title.ToLowerInvariant() == w[IMDbFieldMapping.cTitle].ToLowerInvariant() && t.Show.Year.ToString() == w[IMDbFieldMapping.cYear])) != null);
                     }
@@ -499,10 +499,10 @@
                         UIUtils.UpdateStatus("Requesting watched shows from trakt...");
 
                         // get watched movies from trakt so we don't import shows into watchlist that are already watched
-                        watchedTraktShows = TraktAPI.GetWatchedEpisodes();
+                        watchedTraktShows = TraktAPI.GetWatchedShows();
                         if (watchedTraktShows != null)
                         {
-                            UIUtils.UpdateStatus(string.Format("Found {0} watched shows on trakt", watchedTraktShows.Count()));
+                            UIUtils.UpdateStatus("Found {0} watched shows on trakt", watchedTraktShows.Count());
                             UIUtils.UpdateStatus("Filtering out watchlist shows containing watched episodes on trakt.tv");
 
                             // remove shows from sync list which are watched already
@@ -511,13 +511,13 @@
                     }
 
                     //add all shows to watchlist
-                    UIUtils.UpdateStatus(string.Format("Importing {0} IMDb watchlist shows to trakt.tv...", watchlistShows.Count()));
+                    UIUtils.UpdateStatus("Importing {0} IMDb watchlist shows to trakt.tv...", watchlistShows.Count());
 
                     int pageSize = AppSettings.BatchSize;
                     int pages = (int)Math.Ceiling((double)watchlistShows.Count / pageSize);
                     for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb shows into watchlist...", i + 1, pages));
+                        UIUtils.UpdateStatus("Importing page {0}/{1} IMDb shows into watchlist...", i + 1, pages);
 
                         var response = TraktAPI.SyncShowWatchlist(Helper.GetSyncShowsData(watchlistShows.Skip(i * pageSize).Take(pageSize)));
                         if (response == null)
@@ -527,7 +527,7 @@
                         }
                         else if (response.NotFound.Shows.Count > 0)
                         {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync watchlist for {0} IMDb shows as they're not found on trakt.tv!", response.NotFound.Shows.Count));
+                            UIUtils.UpdateStatus("Unable to sync watchlist for {0} IMDb shows as they're not found on trakt.tv!", response.NotFound.Shows.Count);
                             Thread.Sleep(1000);
                         }
 
@@ -541,7 +541,7 @@
                 episodes = watchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode).ToList();
                 if (episodes.Any())
                 {
-                    UIUtils.UpdateStatus(string.Format("Found {0} IMDb watchlist episodes", episodes.Count()));
+                    UIUtils.UpdateStatus("Found {0} IMDb watchlist episodes", episodes.Count());
 
                     imdbEpisodes.AddRange(episodes.Select(Helper.GetIMDbEpisodeFromTVDb).Where(imdbEpisode => imdbEpisode != null));
 
@@ -550,7 +550,7 @@
                     var watchlistTraktEpisodes = TraktAPI.GetWatchlistEpisodes();
                     if (watchlistTraktEpisodes != null)
                     {
-                        UIUtils.UpdateStatus(string.Format("Found {0} watchlist episodes on trakt", watchlistTraktEpisodes.Count()));
+                        UIUtils.UpdateStatus("Found {0} watchlist episodes on trakt", watchlistTraktEpisodes.Count());
                         UIUtils.UpdateStatus("Filtering out watchlist episodes that are already in watchlist on trakt.tv");
                         imdbEpisodes.RemoveAll(e => watchlistTraktEpisodes.FirstOrDefault(w => w.Episode.Ids.ImdbId == e.ImdbId || w.Episode.Ids.TvdbId == e.TvdbId) != null);
                     }
@@ -563,7 +563,7 @@
                             UIUtils.UpdateStatus("Requesting watched episodes from trakt...");
 
                             // get watched episodes from trakt so we don't import episodes into watchlist that are already watched
-                            watchedTraktShows = TraktAPI.GetWatchedEpisodes();
+                            watchedTraktShows = TraktAPI.GetWatchedShows();
                         }
 
                         if (watchedTraktShows != null)
@@ -571,11 +571,11 @@
                             UIUtils.UpdateStatus("Filtering out watchlist episodes containing watched episodes on trakt.tv.");
 
                             imdbEpisodes.RemoveAll(e => watchedTraktShows.Where(s => s.Show.Ids.ImdbId == e.ImdbId)
-                                                                         .Any(se => se.Show.Seasons.Exists(s => s.Number == e.SeasonNumber && s.Episodes.Exists(ep => ep.Number == e.EpisodeNumber))));
+                                                                         .Any(s => s.Seasons.Exists(se => se.Number == e.SeasonNumber && se.Episodes.Exists(ep => ep.Number == e.EpisodeNumber))));
                         }
                     }
 
-                    UIUtils.UpdateStatus(string.Format("Importing {0} episodes in watchlist to trakt.tv", imdbEpisodes.Count()));
+                    UIUtils.UpdateStatus("Importing {0} episodes in watchlist to trakt.tv", imdbEpisodes.Count());
 
                     if (imdbEpisodes.Count > 0)
                     {
@@ -593,7 +593,7 @@
                             }
                             else if (response.NotFound.Episodes.Count > 0)
                             {
-                                UIUtils.UpdateStatus(string.Format("Unable to sync watchlist for {0} IMDb episodes as they're not found on trakt.tv!", response.NotFound.Episodes.Count));
+                                UIUtils.UpdateStatus("Unable to sync watchlist for {0} IMDb episodes as they're not found on trakt.tv!", response.NotFound.Episodes.Count);
                                 Thread.Sleep(1000);
                             }
 

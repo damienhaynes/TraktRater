@@ -7,20 +7,21 @@
     {
         public const string Login = @"http://api.trakt.tv/auth/login";
 
-        public const string RatedMoviesList = @"http://api.trakt.tv/sync/ratings/movies";
-        public const string RatedShowsList = @"http://api.trakt.tv/sync/ratings/shows";
-        public const string RatedEpisodesList = @"http://api.trakt.tv/sync/ratings/episodes";
+        public const string RatedMovies = @"http://api.trakt.tv/sync/ratings/movies";
+        public const string RatedShows = @"http://api.trakt.tv/sync/ratings/shows";
+        public const string RatedEpisodes = @"http://api.trakt.tv/sync/ratings/episodes";
 
-        public const string WatchedMoviesList = @"http://api.trakt.tv/sync/watched/movies";
-        public const string WatchedEpisodesList = @"http://api.trakt.tv/sync/watched/shows";
+        public const string WatchedMovies = @"http://api.trakt.tv/sync/watched/movies";
+        public const string WatchedShows = @"http://api.trakt.tv/sync/watched/shows";
 
-        public const string WatchlistMoviesList = @"http://api.trakt.tv/sync/watchlist/movies";
-        public const string WatchlistShowsList = @"http://api.trakt.tv/sync/watchlist/shows";
-        public const string WatchlistEpisodesList = @"http://api.trakt.tv/sync/watchlist/episodes";
+        public const string WatchlistMovies = @"http://api.trakt.tv/sync/watchlist/movies";
+        public const string WatchlistShows = @"http://api.trakt.tv/sync/watchlist/shows";
+        public const string WatchlistEpisodes = @"http://api.trakt.tv/sync/watchlist/episodes";
 
         public const string SyncRatings = @"http://api.trakt.tv/sync/ratings";
         public const string SyncWatchlist = @"http://api.trakt.tv/sync/watchlist";
         public const string SyncWatched = @"http://api.trakt.tv/sync/history";
+        public const string SyncWatchedRemove = "https://api-v2launch.trakt.tv/sync/history/remove";
 
         public const string ShowSummary = @"http://api.trakt.tv/shows/{0}?extended=full";
     }

@@ -117,7 +117,7 @@
         /// Sends episode watched sync data to Trakt
         /// </summary>
         /// <param name="syncData">The sync data to send</param>
-        public static TraktSyncResponse SyncEpisodesWatched(TraktEpisodeWatchedSync syncData)
+        public static TraktSyncResponse AddEpisodesToWatchedHistory(TraktEpisodeWatchedSync syncData)
         {
             // check that we have everything we need
             if (syncData == null || syncData.Episodes == null || syncData.Episodes.Count == 0)
@@ -131,10 +131,23 @@
         }
 
         /// <summary>
+        /// Removes all episodes for each show in users watched history
+        /// </summary>
+        /// <param name="syncData">list of shows</param>
+        public static TraktSyncResponse RemoveShowsFromWatchedHistory(TraktShowSync syncData)
+        {
+            if (syncData == null)
+                return null;
+
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncWatchedRemove, syncData.ToJSON());
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        /// <summary>
         /// Sends movies watched sync data to Trakt
         /// </summary>
         /// <param name="syncData">The sync data to send</param>
-        public static TraktSyncResponse SyncMoviesWatched(TraktMovieWatchedSync syncData)
+        public static TraktSyncResponse AddMoviesToWatchedHistory(TraktMovieWatchedSync syncData)
         {
             // check that we have everything we need
             if (syncData == null || syncData.Movies == null || syncData.Movies.Count == 0)
@@ -147,6 +160,18 @@
             return response.FromJSON<TraktSyncResponse>();
         }
 
+        /// <summary>
+        /// Removes movies from users watched history
+        /// </summary>
+        /// <param name="syncData">list of shows</param>
+        public static TraktSyncResponse RemoveMoviesFromWatchedHistory(TraktMovieSync syncData)
+        {
+            if (syncData == null)
+                return null;
+
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncWatchedRemove, syncData.ToJSON());
+            return response.FromJSON<TraktSyncResponse>();
+        }
         #endregion
 
         #region Rated
@@ -218,7 +243,7 @@
         /// </summary>
         public static IEnumerable<TraktUserMovieRating> GetRatedMovies()
         {
-            string ratedMovies = TraktWeb.GetFromTrakt(TraktURIs.RatedMoviesList);
+            string ratedMovies = TraktWeb.GetFromTrakt(TraktURIs.RatedMovies);
             var result = ratedMovies.FromJSONArray<TraktUserMovieRating>();
             if (result == null) return null;
 
@@ -231,7 +256,7 @@
         /// </summary>
         public static IEnumerable<TraktUserShowRating> GetRatedShows()
         {
-            string ratedShows = TraktWeb.GetFromTrakt(TraktURIs.RatedShowsList);
+            string ratedShows = TraktWeb.GetFromTrakt(TraktURIs.RatedShows);
             var result = ratedShows.FromJSONArray<TraktUserShowRating>();
             if (result == null) return null;
 
@@ -244,7 +269,7 @@
         /// </summary>
         public static IEnumerable<TraktUserEpisodeRating> GetRatedEpisodes()
         {
-            string ratedEpisodes = TraktWeb.GetFromTrakt(TraktURIs.RatedEpisodesList);
+            string ratedEpisodes = TraktWeb.GetFromTrakt(TraktURIs.RatedEpisodes);
             var result = ratedEpisodes.FromJSONArray<TraktUserEpisodeRating>();
             if (result == null) return null;
 
@@ -261,7 +286,7 @@
         /// </summary>
         public static IEnumerable<TraktMoviePlays> GetWatchedMovies()
         {
-            string watchedMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchedMoviesList);
+            string watchedMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchedMovies);
             var result = watchedMovies.FromJSONArray<TraktMoviePlays>();
             if (result == null) return null;
 
@@ -272,9 +297,9 @@
         /// <summary>
         /// Returns the current users watched episodes and play counts
         /// </summary>
-        public static IEnumerable<TraktShowPlays> GetWatchedEpisodes()
+        public static IEnumerable<TraktShowPlays> GetWatchedShows()
         {
-            string watchedShows = TraktWeb.GetFromTrakt(TraktURIs.WatchedEpisodesList);
+            string watchedShows = TraktWeb.GetFromTrakt(TraktURIs.WatchedShows);
             var result = watchedShows.FromJSONArray<TraktShowPlays>();
             if (result == null) return null;
 
@@ -291,7 +316,7 @@
         /// </summary>
         public static IEnumerable<TraktMovieWatchlist> GetWatchlistMovies()
         {
-            string watchlistMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchlistMoviesList);
+            string watchlistMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchlistMovies);
             var result = watchlistMovies.FromJSONArray<TraktMovieWatchlist>();
             if (result == null) return null;
 
@@ -304,7 +329,7 @@
         /// </summary>
         public static IEnumerable<TraktShowWatchlist> GetWatchlistShows()
         {
-            string watchlistShows = TraktWeb.GetFromTrakt(TraktURIs.WatchlistShowsList);
+            string watchlistShows = TraktWeb.GetFromTrakt(TraktURIs.WatchlistShows);
             var result = watchlistShows.FromJSONArray<TraktShowWatchlist>();
             if (result == null) return null;
 
@@ -317,7 +342,7 @@
         /// </summary>
         public static IEnumerable<TraktEpisodeWatchlist> GetWatchlistEpisodes()
         {
-            string watchlistEpisodes = TraktWeb.GetFromTrakt(TraktURIs.WatchlistEpisodesList);
+            string watchlistEpisodes = TraktWeb.GetFromTrakt(TraktURIs.WatchlistEpisodes);
             var result = watchlistEpisodes.FromJSONArray<TraktEpisodeWatchlist>();
 
             if (result == null) return null;
@@ -329,6 +354,5 @@
         #endregion
 
         #endregion
-
     }
 }

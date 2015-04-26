@@ -7,10 +7,13 @@
     public class TraktSyncResponse
     {
         [DataMember(Name = "added")]
-        public AddedItems Added { get; set; }
+        public MediaItems Added { get; set; }
+
+        [DataMember(Name = "deleted")]
+        public MediaItems Deleted { get; set; }
 
         [DataContract]
-        public class AddedItems
+        public class MediaItems
         {
             [DataMember(Name = "movies")]
             public int Movies { get; set; }

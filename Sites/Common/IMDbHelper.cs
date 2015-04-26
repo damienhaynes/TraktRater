@@ -232,7 +232,7 @@
                 string tvShowImdbId = episode[IMDbFieldMapping.cIMDbID];
 
                 // search for the show
-                UIUtils.UpdateStatus(string.Format("Searching for tv show {0} on thetvdb.com", tvShowName));
+                UIUtils.UpdateStatus("Searching for tv show {0} on thetvdb.com", tvShowName);
                 var searchResults = TVDbAPI.SearchShow(tvShowName);
                 if (searchResults == null)
                 {

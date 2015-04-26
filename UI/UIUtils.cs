@@ -1,5 +1,6 @@
 ﻿namespace TraktRater.UI
 {
+    using System;
     using System.Drawing;
 
     using global::TraktRater.Logger;
@@ -8,6 +9,19 @@
 
     public static class UIUtils
     {
+        public static void UpdateStatus(string message, params object[] args)
+        {
+            try
+            {
+                UpdateStatus(string.Format(message, args), false);
+            }
+            catch (FormatException)
+            {
+                // we parsed a badly formatted string in the string format
+                return;
+            }
+        }
+
         public static void UpdateStatus(string message, bool error = false)
         {   
             if (Program.MainWindow.InvokeRequired)

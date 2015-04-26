@@ -49,11 +49,11 @@
             // check if everything we need was read okay
             if (criticker == null || criticker.Films == null)
             {
-                UIUtils.UpdateStatus("Error reading Criticker movie XML file.", true);
+                UIUtils.UpdateStatus("Error reading Criticker movie XML file", true);
                 return;
             }
 
-            UIUtils.UpdateStatus(string.Format("Found {0} movies with ratings.", criticker.Films.Count));
+            UIUtils.UpdateStatus("Found {0} movies with ratings", criticker.Films.Count);
             if (importCancelled) return;
 
             #region Import Ratings
@@ -61,13 +61,13 @@
             if (criticker.Films.Count > 0)
             {
                 // get current trakt ratings
-                UIUtils.UpdateStatus("Retrieving existing movie ratings from trakt.tv.");
+                UIUtils.UpdateStatus("Retrieving existing movie ratings from trakt.tv");
                 var currentUserMovieRatings = TraktAPI.GetRatedMovies();
                 if (importCancelled) return;
 
                 if (currentUserMovieRatings != null)
                 {
-                    UIUtils.UpdateStatus(string.Format("Found {0} user movie ratings on trakt.tv", currentUserMovieRatings.Count()));
+                    UIUtils.UpdateStatus("Found {0} user movie ratings on trakt.tv", currentUserMovieRatings.Count());
 
                     // filter out movies to rate from existing ratings online
                     UIUtils.UpdateStatus("Filtering out movies which are already rated");
@@ -81,7 +81,7 @@
                     int pages = (int)Math.Ceiling((double)criticker.Films.Count() / pageSize);
                     for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Criticker movie ratings...", i + 1, pages));
+                        UIUtils.UpdateStatus("Importing page {0}/{1} Criticker movie ratings...", i + 1, pages);
 
                         var movies = GetRateMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList());
                         var response = TraktAPI.SyncMoviesRated(movies);
@@ -92,7 +92,7 @@
                         }
                         else if (response.NotFound.Movies.Count > 0)
                         {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync ratings for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count));
+                            UIUtils.UpdateStatus("Unable to sync ratings for {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count);
                             Thread.Sleep(1000);
                         }
 
@@ -110,24 +110,24 @@
                 if (importCancelled) return;
 
                 // mark all movies as watched if rated
-                UIUtils.UpdateStatus(string.Format("Importing {0} Criticker movies as watched...", criticker.Films.Count));
+                UIUtils.UpdateStatus("Importing {0} Criticker movies as watched...", criticker.Films.Count);
                 if (criticker.Films.Count > 0)
                 {
                     int pageSize = AppSettings.BatchSize;
                     int pages = (int)Math.Ceiling((double)criticker.Films.Count() / pageSize);
                     for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} Criticker movies as watched...", i + 1, pages));
+                        UIUtils.UpdateStatus("Importing page {0}/{1} Criticker movies as watched...", i + 1, pages);
 
-                        var watchedResponse = TraktAPI.SyncMoviesWatched(GetSyncMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList()));
+                        var watchedResponse = TraktAPI.AddMoviesToWatchedHistory(GetSyncMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList()));
                         if (watchedResponse == null)
                         {
-                            UIUtils.UpdateStatus("Failed to send watched status for Criticker movies.", true);
+                            UIUtils.UpdateStatus("Failed to send watched status for Criticker movies", true);
                             Thread.Sleep(2000);
                         }
                         else if (watchedResponse.NotFound.Movies.Count > 0)
                         {
-                            UIUtils.UpdateStatus(string.Format("Unable to sync watched for {0} movies as they're not found on trakt.tv!", watchedResponse.NotFound.Movies.Count));
+                            UIUtils.UpdateStatus("Unable to sync watched for {0} movies as they're not found on trakt.tv!", watchedResponse.NotFound.Movies.Count);
                             Thread.Sleep(1000);
                         }
 

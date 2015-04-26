@@ -87,6 +87,7 @@
             this.chkCritickerEnabled = new System.Windows.Forms.CheckBox();
             this.txtCritickerMovieExportFile = new System.Windows.Forms.TextBox();
             this.lblCritickerMovieExportFile = new System.Windows.Forms.Label();
+            this.btnMaintenance = new System.Windows.Forms.Button();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -100,6 +101,7 @@
             // 
             // grbTrakt
             // 
+            this.grbTrakt.Controls.Add(this.btnMaintenance);
             this.grbTrakt.Controls.Add(this.txtTraktPassword);
             this.grbTrakt.Controls.Add(this.label2);
             this.grbTrakt.Controls.Add(this.label1);
@@ -202,7 +204,7 @@
             // 
             this.btnImportRatings.Location = new System.Drawing.Point(12, 595);
             this.btnImportRatings.Name = "btnImportRatings";
-            this.btnImportRatings.Size = new System.Drawing.Size(891, 26);
+            this.btnImportRatings.Size = new System.Drawing.Size(887, 26);
             this.btnImportRatings.TabIndex = 8;
             this.btnImportRatings.Text = "Start Ratings Import";
             this.btnImportRatings.UseVisualStyleBackColor = true;
@@ -707,6 +709,16 @@
             this.lblCritickerMovieExportFile.TabIndex = 1;
             this.lblCritickerMovieExportFile.Text = "Movie Export File:";
             // 
+            // btnMaintenance
+            // 
+            this.btnMaintenance.Location = new System.Drawing.Point(19, 88);
+            this.btnMaintenance.Name = "btnMaintenance";
+            this.btnMaintenance.Size = new System.Drawing.Size(402, 26);
+            this.btnMaintenance.TabIndex = 11;
+            this.btnMaintenance.Text = "Cleanup / Maintenance...";
+            this.btnMaintenance.UseVisualStyleBackColor = true;
+            this.btnMaintenance.Click += new System.EventHandler(this.btnMaintenance_Click);
+            // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -810,6 +822,7 @@
         private System.Windows.Forms.LinkLabel lnkLogFolder;
         private System.Windows.Forms.Label lblBatchImportSize;
         private System.Windows.Forms.NumericUpDown nudBatchSize;
+        private System.Windows.Forms.Button btnMaintenance;
     }
 }
 
