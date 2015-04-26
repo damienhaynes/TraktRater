@@ -84,7 +84,7 @@
                         UIUtils.UpdateStatus("Importing page {0}/{1} Criticker movie ratings...", i + 1, pages);
 
                         var movies = GetRateMoviesData(criticker.Films.Skip(i * pageSize).Take(pageSize).ToList());
-                        var response = TraktAPI.SyncMoviesRated(movies);
+                        var response = TraktAPI.AddMoviesToRatings(movies);
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send ratings for Criticker movies.", true);

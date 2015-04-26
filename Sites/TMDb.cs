@@ -94,7 +94,7 @@
 
                 if (movieRatings.Movies.Count > 0)
                 {
-                    var response = TraktAPI.SyncMoviesRated(GetRateMoviesData(movieRatings.Movies));
+                    var response = TraktAPI.AddMoviesToRatings(GetRateMoviesData(movieRatings.Movies));
                     if (response == null)
                     {
                         UIUtils.UpdateStatus("Failed to send ratings for TMDb movies", true);
@@ -128,7 +128,7 @@
 
                     if (movieRatings.Movies.Count > 0)
                     {
-                        var response = TraktAPI.SyncMoviesRated(GetRateMoviesData(movieRatings.Movies));
+                        var response = TraktAPI.AddMoviesToRatings(GetRateMoviesData(movieRatings.Movies));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send ratings for TMDb movies", true);
@@ -201,7 +201,7 @@
 
                 if (showRatings == null || showRatings.Shows.Count > 0)
                 {
-                    var response = TraktAPI.SyncShowsRated(GetRateShowsData(showRatings.Shows));
+                    var response = TraktAPI.AddShowsToRatings(GetRateShowsData(showRatings.Shows));
                     if (response == null)
                     {
                         UIUtils.UpdateStatus("Failed to send ratings for TMDb shows", true);
@@ -233,7 +233,7 @@
 
                     if (showRatings == null || showRatings.Shows.Count > 0)
                     {
-                        var response = TraktAPI.SyncShowsRated(GetRateShowsData(showRatings.Shows));
+                        var response = TraktAPI.AddShowsToRatings(GetRateShowsData(showRatings.Shows));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send ratings for TMDb shows.", true);
@@ -293,7 +293,7 @@
 
                     if (moviesInWatchlist.Movies.Count > 0)
                     {
-                        var response = TraktAPI.SyncMovieWatchlist(GetSyncMoviesData(moviesInWatchlist.Movies));
+                        var response = TraktAPI.AddMoviesToWatchlist(GetSyncMoviesData(moviesInWatchlist.Movies));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send watchlist for TMDb movies", true);
@@ -333,7 +333,7 @@
 
                             if (moviesInWatchlist.Movies.Count > 0)
                             {
-                                var response = TraktAPI.SyncMovieWatchlist(GetSyncMoviesData(moviesInWatchlist.Movies));
+                                var response = TraktAPI.AddMoviesToWatchlist(GetSyncMoviesData(moviesInWatchlist.Movies));
                                 if (response == null)
                                 {
                                     UIUtils.UpdateStatus("Failed to send watchlist for TMDb movies", true);
@@ -387,7 +387,7 @@
 
                     if (showsInWatchlist.Shows.Count > 0)
                     {
-                        var response = TraktAPI.SyncShowWatchlist(GetSyncShowsData(showsInWatchlist.Shows));
+                        var response = TraktAPI.AddShowsToWatchlist(GetSyncShowsData(showsInWatchlist.Shows));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send watchlist for TMDb shows.", true);
@@ -427,7 +427,7 @@
 
                             if (showsInWatchlist.Shows.Count > 0)
                             {
-                                var response = TraktAPI.SyncShowWatchlist(GetSyncShowsData(showsInWatchlist.Shows));
+                                var response = TraktAPI.AddShowsToWatchlist(GetSyncShowsData(showsInWatchlist.Shows));
                                 if (response == null)
                                 {
                                     UIUtils.UpdateStatus("Failed to send watchlist for TMDb shows", true);

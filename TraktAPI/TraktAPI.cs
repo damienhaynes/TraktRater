@@ -60,7 +60,7 @@
         /// </summary>
         /// <param name="syncData">The sync data to send</param>
         /// <returns>The response from trakt</returns>
-        public static TraktSyncResponse SyncMovieWatchlist(TraktMovieSync syncData)
+        public static TraktSyncResponse AddMoviesToWatchlist(TraktMovieSync syncData)
         {
             // check that we have everything we need
             if (syncData == null || syncData.Movies == null || syncData.Movies.Count == 0)
@@ -78,7 +78,7 @@
         /// </summary>
         /// <param name="syncData">The sync data to send</param>
         /// <returns>The response from trakt</returns>
-        public static TraktSyncResponse SyncShowWatchlist(TraktShowSync syncData)
+        public static TraktSyncResponse AddShowsToWatchlist(TraktShowSync syncData)
         {
             // check that we have everything we need
             if (syncData == null || syncData.Shows == null || syncData.Shows.Count == 0)
@@ -96,7 +96,7 @@
         /// </summary>
         /// <param name="syncData">The sync data to send</param>
         /// <returns>The response from trakt</returns>
-        public static TraktSyncResponse SyncEpisodeWatchlist(TraktEpisodeSync syncData)
+        public static TraktSyncResponse AddEpisodesToWatchlist(TraktEpisodeSync syncData)
         {
             // check that we have everything we need
             if (syncData == null || syncData.Episodes == null || syncData.Episodes.Count == 0)
@@ -234,7 +234,7 @@
         /// </summary>
         /// <param name="data">The object containing the list of movies to be rated</param>       
         /// <returns>The response from trakt</returns>
-        public static TraktSyncResponse SyncMoviesRated(TraktMovieRatingSync data)
+        public static TraktSyncResponse AddMoviesToRatings(TraktMovieRatingSync data)
         {
             // check that we have everything we need
             if (data == null || data.movies == null || data.movies.Count == 0)
@@ -252,7 +252,7 @@
         /// </summary>
         /// <param name="data">The object containing the list of shows to be rated</param>       
         /// <returns>The response from trakt</returns>
-        public static TraktSyncResponse SyncShowsRated(TraktShowRatingSync data)
+        public static TraktSyncResponse AddShowsToRatings(TraktShowRatingSync data)
         {
             // check that we have everything we need
             if (data == null || data.shows == null || data.shows.Count == 0)
@@ -270,7 +270,7 @@
         /// </summary>
         /// <param name="data">The object containing the list of episodes to be rated</param>       
         /// <returns>The response from trakt</returns>
-        public static TraktSyncResponse SyncEpisodesRated(TraktEpisodeRatingSync data)
+        public static TraktSyncResponse AddsEpisodesToRatings(TraktEpisodeRatingSync data)
         {
             // check that we have everything we need
             if (data == null || data.Episodes == null || data.Episodes.Count == 0)

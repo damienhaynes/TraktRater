@@ -534,6 +534,7 @@
                 SetControlState(true);
                 importRunning = false;
                 importCancelled = false;
+                maintenanceRunning = false;
                 return false;
             }
             return true;

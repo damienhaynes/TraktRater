@@ -210,7 +210,7 @@
                     {
                         UIUtils.UpdateStatus("Importing page {0}/{1} IMDb rated movies...", i + 1, pages);
 
-                        TraktSyncResponse response = TraktAPI.SyncMoviesRated(Helper.GetRateMoviesData(movies.Skip(i * pageSize).Take(pageSize)));
+                        TraktSyncResponse response = TraktAPI.AddMoviesToRatings(Helper.GetRateMoviesData(movies.Skip(i * pageSize).Take(pageSize)));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Error importing IMDb movie ratings to trakt.tv", true);
@@ -253,7 +253,7 @@
                     {
                         UIUtils.UpdateStatus("Importing page {0}/{1} IMDb rated shows...", i + 1, pages);
 
-                        TraktSyncResponse response = TraktAPI.SyncShowsRated(Helper.GetRateShowsData(shows.Skip(i * pageSize).Take(pageSize)));
+                        TraktSyncResponse response = TraktAPI.AddShowsToRatings(Helper.GetRateShowsData(shows.Skip(i * pageSize).Take(pageSize)));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Error importing IMDb show ratings to trakt.tv", true);
@@ -309,7 +309,7 @@
 
                         UIUtils.UpdateStatus("Importing page {0}/{1} IMDb rated episodes...", i + 1, pages);
 
-                        var response = TraktAPI.SyncEpisodesRated(episodesRated);
+                        var response = TraktAPI.AddsEpisodesToRatings(episodesRated);
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Error importing IMDb episodes ratings to trakt.tv", true);
@@ -463,7 +463,7 @@
                     {
                         UIUtils.UpdateStatus("Importing page {0}/{1} IMDb movies into watchlist...", i + 1, pages);
 
-                        var response = TraktAPI.SyncMovieWatchlist(Helper.GetSyncMoviesData(watchlistMovies.Skip(i * pageSize).Take(pageSize).ToList()));
+                        var response = TraktAPI.AddMoviesToWatchlist(Helper.GetSyncMoviesData(watchlistMovies.Skip(i * pageSize).Take(pageSize).ToList()));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send watchlist for IMDb movies.", true);
@@ -519,7 +519,7 @@
                     {
                         UIUtils.UpdateStatus("Importing page {0}/{1} IMDb shows into watchlist...", i + 1, pages);
 
-                        var response = TraktAPI.SyncShowWatchlist(Helper.GetSyncShowsData(watchlistShows.Skip(i * pageSize).Take(pageSize)));
+                        var response = TraktAPI.AddShowsToWatchlist(Helper.GetSyncShowsData(watchlistShows.Skip(i * pageSize).Take(pageSize)));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send watchlist for IMDb tv shows", true);
@@ -585,7 +585,7 @@
                         {
                             UIUtils.UpdateStatus(string.Format("Importing page {0}/{1} IMDb watchlist episodes...", i + 1, pages));
 
-                            var response = TraktAPI.SyncEpisodeWatchlist(Helper.GetTraktEpisodeData(imdbEpisodes.Skip(i * pageSize).Take(pageSize)));
+                            var response = TraktAPI.AddEpisodesToWatchlist(Helper.GetTraktEpisodeData(imdbEpisodes.Skip(i * pageSize).Take(pageSize)));
                             if (response == null)
                             {
                                 UIUtils.UpdateStatus("Error importing IMDb episode watchlist to trakt.tv", true);

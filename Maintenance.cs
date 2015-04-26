@@ -15,6 +15,8 @@
 
         public static void RemoveEpisodesFromWatchedHistory()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting watched shows from trakt.tv");
             var watchedShows = TraktAPI.TraktAPI.GetWatchedShows();
             if (watchedShows != null)
@@ -62,6 +64,8 @@
 
         public static void RemoveMoviesFromWatchedHistory()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting watched movies from trakt.tv");
             var watchedMovies = TraktAPI.TraktAPI.GetWatchedMovies();
             if (watchedMovies != null)
@@ -98,6 +102,8 @@
 
         public static void RemoveEpisodesFromCollection()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting collected shows from trakt.tv");
             var collectedShows = TraktAPI.TraktAPI.GetCollectedShows();
             if (collectedShows != null)
@@ -145,6 +151,8 @@
 
         public static void RemoveMoviesFromCollection()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting collected movies from trakt.tv");
             var collectedMovies = TraktAPI.TraktAPI.GetCollectedMovies();
             if (collectedMovies != null)
@@ -181,6 +189,8 @@
 
         public static void RemoveEpisodesFromRatings()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting rated episodes from trakt.tv");
             var ratedEpisodes = TraktAPI.TraktAPI.GetRatedEpisodes();
             if (ratedEpisodes != null)
@@ -218,6 +228,8 @@
 
         public static void RemoveShowsFromRatings()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting rated shows from trakt.tv");
             var ratedShows = TraktAPI.TraktAPI.GetRatedShows();
             if (ratedShows != null)
@@ -254,6 +266,8 @@
 
         public static void RemoveSeasonsFromRatings()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting rated seasons from trakt.tv");
             var ratedSeasons = TraktAPI.TraktAPI.GetRatedSeasons();
             if (ratedSeasons != null)
@@ -310,6 +324,8 @@
 
         public static void RemoveMoviesFromRatings()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting rated movies from trakt.tv");
             var ratedMovies = TraktAPI.TraktAPI.GetRatedMovies();
             if (ratedMovies != null)
@@ -346,6 +362,8 @@
 
         public static void RemoveEpisodesFromWatchlist()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting watchlisted episodes from trakt.tv");
             var watchlistedEpisodes = TraktAPI.TraktAPI.GetWatchlistEpisodes();
             if (watchlistedEpisodes != null)
@@ -383,6 +401,8 @@
 
         public static void RemoveShowsFromWatchlist()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting watchlisted shows from trakt.tv");
             var watchlistedShows = TraktAPI.TraktAPI.GetWatchlistShows();
             if (watchlistedShows != null)
@@ -419,6 +439,8 @@
 
         public static void RemoveSeasonsFromWatchlist()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting watchlisted seasons from trakt.tv");
             var watchlistedSeasons = TraktAPI.TraktAPI.GetWatchlistSeasons();
             if (watchlistedSeasons != null)
@@ -475,6 +497,8 @@
 
         public static void RemoveMoviesFromWatchlist()
         {
+            if (Cancel) return;
+
             UIUtils.UpdateStatus("Getting watchlisted movies from trakt.tv");
             var watchlistedMovies = TraktAPI.TraktAPI.GetWatchlistMovies();
             if (watchlistedMovies != null)

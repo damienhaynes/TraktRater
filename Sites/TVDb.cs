@@ -79,7 +79,7 @@
                 {
                     UIUtils.UpdateStatus("Importing page {0}/{1} TVDb rated shows...", i + 1, pages);
 
-                    TraktSyncResponse response = TraktAPI.SyncShowsRated(GetRateShowsData(filteredShows.Shows.Skip(i * pageSize).Take(pageSize).ToList()));
+                    TraktSyncResponse response = TraktAPI.AddShowsToRatings(GetRateShowsData(filteredShows.Shows.Skip(i * pageSize).Take(pageSize).ToList()));
                     if (response == null)
                     {
                         UIUtils.UpdateStatus("Error importing show ratings to trakt.tv", true);
@@ -152,7 +152,7 @@
 
                 // submit one series at a time
                 var episodesToRate = GetRateEpisodeData(episodeRatings);
-                var response = TraktAPI.SyncEpisodesRated(episodesToRate);
+                var response = TraktAPI.AddsEpisodesToRatings(episodesToRate);
                 if (response == null)
                 {
                     UIUtils.UpdateStatus(string.Format("Error importing {0} episode ratings to trakt.tv", showInfo.Show.Name), true);

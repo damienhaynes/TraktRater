@@ -115,7 +115,7 @@
                     {
                         UIUtils.UpdateStatus("Importing page {0}/{1} Listal rated movies...", i + 1, pages);
 
-                        var response = TraktAPI.SyncMoviesRated(GetRateMoviesData(listalMovieRatings.Skip(i * pageSize).Take(pageSize).ToList()));
+                        var response = TraktAPI.AddMoviesToRatings(GetRateMoviesData(listalMovieRatings.Skip(i * pageSize).Take(pageSize).ToList()));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send ratings for Listal movies", true);
@@ -239,7 +239,7 @@
                         {
                             UIUtils.UpdateStatus("Importing page {0}/{1} Listal wantlist movies to trakt.tv watchlist...", i + 1, pages);
 
-                            var watchlistMoviesResponse = TraktAPI.SyncMovieWatchlist(GetMoviesData(wantList.Skip(i * pageSize).Take(pageSize).ToList()));
+                            var watchlistMoviesResponse = TraktAPI.AddMoviesToWatchlist(GetMoviesData(wantList.Skip(i * pageSize).Take(pageSize).ToList()));
                             if (watchlistMoviesResponse == null)
                             {
                                 UIUtils.UpdateStatus("Failed to send watchlist for Listal movies", true);
@@ -300,7 +300,7 @@
                     {
                         UIUtils.UpdateStatus("Importing page {0}/{1} Listal show ratings...", i + 1, pages);
 
-                        var response = TraktAPI.SyncShowsRated(GetRateShowsData(listalShowRatings.Skip(i * pageSize).Take(pageSize).ToList()));
+                        var response = TraktAPI.AddShowsToRatings(GetRateShowsData(listalShowRatings.Skip(i * pageSize).Take(pageSize).ToList()));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send ratings for Listal tv shows", true);
@@ -368,7 +368,7 @@
                         {
                             UIUtils.UpdateStatus("Importing page {0}/{1} Listal wantlist tv shows to trakt.tv watchlist...", i + 1, pages);
 
-                            var watchlistShowsResponse = TraktAPI.SyncShowWatchlist(GetSyncShowsData(wantList.Skip(i * pageSize).Take(pageSize).ToList()));
+                            var watchlistShowsResponse = TraktAPI.AddShowsToWatchlist(GetSyncShowsData(wantList.Skip(i * pageSize).Take(pageSize).ToList()));
                             if (watchlistShowsResponse == null)
                             {
                                 UIUtils.UpdateStatus("Failed to send watchlist for Listal tv shows", true);
