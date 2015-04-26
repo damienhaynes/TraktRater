@@ -487,6 +487,10 @@
                 {
                     Maintenance.RemoveMoviesFromRatings();
                 }
+                if (settings.WatchlistEpisodes)
+                {
+                    Maintenance.RemoveEpisodesFromWatchlist();
+                }
 
                 // finished
                 SetControlState(true);

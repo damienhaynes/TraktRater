@@ -109,6 +109,19 @@
             return response.FromJSON<TraktSyncResponse>();
         }
 
+        /// <summary>
+        /// Removes all episodes from watchlist from trakt
+        /// </summary>
+        /// <param name="syncData">list of episodes</param>
+        public static TraktSyncResponse RemoveEpisodesFromWatchlist(TraktEpisodeSync syncData)
+        {
+            if (syncData == null)
+                return null;
+
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncWatchlistRemove, syncData.ToJSON());
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
         #endregion
 
         #region Watched

@@ -15,7 +15,6 @@
 
         public static void RemoveEpisodesFromWatchedHistory()
         {
-            // get current watched shows
             UIUtils.UpdateStatus("Getting watched shows from trakt.tv");
             var watchedShows = TraktAPI.TraktAPI.GetWatchedShows();
             if (watchedShows != null)
@@ -63,7 +62,6 @@
 
         public static void RemoveMoviesFromWatchedHistory()
         {
-            // get current watched movies
             UIUtils.UpdateStatus("Getting watched movies from trakt.tv");
             var watchedMovies = TraktAPI.TraktAPI.GetWatchedMovies();
             if (watchedMovies != null)
@@ -100,7 +98,6 @@
 
         public static void RemoveEpisodesFromCollection()
         {
-            // get current watched shows
             UIUtils.UpdateStatus("Getting collected shows from trakt.tv");
             var collectedShows = TraktAPI.TraktAPI.GetCollectedShows();
             if (collectedShows != null)
@@ -148,7 +145,6 @@
 
         public static void RemoveMoviesFromCollection()
         {
-            // get current watched movies
             UIUtils.UpdateStatus("Getting collected movies from trakt.tv");
             var collectedMovies = TraktAPI.TraktAPI.GetCollectedMovies();
             if (collectedMovies != null)
@@ -185,7 +181,6 @@
 
         public static void RemoveEpisodesFromRatings()
         {
-            // get current rated episodes
             UIUtils.UpdateStatus("Getting rated episodes from trakt.tv");
             var ratedEpisodes = TraktAPI.TraktAPI.GetRatedEpisodes();
             if (ratedEpisodes != null)
@@ -223,7 +218,6 @@
 
         public static void RemoveShowsFromRatings()
         {
-            // get current rated episodes
             UIUtils.UpdateStatus("Getting rated shows from trakt.tv");
             var ratedShows = TraktAPI.TraktAPI.GetRatedShows();
             if (ratedShows != null)
@@ -260,7 +254,6 @@
 
         public static void RemoveSeasonsFromRatings()
         {
-            // get current watched shows
             UIUtils.UpdateStatus("Getting rated seasons from trakt.tv");
             var ratedSeasons = TraktAPI.TraktAPI.GetRatedSeasons();
             if (ratedSeasons != null)
@@ -317,7 +310,6 @@
 
         public static void RemoveMoviesFromRatings()
         {
-            // get current rated episodes
             UIUtils.UpdateStatus("Getting rated movies from trakt.tv");
             var ratedMovies = TraktAPI.TraktAPI.GetRatedMovies();
             if (ratedMovies != null)
@@ -348,6 +340,43 @@
             else
             {
                 UIUtils.UpdateStatus("Failed to get current list of rated movies from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
+
+        public static void RemoveEpisodesFromWatchlist()
+        {
+            UIUtils.UpdateStatus("Getting watchlisted episodes from trakt.tv");
+            var watchlistedEpisodes = TraktAPI.TraktAPI.GetWatchlistEpisodes();
+            if (watchlistedEpisodes != null)
+            {
+                UIUtils.UpdateStatus("Found {0} episodes watchlisted on trakt.tv", watchlistedEpisodes.Count());
+
+                int pageSize = AppSettings.BatchSize;
+                int pages = (int)Math.Ceiling((double)watchlistedEpisodes.Count() / pageSize);
+                for (int i = 0; i < pages; i++)
+                {
+                    if (Cancel) return;
+
+                    var syncData = new TraktEpisodeSync
+                    {
+                        Episodes = watchlistedEpisodes.Select(r => new TraktEpisode { Ids = r.Episode.Ids })
+                                                .Skip(i * pageSize).Take(pageSize).ToList()
+                    };
+
+                    UIUtils.UpdateStatus("[{0}/{1}] Removing episodes from trakt.tv watchlist", i + 1, pages);
+                    var syncResponse = TraktAPI.TraktAPI.RemoveEpisodesFromWatchlist(syncData);
+                    if (syncResponse == null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove episodes from trakt.tv watchlist", i + 1, pages), true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of watchlisted episodes from trakt.tv", true);
                 Thread.Sleep(2000);
             }
         }
