@@ -123,6 +123,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktSeason.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeasonId.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeasonSync.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktSeasonWatchlist.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowCollected.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowId.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowRating.cs" />

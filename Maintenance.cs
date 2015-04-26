@@ -258,13 +258,13 @@
             var ratedSeasons = TraktAPI.TraktAPI.GetRatedSeasons();
             if (ratedSeasons != null)
             {
-                UIUtils.UpdateStatus("Found {0} seasons rated in {1} shows on trakt.tv", ratedSeasons.Count());
-
-                // group the season ratings by tv show id
+                // group the seasons by tv show id
                 // remove season ratings by show i.e. one show at a time
                 // we get ratings for seasons ungrouped and sorted by date added
                 var seasonGroupings = ratedSeasons.GroupBy(r => r.Show.Ids.Trakt, r => r);
-                
+
+                UIUtils.UpdateStatus("Found {0} seasons rated in {1} shows on trakt.tv", ratedSeasons.Count(), seasonGroupings.Count());
+
                 int i = 0;
                 int count = seasonGroupings.Count();
                 
@@ -291,7 +291,7 @@
                         }
                     };
 
-                    UIUtils.UpdateStatus("[{0}/{1}] Removing season ratings for {2} from trakt.tv ratings", ++i, count, seasonGroup.First().Show.Title);
+                    UIUtils.UpdateStatus("[{0}/{1}] Removing season for {2} from trakt.tv ratings", ++i, count, seasonGroup.First().Show.Title);
                     var syncResponse = TraktAPI.TraktAPI.RemoveSeasonsFromRatings(syncData);
                     if (syncResponse == null)
                     {
@@ -413,6 +413,62 @@
             else
             {
                 UIUtils.UpdateStatus("Failed to get current list of watchlisted shows from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
+
+        public static void RemoveSeasonsFromWatchlist()
+        {
+            UIUtils.UpdateStatus("Getting watchlisted seasons from trakt.tv");
+            var watchlistedSeasons = TraktAPI.TraktAPI.GetWatchlistSeasons();
+            if (watchlistedSeasons != null)
+            {
+                // group the seasons by tv show id
+                // remove watchlist seasons by show i.e. one show at a time
+                // we get watchlist for seasons ungrouped and sorted by date added
+                var seasonGroupings = watchlistedSeasons.GroupBy(r => r.Show.Ids.Trakt, r => r);
+
+                UIUtils.UpdateStatus("Found {0} seasons watchlisted in {1} shows on trakt.tv", watchlistedSeasons.Count(), seasonGroupings.Count());
+
+                int i = 0;
+                int count = seasonGroupings.Count();
+
+                foreach (var seasonGroup in seasonGroupings)
+                {
+                    if (Cancel) return;
+
+                    // get the seasons watchlisted for this show
+                    var seasons = from rating in seasonGroup
+                                  select new TraktSeason
+                                  {
+                                      Number = rating.Season.Number
+                                  };
+
+                    var syncData = new TraktSeasonSync
+                    {
+                        Shows = new List<TraktSeasonSync.TraktShowSeason>
+                        {
+                            new TraktSeasonSync.TraktShowSeason
+                            {
+                                Ids = new TraktShowId { Trakt = seasonGroup.Key },
+                                Seasons = seasons.ToList()
+                            }
+                        }
+                    };
+
+                    UIUtils.UpdateStatus("[{0}/{1}] Removing seasons for {2} from trakt.tv watchlist", ++i, count, seasonGroup.First().Show.Title);
+                    var syncResponse = TraktAPI.TraktAPI.RemoveSeasonsFromWatchlist(syncData);
+                    if (syncResponse == null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove {2} seasons from trakt.tv watchlist", i, count, seasonGroup.First().Show.Title), true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of watchlisted seasons from trakt.tv", true);
                 Thread.Sleep(2000);
             }
         }

@@ -21,6 +21,7 @@
         public const string WatchlistMovies = @"http://api.trakt.tv/sync/watchlist/movies";
         public const string WatchlistShows = @"http://api.trakt.tv/sync/watchlist/shows";
         public const string WatchlistEpisodes = @"http://api.trakt.tv/sync/watchlist/episodes";
+        public const string WatchlistSeasons = @"http://api.trakt.tv/sync/watchlist/seasons";
 
         public const string SyncRatings = @"http://api.trakt.tv/sync/ratings";
         public const string SyncWatchlist = @"http://api.trakt.tv/sync/watchlist";

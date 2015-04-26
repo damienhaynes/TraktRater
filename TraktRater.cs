@@ -495,6 +495,10 @@
                 {
                     Maintenance.RemoveShowsFromWatchlist();
                 }
+                if (settings.WatchlistSeasons)
+                {
+                    Maintenance.RemoveSeasonsFromWatchlist();
+                }
 
                 // finished
                 SetControlState(true);

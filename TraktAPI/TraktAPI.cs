@@ -135,6 +135,19 @@
             return response.FromJSON<TraktSyncResponse>();
         }
 
+        /// <summary>
+        /// Removes all seasons from watchlist from trakt
+        /// </summary>
+        /// <param name="syncData">list of shows with seasons</param>
+        public static TraktSyncResponse RemoveSeasonsFromWatchlist(TraktSeasonSync syncData)
+        {
+            if (syncData == null)
+                return null;
+
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncWatchlistRemove, syncData.ToJSON());
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
         #endregion
 
         #region Watched
@@ -466,6 +479,20 @@
         {
             string watchlistEpisodes = TraktWeb.GetFromTrakt(TraktURIs.WatchlistEpisodes);
             var result = watchlistEpisodes.FromJSONArray<TraktEpisodeWatchlist>();
+
+            if (result == null) return null;
+
+            // filter out anything invalid
+            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
+        }
+
+        /// <summary>
+        /// Returns the current users watchlist seasons
+        /// </summary>
+        public static IEnumerable<TraktSeasonWatchlist> GetWatchlistSeasons()
+        {
+            string watchlistSeasons = TraktWeb.GetFromTrakt(TraktURIs.WatchlistSeasons);
+            var result = watchlistSeasons.FromJSONArray<TraktSeasonWatchlist>();
 
             if (result == null) return null;
 
