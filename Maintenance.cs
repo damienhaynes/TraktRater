@@ -380,5 +380,41 @@
                 Thread.Sleep(2000);
             }
         }
+
+        public static void RemoveShowsFromWatchlist()
+        {
+            UIUtils.UpdateStatus("Getting watchlisted shows from trakt.tv");
+            var watchlistedShows = TraktAPI.TraktAPI.GetWatchlistShows();
+            if (watchlistedShows != null)
+            {
+                UIUtils.UpdateStatus("Found {0} shows watchlisted on trakt.tv", watchlistedShows.Count());
+
+                int pageSize = AppSettings.BatchSize;
+                int pages = (int)Math.Ceiling((double)watchlistedShows.Count() / pageSize);
+                for (int i = 0; i < pages; i++)
+                {
+                    if (Cancel) return;
+
+                    var syncData = new TraktShowSync
+                    {
+                        Shows = watchlistedShows.Select(r => r.Show).Skip(i * pageSize).Take(pageSize).ToList()
+                    };
+
+                    UIUtils.UpdateStatus("[{0}/{1}] Removing shows from trakt.tv watchlist", i + 1, pages);
+                    var syncResponse = TraktAPI.TraktAPI.RemoveShowsFromWatchlist(syncData);
+                    if (syncResponse == null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove shows from trakt.tv watchlist", i + 1, pages), true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of watchlisted shows from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
     }
 }
