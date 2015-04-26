@@ -257,5 +257,42 @@
                 Thread.Sleep(2000);
             }
         }
+
+        public static void RemoveMoviesFromRatings()
+        {
+            // get current rated episodes
+            UIUtils.UpdateStatus("Getting rated movies from trakt.tv");
+            var ratedMovies = TraktAPI.TraktAPI.GetRatedMovies();
+            if (ratedMovies != null)
+            {
+                UIUtils.UpdateStatus("Found {0} movies rated on trakt.tv", ratedMovies.Count());
+
+                int pageSize = AppSettings.BatchSize;
+                int pages = (int)Math.Ceiling((double)ratedMovies.Count() / pageSize);
+                for (int i = 0; i < pages; i++)
+                {
+                    if (Cancel) return;
+
+                    var syncData = new TraktMovieSync
+                    {
+                        Movies = ratedMovies.Select(r => r.Movie).Skip(i * pageSize).Take(pageSize).ToList()
+                    };
+
+                    UIUtils.UpdateStatus("[{0}/{1}] Removing movies from trakt.tv ratings", i + 1, pages);
+                    var syncResponse = TraktAPI.TraktAPI.RemoveMoviesFromRatings(syncData);
+                    if (syncResponse == null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove movies from trakt.tv ratings", i + 1, pages), true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of rated movies from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
     }
 }

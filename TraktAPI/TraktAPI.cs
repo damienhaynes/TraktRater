@@ -257,6 +257,19 @@
             return response.FromJSON<TraktSyncResponse>();
         }
 
+        /// <summary>
+        /// Removes all movie ratings from trakt
+        /// </summary>
+        /// <param name="syncData">list of movies</param>
+        public static TraktSyncResponse RemoveMoviesFromRatings(TraktMovieSync syncData)
+        {
+            if (syncData == null)
+                return null;
+
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncRatingsRemove, syncData.ToJSON());
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
         #endregion
 
         #region Collection

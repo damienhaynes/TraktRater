@@ -479,6 +479,10 @@
                 {
                     Maintenance.RemoveShowsFromRatings();
                 }
+                if (settings.RatedMovies)
+                {
+                    Maintenance.RemoveMoviesFromRatings();
+                }
 
                 // finished
                 SetControlState(true);
