@@ -7,10 +7,10 @@
     public class TraktEpisodeSyncEx
     {
         [DataMember(Name = "shows")]
-        public List<TraktShowSeasons> Shows { get; set; }
+        public List<TraktShowSeasonEpisodes> Shows { get; set; }
 
         [DataContract]
-        public class TraktShowSeasons : TraktShow
+        public class TraktShowSeasonEpisodes : TraktShow
         {
             [DataMember(Name = "seasons")]
             public List<TraktSeasonEpisodes> Seasons { get; set; }

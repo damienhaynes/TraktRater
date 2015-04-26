@@ -257,6 +257,19 @@
             return response.FromJSON<TraktSyncResponse>();
         }
 
+        // <summary>
+        /// Removes all season ratings from trakt
+        /// </summary>
+        /// <param name="syncData">list of shows with seasons</param>
+        public static TraktSyncResponse RemoveSeasonsFromRatings(TraktSeasonSync syncData)
+        {
+            if (syncData == null)
+                return null;
+
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncRatingsRemove, syncData.ToJSON());
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
         /// <summary>
         /// Removes all movie ratings from trakt
         /// </summary>

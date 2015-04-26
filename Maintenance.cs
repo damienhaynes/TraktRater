@@ -258,6 +258,63 @@
             }
         }
 
+        public static void RemoveSeasonsFromRatings()
+        {
+            // get current watched shows
+            UIUtils.UpdateStatus("Getting rated seasons from trakt.tv");
+            var ratedSeasons = TraktAPI.TraktAPI.GetRatedSeasons();
+            if (ratedSeasons != null)
+            {
+                UIUtils.UpdateStatus("Found {0} seasons rated in {1} shows on trakt.tv", ratedSeasons.Count());
+
+                // group the season ratings by tv show id
+                // remove season ratings by show i.e. one show at a time
+                // we get ratings for seasons ungrouped and sorted by date added
+                var seasonGroupings = ratedSeasons.GroupBy(r => r.Show.Ids.Trakt, r => r);
+                
+                int i = 0;
+                int count = seasonGroupings.Count();
+                
+                foreach (var seasonGroup in seasonGroupings)
+                {
+                    if (Cancel) return;
+
+                    // get the seasons rated for this show
+                    var seasons = from rating in seasonGroup
+                                  select new TraktSeason
+                                  {
+                                      Number = rating.Season.Number
+                                  };
+
+                    var syncData = new TraktSeasonSync
+                    {
+                        Shows = new List<TraktSeasonSync.TraktShowSeason>
+                        {
+                            new TraktSeasonSync.TraktShowSeason
+                            {
+                                Ids = new TraktShowId { Trakt = seasonGroup.Key },
+                                Seasons = seasons.ToList()
+                            }
+                        }
+                    };
+
+                    UIUtils.UpdateStatus("[{0}/{1}] Removing season ratings for {2} from trakt.tv ratings", ++i, count, seasonGroup.First().Show.Title);
+                    var syncResponse = TraktAPI.TraktAPI.RemoveSeasonsFromRatings(syncData);
+                    if (syncResponse == null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove {2} seasons from trakt.tv ratings", i, count, seasonGroup.First().Show.Title), true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of rated seasons from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
+
         public static void RemoveMoviesFromRatings()
         {
             // get current rated episodes

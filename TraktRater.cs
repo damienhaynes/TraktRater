@@ -479,6 +479,10 @@
                 {
                     Maintenance.RemoveShowsFromRatings();
                 }
+                if (settings.RatedSeasons)
+                {
+                    Maintenance.RemoveSeasonsFromRatings();
+                }
                 if (settings.RatedMovies)
                 {
                     Maintenance.RemoveMoviesFromRatings();
