@@ -49,7 +49,7 @@
                     if (syncResponse == null)
                     {
                         UIUtils.UpdateStatus(string.Format("Failed to remove episodes of {0} from trakt.tv watched history", watchedShow.Show.Title), true);
-                        Thread.Sleep(1000);
+                        Thread.Sleep(2000);
                         continue;
                     }
                 }
@@ -57,7 +57,7 @@
             else
             {
                 UIUtils.UpdateStatus("Failed to get current list of watched shows from trakt.tv", true);
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
             }
         }
 
@@ -86,7 +86,7 @@
                     if (syncResponse == null)
                     {
                         UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove movies from trakt.tv watched history", i + 1, pages), true);
-                        Thread.Sleep(1000);
+                        Thread.Sleep(2000);
                         continue;
                     }
                 }
@@ -94,7 +94,7 @@
             else
             {
                 UIUtils.UpdateStatus("Failed to get current list of watched movies from trakt.tv", true);
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
             }
         }
 
@@ -134,7 +134,7 @@
                     if (syncResponse == null)
                     {
                         UIUtils.UpdateStatus(string.Format("Failed to remove episodes of {0} from trakt.tv collection", collectedShow.Show.Title), true);
-                        Thread.Sleep(1000);
+                        Thread.Sleep(2000);
                         continue;
                     }
                 }
@@ -142,7 +142,7 @@
             else
             {
                 UIUtils.UpdateStatus("Failed to get current list of collected shows from trakt.tv", true);
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
             }
         }
 
@@ -171,7 +171,7 @@
                     if (syncResponse == null)
                     {
                         UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove movies from trakt.tv collection", i + 1, pages), true);
-                        Thread.Sleep(1000);
+                        Thread.Sleep(2000);
                         continue;
                     }
                 }
@@ -179,7 +179,7 @@
             else
             {
                 UIUtils.UpdateStatus("Failed to get current list of collected movies from trakt.tv", true);
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
             }
         }
 
@@ -208,8 +208,8 @@
                     var syncResponse = TraktAPI.TraktAPI.RemoveEpisodesFromRatings(syncData);
                     if (syncResponse == null)
                     {
-                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove movies from trakt.tv collection", i + 1, pages), true);
-                        Thread.Sleep(1000);
+                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove episodes from trakt.tv ratings", i + 1, pages), true);
+                        Thread.Sleep(2000);
                         continue;
                     }
                 }
@@ -217,7 +217,44 @@
             else
             {
                 UIUtils.UpdateStatus("Failed to get current list of rated episodes from trakt.tv", true);
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
+            }
+        }
+
+        public static void RemoveShowsFromRatings()
+        {
+            // get current rated episodes
+            UIUtils.UpdateStatus("Getting rated shows from trakt.tv");
+            var ratedShows = TraktAPI.TraktAPI.GetRatedShows();
+            if (ratedShows != null)
+            {
+                UIUtils.UpdateStatus("Found {0} shows rated on trakt.tv", ratedShows.Count());
+
+                int pageSize = AppSettings.BatchSize;
+                int pages = (int)Math.Ceiling((double)ratedShows.Count() / pageSize);
+                for (int i = 0; i < pages; i++)
+                {
+                    if (Cancel) return;
+
+                    var syncData = new TraktShowSync
+                    {
+                        Shows = ratedShows.Select(r => r.Show).Skip(i * pageSize).Take(pageSize).ToList()
+                    };
+
+                    UIUtils.UpdateStatus("[{0}/{1}] Removing shows from trakt.tv ratings", i + 1, pages);
+                    var syncResponse = TraktAPI.TraktAPI.RemoveShowsFromRatings(syncData);
+                    if (syncResponse == null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove shows from trakt.tv ratings", i + 1, pages), true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of rated shows from trakt.tv", true);
+                Thread.Sleep(2000);
             }
         }
     }

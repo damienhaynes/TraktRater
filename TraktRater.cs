@@ -26,12 +26,13 @@
         #region Variables
 
         readonly List<IRateSite> sites = new List<IRateSite>();
+        static bool maintenanceRunning = false;
         static bool importRunning = false;
         static bool importCancelled = false;
         #endregion
 
         #region Constants
-        const string cImportReadyText = "Start Ratings Import";
+        const string cImportReadyText = "Start Import";
         const string cCancelText = "Cancel";
         #endregion
 
@@ -111,12 +112,20 @@
             AppSettings.MarkAsWatched = !AppSettings.MarkAsWatched;
         }
 
-        private void btnImportRatings_Click(object sender, EventArgs e)
+        private void btnStartSync_Click(object sender, EventArgs e)
         {
-            if (!importRunning)
-                StartImport();
-            else
+            if (importRunning)
+            {
                 CancelImport();
+            }
+            else if (maintenanceRunning)
+            {
+                CancelMaintenance();
+            }
+            else
+            {
+                StartImport();
+            }
         }
 
         private void txtTVDbAccountId_TextChanged(object sender, EventArgs e)
@@ -320,7 +329,7 @@
 
         private void btnMaintenance_Click(object sender, EventArgs e)
         {
-            MaintenanceDialog maintenanceDlg = new MaintenanceDialog();
+            var maintenanceDlg = new MaintenanceDialog();
             DialogResult result = maintenanceDlg.ShowDialog(this);
 
             if (result != DialogResult.OK)
@@ -424,7 +433,7 @@
         #region Maintenance Actions
         private void StartMaintenance(MaintenanceSettings settings)
         {
-            if (!CheckAccountDetails() || importRunning)
+            if (!CheckAccountDetails() || maintenanceRunning)
                 return;
 
             // update file log with new name
@@ -432,9 +441,8 @@
 
             var maintThread = new Thread(o =>
             {
+                maintenanceRunning = true;
                 Maintenance.Cancel = false;
-
-                importRunning = true;
 
                 // only one import at a time
                 SetControlState(false);
@@ -467,12 +475,15 @@
                 {
                     Maintenance.RemoveEpisodesFromRatings();
                 }
+                if (settings.RatedShows)
+                {
+                    Maintenance.RemoveShowsFromRatings();
+                }
 
                 // finished
                 SetControlState(true);
                 UIUtils.UpdateStatus("Maintenance Complete!");
-                importRunning = false;
-                importCancelled = false;
+                maintenanceRunning = false;
             });
 
             maintThread.Start();
@@ -480,12 +491,10 @@
 
         private void CancelMaintenance()
         {
-            if (!importRunning) return;
+            if (!maintenanceRunning) return;
 
             UIUtils.UpdateStatus("Cancelling Maintenance...");
             Maintenance.Cancel = true;
-
-            importCancelled = true;
         }
         #endregion
 
@@ -533,7 +542,7 @@
             grbTVDb.Enabled = enable;
             grbListal.Enabled = enable;
 
-            btnImportRatings.Text = enable ? cImportReadyText : cCancelText;
+            btnStartSync.Text = enable ? cImportReadyText : cCancelText;
             pbrImportProgress.Style = enable ? ProgressBarStyle.Continuous : ProgressBarStyle.Marquee;
         }
 
@@ -627,6 +636,7 @@
 
         private void EnableCritickerControls(bool enableState)
         {
+            chkCritickerEnabled.Enabled = enableState;
             lblCritickerMovieExportFile.Enabled = enableState;
             txtCritickerMovieExportFile.Enabled = enableState;
             btnCritickerMovieExportBrowse.Enabled = enableState;

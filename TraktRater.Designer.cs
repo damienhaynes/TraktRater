@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TraktRater));
             this.grbTrakt = new System.Windows.Forms.GroupBox();
+            this.btnMaintenance = new System.Windows.Forms.Button();
             this.txtTraktPassword = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -40,7 +41,7 @@
             this.txtTVDbAccountId = new System.Windows.Forms.TextBox();
             this.lblTVDbAccountId = new System.Windows.Forms.Label();
             this.lblDetails = new System.Windows.Forms.Label();
-            this.btnImportRatings = new System.Windows.Forms.Button();
+            this.btnStartSync = new System.Windows.Forms.Button();
             this.pbrImportProgress = new System.Windows.Forms.ProgressBar();
             this.grbReport = new System.Windows.Forms.GroupBox();
             this.lnkLogFolder = new System.Windows.Forms.LinkLabel();
@@ -87,7 +88,6 @@
             this.chkCritickerEnabled = new System.Windows.Forms.CheckBox();
             this.txtCritickerMovieExportFile = new System.Windows.Forms.TextBox();
             this.lblCritickerMovieExportFile = new System.Windows.Forms.Label();
-            this.btnMaintenance = new System.Windows.Forms.Button();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -112,6 +112,16 @@
             this.grbTrakt.TabIndex = 0;
             this.grbTrakt.TabStop = false;
             this.grbTrakt.Text = "Trakt";
+            // 
+            // btnMaintenance
+            // 
+            this.btnMaintenance.Location = new System.Drawing.Point(19, 88);
+            this.btnMaintenance.Name = "btnMaintenance";
+            this.btnMaintenance.Size = new System.Drawing.Size(402, 26);
+            this.btnMaintenance.TabIndex = 11;
+            this.btnMaintenance.Text = "Cleanup / Maintenance...";
+            this.btnMaintenance.UseVisualStyleBackColor = true;
+            this.btnMaintenance.Click += new System.EventHandler(this.btnMaintenance_Click);
             // 
             // txtTraktPassword
             // 
@@ -200,15 +210,15 @@
             this.lblDetails.Text = "Enter in account details for each external source you wish to transfer ratings, w" +
     "atched and watchlist data to trakt.tv:";
             // 
-            // btnImportRatings
+            // btnStartSync
             // 
-            this.btnImportRatings.Location = new System.Drawing.Point(12, 595);
-            this.btnImportRatings.Name = "btnImportRatings";
-            this.btnImportRatings.Size = new System.Drawing.Size(887, 26);
-            this.btnImportRatings.TabIndex = 8;
-            this.btnImportRatings.Text = "Start Ratings Import";
-            this.btnImportRatings.UseVisualStyleBackColor = true;
-            this.btnImportRatings.Click += new System.EventHandler(this.btnImportRatings_Click);
+            this.btnStartSync.Location = new System.Drawing.Point(12, 595);
+            this.btnStartSync.Name = "btnStartSync";
+            this.btnStartSync.Size = new System.Drawing.Size(887, 26);
+            this.btnStartSync.TabIndex = 8;
+            this.btnStartSync.Text = "Start Import";
+            this.btnStartSync.UseVisualStyleBackColor = true;
+            this.btnStartSync.Click += new System.EventHandler(this.btnStartSync_Click);
             // 
             // pbrImportProgress
             // 
@@ -709,16 +719,6 @@
             this.lblCritickerMovieExportFile.TabIndex = 1;
             this.lblCritickerMovieExportFile.Text = "Movie Export File:";
             // 
-            // btnMaintenance
-            // 
-            this.btnMaintenance.Location = new System.Drawing.Point(19, 88);
-            this.btnMaintenance.Name = "btnMaintenance";
-            this.btnMaintenance.Size = new System.Drawing.Size(402, 26);
-            this.btnMaintenance.TabIndex = 11;
-            this.btnMaintenance.Text = "Cleanup / Maintenance...";
-            this.btnMaintenance.UseVisualStyleBackColor = true;
-            this.btnMaintenance.Click += new System.EventHandler(this.btnMaintenance_Click);
-            // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -731,7 +731,7 @@
             this.Controls.Add(this.grbImdb);
             this.Controls.Add(this.grbReport);
             this.Controls.Add(this.pbrImportProgress);
-            this.Controls.Add(this.btnImportRatings);
+            this.Controls.Add(this.btnStartSync);
             this.Controls.Add(this.lblDetails);
             this.Controls.Add(this.grbTVDb);
             this.Controls.Add(this.grbTrakt);
@@ -774,7 +774,7 @@
         private System.Windows.Forms.TextBox txtTVDbAccountId;
         private System.Windows.Forms.Label lblTVDbAccountId;
         private System.Windows.Forms.Label lblDetails;
-        private System.Windows.Forms.Button btnImportRatings;
+        private System.Windows.Forms.Button btnStartSync;
         private System.Windows.Forms.ProgressBar pbrImportProgress;
         private System.Windows.Forms.GroupBox grbReport;
         public System.Windows.Forms.Label lblStatusMessage;

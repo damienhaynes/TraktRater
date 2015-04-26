@@ -234,8 +234,21 @@
         /// <summary>
         /// Removes all episode ratings from trakt
         /// </summary>
-        /// <param name="syncData">list of shows</param>
+        /// <param name="syncData">list of episodes</param>
         public static TraktSyncResponse RemoveEpisodesFromRatings(TraktEpisodeSync syncData)
+        {
+            if (syncData == null)
+                return null;
+
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncRatingsRemove, syncData.ToJSON());
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        /// <summary>
+        /// Removes all show ratings from trakt
+        /// </summary>
+        /// <param name="syncData">list of shows</param>
+        public static TraktSyncResponse RemoveShowsFromRatings(TraktShowSync syncData)
         {
             if (syncData == null)
                 return null;
