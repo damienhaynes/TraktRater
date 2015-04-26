@@ -499,6 +499,10 @@
                 {
                     Maintenance.RemoveSeasonsFromWatchlist();
                 }
+                if (settings.WatchlistMovies)
+                {
+                    Maintenance.RemoveMoviesFromWatchlist();
+                }
 
                 // finished
                 SetControlState(true);

@@ -148,6 +148,19 @@
             return response.FromJSON<TraktSyncResponse>();
         }
 
+        /// <summary>
+        /// Removes all movies from watchlist from trakt
+        /// </summary>
+        /// <param name="syncData">list of movies</param>
+        public static TraktSyncResponse RemoveMoviesFromWatchlist(TraktMovieSync syncData)
+        {
+            if (syncData == null)
+                return null;
+
+            var response = TraktWeb.PostToTrakt(TraktURIs.SyncWatchlistRemove, syncData.ToJSON());
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
         #endregion
 
         #region Watched

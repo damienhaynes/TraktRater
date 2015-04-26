@@ -472,5 +472,41 @@
                 Thread.Sleep(2000);
             }
         }
+
+        public static void RemoveMoviesFromWatchlist()
+        {
+            UIUtils.UpdateStatus("Getting watchlisted movies from trakt.tv");
+            var watchlistedMovies = TraktAPI.TraktAPI.GetWatchlistMovies();
+            if (watchlistedMovies != null)
+            {
+                UIUtils.UpdateStatus("Found {0} movies watchlisted on trakt.tv", watchlistedMovies.Count());
+
+                int pageSize = AppSettings.BatchSize;
+                int pages = (int)Math.Ceiling((double)watchlistedMovies.Count() / pageSize);
+                for (int i = 0; i < pages; i++)
+                {
+                    if (Cancel) return;
+
+                    var syncData = new TraktMovieSync
+                    {
+                        Movies = watchlistedMovies.Select(r => r.Movie).Skip(i * pageSize).Take(pageSize).ToList()
+                    };
+
+                    UIUtils.UpdateStatus("[{0}/{1}] Removing movies from trakt.tv watchlist", i + 1, pages);
+                    var syncResponse = TraktAPI.TraktAPI.RemoveMoviesFromWatchlist(syncData);
+                    if (syncResponse == null)
+                    {
+                        UIUtils.UpdateStatus(string.Format("[{0}/{1}] Failed to remove movies from trakt.tv watchlist", i + 1, pages), true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of watchlisted movies from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
     }
 }
