@@ -83,9 +83,9 @@ namespace TraktRater.Sites
 
             #region Import Rated Movies
             var movies = rateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie && !string.IsNullOrEmpty(r[IMDbFieldMapping.cRating])).ToList();
+            FileLog.Info("Found {0} movie ratings in CSV file", movies.Count);
             if (movies.Any())
             {
-                FileLog.Info("Found {0} movie ratings in CSV file", movies.Count);
                 UIUtils.UpdateStatus("Retrieving existing movie ratings from trakt.tv");
                 var currentUserMovieRatings = TraktAPI.TraktAPI.GetRatedMovies();
 
@@ -127,9 +127,9 @@ namespace TraktRater.Sites
 
             #region Import Rated TV Shows
             var shows = rateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show && !string.IsNullOrEmpty(r[IMDbFieldMapping.cRating])).ToList();
+            FileLog.Info("Found {0} tv show ratings in CSV file", shows.Count);
             if (shows.Any())
             {
-                FileLog.Info("Found {0} tv show ratings in CSV file", shows.Count);
                 UIUtils.UpdateStatus("Retrieving existing tv show ratings from trakt.tv");
                 var currentUserShowRatings = TraktAPI.TraktAPI.GetRatedShows();
 
@@ -172,9 +172,9 @@ namespace TraktRater.Sites
             #region Import Rated Episodes
             var imdbEpisodes = new List<IMDbEpisode>();
             var imdbCSVEpisodes = rateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode).ToList();
+            FileLog.Info("Found {0} tv episode ratings in CSV file", imdbCSVEpisodes.Count);
             if (imdbCSVEpisodes.Any())
             {
-                FileLog.Info("Found {0} tv episode ratings in CSV file", imdbCSVEpisodes.Count);
 
                 // we can't rely on the imdb id as trakt most likely wont have the info for episodes
 
@@ -313,9 +313,9 @@ namespace TraktRater.Sites
 
             #region Import Watchlist Movies
             movies = watchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie).ToList();
+            FileLog.Info("Found {0} movies watchlisted in CSV file", movies.Count);
             if (movies.Any())
             {
-                FileLog.Info("Found {0} movies watchlisted in CSV file", movies.Count);
                 UIUtils.UpdateStatus("Requesting existing watchlist movies from trakt...");
                 var watchlistTraktMovies = TraktAPI.TraktAPI.GetWatchlistMovies();
                 if (watchlistTraktMovies != null)
@@ -380,9 +380,9 @@ namespace TraktRater.Sites
             #region Import Watchlist TV Shows
             IEnumerable<TraktShowPlays> watchedTraktShows = null;
             shows = watchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Show).ToList();
+            FileLog.Info("Found {0} tv shows watchlisted in CSV file", shows.Count);
             if (shows.Any())
             {
-                FileLog.Info("Found {0} tv shows watchlisted in CSV file", shows.Count);
                 UIUtils.UpdateStatus("Requesting existing watchlist shows from trakt...");
                 var watchlistTraktShows = TraktAPI.TraktAPI.GetWatchlistShows();
                 if (watchlistTraktShows != null)
@@ -438,9 +438,9 @@ namespace TraktRater.Sites
             #region Import Watchlist Episodes
             imdbEpisodes.Clear();
             imdbCSVEpisodes = watchlistItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Episode).ToList();
+            FileLog.Info("Found {0} tv episodes watchlisted in CSV file", imdbCSVEpisodes.Count);
             if (imdbCSVEpisodes.Any())
             {
-                FileLog.Info("Found {0} tv episodes watchlisted in CSV file", imdbCSVEpisodes.Count);
                 UIUtils.UpdateStatus("Found {0} IMDb watchlist episodes", imdbCSVEpisodes.Count());
 
                 imdbEpisodes.AddRange(imdbCSVEpisodes.Select(Helper.GetIMDbEpisodeFromTVDb).Where(imdbEpisode => imdbEpisode != null));
