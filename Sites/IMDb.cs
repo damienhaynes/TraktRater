@@ -234,7 +234,8 @@ namespace TraktRater.Sites
             {
                 #region Movies
                 // compare all movies rated against what's not watched on trakt
-                movies = rateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie && !string.IsNullOrEmpty(r[IMDbFieldMapping.cRating])).ToList();
+                movies = rateItems.Where(r => r[IMDbFieldMapping.cType].ItemType() == IMDbType.Movie).ToList();
+                FileLog.Info("Found {0} movies in CSV file", movies.Count);
                 if (movies.Count > 0)
                 {
                     // get watched movies from trakt.tv
