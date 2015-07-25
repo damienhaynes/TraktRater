@@ -520,6 +520,7 @@ namespace TraktRater.Sites
             if (!File.Exists(filename)) return false;
 
             string[] fieldHeadings = new string[]{};
+            int recordNumber = 0;
             
             try
             {
@@ -527,12 +528,13 @@ namespace TraktRater.Sites
                 parser.SetDelimiters(",");
                 while (!parser.EndOfData)
                 {
+                    recordNumber++;
                     // processing fields in row
                     string[] fields = parser.ReadFields();
 
                     // get header fields
                     // line number increments after first read
-                    if (parser.LineNumber == 2)
+                    if (recordNumber == 1)
                     {
                         fieldHeadings = fields;
                         continue;

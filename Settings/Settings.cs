@@ -114,7 +114,7 @@
         {
             get
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TraktRater\Settings.xml";
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"TraktRater", @"Settings.xml");
             }
         }
 
@@ -142,34 +142,39 @@
         /// </summary>
         public static void Load()
         {
-            XmlReader xmlReader = new XmlReader();
-            xmlReader.Load(SettingsFile);
+            try {
+                XmlReader xmlReader = new XmlReader();
+                xmlReader.Load(SettingsFile);
 
-            TraktUsername = xmlReader.GetSettingValueAsString(cTraktUsername, string.Empty);
-            TraktPassword = xmlReader.GetSettingValueAsString(cTraktPassword, string.Empty);
-            TVDbAccountIdentifier = xmlReader.GetSettingValueAsString(cTVDbAccountId, string.Empty);
-            TMDbSessionId = xmlReader.GetSettingValueAsString(cTMDbSessionId, string.Empty);
-            TMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cTMDBSyncWatchlist, true);
-            IMDbRatingsFilename = xmlReader.GetSettingValueAsString(cIMDbRatingsFilename, string.Empty);
-            IMDbWatchlistFilename = xmlReader.GetSettingValueAsString(cIMDbWatchlistFilename, string.Empty);
-            IMDbUsername = xmlReader.GetSettingValueAsString(cIMDbUsername, string.Empty);
-            IMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cIMDBSyncWatchlist, false);
-            ListalSyncWatchlist = xmlReader.GetSettingValueAsBool(cListalSyncWatchlist, false);
-            ListalMovieFilename = xmlReader.GetSettingValueAsString(cListalMovieFilename, string.Empty);
-            ListalShowFilename = xmlReader.GetSettingValueAsString(cListalShowFilename, string.Empty);
-            CritickerMovieFilename = xmlReader.GetSettingValueAsString(cCritickerMovieFilename, string.Empty);
-            MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
-            IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
-            EnableIMDb = xmlReader.GetSettingValueAsBool(cEnableIMDb, false);
-            EnableTMDb = xmlReader.GetSettingValueAsBool(cEnableTMDb, false);
-            EnableTVDb = xmlReader.GetSettingValueAsBool(cEnableTVDb, false);
-            EnableListal = xmlReader.GetSettingValueAsBool(cEnableListal, false);
-            EnableCriticker = xmlReader.GetSettingValueAsBool(cEnableCriticker, false);
-            LogSeverityLevel = (LoggingSeverity)(xmlReader.GetSettingValueAsInt(cLogLevel, 3));
-            BatchSize = xmlReader.GetSettingValueAsInt(cBatchSize, 50);
+                TraktUsername = xmlReader.GetSettingValueAsString(cTraktUsername, string.Empty);
+                TraktPassword = xmlReader.GetSettingValueAsString(cTraktPassword, string.Empty);
+                TVDbAccountIdentifier = xmlReader.GetSettingValueAsString(cTVDbAccountId, string.Empty);
+                TMDbSessionId = xmlReader.GetSettingValueAsString(cTMDbSessionId, string.Empty);
+                TMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cTMDBSyncWatchlist, true);
+                IMDbRatingsFilename = xmlReader.GetSettingValueAsString(cIMDbRatingsFilename, string.Empty);
+                IMDbWatchlistFilename = xmlReader.GetSettingValueAsString(cIMDbWatchlistFilename, string.Empty);
+                IMDbUsername = xmlReader.GetSettingValueAsString(cIMDbUsername, string.Empty);
+                IMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cIMDBSyncWatchlist, false);
+                ListalSyncWatchlist = xmlReader.GetSettingValueAsBool(cListalSyncWatchlist, false);
+                ListalMovieFilename = xmlReader.GetSettingValueAsString(cListalMovieFilename, string.Empty);
+                ListalShowFilename = xmlReader.GetSettingValueAsString(cListalShowFilename, string.Empty);
+                CritickerMovieFilename = xmlReader.GetSettingValueAsString(cCritickerMovieFilename, string.Empty);
+                MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
+                IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
+                EnableIMDb = xmlReader.GetSettingValueAsBool(cEnableIMDb, false);
+                EnableTMDb = xmlReader.GetSettingValueAsBool(cEnableTMDb, false);
+                EnableTVDb = xmlReader.GetSettingValueAsBool(cEnableTVDb, false);
+                EnableListal = xmlReader.GetSettingValueAsBool(cEnableListal, false);
+                EnableCriticker = xmlReader.GetSettingValueAsBool(cEnableCriticker, false);
+                LogSeverityLevel = (LoggingSeverity)(xmlReader.GetSettingValueAsInt(cLogLevel, 3));
+                BatchSize = xmlReader.GetSettingValueAsInt(cBatchSize, 50);
 
-            // save settings, might be some new settings added
-            Save();
+                // save settings, might be some new settings added
+                Save();
+            }
+            catch (Exception) {
+                return;
+            }
         }
 
         /// <summary>

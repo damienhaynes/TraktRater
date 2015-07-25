@@ -7,7 +7,7 @@
     {
         static string cAppDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         
-        public static string cShowInfoFileCache = cAppDir + @"\TraktRater\Series\{0}.json";
+        public static string cShowInfoFileCache = Path.Combine(cAppDir, @"TraktRater", @"Series", @"{0}.json");
 
         public static string GetFromCache(string filename, int expiresInDays)
         {
