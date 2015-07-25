@@ -39,6 +39,7 @@
         #region Constructor
         public TraktRater()
         {
+			FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
             InitializeComponent();
         }
         #endregion
