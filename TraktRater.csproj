@@ -140,7 +140,6 @@
     <Compile Include="TraktAPI\DataStructures\TraktUserShowRating.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktUserToken.cs" />
     <Compile Include="TraktAPI\TraktAPI.cs" />
-    <Compile Include="TraktAPI\TraktCache.cs" />
     <Compile Include="TraktAPI\TraktURIs.cs" />
     <Compile Include="TraktRater.cs">
       <SubType>Form</SubType>
