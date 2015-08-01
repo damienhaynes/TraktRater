@@ -7,10 +7,10 @@
     {
         static readonly string cAppDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-        public static readonly string cEpisodeRatingsFileCache = cAppDir + @"\TraktRater\Ratings\{0}.xml";
-        public static readonly string cShowRatingsFileCache = cAppDir + @"\TraktRater\Ratings\series.xml";
-        public static readonly string cShowInfoFileCache = cAppDir + @"\TraktRater\Series\{0}.xml";
-        public static readonly string cShowSearchFileCache = cAppDir + @"\TraktRater\SearchResults\tvdb_{0}.xml";
+        public static readonly string cEpisodeRatingsFileCache = Path.Combine(cAppDir, @"TraktRater", @"Ratings", @"{0}.xml");
+        public static readonly string cShowRatingsFileCache = Path.Combine(cAppDir, @"TraktRater", @"Ratings", @"series.xml");
+        public static readonly string cShowInfoFileCache = Path.Combine(cAppDir, @"TraktRater", @"Series", @"{0}.xml");
+        public static readonly string cShowSearchFileCache = Path.Combine(cAppDir, @"TraktRater", @"SearchResults", @"tvdb_{0}.xml");
 
         public static string GetFromCache(string filename, int expiresInDays = 1)
         {

@@ -11,7 +11,7 @@
     {
         private static Object lockObject = new object();
 
-        internal static readonly string LogDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TraktRater\Logs";
+        internal static readonly string LogDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"TraktRater", @"Logs");
         internal static string LogFileName { private get; set; }
 
         static FileLog()
@@ -102,7 +102,7 @@
 
         private static void WriteToFile(String log)
         {
-            string filename = LogDirectory + "\\" + LogFileName;
+            string filename = Path.Combine(LogDirectory, LogFileName);
 
             try
             {

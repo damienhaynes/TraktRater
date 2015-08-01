@@ -38,7 +38,7 @@
             {
                 document.Load(file);
             }
-            catch (XmlException)
+            catch (Exception)
             {
                 document = null;
                 return false;
