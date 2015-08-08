@@ -21,6 +21,8 @@
         #region Constants
         const string cTraktUsername = "TraktUsername";
         const string cTraktPassword = "TraktPassword2";
+        const string cTraktOAuthToken = "TraktOAuthToken";
+        const string cTraktOAuth = "TraktOAuth";
         const string cTVDbAccountId = "TVDbAccountId";
         const string cTMDbSessionId = "TMDbSessionId";
         const string cIMDbRatingsFilename = "IMDbFilename";
@@ -71,7 +73,11 @@
             }
         }
         static string traktPassword = null;
-        
+
+        public static string TraktOAuthToken { get; set; }
+
+        public static bool TraktOAuth { get; set; }
+
         public static string TVDbAccountIdentifier { get; set; }
 
         public static string TMDbSessionId { get; set; }
@@ -142,12 +148,15 @@
         /// </summary>
         public static void Load()
         {
-            try {
+            try 
+            {
                 XmlReader xmlReader = new XmlReader();
                 xmlReader.Load(SettingsFile);
 
                 TraktUsername = xmlReader.GetSettingValueAsString(cTraktUsername, string.Empty);
                 TraktPassword = xmlReader.GetSettingValueAsString(cTraktPassword, string.Empty);
+                TraktOAuthToken = xmlReader.GetSettingValueAsString(cTraktOAuthToken, string.Empty);
+                TraktOAuth = xmlReader.GetSettingValueAsBool(cTraktOAuth, false);
                 TVDbAccountIdentifier = xmlReader.GetSettingValueAsString(cTVDbAccountId, string.Empty);
                 TMDbSessionId = xmlReader.GetSettingValueAsString(cTMDbSessionId, string.Empty);
                 TMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cTMDBSyncWatchlist, true);
@@ -172,7 +181,8 @@
                 // save settings, might be some new settings added
                 Save();
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return;
             }
         }
@@ -204,6 +214,8 @@
 
             xmlWriter.WriteSetting(cTraktUsername, TraktUsername);
             xmlWriter.WriteSetting(cTraktPassword, TraktPassword);
+            xmlWriter.WriteSetting(cTraktOAuthToken, TraktOAuthToken);
+            xmlWriter.WriteSetting(cTraktOAuth, TraktOAuth.ToString());
             xmlWriter.WriteSetting(cTVDbAccountId, TVDbAccountIdentifier);
             xmlWriter.WriteSetting(cTMDbSessionId, TMDbSessionId);
             xmlWriter.WriteSetting(cTMDBSyncWatchlist, TMDbSyncWatchlist.ToString());

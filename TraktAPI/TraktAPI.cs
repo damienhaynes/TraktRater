@@ -13,14 +13,17 @@
     public class TraktAPI
     {
         const string ApplicationId = "4feebb4e3791029816a401952c09fa5b446ed4a81b01d600031e422f0d3ae86d";
+        const string SecretId = "0d4557136b35ab6234ec3bb659bbcc5b04e7781c4019508496b2b0086cba1fa0";
+        const string RedirectUri = "urn:ietf:wg:oauth:2.0:oob";
+        const string PinUrlId = "365";
 
         public static string Username { private get; set; }
         public static string Password { private get; set; }
+        public static string AppId { get { return PinUrlId; } }
 
         /// <summary>
-        /// Login to trakt and to request a user token for all subsequent requests
+        /// Login to trakt to request a user token for all subsequent requests
         /// </summary>
-        /// <returns></returns>
         public static TraktUserToken GetUserToken()
         {
             // set our required headers now
@@ -43,6 +46,51 @@
         }
 
         /// <summary>
+        /// Login to trakt to request a user access token for all subsequent requests              
+        /// </summary>
+        /// <param name="key">Set this to a PinCode for first time oAuth otherwise your previous Access Token</param>
+        /// <returns>If successfully an access token will be returned</returns>
+        public static TraktOAuthToken GetOAuthToken(string key)
+        {
+            // set our required headers now
+            TraktWeb.CustomRequestHeaders.Clear();
+
+            TraktWeb.CustomRequestHeaders.Add("trakt-api-key", ApplicationId);
+            TraktWeb.CustomRequestHeaders.Add("trakt-api-version", "2");
+            //TraktWeb.CustomRequestHeaders.Add("trakt-user-login", Username);
+
+            string response = TraktWeb.PostToTrakt(TraktURIs.LoginOAuth, GetOAuthLogin(key), true);
+            var loginResponse = response.FromJSON<TraktOAuthToken>();
+
+            if (loginResponse == null || loginResponse.AccessToken == null)
+                return loginResponse;
+
+            // add the token for authenticated methods
+            TraktWeb.CustomRequestHeaders.Add("Authorization", string.Format("Bearer {0}", loginResponse.AccessToken));
+
+            return loginResponse;
+        }
+
+        /// <summary>
+        /// Gets a oAuth Login object
+        /// </summary>
+        private static string GetOAuthLogin(string key)
+        {
+            bool isPinCode = key.Length == 8;
+
+            return new TraktOAuthLogin
+                        {
+                            Code = isPinCode ? key : null,
+                            RefreshToken = isPinCode ? null : key,
+                            ClientId = ApplicationId, 
+                            ClientSecret = SecretId, 
+                            RedirectUri = RedirectUri, 
+                            GrantType = isPinCode ? "authorization_code" : "refresh_token"
+                        }
+                        .ToJSON();
+        }
+
+        /// <summary>
         /// Gets a User Login object
         /// </summary>       
         /// <returns>The User Login json string</returns>
@@ -50,7 +98,7 @@
         {
             return new TraktLogin { Login = Username, Password = Password }.ToJSON();
         }
-
+        
         #region Sync to Trakt
 
         #region Watchlist

@@ -29,11 +29,15 @@
         static bool maintenanceRunning = false;
         static bool importRunning = false;
         static bool importCancelled = false;
+        static string pinCode = string.Empty;
         #endregion
 
         #region Constants
         const string cImportReadyText = "Start Import";
         const string cCancelText = "Cancel";
+        const string cTraktAuthorise = "Click to authorise access to your account";
+        const string cTraktUnAuthorise = "Click to remove access token";
+        const string cTraktPinCodeWaterMark = "Authorise and then enter pin code here...";
         #endregion
 
         #region Constructor
@@ -53,7 +57,18 @@
             ClearProgress();
 
             // populate fields
-            txtTraktUsername.Text = AppSettings.TraktUsername;
+            if (AppSettings.TraktOAuth)
+            {
+                HideShowTraktAuthControls();
+                radTraktPinCode.Checked = true;
+            }
+            else
+            {
+                HideShowTraktAuthControls();
+                radTraktUserPass.Checked = true;
+            }
+
+            txtTraktUser.Text = AppSettings.TraktUsername;
             txtTraktPassword.Text = AppSettings.TraktPassword;
             txtTVDbAccountId.Text = AppSettings.TVDbAccountIdentifier;
             chkTMDbSyncWatchlist.Checked = AppSettings.TMDbSyncWatchlist;
@@ -108,6 +123,61 @@
 
         #region UI Events
 
+        private void radTraktUserPass_Click(object sender, EventArgs e)
+        {
+            AppSettings.TraktOAuth = false;
+            HideShowTraktAuthControls();
+        }
+
+        private void radTraktPinCode_Click(object sender, EventArgs e)
+        {
+            AppSettings.TraktOAuth = true;
+            HideShowTraktAuthControls();
+        }
+
+        private void lnkTraktOAuth_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // if we have already authorised, un-register so can sign-in and authorise again
+            if (!string.IsNullOrEmpty(AppSettings.TraktOAuthToken))
+            {
+                AppSettings.TraktOAuthToken = null;
+
+                lnkTraktOAuth.Text = cTraktAuthorise;
+                txtTraktPinCode.Visible = true;
+                txtTraktPinCode.Text = cTraktPinCodeWaterMark;
+                txtTraktPinCode.ForeColor = SystemColors.GrayText;
+                pinCode = string.Empty;
+
+                lblWarnPeriod.Visible = false;
+            }
+            else
+            {
+                // sign-in to authorise
+                Process.Start(string.Format(TraktAPI.TraktURIs.PinUrl, TraktAPI.TraktAPI.AppId));
+
+                lblWarnPeriod.Visible = true;
+            }
+        }
+        
+        private void txtTraktPinCode_Click(object sender, EventArgs e)
+        {
+            if (txtTraktPinCode.Text == cTraktPinCodeWaterMark)
+            {
+                txtTraktPinCode.Text = string.Empty;
+                txtTraktPinCode.ForeColor = SystemColors.WindowText;
+                pinCode = string.Empty;
+            }
+        }
+
+        private void txtTraktPinCode_TextChanged(object sender, EventArgs e)
+        {
+            if (txtTraktPinCode.Text != cTraktPinCodeWaterMark)
+            {
+                pinCode = txtTraktPinCode.Text;
+                txtTraktPinCode.ForeColor = SystemColors.WindowText;
+            }
+        }
+
         private void chkMarkAsWatched_Click(object sender, EventArgs e)
         {
             AppSettings.MarkAsWatched = !AppSettings.MarkAsWatched;
@@ -141,7 +211,7 @@
 
         private void txtTraktUsername_TextChanged(object sender, EventArgs e)
         {
-            AppSettings.TraktUsername = txtTraktUsername.Text;
+            AppSettings.TraktUsername = txtTraktUser.Text;
         }
 
         private void chkImdbWatchlist_CheckedChanged(object sender, EventArgs e)
@@ -527,28 +597,89 @@
 
         private bool Login()
         {
-            UIUtils.UpdateStatus("Logging in to trakt.tv...");
-            var response = TraktAPI.TraktAPI.GetUserToken();
-            if (response == null || string.IsNullOrEmpty(response.Token))
+            if (!AppSettings.TraktOAuth)
             {
-                UIUtils.UpdateStatus("Unable to login to trakt, check log for details.", true);
-                SetControlState(true);
-                importRunning = false;
-                importCancelled = false;
-                maintenanceRunning = false;
-                return false;
+                UIUtils.UpdateStatus("Logging in to trakt.tv...");
+                var response = TraktAPI.TraktAPI.GetUserToken();
+                if (response == null || string.IsNullOrEmpty(response.Token))
+                {
+                    UIUtils.UpdateStatus("Unable to login to trakt, check log for details", true);
+                    SetControlState(true);
+                    importRunning = false;
+                    importCancelled = false;
+                    maintenanceRunning = false;
+                    return false;
+                }
+                return true;
             }
-            return true;
+            else
+            {
+                // exchange pin-code for access token or refresh existing token
+                UIUtils.UpdateStatus("Exchanging {0} for access-token...", pinCode.Length == 8 ? "pin-code" : "refresh-token");
+                var response = TraktAPI.TraktAPI.GetOAuthToken(pinCode.Length == 8 ? pinCode : AppSettings.TraktOAuthToken);
+                if (response == null || string.IsNullOrEmpty(response.AccessToken))
+                {
+                    UIUtils.UpdateStatus("Unable to login to trakt, check log for details", true);
+                    SetControlState(true);
+                    importRunning = false;
+                    importCancelled = false;
+                    maintenanceRunning = false;
+                    pinCode = string.Empty;
+                    return false;
+                }
+
+                // save the refresh-token for next time
+                AppSettings.TraktOAuthToken = response.RefreshToken;
+                pinCode = string.Empty;
+
+                return true;
+            }
         }
 
         private bool CheckAccountDetails()
         {
-            if (string.IsNullOrEmpty(AppSettings.TraktUsername) || string.IsNullOrEmpty(AppSettings.TraktPassword))
+            if (!AppSettings.TraktOAuth)
             {
-                UIUtils.UpdateStatus("You must enter in your trakt username and password!", true);
-                return false;
+                if (string.IsNullOrEmpty(AppSettings.TraktUsername) || string.IsNullOrEmpty(AppSettings.TraktPassword))
+                {
+                    UIUtils.UpdateStatus("You must enter in your trakt username and password!", true);
+                    return false;
+                }
+            }
+            else if (string.IsNullOrEmpty(AppSettings.TraktOAuthToken))
+            {
+                if (string.IsNullOrEmpty(pinCode) || pinCode.Length != 8)
+                {
+                    UIUtils.UpdateStatus("You must authorise TraktRater to access your trakt.tv account and enter the 8 character pin code with-in 15 minutes of starting an import", true);
+                    return false;
+                }
             }
             return true;
+        }
+
+        private void HideShowTraktAuthControls()
+        {
+            // show username control for user/pass authentication method
+            txtTraktUser.Visible = !AppSettings.TraktOAuth;
+            lblTraktUser.Visible = !AppSettings.TraktOAuth;
+
+            // hide password control for oAuth
+            lblTraktPassword.Visible = !AppSettings.TraktOAuth;
+            txtTraktPassword.Visible = !AppSettings.TraktOAuth;
+
+            // show authorisation link for oAuth
+            lnkTraktOAuth.Visible = AppSettings.TraktOAuth;
+
+            // if we have a access token then allow user un-register
+            lnkTraktOAuth.Text = string.IsNullOrEmpty(AppSettings.TraktOAuthToken) ? cTraktAuthorise : cTraktUnAuthorise;
+
+            // show pin code text box if we have not authorised yet
+            txtTraktPinCode.Text = cTraktPinCodeWaterMark;
+            txtTraktPinCode.ForeColor = SystemColors.GrayText;
+            txtTraktPinCode.Visible = string.IsNullOrEmpty(AppSettings.TraktOAuthToken) && AppSettings.TraktOAuth;
+
+            // only show 15min warning when pin code is entered
+            lblWarnPeriod.Visible = false;
         }
 
         private void SetControlState(bool enable)
@@ -567,6 +698,8 @@
             grbTMDb.Enabled = enable;
             grbTVDb.Enabled = enable;
             grbListal.Enabled = enable;
+
+            HideShowTraktAuthControls();
 
             btnStartSync.Text = enable ? cImportReadyText : cCancelText;
             pbrImportProgress.Style = enable ? ProgressBarStyle.Continuous : ProgressBarStyle.Marquee;

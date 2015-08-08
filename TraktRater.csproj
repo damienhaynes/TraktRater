@@ -97,7 +97,6 @@
     <Compile Include="Sites\TVDb.cs" />
     <Compile Include="Sites\IRateSite.cs" />
     <Compile Include="Sites\API\TVDb\TVDbURIs.cs" />
-    <Compile Include="TraktAPI\DataStructures\TraktAuthentication.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisode.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeEx.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeId.cs" />
@@ -120,6 +119,9 @@
     <Compile Include="TraktAPI\DataStructures\TraktMovieWatched.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktMovieWatchedSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktMovieWatchlist.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktOAuthError.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktOAuthLogin.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktOAuthToken.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeason.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeasonId.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeasonSync.cs" />
@@ -178,6 +180,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="trakt.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

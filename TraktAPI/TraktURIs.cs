@@ -5,7 +5,9 @@
     /// </summary>
     public static class TraktURIs
     {
+        public const string PinUrl = @"http://trakt.tv/pin/{0}";
         public const string Login = @"http://api-v2launch.trakt.tv/auth/login";
+        public const string LoginOAuth = @"http://api-v2launch.trakt.tv/oauth/token";
 
         public const string RatedMovies = @"http://api-v2launch.trakt.tv/sync/ratings/movies";
         public const string RatedShows = @"http://api-v2launch.trakt.tv/sync/ratings/shows";
