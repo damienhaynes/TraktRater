@@ -11,7 +11,9 @@ Usage
  * First ensure you are running on a Windows Platform with [.Net Framework 4.0](http://www.microsoft.com/en-us/download/details.aspx?id=17851) installed.
  * Download the latest TraktRater release from the repository [downloads](https://github.com/damienhaynes/TraktRater/downloads) section.
  * Run the TraktRater.exe tool from the download location.
- * Enter in your [trakt.tv](http://trakt.tv) username and password in the trakt section.
+ * There are two authentication methods you can choose from:
+    * User/Pass: Enter in your [trakt.tv](http://trakt.tv) username and password in the trakt section.
+    * oAuth: First you need to [authorise](http://trakt.tv/pin/365) TraktRater to access your account. Once you have authorised, you need to enter the 8-digit code in the textbox provided. You now have up to 15 mins to start an import before the pin-code has expired. If you start import with-in 15 mins and TraktRater successfully logs in, the application will no longer require authorisation from you. You can request again if you wish by clicking on the link provided e.g. authorise for a another user.
  * Enter in any details from 3rd Party data sources such as your [thetvdb.com](http://thetvdb.com) account identifier. If you leave any information from the data sources blank then it will be ignored on import.
  * If you wish to mark episodes and movies as watched if you have rated them, then keep the corresponding option checked, otherwise uncheck.
  * Press the **Start Ratings Import** button.
