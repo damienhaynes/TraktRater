@@ -36,7 +36,7 @@
         const string cImportReadyText = "Start Import";
         const string cCancelText = "Cancel";
         const string cTraktAuthorise = "Click to authorise access to your account";
-        const string cTraktUnAuthorise = "Click to remove access token";
+        const string cTraktUnAuthorise = "Click to remove current access token";
         const string cTraktPinCodeWaterMark = "Authorise and then enter pin code here...";
         #endregion
 
@@ -698,6 +698,7 @@
             grbTMDb.Enabled = enable;
             grbTVDb.Enabled = enable;
             grbListal.Enabled = enable;
+            grbCriticker.Enabled = enable;
 
             HideShowTraktAuthControls();
 
@@ -795,7 +796,6 @@
 
         private void EnableCritickerControls(bool enableState)
         {
-            chkCritickerEnabled.Enabled = enableState;
             lblCritickerMovieExportFile.Enabled = enableState;
             txtCritickerMovieExportFile.Enabled = enableState;
             btnCritickerMovieExportBrowse.Enabled = enableState;
