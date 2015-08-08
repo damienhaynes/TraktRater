@@ -156,7 +156,7 @@
                 TraktUsername = xmlReader.GetSettingValueAsString(cTraktUsername, string.Empty);
                 TraktPassword = xmlReader.GetSettingValueAsString(cTraktPassword, string.Empty);
                 TraktOAuthToken = xmlReader.GetSettingValueAsString(cTraktOAuthToken, string.Empty);
-                TraktOAuth = xmlReader.GetSettingValueAsBool(cTraktOAuth, false);
+                TraktOAuth = xmlReader.GetSettingValueAsBool(cTraktOAuth, TraktPassword == string.Empty ? true : false);
                 TVDbAccountIdentifier = xmlReader.GetSettingValueAsString(cTVDbAccountId, string.Empty);
                 TMDbSessionId = xmlReader.GetSettingValueAsString(cTMDbSessionId, string.Empty);
                 TMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cTMDBSyncWatchlist, true);
