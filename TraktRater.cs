@@ -811,5 +811,10 @@
         }
 
         #endregion
+
+        private void TraktRater_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

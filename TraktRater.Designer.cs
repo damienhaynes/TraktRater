@@ -31,21 +31,21 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TraktRater));
             this.grbTrakt = new System.Windows.Forms.GroupBox();
+            this.lblWarnPeriod = new System.Windows.Forms.Label();
             this.txtTraktPinCode = new System.Windows.Forms.TextBox();
             this.lnkTraktOAuth = new System.Windows.Forms.LinkLabel();
             this.radTraktPinCode = new System.Windows.Forms.RadioButton();
             this.radTraktUserPass = new System.Windows.Forms.RadioButton();
             this.lblTraktAuthMethod = new System.Windows.Forms.Label();
-            this.btnMaintenance = new System.Windows.Forms.Button();
             this.txtTraktPassword = new System.Windows.Forms.TextBox();
             this.lblTraktPassword = new System.Windows.Forms.Label();
             this.lblTraktUser = new System.Windows.Forms.Label();
             this.txtTraktUser = new System.Windows.Forms.TextBox();
+            this.btnMaintenance = new System.Windows.Forms.Button();
             this.grbTVDb = new System.Windows.Forms.GroupBox();
             this.chkTVDbEnabled = new System.Windows.Forms.CheckBox();
             this.txtTVDbAccountId = new System.Windows.Forms.TextBox();
             this.lblTVDbAccountId = new System.Windows.Forms.Label();
-            this.lblDetails = new System.Windows.Forms.Label();
             this.btnStartSync = new System.Windows.Forms.Button();
             this.pbrImportProgress = new System.Windows.Forms.ProgressBar();
             this.grbReport = new System.Windows.Forms.GroupBox();
@@ -93,7 +93,15 @@
             this.chkCritickerEnabled = new System.Windows.Forms.CheckBox();
             this.txtCritickerMovieExportFile = new System.Windows.Forms.TextBox();
             this.lblCritickerMovieExportFile = new System.Windows.Forms.Label();
-            this.lblWarnPeriod = new System.Windows.Forms.Label();
+            this.tabTraktRater = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -103,6 +111,14 @@
             this.grbOptions.SuspendLayout();
             this.grbListal.SuspendLayout();
             this.grbCriticker.SuspendLayout();
+            this.tabTraktRater.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.tabPage7.SuspendLayout();
+            this.tabPage9.SuspendLayout();
             this.SuspendLayout();
             // 
             // grbTrakt
@@ -117,12 +133,21 @@
             this.grbTrakt.Controls.Add(this.lblTraktPassword);
             this.grbTrakt.Controls.Add(this.lblTraktUser);
             this.grbTrakt.Controls.Add(this.txtTraktUser);
-            this.grbTrakt.Location = new System.Drawing.Point(12, 12);
+            this.grbTrakt.Location = new System.Drawing.Point(6, 6);
             this.grbTrakt.Name = "grbTrakt";
-            this.grbTrakt.Size = new System.Drawing.Size(443, 121);
+            this.grbTrakt.Size = new System.Drawing.Size(867, 479);
             this.grbTrakt.TabIndex = 0;
             this.grbTrakt.TabStop = false;
             this.grbTrakt.Text = "Trakt";
+            // 
+            // lblWarnPeriod
+            // 
+            this.lblWarnPeriod.AutoSize = true;
+            this.lblWarnPeriod.Location = new System.Drawing.Point(181, 91);
+            this.lblWarnPeriod.Name = "lblWarnPeriod";
+            this.lblWarnPeriod.Size = new System.Drawing.Size(211, 13);
+            this.lblWarnPeriod.TabIndex = 17;
+            this.lblWarnPeriod.Text = "You have 15 mins enter pin and start import";
             // 
             // txtTraktPinCode
             // 
@@ -180,16 +205,6 @@
             this.lblTraktAuthMethod.TabIndex = 12;
             this.lblTraktAuthMethod.Text = "Authentication Method:";
             // 
-            // btnMaintenance
-            // 
-            this.btnMaintenance.Location = new System.Drawing.Point(21, 89);
-            this.btnMaintenance.Name = "btnMaintenance";
-            this.btnMaintenance.Size = new System.Drawing.Size(276, 26);
-            this.btnMaintenance.TabIndex = 11;
-            this.btnMaintenance.Text = "Cleanup / Maintenance...";
-            this.btnMaintenance.UseVisualStyleBackColor = true;
-            this.btnMaintenance.Click += new System.EventHandler(this.btnMaintenance_Click);
-            // 
             // txtTraktPassword
             // 
             this.txtTraktPassword.Location = new System.Drawing.Point(178, 64);
@@ -225,14 +240,24 @@
             this.txtTraktUser.TabIndex = 1;
             this.txtTraktUser.TextChanged += new System.EventHandler(this.txtTraktUsername_TextChanged);
             // 
+            // btnMaintenance
+            // 
+            this.btnMaintenance.Location = new System.Drawing.Point(21, 89);
+            this.btnMaintenance.Name = "btnMaintenance";
+            this.btnMaintenance.Size = new System.Drawing.Size(276, 26);
+            this.btnMaintenance.TabIndex = 11;
+            this.btnMaintenance.Text = "Cleanup / Maintenance...";
+            this.btnMaintenance.UseVisualStyleBackColor = true;
+            this.btnMaintenance.Click += new System.EventHandler(this.btnMaintenance_Click);
+            // 
             // grbTVDb
             // 
             this.grbTVDb.Controls.Add(this.chkTVDbEnabled);
             this.grbTVDb.Controls.Add(this.txtTVDbAccountId);
             this.grbTVDb.Controls.Add(this.lblTVDbAccountId);
-            this.grbTVDb.Location = new System.Drawing.Point(12, 152);
+            this.grbTVDb.Location = new System.Drawing.Point(6, 6);
             this.grbTVDb.Name = "grbTVDb";
-            this.grbTVDb.Size = new System.Drawing.Size(443, 81);
+            this.grbTVDb.Size = new System.Drawing.Size(869, 482);
             this.grbTVDb.TabIndex = 3;
             this.grbTVDb.TabStop = false;
             this.grbTVDb.Text = "TVDb";
@@ -267,19 +292,9 @@
             this.lblTVDbAccountId.TabIndex = 1;
             this.lblTVDbAccountId.Text = "Account Identifier:";
             // 
-            // lblDetails
-            // 
-            this.lblDetails.AutoSize = true;
-            this.lblDetails.Location = new System.Drawing.Point(9, 136);
-            this.lblDetails.Name = "lblDetails";
-            this.lblDetails.Size = new System.Drawing.Size(550, 13);
-            this.lblDetails.TabIndex = 2;
-            this.lblDetails.Text = "Enter in account details for each external source you wish to transfer ratings, w" +
-    "atched and watchlist data to trakt.tv:";
-            // 
             // btnStartSync
             // 
-            this.btnStartSync.Location = new System.Drawing.Point(12, 595);
+            this.btnStartSync.Location = new System.Drawing.Point(4, 536);
             this.btnStartSync.Name = "btnStartSync";
             this.btnStartSync.Size = new System.Drawing.Size(887, 26);
             this.btnStartSync.TabIndex = 8;
@@ -289,7 +304,7 @@
             // 
             // pbrImportProgress
             // 
-            this.pbrImportProgress.Location = new System.Drawing.Point(13, 627);
+            this.pbrImportProgress.Location = new System.Drawing.Point(5, 568);
             this.pbrImportProgress.Name = "pbrImportProgress";
             this.pbrImportProgress.Size = new System.Drawing.Size(886, 23);
             this.pbrImportProgress.TabIndex = 9;
@@ -299,7 +314,7 @@
             this.grbReport.Controls.Add(this.lnkLogFolder);
             this.grbReport.Controls.Add(this.lblStatusMessage);
             this.grbReport.Controls.Add(this.label5);
-            this.grbReport.Location = new System.Drawing.Point(12, 660);
+            this.grbReport.Location = new System.Drawing.Point(4, 601);
             this.grbReport.Name = "grbReport";
             this.grbReport.Size = new System.Drawing.Size(887, 49);
             this.grbReport.TabIndex = 10;
@@ -417,9 +432,9 @@
             this.grbImdb.Controls.Add(this.txtImdbWebUsername);
             this.grbImdb.Controls.Add(this.btnImdbRatingsBrowse);
             this.grbImdb.Controls.Add(this.txtImdbRatingsFilename);
-            this.grbImdb.Location = new System.Drawing.Point(12, 239);
+            this.grbImdb.Location = new System.Drawing.Point(6, 6);
             this.grbImdb.Name = "grbImdb";
-            this.grbImdb.Size = new System.Drawing.Size(443, 241);
+            this.grbImdb.Size = new System.Drawing.Size(867, 482);
             this.grbImdb.TabIndex = 5;
             this.grbImdb.TabStop = false;
             this.grbImdb.Text = "IMDb";
@@ -527,9 +542,9 @@
             this.grbTMDb.Controls.Add(this.chkTMDbEnabled);
             this.grbTMDb.Controls.Add(this.lnkTMDbStart);
             this.grbTMDb.Controls.Add(this.lblTMDbMessage);
-            this.grbTMDb.Location = new System.Drawing.Point(461, 152);
+            this.grbTMDb.Location = new System.Drawing.Point(6, 6);
             this.grbTMDb.Name = "grbTMDb";
-            this.grbTMDb.Size = new System.Drawing.Size(443, 126);
+            this.grbTMDb.Size = new System.Drawing.Size(867, 482);
             this.grbTMDb.TabIndex = 4;
             this.grbTMDb.TabStop = false;
             this.grbTMDb.Text = "TMDb";
@@ -583,9 +598,9 @@
             this.grbOptions.Controls.Add(this.chkIgnoreWatchedForWatchlists);
             this.grbOptions.Controls.Add(this.chkMarkAsWatched);
             this.grbOptions.Controls.Add(this.btnMaintenance);
-            this.grbOptions.Location = new System.Drawing.Point(461, 12);
+            this.grbOptions.Location = new System.Drawing.Point(6, 6);
             this.grbOptions.Name = "grbOptions";
-            this.grbOptions.Size = new System.Drawing.Size(443, 121);
+            this.grbOptions.Size = new System.Drawing.Size(867, 479);
             this.grbOptions.TabIndex = 1;
             this.grbOptions.TabStop = false;
             this.grbOptions.Text = "Options";
@@ -604,9 +619,9 @@
             this.chkIgnoreWatchedForWatchlists.AutoSize = true;
             this.chkIgnoreWatchedForWatchlists.Location = new System.Drawing.Point(21, 39);
             this.chkIgnoreWatchedForWatchlists.Name = "chkIgnoreWatchedForWatchlists";
-            this.chkIgnoreWatchedForWatchlists.Size = new System.Drawing.Size(216, 17);
+            this.chkIgnoreWatchedForWatchlists.Size = new System.Drawing.Size(254, 17);
             this.chkIgnoreWatchedForWatchlists.TabIndex = 1;
-            this.chkIgnoreWatchedForWatchlists.Text = "Ignore watched items for Watchlist Sync";
+            this.chkIgnoreWatchedForWatchlists.Text = "Ignore watched items when syncing to Watchlist";
             this.chkIgnoreWatchedForWatchlists.UseVisualStyleBackColor = true;
             this.chkIgnoreWatchedForWatchlists.Click += new System.EventHandler(this.chkIgnoreWatchedForWatchlists_Click);
             // 
@@ -633,9 +648,9 @@
             this.grbListal.Controls.Add(this.btnListalMovieXMLExport);
             this.grbListal.Controls.Add(this.txtListalMovieXMLExport);
             this.grbListal.Controls.Add(this.lblListalMovieExportFile);
-            this.grbListal.Location = new System.Drawing.Point(462, 284);
+            this.grbListal.Location = new System.Drawing.Point(6, 6);
             this.grbListal.Name = "grbListal";
-            this.grbListal.Size = new System.Drawing.Size(442, 196);
+            this.grbListal.Size = new System.Drawing.Size(867, 482);
             this.grbListal.TabIndex = 6;
             this.grbListal.TabStop = false;
             this.grbListal.Text = "Listal";
@@ -742,9 +757,9 @@
             this.grbCriticker.Controls.Add(this.chkCritickerEnabled);
             this.grbCriticker.Controls.Add(this.txtCritickerMovieExportFile);
             this.grbCriticker.Controls.Add(this.lblCritickerMovieExportFile);
-            this.grbCriticker.Location = new System.Drawing.Point(13, 487);
+            this.grbCriticker.Location = new System.Drawing.Point(6, 6);
             this.grbCriticker.Name = "grbCriticker";
-            this.grbCriticker.Size = new System.Drawing.Size(442, 97);
+            this.grbCriticker.Size = new System.Drawing.Size(867, 479);
             this.grbCriticker.TabIndex = 7;
             this.grbCriticker.TabStop = false;
             this.grbCriticker.Text = "Criticker";
@@ -787,37 +802,125 @@
             this.lblCritickerMovieExportFile.TabIndex = 1;
             this.lblCritickerMovieExportFile.Text = "Movie Export File:";
             // 
-            // lblWarnPeriod
+            // tabTraktRater
             // 
-            this.lblWarnPeriod.AutoSize = true;
-            this.lblWarnPeriod.Location = new System.Drawing.Point(181, 91);
-            this.lblWarnPeriod.Name = "lblWarnPeriod";
-            this.lblWarnPeriod.Size = new System.Drawing.Size(211, 13);
-            this.lblWarnPeriod.TabIndex = 17;
-            this.lblWarnPeriod.Text = "You have 15 mins enter pin and start import";
+            this.tabTraktRater.Controls.Add(this.tabPage1);
+            this.tabTraktRater.Controls.Add(this.tabPage2);
+            this.tabTraktRater.Controls.Add(this.tabPage3);
+            this.tabTraktRater.Controls.Add(this.tabPage4);
+            this.tabTraktRater.Controls.Add(this.tabPage5);
+            this.tabTraktRater.Controls.Add(this.tabPage7);
+            this.tabTraktRater.Controls.Add(this.tabPage8);
+            this.tabTraktRater.Controls.Add(this.tabPage9);
+            this.tabTraktRater.Location = new System.Drawing.Point(4, 13);
+            this.tabTraktRater.Name = "tabTraktRater";
+            this.tabTraktRater.SelectedIndex = 0;
+            this.tabTraktRater.Size = new System.Drawing.Size(887, 517);
+            this.tabTraktRater.TabIndex = 11;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.grbTrakt);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(879, 491);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Login";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.grbTVDb);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(879, 491);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "TVDb";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.grbTMDb);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(879, 491);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "TMDb";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.grbImdb);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(879, 491);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "IMDb";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.grbListal);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(879, 491);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Listal";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.grbCriticker);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage7.Size = new System.Drawing.Size(879, 491);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "Criticker";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage8.Size = new System.Drawing.Size(879, 491);
+            this.tabPage8.TabIndex = 7;
+            this.tabPage8.Text = "Letterboxd";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.grbOptions);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(879, 491);
+            this.tabPage9.TabIndex = 8;
+            this.tabPage9.Text = "Options";
+            this.tabPage9.UseVisualStyleBackColor = true;
             // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(912, 716);
-            this.Controls.Add(this.grbCriticker);
-            this.Controls.Add(this.grbListal);
-            this.Controls.Add(this.grbOptions);
-            this.Controls.Add(this.grbTMDb);
-            this.Controls.Add(this.grbImdb);
+            this.ClientSize = new System.Drawing.Size(895, 657);
+            this.Controls.Add(this.tabTraktRater);
             this.Controls.Add(this.grbReport);
             this.Controls.Add(this.pbrImportProgress);
             this.Controls.Add(this.btnStartSync);
-            this.Controls.Add(this.lblDetails);
-            this.Controls.Add(this.grbTVDb);
-            this.Controls.Add(this.grbTrakt);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "TraktRater";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Trakt Rater";
+            this.Load += new System.EventHandler(this.TraktRater_Load);
             this.grbTrakt.ResumeLayout(false);
             this.grbTrakt.PerformLayout();
             this.grbTVDb.ResumeLayout(false);
@@ -835,8 +938,15 @@
             this.grbListal.PerformLayout();
             this.grbCriticker.ResumeLayout(false);
             this.grbCriticker.PerformLayout();
+            this.tabTraktRater.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage9.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -850,7 +960,6 @@
         private System.Windows.Forms.GroupBox grbTVDb;
         private System.Windows.Forms.TextBox txtTVDbAccountId;
         private System.Windows.Forms.Label lblTVDbAccountId;
-        private System.Windows.Forms.Label lblDetails;
         private System.Windows.Forms.Button btnStartSync;
         private System.Windows.Forms.ProgressBar pbrImportProgress;
         private System.Windows.Forms.GroupBox grbReport;
@@ -906,6 +1015,15 @@
         private System.Windows.Forms.LinkLabel lnkTraktOAuth;
         private System.Windows.Forms.TextBox txtTraktPinCode;
         private System.Windows.Forms.Label lblWarnPeriod;
+        private System.Windows.Forms.TabControl tabTraktRater;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.TabPage tabPage9;
     }
 }
 
