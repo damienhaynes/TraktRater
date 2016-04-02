@@ -21,5 +21,18 @@
 
             return DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
         }
+
+        public static int? ToYear(this string year)
+        {
+            int result = 0;
+            if (int.TryParse(year, out result))
+            {
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

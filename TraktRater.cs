@@ -80,6 +80,9 @@
             txtListalMovieXMLExport.Text = AppSettings.ListalMovieFilename;
             txtListalShowXMLExport.Text = AppSettings.ListalShowFilename;
             txtCritickerMovieExportFile.Text = AppSettings.CritickerMovieFilename;
+            txtLetterboxdWatchedFile.Text = AppSettings.LetterboxdWatchedFilename;
+            txtLetterboxdRatingsFile.Text = AppSettings.LetterboxdRatingsFilename;
+            txtLetterboxdDiaryFile.Text = AppSettings.LetterboxdDiaryFilename;
             chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
             chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
             chkTVDbEnabled.Checked = AppSettings.EnableTVDb;
@@ -87,6 +90,7 @@
             chkIMDbEnabled.Checked = AppSettings.EnableIMDb;
             chkListalEnabled.Checked = AppSettings.EnableListal;
             chkCritickerEnabled.Checked = AppSettings.EnableCriticker;
+            chkLetterboxdEnabled.Checked = AppSettings.EnableLetterboxd;
             nudBatchSize.Value = AppSettings.BatchSize;
 
             SetTMDbControlState();
@@ -388,6 +392,57 @@
             EnableCritickerControls(AppSettings.EnableCriticker);
         }
 
+        private void btnLetterboxdRatingsBrowse_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "CSV files|*.csv";
+            DialogResult result = dlgFileOpen.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtLetterboxdRatingsFile.Text = dlgFileOpen.FileName;
+            }
+        }
+
+        private void btnLetterboxdWatchedBrowse_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "CSV files|*.csv";
+            DialogResult result = dlgFileOpen.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtLetterboxdWatchedFile.Text = dlgFileOpen.FileName;
+            }
+        }
+
+        private void btnLetterboxdDiaryBrowse_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "CSV files|*.csv";
+            DialogResult result = dlgFileOpen.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtLetterboxdDiaryFile.Text = dlgFileOpen.FileName;
+            }
+        }
+
+        private void txtLetterboxdRatingsFile_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.LetterboxdRatingsFilename = txtLetterboxdRatingsFile.Text;
+        }
+
+        private void txtLetterboxdWatchedFile_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.LetterboxdWatchedFilename = txtLetterboxdWatchedFile.Text;
+        }
+
+        private void txtLetterboxdDiaryFile_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.LetterboxdDiaryFilename = txtLetterboxdDiaryFile.Text;
+        }
+
+        private void chkLetterboxdEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.EnableLetterboxd = chkLetterboxdEnabled.Checked;
+            EnableLetterboxdControls(AppSettings.EnableLetterboxd);
+        }
+
         private void lnkLogFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(FileLog.LogDirectory);
@@ -424,12 +479,13 @@
             sites.Clear();
 
             // add import sites for processing
-            if (AppSettings.EnableTMDb)     sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
-            if (AppSettings.EnableTVDb)     sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
-            if (AppSettings.EnableIMDb)     sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, rdnImdbCSV.Checked));
-            if (AppSettings.EnableIMDb)     sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
-            if (AppSettings.EnableListal)   sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
-            if (AppSettings.EnableCriticker) sites.Add(new Criticker(AppSettings.CritickerMovieFilename));
+            if (AppSettings.EnableTMDb)       sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
+            if (AppSettings.EnableTVDb)       sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
+            if (AppSettings.EnableIMDb)       sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, rdnImdbCSV.Checked));
+            if (AppSettings.EnableIMDb)       sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
+            if (AppSettings.EnableListal)     sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
+            if (AppSettings.EnableCriticker)  sites.Add(new Criticker(AppSettings.CritickerMovieFilename));
+            if (AppSettings.EnableLetterboxd) sites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename));
 
             if (!sites.Any(s => s.Enabled))
             {
@@ -699,6 +755,7 @@
             grbTVDb.Enabled = enable;
             grbListal.Enabled = enable;
             grbCriticker.Enabled = enable;
+            grbLetterboxd.Enabled = enable;
 
             HideShowTraktAuthControls();
 
@@ -801,6 +858,19 @@
             btnCritickerMovieExportBrowse.Enabled = enableState;
         }
 
+        private void EnableLetterboxdControls(bool enableState)
+        {
+            lblLetterboxdDiary.Enabled = enableState;
+            lblLetterboxdRatingsFile.Enabled = enableState;
+            lblLetterboxdWatched.Enabled = enableState;
+            btnLetterboxdDiaryBrowse.Enabled = enableState;
+            btnLetterboxdRatingsBrowse.Enabled = enableState;
+            btnLetterboxdWatchedBrowse.Enabled = enableState;
+            txtLetterboxdDiaryFile.Enabled = enableState;
+            txtLetterboxdRatingsFile.Enabled = enableState;
+            txtLetterboxdWatchedFile.Enabled = enableState;
+        }
+
         private void EnableExternalSourceControlsInGroupBoxes()
         {
             EnableImdbControls(AppSettings.EnableIMDb);
@@ -808,13 +878,10 @@
             EnableTvdbControls(AppSettings.EnableTVDb);
             EnableListalControls(AppSettings.EnableListal);
             EnableCritickerControls(AppSettings.EnableCriticker);
+            EnableLetterboxdControls(AppSettings.EnableLetterboxd);
         }
 
         #endregion
 
-        private void TraktRater_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

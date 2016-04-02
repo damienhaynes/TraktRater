@@ -2,3 +2,12 @@
 *.exe
 *.pdb
 *.suo
+/obj/x86/Release/DesignTimeResolveAssemblyReferences.cache
+/obj/x86/Release/DesignTimeResolveAssemblyReferencesInput.cache
+/obj/x86/Release/TempPE/Properties.Resources.Designer.cs.dll
+/obj/x86/Release/TraktRater.Properties.Resources.resources
+/obj/x86/Release/TraktRater.TraktRater.resources
+/obj/x86/Release/TraktRater.UI.MaintenanceDialog.resources
+/obj/x86/Release/TraktRater.csproj.FileListAbsolute.txt
+/obj/x86/Release/TraktRater.csproj.GenerateResource.Cache
+/obj/x86/Release/TraktRater.csprojResolveAssemblyReference.cache

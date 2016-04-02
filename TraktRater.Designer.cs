@@ -57,6 +57,9 @@
             this.txtImdbWebUsername = new System.Windows.Forms.TextBox();
             this.txtImdbWatchlistFile = new System.Windows.Forms.TextBox();
             this.nudBatchSize = new System.Windows.Forms.NumericUpDown();
+            this.txtLetterboxdRatingsFile = new System.Windows.Forms.TextBox();
+            this.txtLetterboxdDiaryFile = new System.Windows.Forms.TextBox();
+            this.txtLetterboxdWatchedFile = new System.Windows.Forms.TextBox();
             this.grbImdb = new System.Windows.Forms.GroupBox();
             this.chkIMDbEnabled = new System.Windows.Forms.CheckBox();
             this.btnImdbWatchlistBrowse = new System.Windows.Forms.Button();
@@ -101,6 +104,14 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.grbLetterboxd = new System.Windows.Forms.GroupBox();
+            this.lblLetterboxdWatched = new System.Windows.Forms.Label();
+            this.btnLetterboxdWatchedBrowse = new System.Windows.Forms.Button();
+            this.lblLetterboxdDiary = new System.Windows.Forms.Label();
+            this.btnLetterboxdDiaryBrowse = new System.Windows.Forms.Button();
+            this.lblLetterboxdRatingsFile = new System.Windows.Forms.Label();
+            this.btnLetterboxdRatingsBrowse = new System.Windows.Forms.Button();
+            this.chkLetterboxdEnabled = new System.Windows.Forms.CheckBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
@@ -118,6 +129,8 @@
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage7.SuspendLayout();
+            this.tabPage8.SuspendLayout();
+            this.grbLetterboxd.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -242,7 +255,7 @@
             // 
             // btnMaintenance
             // 
-            this.btnMaintenance.Location = new System.Drawing.Point(21, 89);
+            this.btnMaintenance.Location = new System.Drawing.Point(21, 92);
             this.btnMaintenance.Name = "btnMaintenance";
             this.btnMaintenance.Size = new System.Drawing.Size(276, 26);
             this.btnMaintenance.TabIndex = 11;
@@ -395,7 +408,7 @@
             // 
             // nudBatchSize
             // 
-            this.nudBatchSize.Location = new System.Drawing.Point(133, 61);
+            this.nudBatchSize.Location = new System.Drawing.Point(134, 66);
             this.nudBatchSize.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -417,6 +430,41 @@
             0,
             0});
             this.nudBatchSize.ValueChanged += new System.EventHandler(this.nudBatchSize_ValueChanged);
+            // 
+            // txtLetterboxdRatingsFile
+            // 
+            this.txtLetterboxdRatingsFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtLetterboxdRatingsFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
+            this.txtLetterboxdRatingsFile.Enabled = false;
+            this.txtLetterboxdRatingsFile.Location = new System.Drawing.Point(20, 76);
+            this.txtLetterboxdRatingsFile.Name = "txtLetterboxdRatingsFile";
+            this.txtLetterboxdRatingsFile.Size = new System.Drawing.Size(208, 20);
+            this.txtLetterboxdRatingsFile.TabIndex = 2;
+            this.txtLetterboxdRatingsFile.TextChanged += new System.EventHandler(this.txtLetterboxdRatingsFile_TextChanged);
+            // 
+            // txtLetterboxdDiaryFile
+            // 
+            this.txtLetterboxdDiaryFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtLetterboxdDiaryFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
+            this.txtLetterboxdDiaryFile.Enabled = false;
+            this.txtLetterboxdDiaryFile.Location = new System.Drawing.Point(20, 173);
+            this.txtLetterboxdDiaryFile.Name = "txtLetterboxdDiaryFile";
+            this.txtLetterboxdDiaryFile.Size = new System.Drawing.Size(208, 20);
+            this.txtLetterboxdDiaryFile.TabIndex = 0;
+            this.tipHelp.SetToolTip(this.txtLetterboxdDiaryFile, "The Diary file includes everything marked as watched at a specified date, this da" +
+        "te will override any movies found in the Watched file");
+            this.txtLetterboxdDiaryFile.TextChanged += new System.EventHandler(this.txtLetterboxdDiaryFile_TextChanged);
+            // 
+            // txtLetterboxdWatchedFile
+            // 
+            this.txtLetterboxdWatchedFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtLetterboxdWatchedFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
+            this.txtLetterboxdWatchedFile.Enabled = false;
+            this.txtLetterboxdWatchedFile.Location = new System.Drawing.Point(20, 124);
+            this.txtLetterboxdWatchedFile.Name = "txtLetterboxdWatchedFile";
+            this.txtLetterboxdWatchedFile.Size = new System.Drawing.Size(208, 20);
+            this.txtLetterboxdWatchedFile.TabIndex = 6;
+            this.txtLetterboxdWatchedFile.TextChanged += new System.EventHandler(this.txtLetterboxdWatchedFile_TextChanged);
             // 
             // grbImdb
             // 
@@ -608,7 +656,7 @@
             // lblBatchImportSize
             // 
             this.lblBatchImportSize.AutoSize = true;
-            this.lblBatchImportSize.Location = new System.Drawing.Point(17, 66);
+            this.lblBatchImportSize.Location = new System.Drawing.Point(18, 71);
             this.lblBatchImportSize.Name = "lblBatchImportSize";
             this.lblBatchImportSize.Size = new System.Drawing.Size(93, 13);
             this.lblBatchImportSize.TabIndex = 2;
@@ -617,7 +665,7 @@
             // chkIgnoreWatchedForWatchlists
             // 
             this.chkIgnoreWatchedForWatchlists.AutoSize = true;
-            this.chkIgnoreWatchedForWatchlists.Location = new System.Drawing.Point(21, 39);
+            this.chkIgnoreWatchedForWatchlists.Location = new System.Drawing.Point(21, 42);
             this.chkIgnoreWatchedForWatchlists.Name = "chkIgnoreWatchedForWatchlists";
             this.chkIgnoreWatchedForWatchlists.Size = new System.Drawing.Size(254, 17);
             this.chkIgnoreWatchedForWatchlists.TabIndex = 1;
@@ -630,9 +678,9 @@
             this.chkMarkAsWatched.AutoSize = true;
             this.chkMarkAsWatched.Location = new System.Drawing.Point(21, 19);
             this.chkMarkAsWatched.Name = "chkMarkAsWatched";
-            this.chkMarkAsWatched.Size = new System.Drawing.Size(276, 17);
+            this.chkMarkAsWatched.Size = new System.Drawing.Size(322, 17);
             this.chkMarkAsWatched.TabIndex = 0;
-            this.chkMarkAsWatched.Text = "Mark episodes and movies as watched if rated online";
+            this.chkMarkAsWatched.Text = "Mark episodes and movies as watched if they have been rated";
             this.chkMarkAsWatched.UseVisualStyleBackColor = true;
             this.chkMarkAsWatched.Click += new System.EventHandler(this.chkMarkAsWatched_Click);
             // 
@@ -886,6 +934,7 @@
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.grbLetterboxd);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
@@ -893,6 +942,96 @@
             this.tabPage8.TabIndex = 7;
             this.tabPage8.Text = "Letterboxd";
             this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // grbLetterboxd
+            // 
+            this.grbLetterboxd.Controls.Add(this.lblLetterboxdWatched);
+            this.grbLetterboxd.Controls.Add(this.btnLetterboxdWatchedBrowse);
+            this.grbLetterboxd.Controls.Add(this.txtLetterboxdWatchedFile);
+            this.grbLetterboxd.Controls.Add(this.lblLetterboxdDiary);
+            this.grbLetterboxd.Controls.Add(this.btnLetterboxdDiaryBrowse);
+            this.grbLetterboxd.Controls.Add(this.txtLetterboxdDiaryFile);
+            this.grbLetterboxd.Controls.Add(this.lblLetterboxdRatingsFile);
+            this.grbLetterboxd.Controls.Add(this.btnLetterboxdRatingsBrowse);
+            this.grbLetterboxd.Controls.Add(this.txtLetterboxdRatingsFile);
+            this.grbLetterboxd.Controls.Add(this.chkLetterboxdEnabled);
+            this.grbLetterboxd.Location = new System.Drawing.Point(6, 6);
+            this.grbLetterboxd.Name = "grbLetterboxd";
+            this.grbLetterboxd.Size = new System.Drawing.Size(867, 482);
+            this.grbLetterboxd.TabIndex = 0;
+            this.grbLetterboxd.TabStop = false;
+            this.grbLetterboxd.Text = "Letterboxd";
+            // 
+            // lblLetterboxdWatched
+            // 
+            this.lblLetterboxdWatched.AutoSize = true;
+            this.lblLetterboxdWatched.Location = new System.Drawing.Point(17, 108);
+            this.lblLetterboxdWatched.Name = "lblLetterboxdWatched";
+            this.lblLetterboxdWatched.Size = new System.Drawing.Size(73, 13);
+            this.lblLetterboxdWatched.TabIndex = 4;
+            this.lblLetterboxdWatched.Text = "Watched File:";
+            // 
+            // btnLetterboxdWatchedBrowse
+            // 
+            this.btnLetterboxdWatchedBrowse.Enabled = false;
+            this.btnLetterboxdWatchedBrowse.Location = new System.Drawing.Point(234, 122);
+            this.btnLetterboxdWatchedBrowse.Name = "btnLetterboxdWatchedBrowse";
+            this.btnLetterboxdWatchedBrowse.Size = new System.Drawing.Size(29, 23);
+            this.btnLetterboxdWatchedBrowse.TabIndex = 7;
+            this.btnLetterboxdWatchedBrowse.Text = "...";
+            this.btnLetterboxdWatchedBrowse.UseVisualStyleBackColor = true;
+            this.btnLetterboxdWatchedBrowse.Click += new System.EventHandler(this.btnLetterboxdWatchedBrowse_Click);
+            // 
+            // lblLetterboxdDiary
+            // 
+            this.lblLetterboxdDiary.AutoSize = true;
+            this.lblLetterboxdDiary.Location = new System.Drawing.Point(17, 157);
+            this.lblLetterboxdDiary.Name = "lblLetterboxdDiary";
+            this.lblLetterboxdDiary.Size = new System.Drawing.Size(53, 13);
+            this.lblLetterboxdDiary.TabIndex = 8;
+            this.lblLetterboxdDiary.Text = "Diary File:";
+            // 
+            // btnLetterboxdDiaryBrowse
+            // 
+            this.btnLetterboxdDiaryBrowse.Enabled = false;
+            this.btnLetterboxdDiaryBrowse.Location = new System.Drawing.Point(234, 171);
+            this.btnLetterboxdDiaryBrowse.Name = "btnLetterboxdDiaryBrowse";
+            this.btnLetterboxdDiaryBrowse.Size = new System.Drawing.Size(29, 23);
+            this.btnLetterboxdDiaryBrowse.TabIndex = 1;
+            this.btnLetterboxdDiaryBrowse.Text = "...";
+            this.btnLetterboxdDiaryBrowse.UseVisualStyleBackColor = true;
+            this.btnLetterboxdDiaryBrowse.Click += new System.EventHandler(this.btnLetterboxdDiaryBrowse_Click);
+            // 
+            // lblLetterboxdRatingsFile
+            // 
+            this.lblLetterboxdRatingsFile.AutoSize = true;
+            this.lblLetterboxdRatingsFile.Location = new System.Drawing.Point(17, 60);
+            this.lblLetterboxdRatingsFile.Name = "lblLetterboxdRatingsFile";
+            this.lblLetterboxdRatingsFile.Size = new System.Drawing.Size(65, 13);
+            this.lblLetterboxdRatingsFile.TabIndex = 1;
+            this.lblLetterboxdRatingsFile.Text = "Ratings File:";
+            // 
+            // btnLetterboxdRatingsBrowse
+            // 
+            this.btnLetterboxdRatingsBrowse.Enabled = false;
+            this.btnLetterboxdRatingsBrowse.Location = new System.Drawing.Point(234, 74);
+            this.btnLetterboxdRatingsBrowse.Name = "btnLetterboxdRatingsBrowse";
+            this.btnLetterboxdRatingsBrowse.Size = new System.Drawing.Size(29, 23);
+            this.btnLetterboxdRatingsBrowse.TabIndex = 3;
+            this.btnLetterboxdRatingsBrowse.Text = "...";
+            this.btnLetterboxdRatingsBrowse.UseVisualStyleBackColor = true;
+            this.btnLetterboxdRatingsBrowse.Click += new System.EventHandler(this.btnLetterboxdRatingsBrowse_Click);
+            // 
+            // chkLetterboxdEnabled
+            // 
+            this.chkLetterboxdEnabled.AutoSize = true;
+            this.chkLetterboxdEnabled.Location = new System.Drawing.Point(20, 28);
+            this.chkLetterboxdEnabled.Name = "chkLetterboxdEnabled";
+            this.chkLetterboxdEnabled.Size = new System.Drawing.Size(59, 17);
+            this.chkLetterboxdEnabled.TabIndex = 0;
+            this.chkLetterboxdEnabled.Text = "Enable";
+            this.chkLetterboxdEnabled.UseVisualStyleBackColor = true;
+            this.chkLetterboxdEnabled.CheckedChanged += new System.EventHandler(this.chkLetterboxdEnabled_CheckedChanged);
             // 
             // tabPage9
             // 
@@ -920,7 +1059,6 @@
             this.Name = "TraktRater";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Trakt Rater";
-            this.Load += new System.EventHandler(this.TraktRater_Load);
             this.grbTrakt.ResumeLayout(false);
             this.grbTrakt.PerformLayout();
             this.grbTVDb.ResumeLayout(false);
@@ -945,6 +1083,9 @@
             this.tabPage4.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
+            this.tabPage8.ResumeLayout(false);
+            this.grbLetterboxd.ResumeLayout(false);
+            this.grbLetterboxd.PerformLayout();
             this.tabPage9.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -1024,6 +1165,17 @@
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.GroupBox grbLetterboxd;
+        private System.Windows.Forms.Label lblLetterboxdWatched;
+        private System.Windows.Forms.Button btnLetterboxdWatchedBrowse;
+        private System.Windows.Forms.TextBox txtLetterboxdWatchedFile;
+        private System.Windows.Forms.Label lblLetterboxdDiary;
+        private System.Windows.Forms.Button btnLetterboxdDiaryBrowse;
+        private System.Windows.Forms.TextBox txtLetterboxdDiaryFile;
+        private System.Windows.Forms.Label lblLetterboxdRatingsFile;
+        private System.Windows.Forms.Button btnLetterboxdRatingsBrowse;
+        private System.Windows.Forms.TextBox txtLetterboxdRatingsFile;
+        private System.Windows.Forms.CheckBox chkLetterboxdEnabled;
     }
 }
 

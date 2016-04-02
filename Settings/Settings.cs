@@ -34,6 +34,9 @@
         const string cListalMovieFilename = "ListalMovieFilename";
         const string cListalShowFilename = "ListalShowFilename";
         const string cCritickerMovieFilename = "CritickerMovieFilename";
+        const string cLetterboxdRatingsFilename = "LetterboxdRatingsFilename";
+        const string cLetterboxdWatchedFilename = "LetterboxdWatchedFilename";
+        const string cLetterboxdDiaryFilename = "LetterboxdDiaryFilename";
         const string cMarkAsWatched = "MarkAsWatched";
         const string cIgnoreWatchedForWatchlist = "IgnoreWatchedForWatchlist";
         const string cEnableTMDb = "EnableTMDb";
@@ -41,6 +44,7 @@
         const string cEnableIMDb = "EnableIMDb";
         const string cEnableListal = "EnableListal";
         const string cEnableCriticker = "EnableCriticker";
+        const string cEnableLetterboxd = "EnableLetterboxd";
         const string cLogLevel = "LogLevel";
         const string cBatchSize = "BatchSize";
         #endregion
@@ -102,6 +106,12 @@
 
         public static string CritickerMovieFilename { get; set; }
 
+        public static string LetterboxdRatingsFilename { get; set; }
+        
+        public static string LetterboxdWatchedFilename { get; set; }
+
+        public static string LetterboxdDiaryFilename { get; set; }
+
         public static bool MarkAsWatched { get; set; }
 
         public static bool IgnoreWatchedForWatchlist { get; set; }
@@ -113,6 +123,7 @@
         public static bool EnableIMDb { get; set; }
         public static bool EnableListal { get; set; }
         public static bool EnableCriticker { get; set; }
+        public static bool EnableLetterboxd { get; set; }
 
         public static LoggingSeverity LogSeverityLevel { get; set; }
 
@@ -168,6 +179,9 @@
                 ListalMovieFilename = xmlReader.GetSettingValueAsString(cListalMovieFilename, string.Empty);
                 ListalShowFilename = xmlReader.GetSettingValueAsString(cListalShowFilename, string.Empty);
                 CritickerMovieFilename = xmlReader.GetSettingValueAsString(cCritickerMovieFilename, string.Empty);
+                LetterboxdRatingsFilename = xmlReader.GetSettingValueAsString(cLetterboxdRatingsFilename, string.Empty);
+                LetterboxdWatchedFilename = xmlReader.GetSettingValueAsString(cLetterboxdWatchedFilename, string.Empty);
+                LetterboxdDiaryFilename = xmlReader.GetSettingValueAsString(cLetterboxdDiaryFilename, string.Empty);
                 MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
                 IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
                 EnableIMDb = xmlReader.GetSettingValueAsBool(cEnableIMDb, false);
@@ -175,6 +189,7 @@
                 EnableTVDb = xmlReader.GetSettingValueAsBool(cEnableTVDb, false);
                 EnableListal = xmlReader.GetSettingValueAsBool(cEnableListal, false);
                 EnableCriticker = xmlReader.GetSettingValueAsBool(cEnableCriticker, false);
+                EnableLetterboxd = xmlReader.GetSettingValueAsBool(cEnableLetterboxd, false);
                 LogSeverityLevel = (LoggingSeverity)(xmlReader.GetSettingValueAsInt(cLogLevel, 3));
                 BatchSize = xmlReader.GetSettingValueAsInt(cBatchSize, 50);
 
@@ -227,6 +242,9 @@
             xmlWriter.WriteSetting(cListalMovieFilename, ListalMovieFilename);
             xmlWriter.WriteSetting(cListalShowFilename, ListalShowFilename);
             xmlWriter.WriteSetting(cCritickerMovieFilename, CritickerMovieFilename);
+            xmlWriter.WriteSetting(cLetterboxdRatingsFilename, LetterboxdRatingsFilename);
+            xmlWriter.WriteSetting(cLetterboxdWatchedFilename, LetterboxdWatchedFilename);
+            xmlWriter.WriteSetting(cLetterboxdDiaryFilename, LetterboxdDiaryFilename);
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
             xmlWriter.WriteSetting(cIgnoreWatchedForWatchlist, IgnoreWatchedForWatchlist.ToString());
             xmlWriter.WriteSetting(cEnableIMDb, EnableIMDb.ToString());
@@ -234,6 +252,7 @@
             xmlWriter.WriteSetting(cEnableTVDb, EnableTVDb.ToString());
             xmlWriter.WriteSetting(cEnableListal, EnableListal.ToString());
             xmlWriter.WriteSetting(cEnableCriticker, EnableCriticker.ToString());
+            xmlWriter.WriteSetting(cEnableLetterboxd, EnableLetterboxd.ToString());
             xmlWriter.WriteSetting(cLogLevel, ((int)LogSeverityLevel).ToString());
             xmlWriter.WriteSetting(cBatchSize, BatchSize.ToString());
             

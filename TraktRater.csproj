@@ -62,6 +62,7 @@
     <Compile Include="Sites\API\Criticker\CritickerAPI.cs" />
     <Compile Include="Sites\API\Criticker\CritickerFilmRankings.cs" />
     <Compile Include="Sites\API\IMDb\IMDbEpisode.cs" />
+    <Compile Include="Sites\API\Letterboxd\LetterboxdFieldMapping.cs" />
     <Compile Include="Sites\API\Listal\ListalAPI.cs" />
     <Compile Include="Sites\API\Listal\ListalExport.cs" />
     <Compile Include="Sites\API\TMDb\TMDbPage.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Sites\API\TMDb\TMDbMovie.cs" />
     <Compile Include="Sites\API\TMDb\TMDbRatedMovies.cs" />
     <Compile Include="Sites\API\TMDb\TMDbSessionResponse.cs" />
+    <Compile Include="Sites\Letterboxd.cs" />
     <Compile Include="Sites\Listal.cs" />
     <Compile Include="Sites\TMDb.cs" />
     <Compile Include="Sites\API\TMDb\TMDbAccountInfo.cs" />
