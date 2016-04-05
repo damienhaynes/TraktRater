@@ -5,16 +5,16 @@
     [DataContract]
     public class TraktShowId : TraktId
     {
-        [DataMember(Name = "imdb")]
+        [DataMember(Name = "imdb", EmitDefaultValue = false)]
         public string ImdbId { get; set; }
 
-        [DataMember(Name = "tmdb")]
+        [DataMember(Name = "tmdb", EmitDefaultValue = false)]
         public int? TmdbId { get; set; }
 
-        [DataMember(Name = "tvdb")]
+        [DataMember(Name = "tvdb", EmitDefaultValue = false)]
         public int? TvdbId { get; set; }
 
-        [DataMember(Name = "tvrage")]
+        [DataMember(Name = "tvrage", EmitDefaultValue = false)]
         public int? TvRageId { get; set; }
     }
 }

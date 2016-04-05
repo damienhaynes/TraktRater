@@ -1,7 +1,14 @@
 ﻿namespace TraktRater.Sites.API.IMDb
 {
+    using System.Collections.Generic;
+
     public static class IMDbExtensions
     {
+        public static IMDbType ItemType(this Dictionary<string, string> item)
+        {
+            return item[IMDbFieldMapping.cType].ItemType();
+        }
+
         public static IMDbType ItemType(this string itemType)
         {
             IMDbType retValue = IMDbType.Unknown;

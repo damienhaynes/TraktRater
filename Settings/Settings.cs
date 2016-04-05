@@ -1,9 +1,12 @@
 ﻿namespace TraktRater.Settings
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
 
+    using global::TraktRater.Extensions;
     using global::TraktRater.Settings.XML;
     using global::TraktRater.TraktAPI;
 
@@ -28,6 +31,7 @@
         const string cIMDbRatingsFilename = "IMDbFilename";
         const string cIMDbWatchlistFilename = "IMDbWatchlistFilename";
         const string cIMDbUsername = "IMDbUsername";
+        const string cIMDbCustomLists = "IMDbCustomLists";
         const string cIMDBSyncWatchlist = "IMDBSyncWatchlist";
         const string cTMDBSyncWatchlist = "TMDBSyncWatchlist";
         const string cListalSyncWatchlist = "ListalSyncWatchlist";
@@ -91,6 +95,8 @@
         public static string IMDbRatingsFilename { get; set; }
         
         public static string IMDbWatchlistFilename { get; set; }
+
+        public static List<string> IMDbCustomLists { get; set; }
 
         public static bool IMDbSyncWatchlist { get; set; }
 
@@ -174,6 +180,7 @@
                 IMDbRatingsFilename = xmlReader.GetSettingValueAsString(cIMDbRatingsFilename, string.Empty);
                 IMDbWatchlistFilename = xmlReader.GetSettingValueAsString(cIMDbWatchlistFilename, string.Empty);
                 IMDbUsername = xmlReader.GetSettingValueAsString(cIMDbUsername, string.Empty);
+                IMDbCustomLists = xmlReader.GetSettingValueAsString(cIMDbCustomLists, string.Empty).FromJSONArray<string>().ToList();
                 IMDbSyncWatchlist = xmlReader.GetSettingValueAsBool(cIMDBSyncWatchlist, false);
                 ListalSyncWatchlist = xmlReader.GetSettingValueAsBool(cListalSyncWatchlist, false);
                 ListalMovieFilename = xmlReader.GetSettingValueAsString(cListalMovieFilename, string.Empty);
@@ -238,6 +245,7 @@
             xmlWriter.WriteSetting(cIMDbWatchlistFilename, IMDbWatchlistFilename);
             xmlWriter.WriteSetting(cIMDbUsername, IMDbUsername);
             xmlWriter.WriteSetting(cIMDBSyncWatchlist, IMDbSyncWatchlist.ToString());
+            xmlWriter.WriteSetting(cIMDbCustomLists, IMDbCustomLists.ToJSON());
             xmlWriter.WriteSetting(cListalSyncWatchlist, ListalSyncWatchlist.ToString());
             xmlWriter.WriteSetting(cListalMovieFilename, ListalMovieFilename);
             xmlWriter.WriteSetting(cListalShowFilename, ListalShowFilename);

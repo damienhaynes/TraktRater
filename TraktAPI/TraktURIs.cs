@@ -1,4 +1,4 @@
-﻿namespace TraktRater.TraktAPI
+﻿    namespace TraktRater.TraktAPI
 {
     /// <summary>
     /// List of URIs for the Trakt API
@@ -34,5 +34,13 @@
         public const string SyncWatchlistRemove = "https://api-v2launch.trakt.tv/sync/watchlist/remove";
 
         public const string ShowSummary = @"http://api-v2launch.trakt.tv/shows/{0}?extended=full";
+
+        public const string UserLists = "https://api-v2launch.trakt.tv/users/{0}/lists";
+        public const string UserListAdd = "https://api-v2launch.trakt.tv/users/{0}/lists";
+        public const string UserListDelete = "https://api-v2launch.trakt.tv/users/{0}/lists/{1}";
+        
+        public const string UserListItems = "https://api-v2launch.trakt.tv/users/{0}/lists/{1}/items?extended={2}";
+        public const string UserListItemsAdd = "https://api-v2launch.trakt.tv/users/{0}/lists/{1}/items";
+        public const string UserListItemsRemove = "https://api-v2launch.trakt.tv/users/{0}/lists/{1}/items/remove";
     }
 }

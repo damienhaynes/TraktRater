@@ -111,6 +111,9 @@
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeWatchedSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeWatchlist.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktId.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktList.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktListDetail.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktListItem.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktLogin.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktMovie.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktMovieCollected.cs" />
@@ -124,6 +127,8 @@
     <Compile Include="TraktAPI\DataStructures\TraktOAuthError.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktOAuthLogin.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktOAuthToken.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktPerson.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktPersonId.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeason.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeasonId.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeasonSync.cs" />
@@ -134,10 +139,12 @@
     <Compile Include="TraktAPI\DataStructures\TraktShowRatingSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShow.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowWatchlist.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktSyncAll.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSyncResponse.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowSummary.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowPlays.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowSync.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktUser.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktUserEpisodeRating.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktUserMovieRating.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktUserSeasonRating.cs" />

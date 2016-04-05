@@ -593,6 +593,43 @@
 
         #endregion
 
+        #region Custom Lists
+
+        /// <summary>
+        /// Returns all custom lists for a user
+        /// </summary>
+        /// <param name="username">Username of person's list</param>
+        public static IEnumerable<TraktListDetail> GetCustomLists(string username = "me")
+        {
+            var response = TraktWeb.GetFromTrakt(string.Format(TraktURIs.UserLists, username));
+            return response.FromJSONArray<TraktListDetail>();
+        }
+
+        public static bool DeleteCustomList(string listId, string username ="me")
+        {
+            return TraktWeb.DeleteFromTrakt(string.Format(TraktURIs.UserListDelete, username, listId));
+        }
+
+        public static TraktListDetail CreateCustomList(TraktList list, string username = "me")
+        {
+            var response = TraktWeb.PostToTrakt(string.Format(TraktURIs.UserListAdd, username), list.ToJSON());
+            return response.FromJSON<TraktListDetail>();
+        }
+
+        public static IEnumerable<TraktListItem> GetCustomListItems(string listId, string username = "me", string extendedInfoParams = "min")
+        {
+            var response = TraktWeb.GetFromTrakt(string.Format(TraktURIs.UserListItems, username, listId, extendedInfoParams));
+            return response.FromJSONArray<TraktListItem>();
+        }
+
+        public static TraktSyncResponse AddItemsToList(string id, TraktSyncAll items, string username = "me")
+        {
+            var response = TraktWeb.PostToTrakt(string.Format(TraktURIs.UserListItemsAdd, username, id), items.ToJSON());
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        #endregion
+
         #endregion
     }
 }

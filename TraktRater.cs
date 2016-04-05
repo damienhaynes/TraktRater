@@ -76,6 +76,7 @@
             txtImdbWatchlistFile.Text = AppSettings.IMDbWatchlistFilename;
             txtImdbWebUsername.Text = AppSettings.IMDbUsername;
             chkImdbWebWatchlist.Checked = AppSettings.IMDbSyncWatchlist;
+            lsImdbCustomLists.Items.AddRange(AppSettings.IMDbCustomLists.ToArray());
             chkListalWebWatchlist.Checked = AppSettings.ListalSyncWatchlist;
             txtListalMovieXMLExport.Text = AppSettings.ListalMovieFilename;
             txtListalShowXMLExport.Text = AppSettings.ListalShowFilename;
@@ -96,7 +97,7 @@
             SetTMDbControlState();
 
             // enable relavent IMDb option
-            if (!string.IsNullOrEmpty(AppSettings.IMDbRatingsFilename) || !string.IsNullOrEmpty(AppSettings.IMDbWatchlistFilename))
+            if (!string.IsNullOrEmpty(AppSettings.IMDbRatingsFilename) || !string.IsNullOrEmpty(AppSettings.IMDbWatchlistFilename) || AppSettings.IMDbCustomLists.Count > 0)
             {
                 rdnImdbCSV.Checked = true;
             }
@@ -295,7 +296,32 @@
         {
             AppSettings.IMDbWatchlistFilename = txtImdbWatchlistFile.Text;
         }
-        
+
+        private void btnImdbAddList_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "CSV files|*.csv";
+            DialogResult result = dlgFileOpen.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                if (AppSettings.IMDbCustomLists.Contains(dlgFileOpen.FileName))
+                    return;
+
+                lsImdbCustomLists.Items.Add(dlgFileOpen.FileName);                
+                AppSettings.IMDbCustomLists.Add(dlgFileOpen.FileName);
+            }
+        }
+
+        private void btnImdbDeleteList_Click(object sender, EventArgs e)
+        {
+            var lSelectedItem = lsImdbCustomLists.SelectedItem;
+            if (lSelectedItem == null) return;
+
+            lsImdbCustomLists.Items.Remove(lSelectedItem);
+
+            if (AppSettings.IMDbCustomLists.Contains(lSelectedItem.ToString()))
+                AppSettings.IMDbCustomLists.Remove(lSelectedItem.ToString());
+        }
+
         private void txtImdbUsername_TextChanged(object sender, EventArgs e)
         {
             AppSettings.IMDbUsername = txtImdbWebUsername.Text;
@@ -481,7 +507,7 @@
             // add import sites for processing
             if (AppSettings.EnableTMDb)       sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
             if (AppSettings.EnableTVDb)       sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
-            if (AppSettings.EnableIMDb)       sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, rdnImdbCSV.Checked));
+            if (AppSettings.EnableIMDb)       sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, AppSettings.IMDbCustomLists, rdnImdbCSV.Checked));
             if (AppSettings.EnableIMDb)       sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
             if (AppSettings.EnableListal)     sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
             if (AppSettings.EnableCriticker)  sites.Add(new Criticker(AppSettings.CritickerMovieFilename));
@@ -815,6 +841,10 @@
             btnImdbWatchlistBrowse.Enabled = enableState;
             lblImdbRatingsFile.Enabled = enableState;
             lblImdbWatchlistFile.Enabled = enableState;
+            lblImdbCustomLists.Enabled = enableState;
+            lsImdbCustomLists.Enabled = enableState;
+            btnImdbAddList.Enabled = enableState;
+            btnImdbDeleteList.Enabled = enableState;
             txtImdbWebUsername.Enabled = enableState;
             chkImdbWebWatchlist.Enabled = enableState;
         }
@@ -828,6 +858,11 @@
             txtImdbWatchlistFile.Enabled = isCSV;
             btnImdbWatchlistBrowse.Enabled = isCSV;
             lblImdbWatchlistFile.Enabled = isCSV;
+
+            lblImdbCustomLists.Enabled = isCSV;
+            lsImdbCustomLists.Enabled = isCSV;
+            btnImdbAddList.Enabled = isCSV;
+            btnImdbDeleteList.Enabled = isCSV;
 
             txtImdbWebUsername.Enabled = !isCSV;
             chkImdbWebWatchlist.Enabled = !isCSV;

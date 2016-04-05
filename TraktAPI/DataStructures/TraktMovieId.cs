@@ -5,10 +5,10 @@
     [DataContract]
     public class TraktMovieId : TraktId
     {
-        [DataMember(Name = "imdb")]
+        [DataMember(Name = "imdb", EmitDefaultValue = false)]
         public string ImdbId { get; set; }
 
-        [DataMember(Name = "tmdb")]
+        [DataMember(Name = "tmdb", EmitDefaultValue = false)]
         public int? TmdbId { get; set; }
     }
 }

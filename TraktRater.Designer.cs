@@ -113,6 +113,10 @@
             this.btnLetterboxdRatingsBrowse = new System.Windows.Forms.Button();
             this.chkLetterboxdEnabled = new System.Windows.Forms.CheckBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.lsImdbCustomLists = new System.Windows.Forms.ListBox();
+            this.btnImdbAddList = new System.Windows.Forms.Button();
+            this.btnImdbDeleteList = new System.Windows.Forms.Button();
+            this.lblImdbCustomLists = new System.Windows.Forms.Label();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -255,7 +259,7 @@
             // 
             // btnMaintenance
             // 
-            this.btnMaintenance.Location = new System.Drawing.Point(21, 92);
+            this.btnMaintenance.Location = new System.Drawing.Point(21, 142);
             this.btnMaintenance.Name = "btnMaintenance";
             this.btnMaintenance.Size = new System.Drawing.Size(276, 26);
             this.btnMaintenance.TabIndex = 11;
@@ -387,10 +391,10 @@
             // 
             this.txtImdbWebUsername.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtImdbWebUsername.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
-            this.txtImdbWebUsername.Location = new System.Drawing.Point(175, 179);
+            this.txtImdbWebUsername.Location = new System.Drawing.Point(177, 337);
             this.txtImdbWebUsername.Name = "txtImdbWebUsername";
-            this.txtImdbWebUsername.Size = new System.Drawing.Size(244, 20);
-            this.txtImdbWebUsername.TabIndex = 10;
+            this.txtImdbWebUsername.Size = new System.Drawing.Size(206, 20);
+            this.txtImdbWebUsername.TabIndex = 14;
             this.tipHelp.SetToolTip(this.txtImdbWebUsername, resources.GetString("txtImdbWebUsername.ToolTip"));
             this.txtImdbWebUsername.TextChanged += new System.EventHandler(this.txtImdbUsername_TextChanged);
             // 
@@ -468,6 +472,10 @@
             // 
             // grbImdb
             // 
+            this.grbImdb.Controls.Add(this.lblImdbCustomLists);
+            this.grbImdb.Controls.Add(this.btnImdbDeleteList);
+            this.grbImdb.Controls.Add(this.btnImdbAddList);
+            this.grbImdb.Controls.Add(this.lsImdbCustomLists);
             this.grbImdb.Controls.Add(this.chkIMDbEnabled);
             this.grbImdb.Controls.Add(this.btnImdbWatchlistBrowse);
             this.grbImdb.Controls.Add(this.txtImdbWatchlistFile);
@@ -483,7 +491,7 @@
             this.grbImdb.Location = new System.Drawing.Point(6, 6);
             this.grbImdb.Name = "grbImdb";
             this.grbImdb.Size = new System.Drawing.Size(867, 482);
-            this.grbImdb.TabIndex = 5;
+            this.grbImdb.TabIndex = 0;
             this.grbImdb.TabStop = false;
             this.grbImdb.Text = "IMDb";
             // 
@@ -539,10 +547,10 @@
             // 
             this.rdnImdbUsername.AutoSize = true;
             this.rdnImdbUsername.Checked = true;
-            this.rdnImdbUsername.Location = new System.Drawing.Point(19, 182);
+            this.rdnImdbUsername.Location = new System.Drawing.Point(21, 340);
             this.rdnImdbUsername.Name = "rdnImdbUsername";
             this.rdnImdbUsername.Size = new System.Drawing.Size(88, 17);
-            this.rdnImdbUsername.TabIndex = 9;
+            this.rdnImdbUsername.TabIndex = 13;
             this.rdnImdbUsername.TabStop = true;
             this.rdnImdbUsername.Text = "Web Scrape:";
             this.rdnImdbUsername.UseVisualStyleBackColor = true;
@@ -561,10 +569,10 @@
             // chkImdbWebWatchlist
             // 
             this.chkImdbWebWatchlist.AutoSize = true;
-            this.chkImdbWebWatchlist.Location = new System.Drawing.Point(175, 205);
+            this.chkImdbWebWatchlist.Location = new System.Drawing.Point(177, 363);
             this.chkImdbWebWatchlist.Name = "chkImdbWebWatchlist";
             this.chkImdbWebWatchlist.Size = new System.Drawing.Size(97, 17);
-            this.chkImdbWebWatchlist.TabIndex = 11;
+            this.chkImdbWebWatchlist.TabIndex = 15;
             this.chkImdbWebWatchlist.Text = "Sync Watchlist";
             this.chkImdbWebWatchlist.UseVisualStyleBackColor = true;
             this.chkImdbWebWatchlist.CheckedChanged += new System.EventHandler(this.chkImdbWatchlist_CheckedChanged);
@@ -1044,6 +1052,43 @@
             this.tabPage9.Text = "Options";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
+            // lsImdbCustomLists
+            // 
+            this.lsImdbCustomLists.FormattingEnabled = true;
+            this.lsImdbCustomLists.Location = new System.Drawing.Point(175, 188);
+            this.lsImdbCustomLists.Name = "lsImdbCustomLists";
+            this.lsImdbCustomLists.Size = new System.Drawing.Size(208, 134);
+            this.lsImdbCustomLists.TabIndex = 10;
+            // 
+            // btnImdbAddList
+            // 
+            this.btnImdbAddList.Location = new System.Drawing.Point(390, 229);
+            this.btnImdbAddList.Name = "btnImdbAddList";
+            this.btnImdbAddList.Size = new System.Drawing.Size(28, 23);
+            this.btnImdbAddList.TabIndex = 11;
+            this.btnImdbAddList.Text = "+";
+            this.btnImdbAddList.UseVisualStyleBackColor = true;
+            this.btnImdbAddList.Click += new System.EventHandler(this.btnImdbAddList_Click);
+            // 
+            // btnImdbDeleteList
+            // 
+            this.btnImdbDeleteList.Location = new System.Drawing.Point(390, 259);
+            this.btnImdbDeleteList.Name = "btnImdbDeleteList";
+            this.btnImdbDeleteList.Size = new System.Drawing.Size(28, 23);
+            this.btnImdbDeleteList.TabIndex = 12;
+            this.btnImdbDeleteList.Text = "-";
+            this.btnImdbDeleteList.UseVisualStyleBackColor = true;
+            this.btnImdbDeleteList.Click += new System.EventHandler(this.btnImdbDeleteList_Click);
+            // 
+            // lblImdbCustomLists
+            // 
+            this.lblImdbCustomLists.AutoSize = true;
+            this.lblImdbCustomLists.Location = new System.Drawing.Point(175, 169);
+            this.lblImdbCustomLists.Name = "lblImdbCustomLists";
+            this.lblImdbCustomLists.Size = new System.Drawing.Size(69, 13);
+            this.lblImdbCustomLists.TabIndex = 9;
+            this.lblImdbCustomLists.Text = "Custom Lists:";
+            // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1176,6 +1221,10 @@
         private System.Windows.Forms.Button btnLetterboxdRatingsBrowse;
         private System.Windows.Forms.TextBox txtLetterboxdRatingsFile;
         private System.Windows.Forms.CheckBox chkLetterboxdEnabled;
+        private System.Windows.Forms.Label lblImdbCustomLists;
+        private System.Windows.Forms.Button btnImdbDeleteList;
+        private System.Windows.Forms.Button btnImdbAddList;
+        private System.Windows.Forms.ListBox lsImdbCustomLists;
     }
 }
 

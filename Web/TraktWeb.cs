@@ -134,7 +134,13 @@
             }
         }
 
-        public static string GetFromTrakt(string address)
+        public static bool DeleteFromTrakt(string address)
+        {
+            var response = GetFromTrakt(address, "DELETE");
+            return response != null;
+        }
+
+        public static string GetFromTrakt(string address, string method = "GET")
         {
             if (OnDataSend != null)
                 OnDataSend(address, null);
@@ -142,7 +148,7 @@
             var request = WebRequest.Create(address) as HttpWebRequest;
 
             request.KeepAlive = true;
-            request.Method = "GET";
+            request.Method = method;
             request.ContentLength = 0;
             request.Timeout = 120000;
             request.ContentType = "application/json";

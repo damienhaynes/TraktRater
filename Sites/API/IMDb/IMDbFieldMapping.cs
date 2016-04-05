@@ -2,6 +2,7 @@
 {
     public class IMDbFieldMapping
     {
+        public const string cPosition = "position";
         public const string cIMDbID = "const";
         public const string cCreated = "created";
         public const string cTitle = "Title";
