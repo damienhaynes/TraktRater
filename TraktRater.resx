@@ -120,9 +120,6 @@
   <metadata name="tipHelp.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="tipHelp.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="txtImdbWebUsername.ToolTip" xml:space="preserve">
     <value>Your IMDb User ID starts with 'ur', you can get this from the IMDb website from the address bar when in your profile.
 

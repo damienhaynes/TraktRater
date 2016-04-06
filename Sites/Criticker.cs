@@ -178,7 +178,7 @@
                                  {
                                      Title = movie.Title,
                                      Year = movie.Year,
-                                     WatchedAt = movie.ReviewDate.ToISO8601()
+                                     WatchedAt = AppSettings.WatchedOnReleaseDay ? "released" : movie.ReviewDate.ToISO8601()
                                  });
 
             var movieWatchedData = new TraktMovieWatchedSync

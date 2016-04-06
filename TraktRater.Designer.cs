@@ -57,10 +57,14 @@
             this.txtImdbWebUsername = new System.Windows.Forms.TextBox();
             this.txtImdbWatchlistFile = new System.Windows.Forms.TextBox();
             this.nudBatchSize = new System.Windows.Forms.NumericUpDown();
-            this.txtLetterboxdRatingsFile = new System.Windows.Forms.TextBox();
             this.txtLetterboxdDiaryFile = new System.Windows.Forms.TextBox();
+            this.txtLetterboxdRatingsFile = new System.Windows.Forms.TextBox();
             this.txtLetterboxdWatchedFile = new System.Windows.Forms.TextBox();
             this.grbImdb = new System.Windows.Forms.GroupBox();
+            this.lblImdbCustomLists = new System.Windows.Forms.Label();
+            this.btnImdbDeleteList = new System.Windows.Forms.Button();
+            this.btnImdbAddList = new System.Windows.Forms.Button();
+            this.lsImdbCustomLists = new System.Windows.Forms.ListBox();
             this.chkIMDbEnabled = new System.Windows.Forms.CheckBox();
             this.btnImdbWatchlistBrowse = new System.Windows.Forms.Button();
             this.lblImdbWatchlistFile = new System.Windows.Forms.Label();
@@ -113,10 +117,7 @@
             this.btnLetterboxdRatingsBrowse = new System.Windows.Forms.Button();
             this.chkLetterboxdEnabled = new System.Windows.Forms.CheckBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.lsImdbCustomLists = new System.Windows.Forms.ListBox();
-            this.btnImdbAddList = new System.Windows.Forms.Button();
-            this.btnImdbDeleteList = new System.Windows.Forms.Button();
-            this.lblImdbCustomLists = new System.Windows.Forms.Label();
+            this.chkSetWatchedOnReleaseDay = new System.Windows.Forms.CheckBox();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -259,10 +260,10 @@
             // 
             // btnMaintenance
             // 
-            this.btnMaintenance.Location = new System.Drawing.Point(21, 142);
+            this.btnMaintenance.Location = new System.Drawing.Point(21, 175);
             this.btnMaintenance.Name = "btnMaintenance";
             this.btnMaintenance.Size = new System.Drawing.Size(276, 26);
-            this.btnMaintenance.TabIndex = 11;
+            this.btnMaintenance.TabIndex = 5;
             this.btnMaintenance.Text = "Cleanup / Maintenance...";
             this.btnMaintenance.UseVisualStyleBackColor = true;
             this.btnMaintenance.Click += new System.EventHandler(this.btnMaintenance_Click);
@@ -412,7 +413,7 @@
             // 
             // nudBatchSize
             // 
-            this.nudBatchSize.Location = new System.Drawing.Point(134, 66);
+            this.nudBatchSize.Location = new System.Drawing.Point(134, 99);
             this.nudBatchSize.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -425,7 +426,7 @@
             0});
             this.nudBatchSize.Name = "nudBatchSize";
             this.nudBatchSize.Size = new System.Drawing.Size(104, 20);
-            this.nudBatchSize.TabIndex = 3;
+            this.nudBatchSize.TabIndex = 4;
             this.tipHelp.SetToolTip(this.nudBatchSize, "Set the size of the batch when importing items to trakt.tv. Set lower if having i" +
         "ssues with the server.");
             this.nudBatchSize.Value = new decimal(new int[] {
@@ -434,17 +435,6 @@
             0,
             0});
             this.nudBatchSize.ValueChanged += new System.EventHandler(this.nudBatchSize_ValueChanged);
-            // 
-            // txtLetterboxdRatingsFile
-            // 
-            this.txtLetterboxdRatingsFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.txtLetterboxdRatingsFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
-            this.txtLetterboxdRatingsFile.Enabled = false;
-            this.txtLetterboxdRatingsFile.Location = new System.Drawing.Point(20, 76);
-            this.txtLetterboxdRatingsFile.Name = "txtLetterboxdRatingsFile";
-            this.txtLetterboxdRatingsFile.Size = new System.Drawing.Size(208, 20);
-            this.txtLetterboxdRatingsFile.TabIndex = 2;
-            this.txtLetterboxdRatingsFile.TextChanged += new System.EventHandler(this.txtLetterboxdRatingsFile_TextChanged);
             // 
             // txtLetterboxdDiaryFile
             // 
@@ -458,6 +448,17 @@
             this.tipHelp.SetToolTip(this.txtLetterboxdDiaryFile, "The Diary file includes everything marked as watched at a specified date, this da" +
         "te will override any movies found in the Watched file");
             this.txtLetterboxdDiaryFile.TextChanged += new System.EventHandler(this.txtLetterboxdDiaryFile_TextChanged);
+            // 
+            // txtLetterboxdRatingsFile
+            // 
+            this.txtLetterboxdRatingsFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtLetterboxdRatingsFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
+            this.txtLetterboxdRatingsFile.Enabled = false;
+            this.txtLetterboxdRatingsFile.Location = new System.Drawing.Point(20, 76);
+            this.txtLetterboxdRatingsFile.Name = "txtLetterboxdRatingsFile";
+            this.txtLetterboxdRatingsFile.Size = new System.Drawing.Size(208, 20);
+            this.txtLetterboxdRatingsFile.TabIndex = 2;
+            this.txtLetterboxdRatingsFile.TextChanged += new System.EventHandler(this.txtLetterboxdRatingsFile_TextChanged);
             // 
             // txtLetterboxdWatchedFile
             // 
@@ -494,6 +495,43 @@
             this.grbImdb.TabIndex = 0;
             this.grbImdb.TabStop = false;
             this.grbImdb.Text = "IMDb";
+            // 
+            // lblImdbCustomLists
+            // 
+            this.lblImdbCustomLists.AutoSize = true;
+            this.lblImdbCustomLists.Location = new System.Drawing.Point(175, 169);
+            this.lblImdbCustomLists.Name = "lblImdbCustomLists";
+            this.lblImdbCustomLists.Size = new System.Drawing.Size(69, 13);
+            this.lblImdbCustomLists.TabIndex = 9;
+            this.lblImdbCustomLists.Text = "Custom Lists:";
+            // 
+            // btnImdbDeleteList
+            // 
+            this.btnImdbDeleteList.Location = new System.Drawing.Point(390, 259);
+            this.btnImdbDeleteList.Name = "btnImdbDeleteList";
+            this.btnImdbDeleteList.Size = new System.Drawing.Size(28, 23);
+            this.btnImdbDeleteList.TabIndex = 12;
+            this.btnImdbDeleteList.Text = "-";
+            this.btnImdbDeleteList.UseVisualStyleBackColor = true;
+            this.btnImdbDeleteList.Click += new System.EventHandler(this.btnImdbDeleteList_Click);
+            // 
+            // btnImdbAddList
+            // 
+            this.btnImdbAddList.Location = new System.Drawing.Point(390, 229);
+            this.btnImdbAddList.Name = "btnImdbAddList";
+            this.btnImdbAddList.Size = new System.Drawing.Size(28, 23);
+            this.btnImdbAddList.TabIndex = 11;
+            this.btnImdbAddList.Text = "+";
+            this.btnImdbAddList.UseVisualStyleBackColor = true;
+            this.btnImdbAddList.Click += new System.EventHandler(this.btnImdbAddList_Click);
+            // 
+            // lsImdbCustomLists
+            // 
+            this.lsImdbCustomLists.FormattingEnabled = true;
+            this.lsImdbCustomLists.Location = new System.Drawing.Point(175, 188);
+            this.lsImdbCustomLists.Name = "lsImdbCustomLists";
+            this.lsImdbCustomLists.Size = new System.Drawing.Size(208, 134);
+            this.lsImdbCustomLists.TabIndex = 10;
             // 
             // chkIMDbEnabled
             // 
@@ -649,6 +687,7 @@
             // 
             // grbOptions
             // 
+            this.grbOptions.Controls.Add(this.chkSetWatchedOnReleaseDay);
             this.grbOptions.Controls.Add(this.nudBatchSize);
             this.grbOptions.Controls.Add(this.lblBatchImportSize);
             this.grbOptions.Controls.Add(this.chkIgnoreWatchedForWatchlists);
@@ -657,17 +696,17 @@
             this.grbOptions.Location = new System.Drawing.Point(6, 6);
             this.grbOptions.Name = "grbOptions";
             this.grbOptions.Size = new System.Drawing.Size(867, 479);
-            this.grbOptions.TabIndex = 1;
+            this.grbOptions.TabIndex = 0;
             this.grbOptions.TabStop = false;
             this.grbOptions.Text = "Options";
             // 
             // lblBatchImportSize
             // 
             this.lblBatchImportSize.AutoSize = true;
-            this.lblBatchImportSize.Location = new System.Drawing.Point(18, 71);
+            this.lblBatchImportSize.Location = new System.Drawing.Point(18, 104);
             this.lblBatchImportSize.Name = "lblBatchImportSize";
             this.lblBatchImportSize.Size = new System.Drawing.Size(93, 13);
-            this.lblBatchImportSize.TabIndex = 2;
+            this.lblBatchImportSize.TabIndex = 3;
             this.lblBatchImportSize.Text = "Batch Import Size:";
             // 
             // chkIgnoreWatchedForWatchlists
@@ -675,9 +714,9 @@
             this.chkIgnoreWatchedForWatchlists.AutoSize = true;
             this.chkIgnoreWatchedForWatchlists.Location = new System.Drawing.Point(21, 42);
             this.chkIgnoreWatchedForWatchlists.Name = "chkIgnoreWatchedForWatchlists";
-            this.chkIgnoreWatchedForWatchlists.Size = new System.Drawing.Size(254, 17);
+            this.chkIgnoreWatchedForWatchlists.Size = new System.Drawing.Size(277, 17);
             this.chkIgnoreWatchedForWatchlists.TabIndex = 1;
-            this.chkIgnoreWatchedForWatchlists.Text = "Ignore watched items when syncing to Watchlist";
+            this.chkIgnoreWatchedForWatchlists.Text = "Ignore watched items when syncing to your Watchlist";
             this.chkIgnoreWatchedForWatchlists.UseVisualStyleBackColor = true;
             this.chkIgnoreWatchedForWatchlists.Click += new System.EventHandler(this.chkIgnoreWatchedForWatchlists_Click);
             // 
@@ -1052,42 +1091,16 @@
             this.tabPage9.Text = "Options";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
-            // lsImdbCustomLists
+            // chkSetWatchedOnReleaseDay
             // 
-            this.lsImdbCustomLists.FormattingEnabled = true;
-            this.lsImdbCustomLists.Location = new System.Drawing.Point(175, 188);
-            this.lsImdbCustomLists.Name = "lsImdbCustomLists";
-            this.lsImdbCustomLists.Size = new System.Drawing.Size(208, 134);
-            this.lsImdbCustomLists.TabIndex = 10;
-            // 
-            // btnImdbAddList
-            // 
-            this.btnImdbAddList.Location = new System.Drawing.Point(390, 229);
-            this.btnImdbAddList.Name = "btnImdbAddList";
-            this.btnImdbAddList.Size = new System.Drawing.Size(28, 23);
-            this.btnImdbAddList.TabIndex = 11;
-            this.btnImdbAddList.Text = "+";
-            this.btnImdbAddList.UseVisualStyleBackColor = true;
-            this.btnImdbAddList.Click += new System.EventHandler(this.btnImdbAddList_Click);
-            // 
-            // btnImdbDeleteList
-            // 
-            this.btnImdbDeleteList.Location = new System.Drawing.Point(390, 259);
-            this.btnImdbDeleteList.Name = "btnImdbDeleteList";
-            this.btnImdbDeleteList.Size = new System.Drawing.Size(28, 23);
-            this.btnImdbDeleteList.TabIndex = 12;
-            this.btnImdbDeleteList.Text = "-";
-            this.btnImdbDeleteList.UseVisualStyleBackColor = true;
-            this.btnImdbDeleteList.Click += new System.EventHandler(this.btnImdbDeleteList_Click);
-            // 
-            // lblImdbCustomLists
-            // 
-            this.lblImdbCustomLists.AutoSize = true;
-            this.lblImdbCustomLists.Location = new System.Drawing.Point(175, 169);
-            this.lblImdbCustomLists.Name = "lblImdbCustomLists";
-            this.lblImdbCustomLists.Size = new System.Drawing.Size(69, 13);
-            this.lblImdbCustomLists.TabIndex = 9;
-            this.lblImdbCustomLists.Text = "Custom Lists:";
+            this.chkSetWatchedOnReleaseDay.AutoSize = true;
+            this.chkSetWatchedOnReleaseDay.Location = new System.Drawing.Point(21, 66);
+            this.chkSetWatchedOnReleaseDay.Name = "chkSetWatchedOnReleaseDay";
+            this.chkSetWatchedOnReleaseDay.Size = new System.Drawing.Size(501, 17);
+            this.chkSetWatchedOnReleaseDay.TabIndex = 2;
+            this.chkSetWatchedOnReleaseDay.Text = "Set the watched date to the release date of the movie or episode when data is not" +
+    " available in export";
+            this.chkSetWatchedOnReleaseDay.UseVisualStyleBackColor = true;
             // 
             // TraktRater
             // 
@@ -1225,6 +1238,7 @@
         private System.Windows.Forms.Button btnImdbDeleteList;
         private System.Windows.Forms.Button btnImdbAddList;
         private System.Windows.Forms.ListBox lsImdbCustomLists;
+        private System.Windows.Forms.CheckBox chkSetWatchedOnReleaseDay;
     }
 }
 

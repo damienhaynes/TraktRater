@@ -263,11 +263,11 @@
             return true;
         }
 
-        private TraktMovieRatingSync GetRateMoviesData(IEnumerable<Dictionary<string, string>> movies)
+        private TraktMovieRatingSync GetRateMoviesData(IEnumerable<Dictionary<string, string>> aMovies)
         {
-            var traktMovies = new List<TraktMovieRating>();
+            var lTraktMovies = new List<TraktMovieRating>();
 
-            traktMovies.AddRange(from movie in movies
+            lTraktMovies.AddRange(from movie in aMovies
                                  select new TraktMovieRating
                                  {
                                      Title = movie[LetterboxdFieldMapping.cTitle],
@@ -276,20 +276,19 @@
                                      RatedAt = GetDateAdded(movie)
                                  });
 
-            var movieRateData = new TraktMovieRatingSync
+            var lMovieRateData = new TraktMovieRatingSync
             {
-                movies = traktMovies
+                movies = lTraktMovies
             };
 
-            return movieRateData;
+            return lMovieRateData;
         }
 
-
-        private TraktMovieWatchedSync GetSyncWatchedMoviesData(List<Dictionary<string, string>> movies)
+        private TraktMovieWatchedSync GetSyncWatchedMoviesData(List<Dictionary<string, string>> aMovies)
         {
-            var traktMovies = new List<TraktMovieWatched>();
+            var lTraktMovies = new List<TraktMovieWatched>();
 
-            traktMovies.AddRange(from movie in movies
+            lTraktMovies.AddRange(from movie in aMovies
                                  select new TraktMovieWatched
                                  {
                                      Title = movie[LetterboxdFieldMapping.cTitle],
@@ -297,19 +296,19 @@
                                      WatchedAt = GetWatchedDate(movie)
                                  });
 
-            var movieData = new TraktMovieWatchedSync
+            var lMovieData = new TraktMovieWatchedSync
             {
-                Movies = traktMovies
+                Movies = lTraktMovies
             };
 
-            return movieData;
+            return lMovieData;
         }
 
-        private string GetDateAdded(Dictionary<string, string> item)
+        private string GetDateAdded(Dictionary<string, string> aItem)
         {
             try
             {
-                return DateTime.ParseExact(item[LetterboxdFieldMapping.cDateAdded], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None).ToString().ToISO8601();
+                return DateTime.ParseExact(aItem[LetterboxdFieldMapping.cDateAdded], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None).ToString().ToISO8601();
             }
             catch
             {
@@ -317,23 +316,25 @@
             }
         }
 
-        private string GetWatchedDate(Dictionary<string, string> item)
+        private string GetWatchedDate(Dictionary<string, string> aItem)
         {
             try
             {
                 // check if diary field exists for Watched Date
-                if (item.ContainsKey(LetterboxdFieldMapping.cWatchedDate))
+                if (aItem.ContainsKey(LetterboxdFieldMapping.cWatchedDate))
                 {
-                    return DateTime.ParseExact(item[LetterboxdFieldMapping.cWatchedDate], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None).ToString().ToISO8601();
+                    return DateTime.ParseExact(aItem[LetterboxdFieldMapping.cWatchedDate], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None).ToString().ToISO8601();
                 }
                 else
                 {
-                    return DateTime.ParseExact(item[LetterboxdFieldMapping.cDateAdded], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None).ToString().ToISO8601();
+                    // fallback to the date it was added into the watched file
+                    // use release day if setting is enabled
+                    return AppSettings.WatchedOnReleaseDay ? "released" : GetDateAdded(aItem);
                 }
             }
             catch
             {
-                return DateTime.UtcNow.ToString().ToISO8601();
+                return AppSettings.WatchedOnReleaseDay ? "released" : DateTime.UtcNow.ToString().ToISO8601();
             }
         }
 

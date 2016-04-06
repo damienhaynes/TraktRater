@@ -6,6 +6,7 @@
     using System.Threading;
 
     using global::TraktRater.Extensions;
+    using global::TraktRater.Settings;
     using global::TraktRater.Sites.API.IMDb;
     using global::TraktRater.Sites.API.TVDb;
     using global::TraktRater.TraktAPI.DataStructures;
@@ -43,7 +44,7 @@
                                      Ids = new TraktMovieId { ImdbId = movie[IMDbFieldMapping.cIMDbID] },
                                      Title = movie[IMDbFieldMapping.cTitle],
                                      Year = movie[IMDbFieldMapping.cYear].ToYear(),
-                                     WatchedAt = GetLastCreatedDate(movie)
+                                     WatchedAt = AppSettings.WatchedOnReleaseDay ? "released" : GetLastCreatedDate(movie)
                                  });
 
             var movieData = new TraktMovieWatchedSync
@@ -153,7 +154,7 @@
                                    select new TraktEpisodeWatched
                                    {
                                        Ids = new TraktEpisodeId { TvdbId = episode.TvdbId, ImdbId = episode.ImdbId },
-                                       WatchedAt = GetLastCreatedDate(episode.Created)
+                                       WatchedAt = AppSettings.WatchedOnReleaseDay ? "released" : GetLastCreatedDate(episode.Created)
                                    });
 
             var episodesWatched = new TraktEpisodeWatchedSync
@@ -340,7 +341,7 @@
 
         static string GetLastCreatedDate(Dictionary<string, string> item)
         {
-            string createdDate = DateTime.Now.ToString().ToISO8601();
+            string createdDate = DateTime.UtcNow.ToString().ToISO8601();
 
             // check if we have the 'created' field
             if (item.ContainsKey(IMDbFieldMapping.cCreated))

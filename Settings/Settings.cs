@@ -51,6 +51,7 @@
         const string cEnableLetterboxd = "EnableLetterboxd";
         const string cLogLevel = "LogLevel";
         const string cBatchSize = "BatchSize";
+        const string cWatchedOnReleaseDay = "WatchedOnReleaseDay";
         #endregion
 
         #region Settings
@@ -123,6 +124,8 @@
         public static bool IgnoreWatchedForWatchlist { get; set; }
 
         public static int BatchSize { get; set; }
+
+        public static bool WatchedOnReleaseDay { get; set; }
 
         public static bool EnableTVDb { get; set; }
         public static bool EnableTMDb { get; set; }
@@ -199,6 +202,7 @@
                 EnableLetterboxd = xmlReader.GetSettingValueAsBool(cEnableLetterboxd, false);
                 LogSeverityLevel = (LoggingSeverity)(xmlReader.GetSettingValueAsInt(cLogLevel, 3));
                 BatchSize = xmlReader.GetSettingValueAsInt(cBatchSize, 50);
+                WatchedOnReleaseDay = xmlReader.GetSettingValueAsBool(cWatchedOnReleaseDay, false);
 
                 // save settings, might be some new settings added
                 Save();
@@ -263,7 +267,8 @@
             xmlWriter.WriteSetting(cEnableLetterboxd, EnableLetterboxd.ToString());
             xmlWriter.WriteSetting(cLogLevel, ((int)LogSeverityLevel).ToString());
             xmlWriter.WriteSetting(cBatchSize, BatchSize.ToString());
-            
+            xmlWriter.WriteSetting(cWatchedOnReleaseDay, WatchedOnReleaseDay.ToString());
+
             // save file
             xmlWriter.Save(SettingsFile);
         }

@@ -414,7 +414,7 @@
                                  {
                                      Title = movie.Title,
                                      Ids = new TraktMovieId { ImdbId = "tt" + movie.IMDbId },
-                                     WatchedAt = movie.PublishedDate.ToISO8601(-5) // bug with Listal's GMT conversion
+                                     WatchedAt = AppSettings.WatchedOnReleaseDay ? "released" : movie.PublishedDate.ToISO8601(-5) // bug with Listal's GMT conversion
                                  });
 
             var movieWatchedData = new TraktMovieWatchedSync

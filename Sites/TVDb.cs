@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading;
 
+    using global::TraktRater.Extensions;
     using global::TraktRater.Settings;
     using global::TraktRater.Sites.API.TVDb;
     using global::TraktRater.TraktAPI;
@@ -244,7 +245,11 @@
 
             foreach (var episode in ratedEpisodes)
             {
-                episodeWatchData.Episodes.Add(new TraktEpisodeWatched { Ids = new TraktEpisodeId { TvdbId = episode.Ids.TvdbId } });
+                episodeWatchData.Episodes.Add(new TraktEpisodeWatched
+                { 
+                    Ids = new TraktEpisodeId { TvdbId = episode.Ids.TvdbId },
+                    WatchedAt = AppSettings.WatchedOnReleaseDay ? "released" : DateTime.UtcNow.ToString().ToISO8601()
+                });
             }
 
             return episodeWatchData;
