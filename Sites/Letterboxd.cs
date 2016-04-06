@@ -272,7 +272,7 @@
                                  {
                                      Title = movie[LetterboxdFieldMapping.cTitle],
                                      Year = movie[LetterboxdFieldMapping.cYear].ToYear(),
-                                     Rating = (int)Math.Ceiling(float.Parse(movie[LetterboxdFieldMapping.cRating]) * 2),
+                                     Rating = (int)Math.Ceiling(float.Parse(movie[LetterboxdFieldMapping.cRating], CultureInfo.InvariantCulture.NumberFormat) * 2),
                                      RatedAt = GetDateAdded(movie)
                                  });
 
