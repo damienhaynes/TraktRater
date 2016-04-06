@@ -1101,6 +1101,7 @@
             this.chkSetWatchedOnReleaseDay.Text = "Set the watched date to the release date of the movie or episode when data is not" +
     " available in export";
             this.chkSetWatchedOnReleaseDay.UseVisualStyleBackColor = true;
+            this.chkSetWatchedOnReleaseDay.CheckedChanged += new System.EventHandler(this.chkSetWatchedOnReleaseDay_CheckedChanged);
             // 
             // TraktRater
             // 

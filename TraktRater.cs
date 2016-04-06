@@ -92,6 +92,7 @@
             chkListalEnabled.Checked = AppSettings.EnableListal;
             chkCritickerEnabled.Checked = AppSettings.EnableCriticker;
             chkLetterboxdEnabled.Checked = AppSettings.EnableLetterboxd;
+            chkSetWatchedOnReleaseDay.Checked = AppSettings.WatchedOnReleaseDay;
             nudBatchSize.Value = AppSettings.BatchSize;
 
             SetTMDbControlState();
@@ -472,6 +473,11 @@
         private void lnkLogFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(FileLog.LogDirectory);
+        }
+
+        private void chkSetWatchedOnReleaseDay_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.WatchedOnReleaseDay = chkSetWatchedOnReleaseDay.Checked;
         }
 
         private void nudBatchSize_ValueChanged(object sender, EventArgs e)
