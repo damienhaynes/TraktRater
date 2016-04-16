@@ -31,9 +31,9 @@ The [IMDb](http://imdb.com) provider supports tv show, episode and movie ratings
  * Scroll to the bottom of the page and click on the **Export this List** link.
  * Save the csv file to a folder on your computer.
  * In the TraktRater tool, enter in the filename in the textbox provided.
- * Repeat process to export your Watchlist.csv file, if you don't want to import your watchlist then the keep field empty.
+ * Repeat process to export your Watchlist.csv file and Custom lists, if you don't want to import your watchlist then keep field(s) empty.
 
-If you choose to do a **Web Scrape**, ensure your profile is marked as **Public** otherwise it will fail. Your IMDb User ID can be found from the address bar in your browser window, look for something like **ur13828119**.
+If you choose to do a **Web Scrape**, ensure your profile is marked as **Public** otherwise it will fail. Your IMDb User ID can be found from the address bar in your browser window, look for something like **ur13828119**. Custom list import via webscrape is currently not supported.
  
 ###TVDb###
 The [TVDb](http://thetvdb.com) provider supports tv show and episode ratings. TraktRater requires your Account Identifier, **NOT** your username. You can find your account id by following these steps:
@@ -67,7 +67,7 @@ The [Listal](http://www.listal.com) provider supports tv shows and movie ratings
  * Use the Movie and/or Show text boxes to browse to the downloaded XML files.
  
 ###Criticker###
-The [Criticker](http://http://www.criticker.com) provider supports movie ratings.
+The [Criticker](http://www.criticker.com) provider supports movie ratings.
 
  * Logon to www.criticker.com if you haven't already.
  * Click on your User Profile 'You'[User Profile](http://www.criticker.com/profile/)
@@ -75,6 +75,18 @@ The [Criticker](http://http://www.criticker.com) provider supports movie ratings
  * From the **Export** box, right click on the **XML** icon and select **Save Link As...*.
  * Save the file to your hard drive.
  * Select your file from the TraktRater application.
+ * You're now ready to Import!.
+ 
+ 
+###Letterboxd###
+The [Criticker](http://www.letterboxd.com) provider supports movie ratings and watched data.
+
+ * Logon to www.letterboxd.com if you haven't already.
+ * Open Settings page with your export data [Export](http://letterboxd.com/settings/data/)
+ * Click on your **Export your Data** and follow the prompts to export data as a zip archive.
+ * Save the file to your hard drive.
+ * Extract the files in the zip file to a directory on your hard-drive.
+ * Select the corresponding files (watched, ratings, diary) from the TraktRater application.
  * You're now ready to Import!.
  
 Contributing
