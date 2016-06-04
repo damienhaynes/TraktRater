@@ -81,6 +81,7 @@
             this.lnkTMDbStart = new System.Windows.Forms.LinkLabel();
             this.lblTMDbMessage = new System.Windows.Forms.Label();
             this.grbOptions = new System.Windows.Forms.GroupBox();
+            this.chkSetWatchedOnReleaseDay = new System.Windows.Forms.CheckBox();
             this.lblBatchImportSize = new System.Windows.Forms.Label();
             this.chkIgnoreWatchedForWatchlists = new System.Windows.Forms.CheckBox();
             this.chkMarkAsWatched = new System.Windows.Forms.CheckBox();
@@ -117,7 +118,12 @@
             this.btnLetterboxdRatingsBrowse = new System.Windows.Forms.Button();
             this.chkLetterboxdEnabled = new System.Windows.Forms.CheckBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.chkSetWatchedOnReleaseDay = new System.Windows.Forms.CheckBox();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.grbFlixster = new System.Windows.Forms.GroupBox();
+            this.lblFlisterUserId = new System.Windows.Forms.Label();
+            this.txtFlixsterUserId = new System.Windows.Forms.TextBox();
+            this.chkFlixsterEnabled = new System.Windows.Forms.CheckBox();
+            this.lblFlixsterUserIdDesc = new System.Windows.Forms.Label();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -137,6 +143,8 @@
             this.tabPage8.SuspendLayout();
             this.grbLetterboxd.SuspendLayout();
             this.tabPage9.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.grbFlixster.SuspendLayout();
             this.SuspendLayout();
             // 
             // grbTrakt
@@ -700,6 +708,18 @@
             this.grbOptions.TabStop = false;
             this.grbOptions.Text = "Options";
             // 
+            // chkSetWatchedOnReleaseDay
+            // 
+            this.chkSetWatchedOnReleaseDay.AutoSize = true;
+            this.chkSetWatchedOnReleaseDay.Location = new System.Drawing.Point(21, 66);
+            this.chkSetWatchedOnReleaseDay.Name = "chkSetWatchedOnReleaseDay";
+            this.chkSetWatchedOnReleaseDay.Size = new System.Drawing.Size(501, 17);
+            this.chkSetWatchedOnReleaseDay.TabIndex = 2;
+            this.chkSetWatchedOnReleaseDay.Text = "Set the watched date to the release date of the movie or episode when data is not" +
+    " available in export";
+            this.chkSetWatchedOnReleaseDay.UseVisualStyleBackColor = true;
+            this.chkSetWatchedOnReleaseDay.CheckedChanged += new System.EventHandler(this.chkSetWatchedOnReleaseDay_CheckedChanged);
+            // 
             // lblBatchImportSize
             // 
             this.lblBatchImportSize.AutoSize = true;
@@ -906,12 +926,13 @@
             this.tabTraktRater.Controls.Add(this.tabPage5);
             this.tabTraktRater.Controls.Add(this.tabPage7);
             this.tabTraktRater.Controls.Add(this.tabPage8);
+            this.tabTraktRater.Controls.Add(this.tabPage6);
             this.tabTraktRater.Controls.Add(this.tabPage9);
             this.tabTraktRater.Location = new System.Drawing.Point(4, 13);
             this.tabTraktRater.Name = "tabTraktRater";
             this.tabTraktRater.SelectedIndex = 0;
             this.tabTraktRater.Size = new System.Drawing.Size(887, 517);
-            this.tabTraktRater.TabIndex = 11;
+            this.tabTraktRater.TabIndex = 10;
             // 
             // tabPage1
             // 
@@ -1091,17 +1112,70 @@
             this.tabPage9.Text = "Options";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
-            // chkSetWatchedOnReleaseDay
+            // tabPage6
             // 
-            this.chkSetWatchedOnReleaseDay.AutoSize = true;
-            this.chkSetWatchedOnReleaseDay.Location = new System.Drawing.Point(21, 66);
-            this.chkSetWatchedOnReleaseDay.Name = "chkSetWatchedOnReleaseDay";
-            this.chkSetWatchedOnReleaseDay.Size = new System.Drawing.Size(501, 17);
-            this.chkSetWatchedOnReleaseDay.TabIndex = 2;
-            this.chkSetWatchedOnReleaseDay.Text = "Set the watched date to the release date of the movie or episode when data is not" +
-    " available in export";
-            this.chkSetWatchedOnReleaseDay.UseVisualStyleBackColor = true;
-            this.chkSetWatchedOnReleaseDay.CheckedChanged += new System.EventHandler(this.chkSetWatchedOnReleaseDay_CheckedChanged);
+            this.tabPage6.Controls.Add(this.grbFlixster);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(879, 491);
+            this.tabPage6.TabIndex = 9;
+            this.tabPage6.Text = "Flixster";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // grbFlixster
+            // 
+            this.grbFlixster.Controls.Add(this.lblFlixsterUserIdDesc);
+            this.grbFlixster.Controls.Add(this.lblFlisterUserId);
+            this.grbFlixster.Controls.Add(this.txtFlixsterUserId);
+            this.grbFlixster.Controls.Add(this.chkFlixsterEnabled);
+            this.grbFlixster.Location = new System.Drawing.Point(6, 4);
+            this.grbFlixster.Name = "grbFlixster";
+            this.grbFlixster.Size = new System.Drawing.Size(867, 482);
+            this.grbFlixster.TabIndex = 1;
+            this.grbFlixster.TabStop = false;
+            this.grbFlixster.Text = "Flixster";
+            // 
+            // lblFlisterUserId
+            // 
+            this.lblFlisterUserId.AutoSize = true;
+            this.lblFlisterUserId.Location = new System.Drawing.Point(17, 60);
+            this.lblFlisterUserId.Name = "lblFlisterUserId";
+            this.lblFlisterUserId.Size = new System.Drawing.Size(46, 13);
+            this.lblFlisterUserId.TabIndex = 1;
+            this.lblFlisterUserId.Text = "User ID:";
+            // 
+            // txtFlixsterUserId
+            // 
+            this.txtFlixsterUserId.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtFlixsterUserId.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
+            this.txtFlixsterUserId.Enabled = false;
+            this.txtFlixsterUserId.Location = new System.Drawing.Point(20, 76);
+            this.txtFlixsterUserId.Name = "txtFlixsterUserId";
+            this.txtFlixsterUserId.Size = new System.Drawing.Size(208, 20);
+            this.txtFlixsterUserId.TabIndex = 2;
+            this.txtFlixsterUserId.TextChanged += new System.EventHandler(this.txtFlixsterUserId_TextChanged);
+            // 
+            // chkFlixsterEnabled
+            // 
+            this.chkFlixsterEnabled.AutoSize = true;
+            this.chkFlixsterEnabled.Location = new System.Drawing.Point(20, 28);
+            this.chkFlixsterEnabled.Name = "chkFlixsterEnabled";
+            this.chkFlixsterEnabled.Size = new System.Drawing.Size(59, 17);
+            this.chkFlixsterEnabled.TabIndex = 0;
+            this.chkFlixsterEnabled.Text = "Enable";
+            this.chkFlixsterEnabled.UseVisualStyleBackColor = true;
+            this.chkFlixsterEnabled.CheckedChanged += new System.EventHandler(this.chkFlixsterEnabled_CheckedChanged);
+            // 
+            // lblFlixsterUserIdDesc
+            // 
+            this.lblFlixsterUserIdDesc.AutoSize = true;
+            this.lblFlixsterUserIdDesc.Location = new System.Drawing.Point(20, 112);
+            this.lblFlixsterUserIdDesc.Name = "lblFlixsterUserIdDesc";
+            this.lblFlixsterUserIdDesc.Size = new System.Drawing.Size(468, 13);
+            this.lblFlixsterUserIdDesc.TabIndex = 3;
+            this.lblFlixsterUserIdDesc.Text = "Get your User ID from your profile page URL e.g. http://www.flixster.com/user/YOU" +
+    "R_USER_ID/";
             // 
             // TraktRater
             // 
@@ -1146,6 +1220,9 @@
             this.grbLetterboxd.ResumeLayout(false);
             this.grbLetterboxd.PerformLayout();
             this.tabPage9.ResumeLayout(false);
+            this.tabPage6.ResumeLayout(false);
+            this.grbFlixster.ResumeLayout(false);
+            this.grbFlixster.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1240,6 +1317,12 @@
         private System.Windows.Forms.Button btnImdbAddList;
         private System.Windows.Forms.ListBox lsImdbCustomLists;
         private System.Windows.Forms.CheckBox chkSetWatchedOnReleaseDay;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.GroupBox grbFlixster;
+        private System.Windows.Forms.Label lblFlixsterUserIdDesc;
+        private System.Windows.Forms.Label lblFlisterUserId;
+        private System.Windows.Forms.TextBox txtFlixsterUserId;
+        private System.Windows.Forms.CheckBox chkFlixsterEnabled;
     }
 }
 

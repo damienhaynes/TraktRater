@@ -41,6 +41,7 @@
         const string cLetterboxdRatingsFilename = "LetterboxdRatingsFilename";
         const string cLetterboxdWatchedFilename = "LetterboxdWatchedFilename";
         const string cLetterboxdDiaryFilename = "LetterboxdDiaryFilename";
+        const string cFlixsterUserId = "FlixsterUserId";
         const string cMarkAsWatched = "MarkAsWatched";
         const string cIgnoreWatchedForWatchlist = "IgnoreWatchedForWatchlist";
         const string cEnableTMDb = "EnableTMDb";
@@ -49,6 +50,7 @@
         const string cEnableListal = "EnableListal";
         const string cEnableCriticker = "EnableCriticker";
         const string cEnableLetterboxd = "EnableLetterboxd";
+        const string cEnableFlixster = "EnableFlixster";
         const string cLogLevel = "LogLevel";
         const string cBatchSize = "BatchSize";
         const string cWatchedOnReleaseDay = "WatchedOnReleaseDay";
@@ -119,6 +121,8 @@
 
         public static string LetterboxdDiaryFilename { get; set; }
 
+        public static string FlixsterUserId { get; set; }
+
         public static bool MarkAsWatched { get; set; }
 
         public static bool IgnoreWatchedForWatchlist { get; set; }
@@ -133,6 +137,7 @@
         public static bool EnableListal { get; set; }
         public static bool EnableCriticker { get; set; }
         public static bool EnableLetterboxd { get; set; }
+        public static bool EnableFlixster { get; set; }
 
         public static LoggingSeverity LogSeverityLevel { get; set; }
 
@@ -192,6 +197,7 @@
                 LetterboxdRatingsFilename = xmlReader.GetSettingValueAsString(cLetterboxdRatingsFilename, string.Empty);
                 LetterboxdWatchedFilename = xmlReader.GetSettingValueAsString(cLetterboxdWatchedFilename, string.Empty);
                 LetterboxdDiaryFilename = xmlReader.GetSettingValueAsString(cLetterboxdDiaryFilename, string.Empty);
+                FlixsterUserId = xmlReader.GetSettingValueAsString(cFlixsterUserId, string.Empty);
                 MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
                 IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
                 EnableIMDb = xmlReader.GetSettingValueAsBool(cEnableIMDb, false);
@@ -200,6 +206,7 @@
                 EnableListal = xmlReader.GetSettingValueAsBool(cEnableListal, false);
                 EnableCriticker = xmlReader.GetSettingValueAsBool(cEnableCriticker, false);
                 EnableLetterboxd = xmlReader.GetSettingValueAsBool(cEnableLetterboxd, false);
+                EnableFlixster = xmlReader.GetSettingValueAsBool(cEnableFlixster, false);
                 LogSeverityLevel = (LoggingSeverity)(xmlReader.GetSettingValueAsInt(cLogLevel, 3));
                 BatchSize = xmlReader.GetSettingValueAsInt(cBatchSize, 50);
                 WatchedOnReleaseDay = xmlReader.GetSettingValueAsBool(cWatchedOnReleaseDay, false);
@@ -257,6 +264,7 @@
             xmlWriter.WriteSetting(cLetterboxdRatingsFilename, LetterboxdRatingsFilename);
             xmlWriter.WriteSetting(cLetterboxdWatchedFilename, LetterboxdWatchedFilename);
             xmlWriter.WriteSetting(cLetterboxdDiaryFilename, LetterboxdDiaryFilename);
+            xmlWriter.WriteSetting(cFlixsterUserId, FlixsterUserId);
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
             xmlWriter.WriteSetting(cIgnoreWatchedForWatchlist, IgnoreWatchedForWatchlist.ToString());
             xmlWriter.WriteSetting(cEnableIMDb, EnableIMDb.ToString());
@@ -265,6 +273,7 @@
             xmlWriter.WriteSetting(cEnableListal, EnableListal.ToString());
             xmlWriter.WriteSetting(cEnableCriticker, EnableCriticker.ToString());
             xmlWriter.WriteSetting(cEnableLetterboxd, EnableLetterboxd.ToString());
+            xmlWriter.WriteSetting(cEnableFlixster, EnableFlixster.ToString());
             xmlWriter.WriteSetting(cLogLevel, ((int)LogSeverityLevel).ToString());
             xmlWriter.WriteSetting(cBatchSize, BatchSize.ToString());
             xmlWriter.WriteSetting(cWatchedOnReleaseDay, WatchedOnReleaseDay.ToString());

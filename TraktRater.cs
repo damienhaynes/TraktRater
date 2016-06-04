@@ -84,6 +84,7 @@
             txtLetterboxdWatchedFile.Text = AppSettings.LetterboxdWatchedFilename;
             txtLetterboxdRatingsFile.Text = AppSettings.LetterboxdRatingsFilename;
             txtLetterboxdDiaryFile.Text = AppSettings.LetterboxdDiaryFilename;
+            txtFlixsterUserId.Text = AppSettings.FlixsterUserId;
             chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
             chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
             chkTVDbEnabled.Checked = AppSettings.EnableTVDb;
@@ -92,6 +93,7 @@
             chkListalEnabled.Checked = AppSettings.EnableListal;
             chkCritickerEnabled.Checked = AppSettings.EnableCriticker;
             chkLetterboxdEnabled.Checked = AppSettings.EnableLetterboxd;
+            chkFlixsterEnabled.Checked = AppSettings.EnableFlixster;
             chkSetWatchedOnReleaseDay.Checked = AppSettings.WatchedOnReleaseDay;
             nudBatchSize.Value = AppSettings.BatchSize;
 
@@ -470,6 +472,17 @@
             EnableLetterboxdControls(AppSettings.EnableLetterboxd);
         }
 
+        private void chkFlixsterEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.EnableFlixster = chkFlixsterEnabled.Checked;
+            EnableFlixsterControls(AppSettings.EnableFlixster);
+        }
+
+        private void txtFlixsterUserId_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.FlixsterUserId = txtFlixsterUserId.Text;
+        }
+
         private void lnkLogFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(FileLog.LogDirectory);
@@ -518,6 +531,7 @@
             if (AppSettings.EnableListal)     sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
             if (AppSettings.EnableCriticker)  sites.Add(new Criticker(AppSettings.CritickerMovieFilename));
             if (AppSettings.EnableLetterboxd) sites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename));
+            if (AppSettings.EnableFlixster)   sites.Add(new Flixster(AppSettings.FlixsterUserId));
 
             if (!sites.Any(s => s.Enabled))
             {
@@ -788,6 +802,7 @@
             grbListal.Enabled = enable;
             grbCriticker.Enabled = enable;
             grbLetterboxd.Enabled = enable;
+            grbFlixster.Enabled = enable;
 
             HideShowTraktAuthControls();
 
@@ -912,6 +927,13 @@
             txtLetterboxdWatchedFile.Enabled = enableState;
         }
 
+        private void EnableFlixsterControls(bool enableState)
+        {            
+            lblFlisterUserId.Enabled = enableState;
+            txtFlixsterUserId.Enabled = enableState;
+            lblFlixsterUserIdDesc.Enabled = enableState;
+        }
+
         private void EnableExternalSourceControlsInGroupBoxes()
         {
             EnableImdbControls(AppSettings.EnableIMDb);
@@ -920,6 +942,7 @@
             EnableListalControls(AppSettings.EnableListal);
             EnableCritickerControls(AppSettings.EnableCriticker);
             EnableLetterboxdControls(AppSettings.EnableLetterboxd);
+            EnableFlixsterControls(AppSettings.EnableFlixster);
         }
 
         #endregion

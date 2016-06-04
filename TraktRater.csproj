@@ -61,6 +61,11 @@
     <Compile Include="Settings\MaintenanceSettings.cs" />
     <Compile Include="Sites\API\Criticker\CritickerAPI.cs" />
     <Compile Include="Sites\API\Criticker\CritickerFilmRankings.cs" />
+    <Compile Include="Sites\API\Flixster\FlixsterAPI.cs" />
+    <Compile Include="Sites\API\Flixster\FlixsterMovie.cs" />
+    <Compile Include="Sites\API\Flixster\FlixsterMovieRating.cs" />
+    <Compile Include="Sites\API\Flixster\FlixsterURIs.cs" />
+    <Compile Include="Sites\API\Flixster\FlixsterUser.cs" />
     <Compile Include="Sites\API\IMDb\IMDbEpisode.cs" />
     <Compile Include="Sites\API\Letterboxd\LetterboxdFieldMapping.cs" />
     <Compile Include="Sites\API\Listal\ListalAPI.cs" />
@@ -73,6 +78,7 @@
     <Compile Include="Sites\API\TVDb\TVDbShowSearch.cs" />
     <Compile Include="Sites\Common\IMDbHelper.cs" />
     <Compile Include="Sites\Criticker.cs" />
+    <Compile Include="Sites\Flixster.cs" />
     <Compile Include="Sites\IMDbWeb.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\XMLReader.cs" />
