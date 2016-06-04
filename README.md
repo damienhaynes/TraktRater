@@ -82,11 +82,19 @@ The [Criticker](http://www.criticker.com) provider supports movie ratings.
 The [Criticker](http://www.letterboxd.com) provider supports movie ratings and watched data.
 
  * Logon to www.letterboxd.com if you haven't already.
- * Open Settings page with your export data [Export](http://letterboxd.com/settings/data/)
+ * Open your Profile page
  * Click on your **Export your Data** and follow the prompts to export data as a zip archive.
  * Save the file to your hard drive.
  * Extract the files in the zip file to a directory on your hard-drive.
  * Select the corresponding files (watched, ratings, diary) from the TraktRater application.
+ * You're now ready to Import!.
+ 
+###Flixster###
+The [Flixster](http://www.flixster.com) provider supports movie ratings from multiple sources such as Facebook and Rotten Tomotoes.
+
+ * Logon to www.flixster.com if you haven't already.
+ * Open Settings page with your export data [Export](http://letterboxd.com/settings/data/)
+ * Copy your numeric User ID from the URL in the address bar
  * You're now ready to Import!.
  
 Contributing
