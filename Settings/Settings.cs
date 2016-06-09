@@ -42,6 +42,7 @@
         const string cLetterboxdWatchedFilename = "LetterboxdWatchedFilename";
         const string cLetterboxdDiaryFilename = "LetterboxdDiaryFilename";
         const string cFlixsterUserId = "FlixsterUserId";
+        const string cFlixsterSyncWantToSee = "FlixsterSyncWantToSee";
         const string cMarkAsWatched = "MarkAsWatched";
         const string cIgnoreWatchedForWatchlist = "IgnoreWatchedForWatchlist";
         const string cEnableTMDb = "EnableTMDb";
@@ -123,6 +124,8 @@
 
         public static string FlixsterUserId { get; set; }
 
+        public static bool FlixsterSyncWantToSee { get; set; }
+
         public static bool MarkAsWatched { get; set; }
 
         public static bool IgnoreWatchedForWatchlist { get; set; }
@@ -198,6 +201,7 @@
                 LetterboxdWatchedFilename = xmlReader.GetSettingValueAsString(cLetterboxdWatchedFilename, string.Empty);
                 LetterboxdDiaryFilename = xmlReader.GetSettingValueAsString(cLetterboxdDiaryFilename, string.Empty);
                 FlixsterUserId = xmlReader.GetSettingValueAsString(cFlixsterUserId, string.Empty);
+                FlixsterSyncWantToSee = xmlReader.GetSettingValueAsBool(cFlixsterSyncWantToSee, true);
                 MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
                 IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
                 EnableIMDb = xmlReader.GetSettingValueAsBool(cEnableIMDb, false);
@@ -265,6 +269,7 @@
             xmlWriter.WriteSetting(cLetterboxdWatchedFilename, LetterboxdWatchedFilename);
             xmlWriter.WriteSetting(cLetterboxdDiaryFilename, LetterboxdDiaryFilename);
             xmlWriter.WriteSetting(cFlixsterUserId, FlixsterUserId);
+            xmlWriter.WriteSetting(cFlixsterSyncWantToSee, FlixsterSyncWantToSee.ToString());
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
             xmlWriter.WriteSetting(cIgnoreWatchedForWatchlist, IgnoreWatchedForWatchlist.ToString());
             xmlWriter.WriteSetting(cEnableIMDb, EnableIMDb.ToString());

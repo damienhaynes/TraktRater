@@ -20,13 +20,15 @@
 
         bool mImportCancelled = false;
         string mUserId = null;
+        bool mSyncWantToSee = false;
 
         #endregion
 
-        public Flixster(string userId)
+        public Flixster(string aUserId, bool aSyncWantToSee)
         {
-            mUserId = userId;
-            Enabled = !string.IsNullOrEmpty(userId);
+            mUserId = aUserId;
+            mSyncWantToSee = aSyncWantToSee;
+            Enabled = !string.IsNullOrEmpty(aUserId);
         }
 
         #region IRateSite Members
@@ -42,7 +44,9 @@
         {
             mImportCancelled = false;
 
+            var lAllMovies = new List<FlixsterMovieRating>();
             var lAllMovieRatings = new List<FlixsterMovieRating>();
+            var lAllMoviesWatchlist = new List<FlixsterMovieRating>();            
 
             #region Get Rated Movies
             int lPageSize = 50;
@@ -62,7 +66,7 @@
             // we don't get back a number of pages so need to manually work it out
             if (lPagedMovieRatings.Count() >= lPageSize)
             {
-                lAllMovieRatings.AddRange(lPagedMovieRatings);
+                lAllMovies.AddRange(lPagedMovieRatings);
 
                 int lPage = 2;
                 bool lRequestMore = true;
@@ -81,13 +85,13 @@
                     {
                         // when we request another page, if there are no more movies, it returns the same ones again
                         // we can just check if the first movie returned already exists in our collection
-                        if (lAllMovieRatings.Exists(r => r.Movie.Title == lPagedMovieRatings.First().Movie.Title && r.Movie.Year == lPagedMovieRatings.First().Movie.Year))
+                        if (lAllMovies.Exists(r => r.Movie.Title == lPagedMovieRatings.First().Movie.Title && r.Movie.Year == lPagedMovieRatings.First().Movie.Year))
                         {
                             lRequestMore = false;
                         }
                         else
                         {
-                            lAllMovieRatings.AddRange(lPagedMovieRatings);
+                            lAllMovies.AddRange(lPagedMovieRatings);
 
                             // check if there is any more pages worth requesting based on size returned in last batch
                             if (lPagedMovieRatings.Count() < lPageSize)
@@ -100,6 +104,8 @@
             #endregion
 
             #region Import Rated Movies
+            lAllMovieRatings.AddRange(lAllMovies.Where(m => m.UserScore != "+"));
+
             FileLog.Info("Found {0} movie ratings on Flixster", lAllMovieRatings.Count);
             if (lAllMovieRatings.Any())
             {
@@ -124,7 +130,7 @@
                     {
                         UIUtils.UpdateStatus("Importing page {0}/{1} Flixster rated movies...", i + 1, pages);
 
-                        TraktSyncResponse response = TraktAPI.AddMoviesToRatings(GetRateMoviesData(lMovieRatings.Skip(i * pageSize).Take(pageSize).ToList()));
+                        TraktSyncResponse response = TraktAPI.AddMoviesToRatings(GetSyncRateMoviesData(lMovieRatings.Skip(i * pageSize).Take(pageSize).ToList()));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Error importing Flixster movie ratings to trakt.tv", true);
@@ -148,6 +154,8 @@
 
             if (AppSettings.MarkAsWatched && lAllMovieRatings.Count > 0)
             {
+                if (mImportCancelled) return;
+
                 var lMoviesWatched = new List<FlixsterMovieRating>(lAllMovieRatings);
 
                 // get watched movies from trakt.tv
@@ -192,6 +200,72 @@
                 }
             }
             #endregion
+
+            #region Sync Watchlist
+
+            if (mSyncWantToSee)
+            {
+                if (mImportCancelled) return;
+
+                lAllMoviesWatchlist.AddRange(lAllMovies.Where(m => m.UserScore == "+"));
+
+                if (lAllMoviesWatchlist.Count > 0)
+                {
+                    UIUtils.UpdateStatus("Requesting existing watchlist movies from trakt...");
+                    var lWatchlistTraktMovies = TraktAPI.GetWatchlistMovies();
+                    if (lWatchlistTraktMovies != null)
+                    {
+                        UIUtils.UpdateStatus("Found {0} watchlist movies on trakt", lWatchlistTraktMovies.Count());
+                        UIUtils.UpdateStatus("Filtering out watchlist movies that are already in watchlist on trakt.tv");
+                        lAllMoviesWatchlist.RemoveAll(w => lWatchlistTraktMovies.Any(t => t.Movie.Title.ToLowerInvariant() == w.Movie.Title.ToLowerInvariant() && t.Movie.Year == w.Movie.Year));
+                    }
+                    if (mImportCancelled) return;
+
+                    if (AppSettings.IgnoreWatchedForWatchlist)
+                    {
+                        UIUtils.UpdateStatus("Requesting watched movies from trakt...");
+
+                        // get watched movies from trakt so we don't import movies into watchlist that are already watched
+                        if (lWatchedTraktMovies == null)
+                        {
+                            lWatchedTraktMovies = TraktAPI.GetWatchedMovies();
+                            if (lWatchedTraktMovies != null)
+                            {
+                                UIUtils.UpdateStatus("Found {0} watched movies on trakt", lWatchedTraktMovies.Count());
+
+                                // remove movies from sync list which are watched already
+                                lAllMoviesWatchlist.RemoveAll(w => lWatchedTraktMovies.Any(t => t.Movie.Title.ToLowerInvariant() == w.Movie.Title.ToLowerInvariant() && t.Movie.Year == w.Movie.Year));
+                            }
+                        }
+                        if (mImportCancelled) return;
+                    }
+
+                    // add all movies to watchlist
+                    UIUtils.UpdateStatus("Importing {0} flixster wanttosee movies to trakt.tv watchlist...", lAllMoviesWatchlist.Count());
+
+                    if (lAllMoviesWatchlist.Count > 0)
+                    {
+                        int pageSize = AppSettings.BatchSize;
+                        int pages = (int)Math.Ceiling((double)lAllMoviesWatchlist.Count / pageSize);
+                        for (int i = 0; i < pages; i++)
+                        {
+                            UIUtils.UpdateStatus("Importing page {0}/{1} flixster wantlist movies to trakt.tv watchlist...", i + 1, pages);
+
+                            var watchlistMoviesResponse = TraktAPI.AddMoviesToWatchlist(GetSyncMoviesData(lAllMoviesWatchlist.Skip(i * pageSize).Take(pageSize).ToList()));
+                            if (watchlistMoviesResponse == null)
+                            {
+                                UIUtils.UpdateStatus("Failed to send watchlist for flixster movies", true);
+                                Thread.Sleep(2000);
+                            }
+
+                            if (mImportCancelled) return;
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
         }
 
         public void Cancel()
@@ -203,7 +277,7 @@
 
         #region Private Methods
 
-        private TraktMovieRatingSync GetRateMoviesData(List<FlixsterMovieRating> aRatedItems)
+        private TraktMovieRatingSync GetSyncRateMoviesData(List<FlixsterMovieRating> aRatedItems)
         {
             var traktMovies = new List<TraktMovieRating>();
 
@@ -237,6 +311,25 @@
                                  });
 
             var movieSyncData = new TraktMovieWatchedSync
+            {
+                Movies = traktMovies
+            };
+
+            return movieSyncData;
+        }
+
+        private TraktMovieSync GetSyncMoviesData(List<FlixsterMovieRating> aMovieItems)
+        {
+            var traktMovies = new List<TraktMovie>();
+
+            traktMovies.AddRange(from movieItem in aMovieItems
+                                 select new TraktMovie
+                                 {
+                                     Title = movieItem.Movie.Title,
+                                     Year = movieItem.Movie.Year,
+                                 });
+
+            var movieSyncData = new TraktMovieSync
             {
                 Movies = traktMovies
             };

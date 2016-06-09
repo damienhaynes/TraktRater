@@ -85,6 +85,7 @@
             txtLetterboxdRatingsFile.Text = AppSettings.LetterboxdRatingsFilename;
             txtLetterboxdDiaryFile.Text = AppSettings.LetterboxdDiaryFilename;
             txtFlixsterUserId.Text = AppSettings.FlixsterUserId;
+            chkFlixsterSyncWantToSee.Checked = AppSettings.FlixsterSyncWantToSee;
             chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
             chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
             chkTVDbEnabled.Checked = AppSettings.EnableTVDb;
@@ -483,6 +484,11 @@
             AppSettings.FlixsterUserId = txtFlixsterUserId.Text;
         }
 
+        private void chkFlixsterSyncWantToSee_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.FlixsterSyncWantToSee = chkFlixsterSyncWantToSee.Checked;            
+        }
+
         private void lnkLogFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(FileLog.LogDirectory);
@@ -531,7 +537,7 @@
             if (AppSettings.EnableListal)     sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
             if (AppSettings.EnableCriticker)  sites.Add(new Criticker(AppSettings.CritickerMovieFilename));
             if (AppSettings.EnableLetterboxd) sites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename));
-            if (AppSettings.EnableFlixster)   sites.Add(new Flixster(AppSettings.FlixsterUserId));
+            if (AppSettings.EnableFlixster)   sites.Add(new Flixster(AppSettings.FlixsterUserId, AppSettings.FlixsterSyncWantToSee));
 
             if (!sites.Any(s => s.Enabled))
             {
@@ -931,6 +937,7 @@
         {            
             lblFlisterUserId.Enabled = enableState;
             txtFlixsterUserId.Enabled = enableState;
+            chkFlixsterSyncWantToSee.Enabled = enableState;
             lblFlixsterUserIdDesc.Enabled = enableState;
         }
 

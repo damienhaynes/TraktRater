@@ -117,13 +117,14 @@
             this.lblLetterboxdRatingsFile = new System.Windows.Forms.Label();
             this.btnLetterboxdRatingsBrowse = new System.Windows.Forms.Button();
             this.chkLetterboxdEnabled = new System.Windows.Forms.CheckBox();
-            this.tabPage9 = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.grbFlixster = new System.Windows.Forms.GroupBox();
+            this.lblFlixsterUserIdDesc = new System.Windows.Forms.Label();
             this.lblFlisterUserId = new System.Windows.Forms.Label();
             this.txtFlixsterUserId = new System.Windows.Forms.TextBox();
             this.chkFlixsterEnabled = new System.Windows.Forms.CheckBox();
-            this.lblFlixsterUserIdDesc = new System.Windows.Forms.Label();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.chkFlixsterSyncWantToSee = new System.Windows.Forms.CheckBox();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -142,9 +143,9 @@
             this.tabPage7.SuspendLayout();
             this.tabPage8.SuspendLayout();
             this.grbLetterboxd.SuspendLayout();
-            this.tabPage9.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.grbFlixster.SuspendLayout();
+            this.tabPage9.SuspendLayout();
             this.SuspendLayout();
             // 
             // grbTrakt
@@ -1101,17 +1102,6 @@
             this.chkLetterboxdEnabled.UseVisualStyleBackColor = true;
             this.chkLetterboxdEnabled.CheckedChanged += new System.EventHandler(this.chkLetterboxdEnabled_CheckedChanged);
             // 
-            // tabPage9
-            // 
-            this.tabPage9.Controls.Add(this.grbOptions);
-            this.tabPage9.Location = new System.Drawing.Point(4, 22);
-            this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(879, 491);
-            this.tabPage9.TabIndex = 8;
-            this.tabPage9.Text = "Options";
-            this.tabPage9.UseVisualStyleBackColor = true;
-            // 
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.grbFlixster);
@@ -1125,6 +1115,7 @@
             // 
             // grbFlixster
             // 
+            this.grbFlixster.Controls.Add(this.chkFlixsterSyncWantToSee);
             this.grbFlixster.Controls.Add(this.lblFlixsterUserIdDesc);
             this.grbFlixster.Controls.Add(this.lblFlisterUserId);
             this.grbFlixster.Controls.Add(this.txtFlixsterUserId);
@@ -1132,9 +1123,19 @@
             this.grbFlixster.Location = new System.Drawing.Point(6, 4);
             this.grbFlixster.Name = "grbFlixster";
             this.grbFlixster.Size = new System.Drawing.Size(867, 482);
-            this.grbFlixster.TabIndex = 1;
+            this.grbFlixster.TabIndex = 0;
             this.grbFlixster.TabStop = false;
             this.grbFlixster.Text = "Flixster";
+            // 
+            // lblFlixsterUserIdDesc
+            // 
+            this.lblFlixsterUserIdDesc.AutoSize = true;
+            this.lblFlixsterUserIdDesc.Location = new System.Drawing.Point(17, 152);
+            this.lblFlixsterUserIdDesc.Name = "lblFlixsterUserIdDesc";
+            this.lblFlixsterUserIdDesc.Size = new System.Drawing.Size(468, 13);
+            this.lblFlixsterUserIdDesc.TabIndex = 4;
+            this.lblFlixsterUserIdDesc.Text = "Get your User ID from your profile page URL e.g. http://www.flixster.com/user/YOU" +
+    "R_USER_ID/";
             // 
             // lblFlisterUserId
             // 
@@ -1167,15 +1168,27 @@
             this.chkFlixsterEnabled.UseVisualStyleBackColor = true;
             this.chkFlixsterEnabled.CheckedChanged += new System.EventHandler(this.chkFlixsterEnabled_CheckedChanged);
             // 
-            // lblFlixsterUserIdDesc
+            // tabPage9
             // 
-            this.lblFlixsterUserIdDesc.AutoSize = true;
-            this.lblFlixsterUserIdDesc.Location = new System.Drawing.Point(20, 112);
-            this.lblFlixsterUserIdDesc.Name = "lblFlixsterUserIdDesc";
-            this.lblFlixsterUserIdDesc.Size = new System.Drawing.Size(468, 13);
-            this.lblFlixsterUserIdDesc.TabIndex = 3;
-            this.lblFlixsterUserIdDesc.Text = "Get your User ID from your profile page URL e.g. http://www.flixster.com/user/YOU" +
-    "R_USER_ID/";
+            this.tabPage9.Controls.Add(this.grbOptions);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(879, 491);
+            this.tabPage9.TabIndex = 8;
+            this.tabPage9.Text = "Options";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // chkFlixsterSyncWantToSee
+            // 
+            this.chkFlixsterSyncWantToSee.AutoSize = true;
+            this.chkFlixsterSyncWantToSee.Location = new System.Drawing.Point(20, 112);
+            this.chkFlixsterSyncWantToSee.Name = "chkFlixsterSyncWantToSee";
+            this.chkFlixsterSyncWantToSee.Size = new System.Drawing.Size(180, 17);
+            this.chkFlixsterSyncWantToSee.TabIndex = 3;
+            this.chkFlixsterSyncWantToSee.Text = "Sync \'Want To See\' to Watchlist";
+            this.chkFlixsterSyncWantToSee.UseVisualStyleBackColor = true;
+            this.chkFlixsterSyncWantToSee.CheckedChanged += new System.EventHandler(this.chkFlixsterSyncWantToSee_CheckedChanged);
             // 
             // TraktRater
             // 
@@ -1219,10 +1232,10 @@
             this.tabPage8.ResumeLayout(false);
             this.grbLetterboxd.ResumeLayout(false);
             this.grbLetterboxd.PerformLayout();
-            this.tabPage9.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
             this.grbFlixster.ResumeLayout(false);
             this.grbFlixster.PerformLayout();
+            this.tabPage9.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1323,6 +1336,7 @@
         private System.Windows.Forms.Label lblFlisterUserId;
         private System.Windows.Forms.TextBox txtFlixsterUserId;
         private System.Windows.Forms.CheckBox chkFlixsterEnabled;
+        private System.Windows.Forms.CheckBox chkFlixsterSyncWantToSee;
     }
 }
 
