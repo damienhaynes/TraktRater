@@ -92,7 +92,7 @@
 
         private static void WebRequest_OnDataReceived(string response)
         {
-            Debug("Response: {0}", response ?? "null");
+            Debug("Response: {0}", (response ?? "null").Trim());
         }
 
         private static void WebRequest_OnDataErrorReceived(string error)

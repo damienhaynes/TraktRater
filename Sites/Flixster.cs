@@ -81,9 +81,9 @@
                         UIUtils.UpdateStatus(string.Format("Failed to get movie ratings on page {0} from Flixster", lPage - 1), true);
                         Thread.Sleep(2000);
                     }
-                    else
+                    else if (lPagedMovieRatings.Count() > 0)
                     {
-                        // when we request another page, if there are no more movies, it returns the same ones again
+                        // when we request another page, if there are no more movies, it *sometimes* returns the same ones again
                         // we can just check if the first movie returned already exists in our collection
                         if (lAllMovies.Exists(r => r.Movie.Title == lPagedMovieRatings.First().Movie.Title && r.Movie.Year == lPagedMovieRatings.First().Movie.Year))
                         {
@@ -98,13 +98,17 @@
                                 lRequestMore = false;
                         }
                     }
+                    else
+                    {
+                        lRequestMore = false;
+                    }
                 }
             }
 
             #endregion
 
             #region Import Rated Movies
-            lAllMovieRatings.AddRange(lAllMovies.Where(m => m.UserScore != "+"));
+            lAllMovieRatings.AddRange(lAllMovies.Where(m => m.UserScore.IsFloat()));
 
             FileLog.Info("Found {0} movie ratings on Flixster", lAllMovieRatings.Count);
             if (lAllMovieRatings.Any())
