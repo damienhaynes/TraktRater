@@ -12,7 +12,7 @@
         public string Title { get; set; }
 
         [DataMember(Name = "year")]
-        public int Year { get; set; }
+        public string Year { get; set; }
 
         [DataMember(Name = "synopsis")]
         public string Synopsis { get; set; }

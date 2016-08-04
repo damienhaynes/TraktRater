@@ -121,7 +121,7 @@
                 if (lCurrentUserMovieRatings != null)
                 {
                     UIUtils.UpdateStatus("Found {0} user movie ratings on trakt.tv", lCurrentUserMovieRatings.Count());
-                    lMovieRatings.RemoveAll(r => lCurrentUserMovieRatings.Any(c => c.Movie.Title.ToLowerInvariant() == r.Movie.Title.ToLowerInvariant() && c.Movie.Year == r.Movie.Year));
+                    lMovieRatings.RemoveAll(r => lCurrentUserMovieRatings.Any(c => c.Movie.Title.ToLowerInvariant() == r.Movie.Title.ToLowerInvariant() && c.Movie.Year == r.Movie.Year.ToYear()));
                 }
 
                 UIUtils.UpdateStatus("Importing {0} new movie ratings to trakt.tv", lMovieRatings.Count());
@@ -177,7 +177,7 @@
                     UIUtils.UpdateStatus("Found {0} watched movies on trakt", lWatchedTraktMovies.Count());
                     UIUtils.UpdateStatus("Filtering out watched movies that are already watched on trakt.tv");
 
-                    lMoviesWatched.RemoveAll(w => lWatchedTraktMovies.Any(t => t.Movie.Title.ToLowerInvariant() == w.Movie.Title.ToLowerInvariant() && t.Movie.Year == w.Movie.Year));
+                    lMoviesWatched.RemoveAll(w => lWatchedTraktMovies.Any(t => t.Movie.Title.ToLowerInvariant() == w.Movie.Title.ToLowerInvariant() && t.Movie.Year == w.Movie.Year.ToYear()));
 
                     // mark all rated movies as watched
                     UIUtils.UpdateStatus("Importing {0} Flixster movies as watched...", lMoviesWatched.Count);
@@ -186,7 +186,7 @@
                     int pages = (int)Math.Ceiling((double)lMoviesWatched.Count / pageSize);
                     for (int i = 0; i < pages; i++)
                     {
-                        UIUtils.UpdateStatus("Importing page {0}/{1} IMDb movies as watched...", i + 1, pages);
+                        UIUtils.UpdateStatus("Importing page {0}/{1} Flixster movies as watched...", i + 1, pages);
 
                         var response = TraktAPI.AddMoviesToWatchedHistory(GetSyncWatchedMoviesData(lMoviesWatched.Skip(i * pageSize).Take(pageSize).ToList()));
                         if (response == null)
@@ -221,7 +221,7 @@
                     {
                         UIUtils.UpdateStatus("Found {0} watchlist movies on trakt", lWatchlistTraktMovies.Count());
                         UIUtils.UpdateStatus("Filtering out watchlist movies that are already in watchlist on trakt.tv");
-                        lAllMoviesWatchlist.RemoveAll(w => lWatchlistTraktMovies.Any(t => t.Movie.Title.ToLowerInvariant() == w.Movie.Title.ToLowerInvariant() && t.Movie.Year == w.Movie.Year));
+                        lAllMoviesWatchlist.RemoveAll(w => lWatchlistTraktMovies.Any(t => t.Movie.Title.ToLowerInvariant() == w.Movie.Title.ToLowerInvariant() && t.Movie.Year == w.Movie.Year.ToYear()));
                     }
                     if (mImportCancelled) return;
 
@@ -238,14 +238,14 @@
                                 UIUtils.UpdateStatus("Found {0} watched movies on trakt", lWatchedTraktMovies.Count());
 
                                 // remove movies from sync list which are watched already
-                                lAllMoviesWatchlist.RemoveAll(w => lWatchedTraktMovies.Any(t => t.Movie.Title.ToLowerInvariant() == w.Movie.Title.ToLowerInvariant() && t.Movie.Year == w.Movie.Year));
+                                lAllMoviesWatchlist.RemoveAll(w => lWatchedTraktMovies.Any(t => t.Movie.Title.ToLowerInvariant() == w.Movie.Title.ToLowerInvariant() && t.Movie.Year == w.Movie.Year.ToYear()));
                             }
                         }
                         if (mImportCancelled) return;
                     }
 
                     // add all movies to watchlist
-                    UIUtils.UpdateStatus("Importing {0} flixster wanttosee movies to trakt.tv watchlist...", lAllMoviesWatchlist.Count());
+                    UIUtils.UpdateStatus("Importing {0} Flixster wanttosee movies to trakt.tv watchlist...", lAllMoviesWatchlist.Count());
 
                     if (lAllMoviesWatchlist.Count > 0)
                     {
@@ -253,12 +253,12 @@
                         int pages = (int)Math.Ceiling((double)lAllMoviesWatchlist.Count / pageSize);
                         for (int i = 0; i < pages; i++)
                         {
-                            UIUtils.UpdateStatus("Importing page {0}/{1} flixster wantlist movies to trakt.tv watchlist...", i + 1, pages);
+                            UIUtils.UpdateStatus("Importing page {0}/{1} Flixster wantlist movies to trakt.tv watchlist...", i + 1, pages);
 
                             var watchlistMoviesResponse = TraktAPI.AddMoviesToWatchlist(GetSyncMoviesData(lAllMoviesWatchlist.Skip(i * pageSize).Take(pageSize).ToList()));
                             if (watchlistMoviesResponse == null)
                             {
-                                UIUtils.UpdateStatus("Failed to send watchlist for flixster movies", true);
+                                UIUtils.UpdateStatus("Failed to send watchlist for Flixster movies", true);
                                 Thread.Sleep(2000);
                             }
 
@@ -289,7 +289,7 @@
                                  select new TraktMovieRating
                                  {
                                      Title = ratedItem.Movie.Title,
-                                     Year =  ratedItem.Movie.Year,
+                                     Year =  ratedItem.Movie.Year.ToYear(),
                                      Rating = (int)Math.Ceiling(float.Parse(ratedItem.UserScore, CultureInfo.InvariantCulture.NumberFormat) * 2),
                                      RatedAt = GetDateUpdated(ratedItem)
                                  });
@@ -310,7 +310,7 @@
                                  select new TraktMovieWatched
                                  {
                                      Title = ratedItem.Movie.Title,
-                                     Year = ratedItem.Movie.Year,
+                                     Year = ratedItem.Movie.Year.ToYear(),
                                      WatchedAt = AppSettings.WatchedOnReleaseDay ? "released" : GetDateUpdated(ratedItem)
                                  });
 
@@ -330,7 +330,7 @@
                                  select new TraktMovie
                                  {
                                      Title = movieItem.Movie.Title,
-                                     Year = movieItem.Movie.Year,
+                                     Year = movieItem.Movie.Year.ToYear(),
                                  });
 
             var movieSyncData = new TraktMovieSync
