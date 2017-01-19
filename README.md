@@ -9,7 +9,7 @@ Usage
 -----
 
  * First ensure you are running on a Windows Platform with [.Net Framework 4.0](http://www.microsoft.com/en-us/download/details.aspx?id=17851) installed. TraktRater can run on Mac OS and Linux, however you need to execute using [Mono](http://www.monodevelop.com/download/).
- * Download the latest TraktRater release from the repository [downloads](https://github.com/damienhaynes/TraktRater/downloads) section.
+ * Download the latest TraktRater release from the repository [downloads](https://github.com/damienhaynes/TraktRater/releases) section.
  * Run the TraktRater.exe tool from the download location.
  * There are two authentication methods you can choose from:
     * User/Pass: Enter in your [trakt.tv](http://trakt.tv) username and password in the trakt section.
