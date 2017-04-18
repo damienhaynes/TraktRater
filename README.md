@@ -22,7 +22,7 @@ Data Sources
 ------------
 The following data sources are currently supported by this tool:
 
-###IMDb###
+### IMDb ###
 The [IMDb](http://imdb.com) provider supports tv show, episode and movie ratings. TraktRater also supports import of your watchlist from IMDb to trakt.tv. Import can either be via CSV export (recommended) or by scraping online using your user id:
 
  * Login to [IMDb](http://imdb.com).
@@ -35,7 +35,7 @@ The [IMDb](http://imdb.com) provider supports tv show, episode and movie ratings
 
 If you choose to do a **Web Scrape**, ensure your profile is marked as **Public** otherwise it will fail. Your IMDb User ID can be found from the address bar in your browser window, look for something like **ur13828119**. Custom list import via webscrape is currently not supported.
  
-###TVDb###
+### TVDb ###
 The [TVDb](http://thetvdb.com) provider supports tv show and episode ratings. TraktRater requires your Account Identifier, **NOT** your username. You can find your account id by following these steps:
 
  * Login to [TVDb](http://thetvdb.com).
@@ -48,7 +48,7 @@ We also cache any data we get from [TVDb](http://thetvdb.com) so that subsequent
     WinVista/Windows7 : C:\Users\$(username)\AppData\Roaming\TraktRater
     WinXP             : C:\Documents and Settings\Application Data\$(username)\TraktRater
 
-###TMDb###
+### TMDb ###
 The [TMDb](http://themoviedb.org) provider supports movie/show ratings and watchlists. TraktRater requires access to your account information. To allow Trakt Rater access to your account info follow these steps:
 
  * Click on the **Start Request Process** in the Trakt Rater application.
@@ -59,14 +59,14 @@ The [TMDb](http://themoviedb.org) provider supports movie/show ratings and watch
  
 If at any time you want to disable access or request persmission again you can click on the **Disable TMDb Support** link and then repeat steps above. 
  
-###Listal###
+### Listal ###
 The [Listal](http://www.listal.com) provider supports tv shows and movie ratings. TraktRater also supports import of your wanted list from Listal, it converts this into a watchlist. Once you login to the listal website, you can follow the link provided in the UI to download the respective XML files for Shows and Movies.
 
  * Logon to www.listal.com if you haven't already.
  * Download your Movies and/or Shows from [Export](http://www.listal.com/user/export)
  * Use the Movie and/or Show text boxes to browse to the downloaded XML files.
  
-###Criticker###
+### Criticker ###
 The [Criticker](http://www.criticker.com) provider supports movie ratings.
 
  * Logon to www.criticker.com if you haven't already.
@@ -78,7 +78,7 @@ The [Criticker](http://www.criticker.com) provider supports movie ratings.
  * You're now ready to Import!.
  
  
-###Letterboxd###
+### Letterboxd ###
 The [Criticker](http://www.letterboxd.com) provider supports movie ratings and watched data.
 
  * Logon to www.letterboxd.com if you haven't already.
@@ -89,7 +89,7 @@ The [Criticker](http://www.letterboxd.com) provider supports movie ratings and w
  * Select the corresponding files (watched, ratings, diary) from the TraktRater application.
  * You're now ready to Import!.
  
-###Flixster###
+### Flixster ###
 The [Flixster](http://www.flixster.com) provider supports movie ratings from multiple sources such as Facebook and Rotten Tomotoes.
 
  * Logon to www.flixster.com if you haven't already.
