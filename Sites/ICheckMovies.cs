@@ -4,6 +4,7 @@ using System.Linq;
 using CsvHelper;
 using CsvHelper.Configuration;
 using TraktRater.Sites.API.iCheckMovies;
+using TraktRater.TraktAPI.DataStructures;
 
 namespace TraktRater.Sites
 {
@@ -40,7 +41,18 @@ namespace TraktRater.Sites
             {
                 return;
             }
-            var movies = ParseIcheckMoviesCsv();
+            var icmMovieList = ParseIcheckMoviesCsv();
+            var traktMovies = icmMovieList.Select(icm => icm.ToTraktMovie()).ToList();
+            var moviesToSync = new TraktMovieSync()
+            {
+                Movies = traktMovies
+            };
+            if (importCancelled)
+            {
+                return;
+            }
+            var response = TraktAPI.TraktAPI.AddMoviesToWatchlist(moviesToSync);
+
         }
 
         private List<ICheckMoviesListItem> ParseIcheckMoviesCsv()

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
+using TraktRater.TraktAPI.DataStructures;
 
 namespace TraktRater.Sites.API.iCheckMovies
 {
@@ -12,7 +11,6 @@ namespace TraktRater.Sites.API.iCheckMovies
         public int Year { get; set; }
         public int CheckedCount { get; set; }
         public int FavouriteCount { get; set; }
-        // officialtoplistcount	usertoplistcount	akatitle	imdburl	checked	favorite	disliked	watchlist	owned
         public int UserToplistCount { get; set; }
         public int OfficialToplistCount { get; set; }
         public string AkaTitle { get; set; }
@@ -27,5 +25,32 @@ namespace TraktRater.Sites.API.iCheckMovies
         public bool InWatchlist => Watchlist == "yes";
         public string Owned { get; set; }
         public bool IsOwned => Owned == "yes";
+
+        public string ImdbId
+        {
+            get
+            {
+                string pattern = @"(tt\d{7})";
+
+                Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
+                Match m = r.Match(ImdbUrl);
+                if (!m.Success)
+                {
+                    throw new Exception("Unable to parse imdb id from imdb url");
+                }
+                return m.Value;
+            }
+        }
+
+        public TraktMovie ToTraktMovie()
+        {
+            var traktMovie = new TraktMovie
+            {
+                Ids = new TraktMovieId() {ImdbId = ImdbId},
+                Title = Title,
+                Year = Year
+            };
+            return traktMovie;
+        }
     }
 }
