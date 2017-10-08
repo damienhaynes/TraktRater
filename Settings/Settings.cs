@@ -96,6 +96,8 @@
 
         public static string TMDbRequestToken { get; set; }
 
+        public static string ICheckMoviesFilename { get; set; }
+
         public static string IMDbRatingsFilename { get; set; }
         
         public static string IMDbWatchlistFilename { get; set; }
@@ -137,6 +139,7 @@
         public static bool EnableTVDb { get; set; }
         public static bool EnableTMDb { get; set; }
         public static bool EnableIMDb { get; set; }
+        public static bool EnableICheckMovies { get; set; }
         public static bool EnableListal { get; set; }
         public static bool EnableCriticker { get; set; }
         public static bool EnableLetterboxd { get; set; }
