@@ -44,12 +44,21 @@ namespace TraktRater.Sites.API.iCheckMovies
 
         public TraktMovie ToTraktMovie()
         {
-            var traktMovie = new TraktMovie
+            return ToTraktMovieWatched();
+        }
+
+        public TraktMovieWatched ToTraktMovieWatched()
+        {
+            var traktMovie = new TraktMovieWatched()
             {
-                Ids = new TraktMovieId() {ImdbId = ImdbId},
+                Ids = new TraktMovieId() { ImdbId = ImdbId },
                 Title = Title,
-                Year = Year
+                Year = Year,
             };
+            if (IsChecked)
+            {
+                traktMovie.WatchedAt = Checked;
+            }
             return traktMovie;
         }
     }

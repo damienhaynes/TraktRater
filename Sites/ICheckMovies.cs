@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using CsvHelper;
 using CsvHelper.Configuration;
 using TraktRater.Sites.API.iCheckMovies;
 using TraktRater.TraktAPI.DataStructures;
+using TraktRater.UI;
 
 namespace TraktRater.Sites
 {
@@ -42,17 +44,41 @@ namespace TraktRater.Sites
                 return;
             }
             var icmMovieList = ParseIcheckMoviesCsv();
-            var traktMovies = icmMovieList.Select(icm => icm.ToTraktMovie()).ToList();
-            var moviesToSync = new TraktMovieSync()
+            // Only add items that are not watched to trakt watchlist
+            // TODO: Make configurable
+            var watchListMovies = icmMovieList.Where(icm => !icm.IsChecked).Select(icm => icm.ToTraktMovie()).ToList();
+            var watchedMovies = icmMovieList.Where(icm => icm.IsChecked).Select(icm => icm.ToTraktMovieWatched()).ToList();
+            var watchlistToSync = new TraktMovieSync()
             {
-                Movies = traktMovies
+                Movies = watchListMovies
+            };
+            var watchedToSync = new TraktMovieWatchedSync()
+            {
+                Movies = watchedMovies
             };
             if (importCancelled)
             {
                 return;
             }
-            var response = TraktAPI.TraktAPI.AddMoviesToWatchlist(moviesToSync);
+            var addToWatchlistResponse = TraktAPI.TraktAPI.AddMoviesToWatchlist(watchlistToSync);
+            HandleResponse(addToWatchlistResponse);
+            var addToWatchedHistoryResponse = TraktAPI.TraktAPI.AddMoviesToWatchedHistory(watchedToSync);
+            HandleResponse(addToWatchedHistoryResponse);
+        }
 
+        private static void HandleResponse(TraktSyncResponse addToWatchlistResponse)
+        {
+            if (addToWatchlistResponse == null)
+            {
+                UIUtils.UpdateStatus("Error importing ICheckMovies list to trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+            else if (addToWatchlistResponse.NotFound.Movies.Count > 0)
+            {
+                UIUtils.UpdateStatus("Unable to process {0} movies as they're not found on trakt.tv!",
+                    addToWatchlistResponse.NotFound.Movies.Count);
+                Thread.Sleep(1000);
+            }
         }
 
         private List<ICheckMoviesListItem> ParseIcheckMoviesCsv()
