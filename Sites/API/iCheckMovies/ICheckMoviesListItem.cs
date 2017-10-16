@@ -6,7 +6,6 @@ namespace TraktRater.Sites.API.iCheckMovies
 {
     class ICheckMoviesListItem
     {
-        public int Position { get; set; }
         public string Title { get; set; }
         public int Year { get; set; }
         public int CheckedCount { get; set; }
@@ -16,7 +15,7 @@ namespace TraktRater.Sites.API.iCheckMovies
         public string AkaTitle { get; set; }
         public string ImdbUrl { get; set; }
         public string Checked { get; set; }
-        public bool IsChecked => Checked == "yes";
+        public bool IsChecked => Checked != "no";
         public string Favorite { get; set; }
         public bool IsFavorite => Favorite == "yes";
         public string Disliked { get; set; }
