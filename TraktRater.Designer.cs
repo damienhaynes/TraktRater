@@ -125,9 +125,11 @@
             this.lblFlisterUserId = new System.Windows.Forms.Label();
             this.txtFlixsterUserId = new System.Windows.Forms.TextBox();
             this.chkFlixsterEnabled = new System.Windows.Forms.CheckBox();
-            this.tabPage9 = new System.Windows.Forms.TabPage();
             this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
             this.grbICheckMovies = new System.Windows.Forms.GroupBox();
+            this.chkIcheckMoviesUpdateWatchedStatus = new System.Windows.Forms.CheckBox();
+            this.chkIcheckMoviesAddWatchedToWatchlist = new System.Windows.Forms.CheckBox();
             this.chkIcheckMoviesEnabled = new System.Windows.Forms.CheckBox();
             this.btnIcheckMoviesExportBrowse = new System.Windows.Forms.Button();
             this.lblIcheckMoviesFile = new System.Windows.Forms.Label();
@@ -151,8 +153,8 @@
             this.grbLetterboxd.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.grbFlixster.SuspendLayout();
-            this.tabPage9.SuspendLayout();
             this.tabPage10.SuspendLayout();
+            this.tabPage9.SuspendLayout();
             this.grbICheckMovies.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1305,31 +1307,33 @@
             this.chkFlixsterEnabled.UseVisualStyleBackColor = true;
             this.chkFlixsterEnabled.CheckedChanged += new System.EventHandler(this.chkFlixsterEnabled_CheckedChanged);
             // 
-            // tabPage9
-            // 
-            this.tabPage9.Controls.Add(this.grbOptions);
-            this.tabPage9.Location = new System.Drawing.Point(4, 25);
-            this.tabPage9.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage9.Size = new System.Drawing.Size(1175, 607);
-            this.tabPage9.TabIndex = 10;
-            this.tabPage9.Text = "Options";
-            this.tabPage9.UseVisualStyleBackColor = true;
-            // 
             // tabPage10
             // 
-            this.tabPage10.Controls.Add(this.grbICheckMovies);
+            this.tabPage10.Controls.Add(this.grbOptions);
             this.tabPage10.Location = new System.Drawing.Point(4, 25);
+            this.tabPage10.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage10.Size = new System.Drawing.Size(1175, 607);
-            this.tabPage10.TabIndex = 9;
-            this.tabPage10.Text = "iCheckMovies";
+            this.tabPage10.TabIndex = 10;
+            this.tabPage10.Text = "Options";
             this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.grbICheckMovies);
+            this.tabPage9.Location = new System.Drawing.Point(4, 25);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(1175, 607);
+            this.tabPage9.TabIndex = 9;
+            this.tabPage9.Text = "iCheckMovies";
+            this.tabPage9.UseVisualStyleBackColor = true;
             // 
             // grbICheckMovies
             // 
+            this.grbICheckMovies.Controls.Add(this.chkIcheckMoviesUpdateWatchedStatus);
+            this.grbICheckMovies.Controls.Add(this.chkIcheckMoviesAddWatchedToWatchlist);
             this.grbICheckMovies.Controls.Add(this.chkIcheckMoviesEnabled);
             this.grbICheckMovies.Controls.Add(this.btnIcheckMoviesExportBrowse);
             this.grbICheckMovies.Controls.Add(this.txtiCheckMoviesCsvFile);
@@ -1342,6 +1346,30 @@
             this.grbICheckMovies.TabIndex = 1;
             this.grbICheckMovies.TabStop = false;
             this.grbICheckMovies.Text = "iCheckMovies";
+            // 
+            // chkIcheckMoviesUpdateWatchedStatus
+            // 
+            this.chkIcheckMoviesUpdateWatchedStatus.AutoSize = true;
+            this.chkIcheckMoviesUpdateWatchedStatus.Location = new System.Drawing.Point(35, 155);
+            this.chkIcheckMoviesUpdateWatchedStatus.Margin = new System.Windows.Forms.Padding(4);
+            this.chkIcheckMoviesUpdateWatchedStatus.Name = "chkIcheckMoviesUpdateWatchedStatus";
+            this.chkIcheckMoviesUpdateWatchedStatus.Size = new System.Drawing.Size(215, 21);
+            this.chkIcheckMoviesUpdateWatchedStatus.TabIndex = 10;
+            this.chkIcheckMoviesUpdateWatchedStatus.Text = "Update Trakt watched history";
+            this.chkIcheckMoviesUpdateWatchedStatus.UseVisualStyleBackColor = true;
+            this.chkIcheckMoviesUpdateWatchedStatus.CheckedChanged += new System.EventHandler(this.chkIcheckMoviesUpdateWatchedStatus_CheckedChanged);
+            // 
+            // chkIcheckMoviesAddWatchedToWatchlist
+            // 
+            this.chkIcheckMoviesAddWatchedToWatchlist.AutoSize = true;
+            this.chkIcheckMoviesAddWatchedToWatchlist.Location = new System.Drawing.Point(35, 126);
+            this.chkIcheckMoviesAddWatchedToWatchlist.Margin = new System.Windows.Forms.Padding(4);
+            this.chkIcheckMoviesAddWatchedToWatchlist.Name = "chkIcheckMoviesAddWatchedToWatchlist";
+            this.chkIcheckMoviesAddWatchedToWatchlist.Size = new System.Drawing.Size(232, 21);
+            this.chkIcheckMoviesAddWatchedToWatchlist.TabIndex = 9;
+            this.chkIcheckMoviesAddWatchedToWatchlist.Text = "Add watched movies to watchlist";
+            this.chkIcheckMoviesAddWatchedToWatchlist.UseVisualStyleBackColor = true;
+            this.chkIcheckMoviesAddWatchedToWatchlist.CheckedChanged += new System.EventHandler(this.chkIcheckMoviesAddWatchedToWatchlist_CheckedChanged);
             // 
             // chkIcheckMoviesEnabled
             // 
@@ -1424,8 +1452,8 @@
             this.tabPage6.ResumeLayout(false);
             this.grbFlixster.ResumeLayout(false);
             this.grbFlixster.PerformLayout();
-            this.tabPage9.ResumeLayout(false);
             this.tabPage10.ResumeLayout(false);
+            this.tabPage9.ResumeLayout(false);
             this.grbICheckMovies.ResumeLayout(false);
             this.grbICheckMovies.PerformLayout();
             this.ResumeLayout(false);
@@ -1505,7 +1533,7 @@
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.TabPage tabPage8;
-        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.TabPage tabPage10;
         private System.Windows.Forms.GroupBox grbLetterboxd;
         private System.Windows.Forms.Label lblLetterboxdWatched;
         private System.Windows.Forms.Button btnLetterboxdWatchedBrowse;
@@ -1529,12 +1557,14 @@
         private System.Windows.Forms.TextBox txtFlixsterUserId;
         private System.Windows.Forms.CheckBox chkFlixsterEnabled;
         private System.Windows.Forms.CheckBox chkFlixsterSyncWantToSee;
-        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.TabPage tabPage9;
         private System.Windows.Forms.GroupBox grbICheckMovies;
         private System.Windows.Forms.CheckBox chkIcheckMoviesEnabled;
         private System.Windows.Forms.Button btnIcheckMoviesExportBrowse;
         private System.Windows.Forms.TextBox txtiCheckMoviesCsvFile;
         private System.Windows.Forms.Label lblIcheckMoviesFile;
+        private System.Windows.Forms.CheckBox chkIcheckMoviesAddWatchedToWatchlist;
+        private System.Windows.Forms.CheckBox chkIcheckMoviesUpdateWatchedStatus;
     }
 }
 
