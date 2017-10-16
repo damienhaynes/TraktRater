@@ -44,6 +44,7 @@ namespace TraktRater.Sites
             {
                 return;
             }
+
             var icmMovieList = ParseIcheckMoviesCsv();
             
             // Add all movies or only movies that are not already watched based on setting.
@@ -67,6 +68,8 @@ namespace TraktRater.Sites
 
         private static void UpdateWatchedHistory(List<TraktMovieWatched> watchedMovies)
         {
+            UIUtils.UpdateStatus("Updating Trakt watched history with movies from ICheckMovies.");
+
             var watchedToSync = new TraktMovieWatchedSync()
             {
                 Movies = watchedMovies
@@ -78,6 +81,7 @@ namespace TraktRater.Sites
 
         private void AddMoviesToWatchlist(IEnumerable<ICheckMoviesListItem> watchListMovies)
         {
+            UIUtils.UpdateStatus("Updating Trakt watchlist with movies from ICheckMovies.");
             var watchlistToSync = new TraktMovieSync()
             {
                 Movies = watchListMovies.Select(icm => icm.ToTraktMovie()).ToList()
@@ -104,6 +108,7 @@ namespace TraktRater.Sites
 
         private List<ICheckMoviesListItem> ParseIcheckMoviesCsv()
         {
+            UIUtils.UpdateStatus("Parsing ICheckMovies CSV file");
             var textReader = File.OpenText(iCheckMoviesFilename);
 
             var csv = new CsvReader(textReader, csvConfiguration);
