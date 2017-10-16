@@ -86,7 +86,6 @@
         }
         static string traktPassword = null;
 
-
         public static string TraktOAuthToken { get; set; }
 
         public static bool TraktOAuth { get; set; }
