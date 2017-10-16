@@ -43,7 +43,13 @@ namespace TraktRater.Sites.API.iCheckMovies
 
         public TraktMovie ToTraktMovie()
         {
-            return ToTraktMovieWatched();
+            var info = ToTraktMovieWatched();
+            return new TraktMovie()
+            {
+                Year = info.Year,
+                Ids = info.Ids,
+                Title = info.Title
+            };
         }
 
         public TraktMovieWatched ToTraktMovieWatched()
