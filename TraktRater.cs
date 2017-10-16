@@ -983,7 +983,17 @@
             AppSettings.ICheckMoviesFilename = txtiCheckMoviesCsvFile.Text;
         }
 
-        #endregion
 
+        private void chkIcheckMoviesAddWatchedToWatchlist_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.ICheckMoviesAddWatchedMoviesToWatchlist = chkIcheckMoviesAddWatchedToWatchlist.Checked;
+        }
+
+        private void chkIcheckMoviesUpdateWatchedStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.ICheckMoviesUpdateWatchedStatus = chkIcheckMoviesUpdateWatchedStatus.Checked;
+        }
+
+        #endregion
     }
 }

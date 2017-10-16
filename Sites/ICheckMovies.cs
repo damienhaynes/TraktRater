@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using CsvHelper;
 using CsvHelper.Configuration;
+using TraktRater.Settings;
 using TraktRater.Sites.API.iCheckMovies;
 using TraktRater.TraktAPI.DataStructures;
 using TraktRater.UI;
@@ -44,26 +45,46 @@ namespace TraktRater.Sites
                 return;
             }
             var icmMovieList = ParseIcheckMoviesCsv();
-            // Only add items that are not watched to trakt watchlist
-            // TODO: Make configurable
-            var watchListMovies = icmMovieList.Where(icm => !icm.IsChecked).Select(icm => icm.ToTraktMovie()).ToList();
-            var watchedMovies = icmMovieList.Where(icm => icm.IsChecked).Select(icm => icm.ToTraktMovieWatched()).ToList();
-            var watchlistToSync = new TraktMovieSync()
+            
+            // Add all movies or only movies that are not already watched based on setting.
+            var watchListMovies = AppSettings.ICheckMoviesAddWatchedMoviesToWatchlist ? icmMovieList : icmMovieList.Where(icm => !icm.IsChecked).ToList();
+            if (watchListMovies.Any())
             {
-                Movies = watchListMovies
-            };
+                AddMoviesToWatchlist(watchListMovies);
+            }
+
+            if (importCancelled || !AppSettings.ICheckMoviesUpdateWatchedStatus)
+            {
+                return;
+            }
+
+            var watchedMovies = icmMovieList.Where(icm => icm.IsChecked).Select(icm => icm.ToTraktMovieWatched()).ToList();
+            if (watchedMovies.Any())
+            {
+                UpdateWatchedHistory(watchedMovies);
+            }
+        }
+
+        private static void UpdateWatchedHistory(List<TraktMovieWatched> watchedMovies)
+        {
             var watchedToSync = new TraktMovieWatchedSync()
             {
                 Movies = watchedMovies
             };
-            if (importCancelled)
-            {
-                return;
-            }
-            var addToWatchlistResponse = TraktAPI.TraktAPI.AddMoviesToWatchlist(watchlistToSync);
-            HandleResponse(addToWatchlistResponse);
+
             var addToWatchedHistoryResponse = TraktAPI.TraktAPI.AddMoviesToWatchedHistory(watchedToSync);
             HandleResponse(addToWatchedHistoryResponse);
+        }
+
+        private void AddMoviesToWatchlist(IEnumerable<ICheckMoviesListItem> watchListMovies)
+        {
+            var watchlistToSync = new TraktMovieSync()
+            {
+                Movies = watchListMovies.Select(icm => icm.ToTraktMovie()).ToList()
+            };
+
+            var addToWatchlistResponse = TraktAPI.TraktAPI.AddMoviesToWatchlist(watchlistToSync);
+            HandleResponse(addToWatchlistResponse);
         }
 
         private static void HandleResponse(TraktSyncResponse addToWatchlistResponse)

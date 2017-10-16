@@ -86,6 +86,7 @@
         }
         static string traktPassword = null;
 
+
         public static string TraktOAuthToken { get; set; }
 
         public static bool TraktOAuth { get; set; }
@@ -95,6 +96,10 @@
         public static string TMDbSessionId { get; set; }
 
         public static string TMDbRequestToken { get; set; }
+
+        public static bool ICheckMoviesAddWatchedMoviesToWatchlist;
+
+        public static bool ICheckMoviesUpdateWatchedStatus;
 
         public static string ICheckMoviesFilename { get; set; }
 
