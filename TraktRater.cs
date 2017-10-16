@@ -973,9 +973,12 @@
 
         private void EnableIcheckMoviesControls(bool enableIcheckMovies)
         {
-            btnIcheckMoviesExportBrowse.Enabled = true;
-            lblIcheckMoviesFile.Enabled = true;
-            txtiCheckMoviesCsvFile.Enabled = true;
+            btnIcheckMoviesExportBrowse.Enabled = enableIcheckMovies;
+            lblIcheckMoviesFile.Enabled = enableIcheckMovies;
+            txtiCheckMoviesCsvFile.Enabled = enableIcheckMovies;
+            chkIcheckMoviesAddWatchedToWatchlist.Enabled = enableIcheckMovies;
+            chkIcheckMoviesUpdateWatchedStatus.Enabled = enableIcheckMovies;
+            chkIcheckMoviesUpdateWatchedStatus.Enabled = enableIcheckMovies;
         }
 
         private void txtiCheckMoviesCsvFile_TextChanged(object sender, EventArgs e)
