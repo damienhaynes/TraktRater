@@ -91,6 +91,7 @@
             chkTVDbEnabled.Checked = AppSettings.EnableTVDb;
             chkTMDbEnabled.Checked = AppSettings.EnableTMDb;
             chkIMDbEnabled.Checked = AppSettings.EnableIMDb;
+            chkIcheckMoviesEnabled.Checked = AppSettings.EnableICheckMovies;
             chkListalEnabled.Checked = AppSettings.EnableListal;
             chkCritickerEnabled.Checked = AppSettings.EnableCriticker;
             chkLetterboxdEnabled.Checked = AppSettings.EnableLetterboxd;
@@ -538,6 +539,7 @@
             if (AppSettings.EnableCriticker)  sites.Add(new Criticker(AppSettings.CritickerMovieFilename));
             if (AppSettings.EnableLetterboxd) sites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename));
             if (AppSettings.EnableFlixster)   sites.Add(new Flixster(AppSettings.FlixsterUserId, AppSettings.FlixsterSyncWantToSee));
+            if (AppSettings.EnableICheckMovies)   sites.Add(new ICheckMovies(AppSettings.ICheckMoviesFilename));
 
             if (!sites.Any(s => s.Enabled))
             {
@@ -945,6 +947,7 @@
         {
             EnableImdbControls(AppSettings.EnableIMDb);
             EnableTmdbControls(AppSettings.EnableTMDb);
+            EnableIcheckMoviesControls(AppSettings.EnableICheckMovies);
             EnableTvdbControls(AppSettings.EnableTVDb);
             EnableListalControls(AppSettings.EnableListal);
             EnableCritickerControls(AppSettings.EnableCriticker);
@@ -952,7 +955,48 @@
             EnableFlixsterControls(AppSettings.EnableFlixster);
         }
 
-        #endregion
+        private void btnIcheckMoviesBrowse_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "CSV files|*.csv";
+            DialogResult result = dlgFileOpen.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtiCheckMoviesCsvFile.Text = dlgFileOpen.FileName;
+            }
+        }
 
+        private void chkIcheckMoviesEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.EnableICheckMovies = chkIcheckMoviesEnabled.Checked;
+            EnableIcheckMoviesControls(AppSettings.EnableICheckMovies);
+        }
+
+        private void EnableIcheckMoviesControls(bool enableIcheckMovies)
+        {
+            btnIcheckMoviesExportBrowse.Enabled = enableIcheckMovies;
+            lblIcheckMoviesFile.Enabled = enableIcheckMovies;
+            txtiCheckMoviesCsvFile.Enabled = enableIcheckMovies;
+            chkIcheckMoviesAddWatchedToWatchlist.Enabled = enableIcheckMovies;
+            chkIcheckMoviesUpdateWatchedStatus.Enabled = enableIcheckMovies;
+            chkIcheckMoviesUpdateWatchedStatus.Enabled = enableIcheckMovies;
+        }
+
+        private void txtiCheckMoviesCsvFile_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.ICheckMoviesFilename = txtiCheckMoviesCsvFile.Text;
+        }
+
+
+        private void chkIcheckMoviesAddWatchedToWatchlist_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.ICheckMoviesAddWatchedMoviesToWatchlist = chkIcheckMoviesAddWatchedToWatchlist.Checked;
+        }
+
+        private void chkIcheckMoviesUpdateWatchedStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.ICheckMoviesUpdateWatchedStatus = chkIcheckMoviesUpdateWatchedStatus.Checked;
+        }
+
+        #endregion
     }
 }

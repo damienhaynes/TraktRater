@@ -96,6 +96,16 @@ The [Flixster](http://www.flixster.com) provider supports movie ratings from mul
  * Open Settings page with your export data [Export](http://letterboxd.com/settings/data/)
  * Copy your numeric User ID from the URL in the address bar
  * You're now ready to Import!.
+
+ ### iCheckMovies ###
+ The [ICheckMovies](http://www.icheckmovies.com) provider supports watchlists, toplists and lists of watched movies.
+
+ * Logon to www.icheckmovies.com
+ * Go to the list you want to import
+ * Click the button for exporting to csv (may require paid subscription)
+ * Save file to your hard drive.
+ * Select the file in the TraktRater application
+ * You're now ready to import!.
  
 Contributing
 ------------
