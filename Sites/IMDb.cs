@@ -701,6 +701,8 @@
                     if (lRecordNumber == 1)
                     {
                         lFieldHeadings = lFields;
+                        FileLog.Info($"Found headers: {string.Join(", ", lFieldHeadings)}");
+
                         continue;
                     }
 
@@ -709,7 +711,7 @@
 
                     // get each field value
                     int lIndex = 0;
-                    var lExportItem = new Dictionary<string, string>();
+                    var lExportItem = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
                     foreach (string field in lFields)
                     {

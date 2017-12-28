@@ -13,24 +13,25 @@
         {
             IMDbType retValue = IMDbType.Unknown;
 
-            switch (itemType)
+            switch (itemType.ToLower())
             {
-                case "Video":
-                case "Documentary":
-                case "TV Movie":
-                case "Short Film":
-                case "Feature Film":
-                case "Unknown Work":
+                case "video":
+                case "documentary":
+                case "tv movie":
+                case "short film":
+                case "feature film":
+                case "unknown work":
+                case "movie":
                     retValue = IMDbType.Movie;
                     break;
 
-                case "TV Special":
-                case "Mini-Series":
-                case "TV Series":
+                case "tv special":
+                case "mini-series":
+                case "tv series":
                     retValue = IMDbType.Show;
                     break;
 
-                case "TV Episode":
+                case "tv episode":
                     retValue = IMDbType.Episode;
                     break;
                 
