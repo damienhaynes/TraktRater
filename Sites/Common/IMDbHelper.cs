@@ -343,10 +343,14 @@
         {
             string createdDate = DateTime.UtcNow.ToString().ToISO8601();
 
-            // check if we have the 'created' field
+            // The 'created' field is used for watchlists and 'date added' for ratings
             if (item.ContainsKey(IMDbFieldMapping.cCreated))
             {
                 createdDate = GetLastCreatedDate(item[IMDbFieldMapping.cCreated]);
+            }
+            else if (item.ContainsKey(IMDbFieldMapping.cAdded))
+            {
+                createdDate = GetLastCreatedDate(item[IMDbFieldMapping.cAdded]);
             }
 
             return createdDate;
@@ -355,21 +359,15 @@
         static string GetLastCreatedDate(string imdbDateTime)
         {
             string createdDate = DateTime.Now.ToString().ToISO8601();
-
-            // check if we have the 'created' field
+            
             if (!string.IsNullOrEmpty(imdbDateTime))
             {
-                // date is in the form:
-                // Tue Mar  4 00:00:00 2014
-                string[] splits = imdbDateTime.Split(new[] { " ", "  " }, StringSplitOptions.RemoveEmptyEntries);
-                if (splits.Count() == 5)
+                // date is in the form 'YYYY-MM-DD'
+                string[] splits = imdbDateTime.Split(new[] { "-"}, StringSplitOptions.RemoveEmptyEntries);
+                if (splits.Count() == 3)
                 {
-                    // make date in form DD MMM YYYY
-                    DateTime result;
-                    if (DateTime.TryParse(string.Format("{0} {1} {2}", splits[2], splits[1], splits[4]), out result))
-                    {
-                        createdDate = result.ToString().ToISO8601();
-                    }
+                    var localisedDate = new DateTime(Convert.ToInt16(splits[0]), Convert.ToInt16(splits[1]), Convert.ToInt16(splits[2]));
+                    createdDate = localisedDate.ToString().ToISO8601();
                 }
             }
 
