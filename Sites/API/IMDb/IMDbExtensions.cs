@@ -17,26 +17,27 @@
             {
                 case "video":
                 case "documentary":
-                case "tv movie":
-                case "short film":
-                case "feature film":
-                case "unknown work":
+                case "tvmovie":
+                case "tvshort":
+                case "featurefilm":
+                case "unknownwork":
                 case "movie":
                     retValue = IMDbType.Movie;
                     break;
 
-                case "tv special":
-                case "mini-series":
-                case "tv series":
+                case "tvspecial":
+                case "tvminiseries":
+                case "tvseries":
                     retValue = IMDbType.Show;
                     break;
 
-                case "tv episode":
+                case "tvepisode":
                     retValue = IMDbType.Episode;
                     break;
                 
                 default:
-                    retValue = IMDbType.Unknown;
+                    // most likely a movie
+                    retValue = IMDbType.Movie;
                     break;
             }
             return retValue;
