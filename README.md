@@ -26,14 +26,14 @@ The following data sources are currently supported by this tool:
 The [IMDb](http://imdb.com) provider supports tv show, episode and movie ratings. TraktRater also supports import of your watchlist from IMDb to trakt.tv. Import can either be via CSV export (recommended) or by scraping online using your user id:
 
  * Login to [IMDb](http://imdb.com).
- * Click on the **Account** link in the top right hand corner of page.
- * From the **History** table click on [ratings history](http://www.imdb.com/list/ratings).
- * Scroll to the bottom of the page and click on the **Export this List** link.
+ * Click on your **Username** link in the top right hand corner of page.
+ * From the **Quick Links** table click on [Ratings](http://www.imdb.com/list/ratings).
+ * Click on the menu drop-down in the top right of the table and select **Export**.
  * Save the csv file to a folder on your computer.
  * In the TraktRater tool, enter in the filename in the textbox provided.
  * Repeat process to export your Watchlist.csv file and Custom lists, if you don't want to import your watchlist then keep field(s) empty.
 
-If you choose to do a **Web Scrape**, ensure your profile is marked as **Public** otherwise it will fail. Your IMDb User ID can be found from the address bar in your browser window, look for something like **ur13828119**. Custom list import via webscrape is currently not supported.
+If you choose to do a **Web Scrape**, ensure your profile is marked as **Public** otherwise it will fail. Your IMDb User ID can be found from the address bar in your browser window, look for something like **ur13828119**. Custom list import via webscrape is currently not supported. Its recommended that you use CSV mode if you encounter any issues.
  
 ### TVDb ###
 The [TVDb](http://thetvdb.com) provider supports tv show and episode ratings. TraktRater requires your Account Identifier, **NOT** your username. You can find your account id by following these steps:
