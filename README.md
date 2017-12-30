@@ -98,7 +98,7 @@ The [Flixster](http://www.flixster.com) provider supports movie ratings from mul
  * You're now ready to Import!.
 
  ### iCheckMovies ###
- The [ICheckMovies](http://www.icheckmovies.com) provider supports watchlists, toplists and lists of watched movies.
+ The [iCheckMovies](http://www.movies.com) provider supports watchlists, toplists and lists of watched movies.
 
  * Logon to www.icheckmovies.com
  * Go to the list you want to import

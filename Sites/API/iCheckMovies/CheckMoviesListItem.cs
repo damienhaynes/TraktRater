@@ -4,7 +4,7 @@ using TraktRater.TraktAPI.DataStructures;
 
 namespace TraktRater.Sites.API.iCheckMovies
 {
-    class ICheckMoviesListItem
+    class CheckMoviesListItem
     {
         public string Title { get; set; }
         public int Year { get; set; }

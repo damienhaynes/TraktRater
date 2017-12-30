@@ -539,7 +539,7 @@
             if (AppSettings.EnableCriticker)  sites.Add(new Criticker(AppSettings.CritickerMovieFilename));
             if (AppSettings.EnableLetterboxd) sites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename));
             if (AppSettings.EnableFlixster)   sites.Add(new Flixster(AppSettings.FlixsterUserId, AppSettings.FlixsterSyncWantToSee));
-            if (AppSettings.EnableICheckMovies)   sites.Add(new ICheckMovies(AppSettings.ICheckMoviesFilename));
+            if (AppSettings.EnableICheckMovies)   sites.Add(new CheckMovies(AppSettings.ICheckMoviesFilename));
 
             if (!sites.Any(s => s.Enabled))
             {

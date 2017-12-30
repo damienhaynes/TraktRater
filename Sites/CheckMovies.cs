@@ -11,11 +11,10 @@ using TraktRater.UI;
 
 namespace TraktRater.Sites
 {
-    // ReSharper disable once InconsistentNaming
-    internal class ICheckMovies : IRateSite
+    internal class CheckMovies : IRateSite
     {
-        private string iCheckMoviesFilename;
-        private bool importCancelled;
+        private string CheckMoviesFilename;
+        private bool ImportCancelled;
         private readonly CsvConfiguration csvConfiguration = new CsvConfiguration()
         {
             HasHeaderRecord = true,
@@ -23,43 +22,43 @@ namespace TraktRater.Sites
             Delimiter = ";"
         };
 
-        public ICheckMovies(string iCheckMoviesFilename)
+        public CheckMovies(string checkMoviesFilename)
         {
-            this.iCheckMoviesFilename = iCheckMoviesFilename;
-            Enabled = File.Exists(iCheckMoviesFilename);
+            CheckMoviesFilename = checkMoviesFilename;
+            Enabled = File.Exists(checkMoviesFilename);
         }
 
-        public string Name => "ICheckMovies";
+        public string Name => "iCheckMovies";
 
         public bool Enabled { get; set; }
 
         public void Cancel()
         {
-            importCancelled = true;
+            ImportCancelled = true;
         }
 
         public void ImportRatings()
         {
-            if (importCancelled)
+            if (ImportCancelled)
             {
                 return;
             }
 
-            var icmMovieList = ParseIcheckMoviesCsv();
+            var cmMovieList = ParseCheckMoviesCsv();
             
             // Add all movies or only movies that are not already watched based on setting.
-            var watchListMovies = AppSettings.ICheckMoviesAddWatchedMoviesToWatchlist ? icmMovieList : icmMovieList.Where(icm => !icm.IsChecked).ToList();
+            var watchListMovies = AppSettings.ICheckMoviesAddWatchedMoviesToWatchlist ? cmMovieList : cmMovieList.Where(cm => !cm.IsChecked).ToList();
             if (watchListMovies.Any())
             {
                 AddMoviesToWatchlist(watchListMovies);
             }
 
-            if (importCancelled || !AppSettings.ICheckMoviesUpdateWatchedStatus)
+            if (ImportCancelled || !AppSettings.ICheckMoviesUpdateWatchedStatus)
             {
                 return;
             }
 
-            var watchedMovies = icmMovieList.Where(icm => icm.IsChecked).Select(icm => icm.ToTraktMovieWatched()).ToList();
+            var watchedMovies = cmMovieList.Where(icm => icm.IsChecked).Select(cm => cm.ToTraktMovieWatched()).ToList();
             if (watchedMovies.Any())
             {
                 UpdateWatchedHistory(watchedMovies);
@@ -68,7 +67,7 @@ namespace TraktRater.Sites
 
         private static void UpdateWatchedHistory(List<TraktMovieWatched> watchedMovies)
         {
-            UIUtils.UpdateStatus("Updating Trakt watched history with movies from ICheckMovies.");
+            UIUtils.UpdateStatus("Updating Trakt watched history with movies from iCheckMovies.");
 
             if (watchedMovies.Count() > 0)
             {
@@ -76,7 +75,7 @@ namespace TraktRater.Sites
                 int pages = (int)System.Math.Ceiling((double)watchedMovies.Count() / pageSize);
                 for (int i = 0; i < pages; i++)
                 {
-                    UIUtils.UpdateStatus("Importing page {0}/{1} ICheckMovies watched history...", i + 1, pages);
+                    UIUtils.UpdateStatus("Importing page {0}/{1} iCheckMovies watched history...", i + 1, pages);
 
                     var watchedToSync = new TraktMovieWatchedSync()
                     {
@@ -89,9 +88,9 @@ namespace TraktRater.Sites
             }
         }
 
-        private void AddMoviesToWatchlist(IEnumerable<ICheckMoviesListItem> watchListMovies)
+        private void AddMoviesToWatchlist(IEnumerable<CheckMoviesListItem> watchListMovies)
         {
-            UIUtils.UpdateStatus("Updating Trakt watchlist with movies from ICheckMovies.");
+            UIUtils.UpdateStatus("Updating Trakt watchlist with movies from iCheckMovies.");
 
             if (watchListMovies.Count() > 0)
             {
@@ -99,7 +98,7 @@ namespace TraktRater.Sites
                 int pages = (int)System.Math.Ceiling((double)watchListMovies.Count() / pageSize);
                 for (int i = 0; i < pages; i++)
                 {
-                    UIUtils.UpdateStatus("Importing page {0}/{1} ICheckMovies watchlist...", i + 1, pages);
+                    UIUtils.UpdateStatus("Importing page {0}/{1} iCheckMovies watchlist...", i + 1, pages);
 
                     var watchlistToSync = new TraktMovieSync()
                     {
@@ -116,7 +115,7 @@ namespace TraktRater.Sites
         {
             if (addToWatchlistResponse == null)
             {
-                UIUtils.UpdateStatus("Error importing ICheckMovies list to trakt.tv", true);
+                UIUtils.UpdateStatus("Error importing iCheckMovies list to trakt.tv", true);
                 Thread.Sleep(2000);
             }
             else if (addToWatchlistResponse.NotFound.Movies.Count > 0)
@@ -127,13 +126,13 @@ namespace TraktRater.Sites
             }
         }
 
-        private List<ICheckMoviesListItem> ParseIcheckMoviesCsv()
+        private List<CheckMoviesListItem> ParseCheckMoviesCsv()
         {
-            UIUtils.UpdateStatus("Parsing ICheckMovies CSV file");
-            var textReader = File.OpenText(iCheckMoviesFilename);
+            UIUtils.UpdateStatus("Parsing iCheckMovies CSV file");
+            var textReader = File.OpenText(CheckMoviesFilename);
 
             var csv = new CsvReader(textReader, csvConfiguration);
-            return csv.GetRecords<ICheckMoviesListItem>().ToList();
+            return csv.GetRecords<CheckMoviesListItem>().ToList();
         }
     }
 
