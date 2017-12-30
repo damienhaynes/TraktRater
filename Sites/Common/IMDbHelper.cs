@@ -223,6 +223,9 @@
             return null;
         }
 
+        /// <summary>
+        /// TODO: Remove episode lookup from theTVDb.com and search from trakt.tv instead now that API methods exist
+        /// </summary>
         public static IMDbEpisode GetIMDbEpisodeFromTVDb(Dictionary<string, string> episode)
         {
             try
@@ -316,7 +319,6 @@
                 //       we're also not setting the created date from the webrequest.
                 var imdbEpisode = new IMDbEpisode
                 {
-                    Created = episode[IMDbFieldMapping.cProvider].IsCSVExport() ? episode[IMDbFieldMapping.cCreated] : null,
                     EpisodeName = tvEpisodeName,
                     EpisodeNumber = tvdbEpisodeInfo.EpisodeNumber,
                     ImdbId = episode[IMDbFieldMapping.cProvider].IsCSVExport() ? episode[IMDbFieldMapping.cIMDbID] : null,
@@ -325,6 +327,12 @@
                     TvdbId = tvdbEpisodeInfo.Id
                 };
 
+                // we will convert this to the correct date format later
+                if (episode.ContainsKey(IMDbFieldMapping.cCreated))
+                    imdbEpisode.Created = episode[IMDbFieldMapping.cCreated];
+                if (episode.ContainsKey(IMDbFieldMapping.cAdded))
+                    imdbEpisode.Created = episode[IMDbFieldMapping.cAdded];
+                
                 if (episode.ContainsKey(IMDbFieldMapping.cRating))
                     imdbEpisode.Rating = string.IsNullOrEmpty(episode[IMDbFieldMapping.cRating]) ? 0 : int.Parse(episode[IMDbFieldMapping.cRating]);
 
