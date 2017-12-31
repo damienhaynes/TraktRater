@@ -14,17 +14,19 @@ namespace TraktRater.Sites
     internal class CheckMovies : IRateSite
     {
         private string CheckMoviesFilename;
+        private int DelimiterOption;
         private bool ImportCancelled;
         private readonly CsvConfiguration csvConfiguration = new CsvConfiguration()
         {
             HasHeaderRecord = true,
-            IsHeaderCaseSensitive = false,
-            Delimiter = ";"
+            IsHeaderCaseSensitive = false
         };
 
-        public CheckMovies(string checkMoviesFilename)
+        public CheckMovies(string checkMoviesFilename, int delimiter)
         {
             CheckMoviesFilename = checkMoviesFilename;
+            DelimiterOption = delimiter;
+
             Enabled = File.Exists(checkMoviesFilename);
         }
 
@@ -128,6 +130,9 @@ namespace TraktRater.Sites
 
         private List<CheckMoviesListItem> ParseCheckMoviesCsv()
         {
+            // Delimiter options are '0: Comma' and '1: Semicolon'
+            csvConfiguration.Delimiter = DelimiterOption == 0 ? "," : ";";
+
             UIUtils.UpdateStatus("Parsing iCheckMovies CSV file");
             var textReader = File.OpenText(CheckMoviesFilename);
 

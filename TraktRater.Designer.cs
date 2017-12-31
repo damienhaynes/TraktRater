@@ -127,14 +127,14 @@
             this.chkFlixsterEnabled = new System.Windows.Forms.CheckBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.grbICheckMovies = new System.Windows.Forms.GroupBox();
+            this.lblCheckMoviesDelimiter = new System.Windows.Forms.Label();
+            this.cboCheckMoviesDelimiter = new System.Windows.Forms.ComboBox();
             this.chkCheckMoviesUpdateWatchedStatus = new System.Windows.Forms.CheckBox();
             this.chkCheckMoviesAddWatchedToWatchlist = new System.Windows.Forms.CheckBox();
             this.chkCheckMoviesEnabled = new System.Windows.Forms.CheckBox();
             this.btnCheckMoviesExportBrowse = new System.Windows.Forms.Button();
             this.lblCheckMoviesFile = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.cboCheckMoviesDelimiter = new System.Windows.Forms.ComboBox();
-            this.lblCheckMoviesDelimiter = new System.Windows.Forms.Label();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -510,8 +510,6 @@
             this.txtCheckMoviesCsvFile.Name = "txtCheckMoviesCsvFile";
             this.txtCheckMoviesCsvFile.Size = new System.Drawing.Size(310, 26);
             this.txtCheckMoviesCsvFile.TabIndex = 2;
-            this.tipHelp.SetToolTip(this.txtCheckMoviesCsvFile, "Leave field blank if you\'re not interested in importing a watchlist from IMDb to " +
-        "trakt.tv.");
             this.txtCheckMoviesCsvFile.TextChanged += new System.EventHandler(this.txtCheckMoviesCsvFile_TextChanged);
             // 
             // txtLetterboxdRatingsFile
@@ -1340,6 +1338,28 @@
             this.grbICheckMovies.TabStop = false;
             this.grbICheckMovies.Text = "iCheckMovies";
             // 
+            // lblCheckMoviesDelimiter
+            // 
+            this.lblCheckMoviesDelimiter.AutoSize = true;
+            this.lblCheckMoviesDelimiter.Location = new System.Drawing.Point(38, 157);
+            this.lblCheckMoviesDelimiter.Name = "lblCheckMoviesDelimiter";
+            this.lblCheckMoviesDelimiter.Size = new System.Drawing.Size(71, 20);
+            this.lblCheckMoviesDelimiter.TabIndex = 4;
+            this.lblCheckMoviesDelimiter.Text = "Delimiter";
+            // 
+            // cboCheckMoviesDelimiter
+            // 
+            this.cboCheckMoviesDelimiter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboCheckMoviesDelimiter.FormattingEnabled = true;
+            this.cboCheckMoviesDelimiter.Items.AddRange(new object[] {
+            "Comma",
+            "Semicolon"});
+            this.cboCheckMoviesDelimiter.Location = new System.Drawing.Point(38, 187);
+            this.cboCheckMoviesDelimiter.Name = "cboCheckMoviesDelimiter";
+            this.cboCheckMoviesDelimiter.Size = new System.Drawing.Size(310, 28);
+            this.cboCheckMoviesDelimiter.TabIndex = 5;
+            this.cboCheckMoviesDelimiter.SelectedIndexChanged += new System.EventHandler(this.cboCheckMoviesDelimiter_SelectedIndexChanged);
+            // 
             // chkCheckMoviesUpdateWatchedStatus
             // 
             this.chkCheckMoviesUpdateWatchedStatus.AutoSize = true;
@@ -1410,27 +1430,6 @@
             this.tabPage10.TabIndex = 10;
             this.tabPage10.Text = "Options";
             this.tabPage10.UseVisualStyleBackColor = true;
-            // 
-            // cboCheckMoviesDelimiter
-            // 
-            this.cboCheckMoviesDelimiter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboCheckMoviesDelimiter.FormattingEnabled = true;
-            this.cboCheckMoviesDelimiter.Items.AddRange(new object[] {
-            "Comma",
-            "Semicolon"});
-            this.cboCheckMoviesDelimiter.Location = new System.Drawing.Point(38, 187);
-            this.cboCheckMoviesDelimiter.Name = "cboCheckMoviesDelimiter";
-            this.cboCheckMoviesDelimiter.Size = new System.Drawing.Size(310, 28);
-            this.cboCheckMoviesDelimiter.TabIndex = 5;
-            // 
-            // lblCheckMoviesDelimiter
-            // 
-            this.lblCheckMoviesDelimiter.AutoSize = true;
-            this.lblCheckMoviesDelimiter.Location = new System.Drawing.Point(38, 157);
-            this.lblCheckMoviesDelimiter.Name = "lblCheckMoviesDelimiter";
-            this.lblCheckMoviesDelimiter.Size = new System.Drawing.Size(71, 20);
-            this.lblCheckMoviesDelimiter.TabIndex = 4;
-            this.lblCheckMoviesDelimiter.Text = "Delimiter";
             // 
             // TraktRater
             // 

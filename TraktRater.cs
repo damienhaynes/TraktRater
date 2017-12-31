@@ -87,6 +87,7 @@
             txtFlixsterUserId.Text = AppSettings.FlixsterUserId;
             txtCheckMoviesCsvFile.Text = AppSettings.CheckMoviesFilename;
             chkFlixsterSyncWantToSee.Checked = AppSettings.FlixsterSyncWantToSee;
+            cboCheckMoviesDelimiter.SelectedIndex = AppSettings.CheckMoviesDelimiter;
             chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
             chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
             chkTVDbEnabled.Checked = AppSettings.EnableTVDb;
@@ -517,6 +518,11 @@
         {
             AppSettings.CheckMoviesUpdateWatchedHistory = chkCheckMoviesUpdateWatchedStatus.Checked;
         }
+        
+        private void cboCheckMoviesDelimiter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AppSettings.CheckMoviesDelimiter = cboCheckMoviesDelimiter.SelectedIndex;
+        }
 
         private void lnkLogFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -567,7 +573,7 @@
             if (AppSettings.EnableCriticker)        sites.Add(new Criticker(AppSettings.CritickerMovieFilename));
             if (AppSettings.EnableLetterboxd)       sites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename));
             if (AppSettings.EnableFlixster)         sites.Add(new Flixster(AppSettings.FlixsterUserId, AppSettings.FlixsterSyncWantToSee));
-            if (AppSettings.EnableCheckMovies)      sites.Add(new CheckMovies(AppSettings.CheckMoviesFilename));
+            if (AppSettings.EnableCheckMovies)      sites.Add(new CheckMovies(AppSettings.CheckMoviesFilename, AppSettings.CheckMoviesDelimiter));
 
             if (!sites.Any(s => s.Enabled))
             {
