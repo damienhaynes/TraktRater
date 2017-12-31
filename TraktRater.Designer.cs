@@ -1341,7 +1341,7 @@
             // lblCheckMoviesDelimiter
             // 
             this.lblCheckMoviesDelimiter.AutoSize = true;
-            this.lblCheckMoviesDelimiter.Location = new System.Drawing.Point(38, 157);
+            this.lblCheckMoviesDelimiter.Location = new System.Drawing.Point(36, 157);
             this.lblCheckMoviesDelimiter.Name = "lblCheckMoviesDelimiter";
             this.lblCheckMoviesDelimiter.Size = new System.Drawing.Size(71, 20);
             this.lblCheckMoviesDelimiter.TabIndex = 4;
@@ -1381,6 +1381,7 @@
             this.chkCheckMoviesAddWatchedToWatchlist.Size = new System.Drawing.Size(264, 24);
             this.chkCheckMoviesAddWatchedToWatchlist.TabIndex = 6;
             this.chkCheckMoviesAddWatchedToWatchlist.Text = "Add watched movies to watchlist";
+            this.tipHelp.SetToolTip(this.chkCheckMoviesAddWatchedToWatchlist, resources.GetString("chkCheckMoviesAddWatchedToWatchlist.ToolTip"));
             this.chkCheckMoviesAddWatchedToWatchlist.UseVisualStyleBackColor = true;
             this.chkCheckMoviesAddWatchedToWatchlist.CheckedChanged += new System.EventHandler(this.chkCheckMoviesAddWatchedToWatchlist_CheckedChanged);
             // 
@@ -1412,12 +1413,12 @@
             // 
             this.lblCheckMoviesFile.AutoSize = true;
             this.lblCheckMoviesFile.Enabled = false;
-            this.lblCheckMoviesFile.Location = new System.Drawing.Point(38, 89);
+            this.lblCheckMoviesFile.Location = new System.Drawing.Point(36, 89);
             this.lblCheckMoviesFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCheckMoviesFile.Name = "lblCheckMoviesFile";
-            this.lblCheckMoviesFile.Size = new System.Drawing.Size(154, 20);
+            this.lblCheckMoviesFile.Size = new System.Drawing.Size(143, 20);
             this.lblCheckMoviesFile.TabIndex = 1;
-            this.lblCheckMoviesFile.Text = "Watchlist File or List:";
+            this.lblCheckMoviesFile.Text = "Movie list to import:";
             // 
             // tabPage10
             // 

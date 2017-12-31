@@ -493,7 +493,13 @@
         {
             AppSettings.FlixsterSyncWantToSee = chkFlixsterSyncWantToSee.Checked;            
         }
-        
+
+        private void chkCheckMoviesEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.EnableCheckMovies = chkCheckMoviesEnabled.Checked;
+            EnableCheckMoviesControls(AppSettings.EnableCheckMovies);
+        }
+
         private void btnCheckMoviesBrowse_Click(object sender, EventArgs e)
         {
             dlgFileOpen.Filter = "CSV files|*.csv";
@@ -989,20 +995,16 @@
             EnableFlixsterControls(AppSettings.EnableFlixster);
         }
 
-        private void chkCheckMoviesEnabled_CheckedChanged(object sender, EventArgs e)
+        private void EnableCheckMoviesControls(bool enableState)
         {
-            AppSettings.EnableCheckMovies = chkCheckMoviesEnabled.Checked;
-            EnableCheckMoviesControls(AppSettings.EnableCheckMovies);
-        }
-
-        private void EnableCheckMoviesControls(bool enableCheckMovies)
-        {
-            btnCheckMoviesExportBrowse.Enabled = enableCheckMovies;
-            lblCheckMoviesFile.Enabled = enableCheckMovies;
-            txtCheckMoviesCsvFile.Enabled = enableCheckMovies;
-            chkCheckMoviesAddWatchedToWatchlist.Enabled = enableCheckMovies;
-            chkCheckMoviesUpdateWatchedStatus.Enabled = enableCheckMovies;
-            chkCheckMoviesUpdateWatchedStatus.Enabled = enableCheckMovies;
+            btnCheckMoviesExportBrowse.Enabled = enableState;
+            lblCheckMoviesFile.Enabled = enableState;
+            lblCheckMoviesDelimiter.Enabled = enableState;
+            txtCheckMoviesCsvFile.Enabled = enableState;
+            chkCheckMoviesAddWatchedToWatchlist.Enabled = enableState;
+            chkCheckMoviesUpdateWatchedStatus.Enabled = enableState;
+            chkCheckMoviesUpdateWatchedStatus.Enabled = enableState;
+            cboCheckMoviesDelimiter.Enabled = enableState;
         }
 
         #endregion

@@ -48,28 +48,28 @@ namespace TraktRater.Sites
 
             var cmMovieList = ParseCheckMoviesCsv();
             
-            // Add all movies or only movies that are not already watched based on setting.
-            var watchListMovies = AppSettings.CheckMoviesAddWatchedMoviesToWatchlist ? cmMovieList : cmMovieList.Where(cm => !cm.IsChecked).ToList();
+            // Add movies to watchlist
+            var watchListMovies = AppSettings.CheckMoviesAddWatchedMoviesToWatchlist ? cmMovieList.Where(cm => cm.IsChecked) : cmMovieList.Where(cm => cm.InWatchlist).ToList();
             if (watchListMovies.Any())
             {
                 AddMoviesToWatchlist(watchListMovies);
+                if (ImportCancelled) return;
             }
-
-            if (ImportCancelled || !AppSettings.CheckMoviesUpdateWatchedHistory)
+            
+            // add movies to watched history
+            if (AppSettings.CheckMoviesUpdateWatchedHistory)
             {
-                return;
-            }
-
-            var watchedMovies = cmMovieList.Where(icm => icm.IsChecked).Select(cm => cm.ToTraktMovieWatched()).ToList();
-            if (watchedMovies.Any())
-            {
-                UpdateWatchedHistory(watchedMovies);
+                var watchedMovies = cmMovieList.Where(icm => icm.IsChecked).Select(cm => cm.ToTraktMovieWatched()).ToList();
+                if (watchedMovies.Any())
+                {
+                    AddMoviesToWatchedHistory(watchedMovies);
+                }
             }
         }
 
-        private static void UpdateWatchedHistory(List<TraktMovieWatched> watchedMovies)
+        private static void AddMoviesToWatchedHistory(List<TraktMovieWatched> watchedMovies)
         {
-            UIUtils.UpdateStatus("Updating Trakt watched history with movies from iCheckMovies.");
+            UIUtils.UpdateStatus("Updating Trakt watched history with {0} movies from iCheckMovies.", watchedMovies.Count());
 
             if (watchedMovies.Count() > 0)
             {
@@ -92,7 +92,7 @@ namespace TraktRater.Sites
 
         private void AddMoviesToWatchlist(IEnumerable<CheckMoviesListItem> watchListMovies)
         {
-            UIUtils.UpdateStatus("Updating Trakt watchlist with movies from iCheckMovies.");
+            UIUtils.UpdateStatus("Updating Trakt watchlist with {0} movies from iCheckMovies.", watchListMovies.Count());
 
             if (watchListMovies.Count() > 0)
             {
@@ -113,17 +113,17 @@ namespace TraktRater.Sites
             }
         }
 
-        private static void HandleResponse(TraktSyncResponse addToWatchlistResponse)
+        private static void HandleResponse(TraktSyncResponse response)
         {
-            if (addToWatchlistResponse == null)
+            if (response == null)
             {
                 UIUtils.UpdateStatus("Error importing iCheckMovies list to trakt.tv", true);
                 Thread.Sleep(2000);
             }
-            else if (addToWatchlistResponse.NotFound.Movies.Count > 0)
+            else if (response.NotFound.Movies.Count > 0)
             {
                 UIUtils.UpdateStatus("Unable to process {0} movies as they're not found on trakt.tv!",
-                    addToWatchlistResponse.NotFound.Movies.Count);
+                    response.NotFound.Movies.Count);
                 Thread.Sleep(1000);
             }
         }
