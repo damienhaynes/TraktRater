@@ -45,6 +45,9 @@
         const string cFlixsterSyncWantToSee = "FlixsterSyncWantToSee";
         const string cMarkAsWatched = "MarkAsWatched";
         const string cIgnoreWatchedForWatchlist = "IgnoreWatchedForWatchlist";
+        const string cCheckMoviesFilename = "CheckMoviesFilename";
+        const string cCheckMoviesAddWatchedMoviesToWatchlist = "CheckMoviesAddWatchedMoviesToWatchlist";
+        const string cCheckMoviesUpdateWatchedHistory = "CheckMoviesUpdateWatchedHistory";
         const string cEnableTMDb = "EnableTMDb";
         const string cEnableTVDb = "EnableTVDb";
         const string cEnableIMDb = "EnableIMDb";
@@ -52,6 +55,7 @@
         const string cEnableCriticker = "EnableCriticker";
         const string cEnableLetterboxd = "EnableLetterboxd";
         const string cEnableFlixster = "EnableFlixster";
+        const string cEnableCheckMovies = "EnableCheckMovies";
         const string cLogLevel = "LogLevel";
         const string cBatchSize = "BatchSize";
         const string cWatchedOnReleaseDay = "WatchedOnReleaseDay";
@@ -96,11 +100,11 @@
 
         public static string TMDbRequestToken { get; set; }
 
-        public static bool ICheckMoviesAddWatchedMoviesToWatchlist;
+        public static bool CheckMoviesAddWatchedMoviesToWatchlist;
 
-        public static bool ICheckMoviesUpdateWatchedStatus;
+        public static bool CheckMoviesUpdateWatchedHistory;
 
-        public static string ICheckMoviesFilename { get; set; }
+        public static string CheckMoviesFilename { get; set; }
 
         public static string IMDbRatingsFilename { get; set; }
         
@@ -143,11 +147,11 @@
         public static bool EnableTVDb { get; set; }
         public static bool EnableTMDb { get; set; }
         public static bool EnableIMDb { get; set; }
-        public static bool EnableICheckMovies { get; set; }
+        public static bool EnableCheckMovies { get; set; }
         public static bool EnableListal { get; set; }
         public static bool EnableCriticker { get; set; }
         public static bool EnableLetterboxd { get; set; }
-        public static bool EnableFlixster { get; set; }
+        public static bool EnableFlixster { get; set; }        
 
         public static LoggingSeverity LogSeverityLevel { get; set; }
 
@@ -209,6 +213,9 @@
                 LetterboxdDiaryFilename = xmlReader.GetSettingValueAsString(cLetterboxdDiaryFilename, string.Empty);
                 FlixsterUserId = xmlReader.GetSettingValueAsString(cFlixsterUserId, string.Empty);
                 FlixsterSyncWantToSee = xmlReader.GetSettingValueAsBool(cFlixsterSyncWantToSee, true);
+                CheckMoviesFilename = xmlReader.GetSettingValueAsString(cCheckMoviesFilename, string.Empty);
+                CheckMoviesUpdateWatchedHistory = xmlReader.GetSettingValueAsBool(cCheckMoviesUpdateWatchedHistory, true);
+                CheckMoviesAddWatchedMoviesToWatchlist = xmlReader.GetSettingValueAsBool(cCheckMoviesAddWatchedMoviesToWatchlist, false);
                 MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
                 IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
                 EnableIMDb = xmlReader.GetSettingValueAsBool(cEnableIMDb, false);
@@ -218,6 +225,7 @@
                 EnableCriticker = xmlReader.GetSettingValueAsBool(cEnableCriticker, false);
                 EnableLetterboxd = xmlReader.GetSettingValueAsBool(cEnableLetterboxd, false);
                 EnableFlixster = xmlReader.GetSettingValueAsBool(cEnableFlixster, false);
+                EnableCheckMovies = xmlReader.GetSettingValueAsBool(cEnableCheckMovies, false);
                 LogSeverityLevel = (LoggingSeverity)(xmlReader.GetSettingValueAsInt(cLogLevel, 3));
                 BatchSize = xmlReader.GetSettingValueAsInt(cBatchSize, 50);
                 WatchedOnReleaseDay = xmlReader.GetSettingValueAsBool(cWatchedOnReleaseDay, false);
@@ -277,6 +285,9 @@
             xmlWriter.WriteSetting(cLetterboxdDiaryFilename, LetterboxdDiaryFilename);
             xmlWriter.WriteSetting(cFlixsterUserId, FlixsterUserId);
             xmlWriter.WriteSetting(cFlixsterSyncWantToSee, FlixsterSyncWantToSee.ToString());
+            xmlWriter.WriteSetting(cCheckMoviesFilename, CheckMoviesFilename);
+            xmlWriter.WriteSetting(cCheckMoviesAddWatchedMoviesToWatchlist, CheckMoviesAddWatchedMoviesToWatchlist.ToString());
+            xmlWriter.WriteSetting(cCheckMoviesUpdateWatchedHistory, CheckMoviesUpdateWatchedHistory.ToString());
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
             xmlWriter.WriteSetting(cIgnoreWatchedForWatchlist, IgnoreWatchedForWatchlist.ToString());
             xmlWriter.WriteSetting(cEnableIMDb, EnableIMDb.ToString());
@@ -286,6 +297,7 @@
             xmlWriter.WriteSetting(cEnableCriticker, EnableCriticker.ToString());
             xmlWriter.WriteSetting(cEnableLetterboxd, EnableLetterboxd.ToString());
             xmlWriter.WriteSetting(cEnableFlixster, EnableFlixster.ToString());
+            xmlWriter.WriteSetting(cEnableCheckMovies, EnableCheckMovies.ToString());
             xmlWriter.WriteSetting(cLogLevel, ((int)LogSeverityLevel).ToString());
             xmlWriter.WriteSetting(cBatchSize, BatchSize.ToString());
             xmlWriter.WriteSetting(cWatchedOnReleaseDay, WatchedOnReleaseDay.ToString());

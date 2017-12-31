@@ -47,13 +47,13 @@ namespace TraktRater.Sites
             var cmMovieList = ParseCheckMoviesCsv();
             
             // Add all movies or only movies that are not already watched based on setting.
-            var watchListMovies = AppSettings.ICheckMoviesAddWatchedMoviesToWatchlist ? cmMovieList : cmMovieList.Where(cm => !cm.IsChecked).ToList();
+            var watchListMovies = AppSettings.CheckMoviesAddWatchedMoviesToWatchlist ? cmMovieList : cmMovieList.Where(cm => !cm.IsChecked).ToList();
             if (watchListMovies.Any())
             {
                 AddMoviesToWatchlist(watchListMovies);
             }
 
-            if (ImportCancelled || !AppSettings.ICheckMoviesUpdateWatchedStatus)
+            if (ImportCancelled || !AppSettings.CheckMoviesUpdateWatchedHistory)
             {
                 return;
             }
