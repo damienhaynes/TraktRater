@@ -28,6 +28,7 @@
         public const string SyncRatings = @"http://api.trakt.tv/sync/ratings";
         public const string SyncWatchlist = @"http://api.trakt.tv/sync/watchlist";
         public const string SyncWatched = @"http://api.trakt.tv/sync/history";
+        public const string SyncCollection = "https://api.trakt.tv/sync/collection";
         public const string SyncWatchedRemove = "https://api.trakt.tv/sync/history/remove";
         public const string SyncCollectionRemove = "https://api.trakt.tv/sync/collection/remove";
         public const string SyncRatingsRemove = "https://api.trakt.tv/sync/ratings/remove";

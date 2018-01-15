@@ -100,6 +100,7 @@
             chkFlixsterEnabled.Checked = AppSettings.EnableFlixster;
             chkCheckMoviesAddWatchedToWatchlist.Checked = AppSettings.CheckMoviesAddWatchedMoviesToWatchlist;
             chkCheckMoviesUpdateWatchedStatus.Checked = AppSettings.CheckMoviesUpdateWatchedHistory;
+            chkCheckMoviesAddMoviesToCollection.Checked = AppSettings.CheckMoviesAddToCollection;
             chkSetWatchedOnReleaseDay.Checked = AppSettings.WatchedOnReleaseDay;
             nudBatchSize.Value = AppSettings.BatchSize;
 
@@ -530,6 +531,10 @@
             AppSettings.CheckMoviesDelimiter = cboCheckMoviesDelimiter.SelectedIndex;
         }
 
+        private void chkCheckMoviesAddMoviesToCollection_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.CheckMoviesAddToCollection = chkCheckMoviesAddMoviesToCollection.Checked;
+        }
         private void lnkLogFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(FileLog.LogDirectory);
@@ -1004,9 +1009,11 @@
             chkCheckMoviesAddWatchedToWatchlist.Enabled = enableState;
             chkCheckMoviesUpdateWatchedStatus.Enabled = enableState;
             chkCheckMoviesUpdateWatchedStatus.Enabled = enableState;
+            chkCheckMoviesAddMoviesToCollection.Enabled = enableState;
             cboCheckMoviesDelimiter.Enabled = enableState;
         }
 
         #endregion
+
     }
 }

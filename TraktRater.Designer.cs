@@ -135,6 +135,7 @@
             this.btnCheckMoviesExportBrowse = new System.Windows.Forms.Button();
             this.lblCheckMoviesFile = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.chkCheckMoviesAddMoviesToCollection = new System.Windows.Forms.CheckBox();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -1321,6 +1322,7 @@
             // 
             // grbICheckMovies
             // 
+            this.grbICheckMovies.Controls.Add(this.chkCheckMoviesAddMoviesToCollection);
             this.grbICheckMovies.Controls.Add(this.lblCheckMoviesDelimiter);
             this.grbICheckMovies.Controls.Add(this.cboCheckMoviesDelimiter);
             this.grbICheckMovies.Controls.Add(this.chkCheckMoviesUpdateWatchedStatus);
@@ -1363,12 +1365,12 @@
             // chkCheckMoviesUpdateWatchedStatus
             // 
             this.chkCheckMoviesUpdateWatchedStatus.AutoSize = true;
-            this.chkCheckMoviesUpdateWatchedStatus.Location = new System.Drawing.Point(38, 275);
+            this.chkCheckMoviesUpdateWatchedStatus.Location = new System.Drawing.Point(38, 273);
             this.chkCheckMoviesUpdateWatchedStatus.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkCheckMoviesUpdateWatchedStatus.Name = "chkCheckMoviesUpdateWatchedStatus";
-            this.chkCheckMoviesUpdateWatchedStatus.Size = new System.Drawing.Size(242, 24);
+            this.chkCheckMoviesUpdateWatchedStatus.Size = new System.Drawing.Size(313, 24);
             this.chkCheckMoviesUpdateWatchedStatus.TabIndex = 7;
-            this.chkCheckMoviesUpdateWatchedStatus.Text = "Update Trakt watched history";
+            this.chkCheckMoviesUpdateWatchedStatus.Text = "Add watched movies to watched history";
             this.chkCheckMoviesUpdateWatchedStatus.UseVisualStyleBackColor = true;
             this.chkCheckMoviesUpdateWatchedStatus.CheckedChanged += new System.EventHandler(this.chkCheckMoviesUpdateWatchedStatus_CheckedChanged);
             // 
@@ -1431,6 +1433,17 @@
             this.tabPage10.TabIndex = 10;
             this.tabPage10.Text = "Options";
             this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // chkCheckMoviesAddMoviesToCollection
+            // 
+            this.chkCheckMoviesAddMoviesToCollection.AutoSize = true;
+            this.chkCheckMoviesAddMoviesToCollection.Location = new System.Drawing.Point(38, 307);
+            this.chkCheckMoviesAddMoviesToCollection.Name = "chkCheckMoviesAddMoviesToCollection";
+            this.chkCheckMoviesAddMoviesToCollection.Size = new System.Drawing.Size(272, 24);
+            this.chkCheckMoviesAddMoviesToCollection.TabIndex = 8;
+            this.chkCheckMoviesAddMoviesToCollection.Text = "Add collected movies to collection";
+            this.chkCheckMoviesAddMoviesToCollection.UseVisualStyleBackColor = true;
+            this.chkCheckMoviesAddMoviesToCollection.CheckedChanged += new System.EventHandler(this.chkCheckMoviesAddMoviesToCollection_CheckedChanged);
             // 
             // TraktRater
             // 
@@ -1593,6 +1606,7 @@
         private System.Windows.Forms.CheckBox chkCheckMoviesUpdateWatchedStatus;
         private System.Windows.Forms.Label lblCheckMoviesDelimiter;
         private System.Windows.Forms.ComboBox cboCheckMoviesDelimiter;
+        private System.Windows.Forms.CheckBox chkCheckMoviesAddMoviesToCollection;
     }
 }
 

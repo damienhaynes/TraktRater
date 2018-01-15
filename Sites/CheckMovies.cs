@@ -41,10 +41,7 @@ namespace TraktRater.Sites
 
         public void ImportRatings()
         {
-            if (ImportCancelled)
-            {
-                return;
-            }
+            if (ImportCancelled) return;            
 
             var cmMovieList = ParseCheckMoviesCsv();
             
@@ -59,15 +56,26 @@ namespace TraktRater.Sites
             // add movies to watched history
             if (AppSettings.CheckMoviesUpdateWatchedHistory)
             {
-                var watchedMovies = cmMovieList.Where(icm => icm.IsChecked).Select(cm => cm.ToTraktMovieWatched()).ToList();
+                var watchedMovies = cmMovieList.Where(cm => cm.IsChecked).Select(cm => cm.ToTraktMovieWatched()).ToList();
                 if (watchedMovies.Any())
                 {
                     AddMoviesToWatchedHistory(watchedMovies);
                 }
             }
+
+            // add movies to collection
+            if (AppSettings.CheckMoviesAddToCollection)
+            {
+                // does 'Owned' return a date or 'yes' when owned, if so then we can use the collected_at field?
+                var collectedMovies = cmMovieList.Where(cm => cm.IsOwned).ToList();
+                if (collectedMovies.Any())
+                {
+                    AddMoviesToCollection(collectedMovies);
+                }
+            }
         }
 
-        private static void AddMoviesToWatchedHistory(List<TraktMovieWatched> watchedMovies)
+        private void AddMoviesToWatchedHistory(List<TraktMovieWatched> watchedMovies)
         {
             UIUtils.UpdateStatus("Updating Trakt watched history with {0} movies from iCheckMovies.", watchedMovies.Count());
 
@@ -77,6 +85,8 @@ namespace TraktRater.Sites
                 int pages = (int)System.Math.Ceiling((double)watchedMovies.Count() / pageSize);
                 for (int i = 0; i < pages; i++)
                 {
+                    if (ImportCancelled) return;
+
                     UIUtils.UpdateStatus("Importing page {0}/{1} iCheckMovies watched history...", i + 1, pages);
 
                     var watchedToSync = new TraktMovieWatchedSync()
@@ -100,6 +110,8 @@ namespace TraktRater.Sites
                 int pages = (int)System.Math.Ceiling((double)watchListMovies.Count() / pageSize);
                 for (int i = 0; i < pages; i++)
                 {
+                    if (ImportCancelled) return;
+
                     UIUtils.UpdateStatus("Importing page {0}/{1} iCheckMovies watchlist...", i + 1, pages);
 
                     var watchlistToSync = new TraktMovieSync()
@@ -113,7 +125,32 @@ namespace TraktRater.Sites
             }
         }
 
-        private static void HandleResponse(TraktSyncResponse response)
+        private void AddMoviesToCollection(IEnumerable<CheckMoviesListItem> collectedMovies)
+        {
+            UIUtils.UpdateStatus("Updating Trakt collection with {0} movies from iCheckMovies.", collectedMovies.Count());
+
+            if (collectedMovies.Count() > 0)
+            {
+                int pageSize = AppSettings.BatchSize;
+                int pages = (int)System.Math.Ceiling((double)collectedMovies.Count() / pageSize);
+                for (int i = 0; i < pages; i++)
+                {
+                    if (ImportCancelled) return;
+
+                    UIUtils.UpdateStatus("Importing page {0}/{1} iCheckMovies collection...", i + 1, pages);
+
+                    var collectedToSync = new TraktMovieSync()
+                    {
+                        Movies = collectedMovies.Skip(i * pageSize).Take(pageSize).Select(icm => icm.ToTraktMovie()).ToList()
+                    };
+
+                    var addToCollectionResponse = TraktAPI.TraktAPI.AddMoviesToCollection(collectedToSync);
+                    HandleResponse(addToCollectionResponse);
+                }
+            }
+        }
+
+        private void HandleResponse(TraktSyncResponse response)
         {
             if (response == null)
             {

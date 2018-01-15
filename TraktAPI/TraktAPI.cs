@@ -388,6 +388,24 @@
         #region Collection
 
         /// <summary>
+        /// Sends movie sync data to Trakt Collection
+        /// </summary>
+        /// <param name="syncData">The sync data to send</param>
+        /// <returns>The response from trakt</returns>
+        public static TraktSyncResponse AddMoviesToCollection(TraktMovieSync syncData)
+        {
+            // check that we have everything we need
+            if (syncData == null || syncData.Movies == null || syncData.Movies.Count == 0)
+                return null;
+
+            // serialize data to JSON and send to server
+            string response = TraktWeb.PostToTrakt(TraktURIs.SyncCollection, syncData.ToJSON());
+
+            // return success or failure
+            return response.FromJSON<TraktSyncResponse>();
+        }
+
+        /// <summary>
         /// Removes all episodes for each show in users collection
         /// </summary>
         /// <param name="syncData">list of shows</param>

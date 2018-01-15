@@ -49,6 +49,7 @@
         const string cCheckMoviesAddWatchedMoviesToWatchlist = "CheckMoviesAddWatchedMoviesToWatchlist";
         const string cCheckMoviesUpdateWatchedHistory = "CheckMoviesUpdateWatchedHistory";
         const string cCheckMoviesDelimiter = "CheckMoviesDelimiter";
+        const string cCheckMoviesAddToCollection = "CheckMoviesAddToCollection";
         const string cEnableTMDb = "EnableTMDb";
         const string cEnableTVDb = "EnableTVDb";
         const string cEnableIMDb = "EnableIMDb";
@@ -108,6 +109,8 @@
         public static string CheckMoviesFilename { get; set; }
 
         public static int CheckMoviesDelimiter { get; set; }
+
+        public static bool CheckMoviesAddToCollection { get; set; }
 
         public static string IMDbRatingsFilename { get; set; }
         
@@ -220,6 +223,7 @@
                 CheckMoviesUpdateWatchedHistory = xmlReader.GetSettingValueAsBool(cCheckMoviesUpdateWatchedHistory, true);
                 CheckMoviesAddWatchedMoviesToWatchlist = xmlReader.GetSettingValueAsBool(cCheckMoviesAddWatchedMoviesToWatchlist, false);
                 CheckMoviesDelimiter = xmlReader.GetSettingValueAsInt(cCheckMoviesDelimiter, 0);
+                CheckMoviesAddToCollection = xmlReader.GetSettingValueAsBool(cCheckMoviesAddToCollection, true);
                 MarkAsWatched = xmlReader.GetSettingValueAsBool(cMarkAsWatched, true);
                 IgnoreWatchedForWatchlist = xmlReader.GetSettingValueAsBool(cIgnoreWatchedForWatchlist, true);
                 EnableIMDb = xmlReader.GetSettingValueAsBool(cEnableIMDb, false);
@@ -293,6 +297,7 @@
             xmlWriter.WriteSetting(cCheckMoviesAddWatchedMoviesToWatchlist, CheckMoviesAddWatchedMoviesToWatchlist.ToString());
             xmlWriter.WriteSetting(cCheckMoviesUpdateWatchedHistory, CheckMoviesUpdateWatchedHistory.ToString());
             xmlWriter.WriteSetting(cCheckMoviesDelimiter, CheckMoviesDelimiter.ToString());
+            xmlWriter.WriteSetting(cCheckMoviesAddToCollection, CheckMoviesAddToCollection.ToString());
             xmlWriter.WriteSetting(cMarkAsWatched, MarkAsWatched.ToString());
             xmlWriter.WriteSetting(cIgnoreWatchedForWatchlist, IgnoreWatchedForWatchlist.ToString());
             xmlWriter.WriteSetting(cEnableIMDb, EnableIMDb.ToString());

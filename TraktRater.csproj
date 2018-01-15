@@ -128,6 +128,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktLogin.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktMovie.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktMovieCollected.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktMovieCollectedSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktMovieId.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktMovieRating.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktMovieRatingSync.cs" />
