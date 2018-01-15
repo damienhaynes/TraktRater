@@ -16,35 +16,9 @@
         const string SecretId = "0d4557136b35ab6234ec3bb659bbcc5b04e7781c4019508496b2b0086cba1fa0";
         const string RedirectUri = "urn:ietf:wg:oauth:2.0:oob";
         const string PinUrlId = "365";
-
-        public static string Username { private get; set; }
-        public static string Password { private get; set; }
+        
         public static string AppId { get { return PinUrlId; } }
-
-        /// <summary>
-        /// Login to trakt to request a user token for all subsequent requests
-        /// </summary>
-        public static TraktUserToken GetUserToken()
-        {
-            // set our required headers now
-            TraktWeb.CustomRequestHeaders.Clear();
-
-            TraktWeb.CustomRequestHeaders.Add("trakt-api-key", ApplicationId);
-            TraktWeb.CustomRequestHeaders.Add("trakt-api-version", "2");
-            TraktWeb.CustomRequestHeaders.Add("trakt-user-login", Username);
-
-            string response = TraktWeb.PostToTrakt(TraktURIs.Login, GetUserLogin(), false);
-            var loginResponse = response.FromJSON<TraktUserToken>();
-            
-            if (loginResponse == null)
-                return loginResponse;
-
-            // add the token for authenticated methods
-            TraktWeb.CustomRequestHeaders.Add("trakt-user-token", loginResponse.Token);
-
-            return loginResponse;
-        }
-
+        
         /// <summary>
         /// Login to trakt to request a user access token for all subsequent requests              
         /// </summary>
@@ -57,7 +31,6 @@
 
             TraktWeb.CustomRequestHeaders.Add("trakt-api-key", ApplicationId);
             TraktWeb.CustomRequestHeaders.Add("trakt-api-version", "2");
-            //TraktWeb.CustomRequestHeaders.Add("trakt-user-login", Username);
 
             string response = TraktWeb.PostToTrakt(TraktURIs.LoginOAuth, GetOAuthLogin(key), true);
             var loginResponse = response.FromJSON<TraktOAuthToken>();
@@ -88,15 +61,6 @@
                             GrantType = isPinCode ? "authorization_code" : "refresh_token"
                         }
                         .ToJSON();
-        }
-
-        /// <summary>
-        /// Gets a User Login object
-        /// </summary>       
-        /// <returns>The User Login json string</returns>
-        private static string GetUserLogin()
-        {
-            return new TraktLogin { Login = Username, Password = Password }.ToJSON();
         }
         
         #region Sync to Trakt

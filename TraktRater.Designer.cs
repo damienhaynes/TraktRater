@@ -32,15 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TraktRater));
             this.grbTrakt = new System.Windows.Forms.GroupBox();
             this.lblWarnPeriod = new System.Windows.Forms.Label();
-            this.txtTraktPinCode = new System.Windows.Forms.TextBox();
             this.lnkTraktOAuth = new System.Windows.Forms.LinkLabel();
-            this.radTraktPinCode = new System.Windows.Forms.RadioButton();
-            this.radTraktUserPass = new System.Windows.Forms.RadioButton();
-            this.lblTraktAuthMethod = new System.Windows.Forms.Label();
-            this.txtTraktPassword = new System.Windows.Forms.TextBox();
-            this.lblTraktPassword = new System.Windows.Forms.Label();
-            this.lblTraktUser = new System.Windows.Forms.Label();
-            this.txtTraktUser = new System.Windows.Forms.TextBox();
             this.btnMaintenance = new System.Windows.Forms.Button();
             this.grbTVDb = new System.Windows.Forms.GroupBox();
             this.chkTVDbEnabled = new System.Windows.Forms.CheckBox();
@@ -136,6 +128,7 @@
             this.btnCheckMoviesExportBrowse = new System.Windows.Forms.Button();
             this.lblCheckMoviesFile = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.txtTraktPinCode = new System.Windows.Forms.TextBox();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -166,13 +159,6 @@
             this.grbTrakt.Controls.Add(this.lblWarnPeriod);
             this.grbTrakt.Controls.Add(this.txtTraktPinCode);
             this.grbTrakt.Controls.Add(this.lnkTraktOAuth);
-            this.grbTrakt.Controls.Add(this.radTraktPinCode);
-            this.grbTrakt.Controls.Add(this.radTraktUserPass);
-            this.grbTrakt.Controls.Add(this.lblTraktAuthMethod);
-            this.grbTrakt.Controls.Add(this.txtTraktPassword);
-            this.grbTrakt.Controls.Add(this.lblTraktPassword);
-            this.grbTrakt.Controls.Add(this.lblTraktUser);
-            this.grbTrakt.Controls.Add(this.txtTraktUser);
             this.grbTrakt.Location = new System.Drawing.Point(9, 9);
             this.grbTrakt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grbTrakt.Name = "grbTrakt";
@@ -185,30 +171,17 @@
             // lblWarnPeriod
             // 
             this.lblWarnPeriod.AutoSize = true;
-            this.lblWarnPeriod.Location = new System.Drawing.Point(271, 140);
+            this.lblWarnPeriod.Location = new System.Drawing.Point(29, 108);
             this.lblWarnPeriod.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblWarnPeriod.Name = "lblWarnPeriod";
-            this.lblWarnPeriod.Size = new System.Drawing.Size(316, 20);
+            this.lblWarnPeriod.Size = new System.Drawing.Size(373, 20);
             this.lblWarnPeriod.TabIndex = 17;
-            this.lblWarnPeriod.Text = "You have 15 mins enter pin and start import";
-            // 
-            // txtTraktPinCode
-            // 
-            this.txtTraktPinCode.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.txtTraktPinCode.Location = new System.Drawing.Point(267, 99);
-            this.txtTraktPinCode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtTraktPinCode.Name = "txtTraktPinCode";
-            this.txtTraktPinCode.Size = new System.Drawing.Size(364, 26);
-            this.txtTraktPinCode.TabIndex = 16;
-            this.txtTraktPinCode.Text = "Authorise and then enter pin code here...";
-            this.txtTraktPinCode.Visible = false;
-            this.txtTraktPinCode.Click += new System.EventHandler(this.txtTraktPinCode_Click);
-            this.txtTraktPinCode.TextChanged += new System.EventHandler(this.txtTraktPinCode_TextChanged);
+            this.lblWarnPeriod.Text = "You have 15 mins to enter pin code and start import";
             // 
             // lnkTraktOAuth
             // 
             this.lnkTraktOAuth.AutoSize = true;
-            this.lnkTraktOAuth.Location = new System.Drawing.Point(267, 68);
+            this.lnkTraktOAuth.Location = new System.Drawing.Point(29, 36);
             this.lnkTraktOAuth.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lnkTraktOAuth.Name = "lnkTraktOAuth";
             this.lnkTraktOAuth.Size = new System.Drawing.Size(299, 20);
@@ -216,81 +189,6 @@
             this.lnkTraktOAuth.TabStop = true;
             this.lnkTraktOAuth.Text = "Click to Authorise access to your account";
             this.lnkTraktOAuth.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkTraktOAuth_LinkClicked);
-            // 
-            // radTraktPinCode
-            // 
-            this.radTraktPinCode.AutoSize = true;
-            this.radTraktPinCode.Location = new System.Drawing.Point(446, 21);
-            this.radTraktPinCode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.radTraktPinCode.Name = "radTraktPinCode";
-            this.radTraktPinCode.Size = new System.Drawing.Size(155, 24);
-            this.radTraktPinCode.TabIndex = 14;
-            this.radTraktPinCode.TabStop = true;
-            this.radTraktPinCode.Text = "Pin Code (oAuth)";
-            this.radTraktPinCode.UseVisualStyleBackColor = true;
-            this.radTraktPinCode.Click += new System.EventHandler(this.radTraktPinCode_Click);
-            // 
-            // radTraktUserPass
-            // 
-            this.radTraktUserPass.AutoSize = true;
-            this.radTraktUserPass.Location = new System.Drawing.Point(267, 21);
-            this.radTraktUserPass.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.radTraktUserPass.Name = "radTraktUserPass";
-            this.radTraktUserPass.Size = new System.Drawing.Size(107, 24);
-            this.radTraktUserPass.TabIndex = 13;
-            this.radTraktUserPass.TabStop = true;
-            this.radTraktUserPass.Text = "User/Pass";
-            this.radTraktUserPass.UseVisualStyleBackColor = true;
-            this.radTraktUserPass.Click += new System.EventHandler(this.radTraktUserPass_Click);
-            // 
-            // lblTraktAuthMethod
-            // 
-            this.lblTraktAuthMethod.AutoSize = true;
-            this.lblTraktAuthMethod.Location = new System.Drawing.Point(33, 29);
-            this.lblTraktAuthMethod.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTraktAuthMethod.Name = "lblTraktAuthMethod";
-            this.lblTraktAuthMethod.Size = new System.Drawing.Size(174, 20);
-            this.lblTraktAuthMethod.TabIndex = 12;
-            this.lblTraktAuthMethod.Text = "Authentication Method:";
-            // 
-            // txtTraktPassword
-            // 
-            this.txtTraktPassword.Location = new System.Drawing.Point(267, 99);
-            this.txtTraktPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtTraktPassword.Name = "txtTraktPassword";
-            this.txtTraktPassword.Size = new System.Drawing.Size(364, 26);
-            this.txtTraktPassword.TabIndex = 3;
-            this.txtTraktPassword.UseSystemPasswordChar = true;
-            this.txtTraktPassword.TextChanged += new System.EventHandler(this.txtTraktPassword_TextChanged);
-            // 
-            // lblTraktPassword
-            // 
-            this.lblTraktPassword.AutoSize = true;
-            this.lblTraktPassword.Location = new System.Drawing.Point(33, 102);
-            this.lblTraktPassword.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTraktPassword.Name = "lblTraktPassword";
-            this.lblTraktPassword.Size = new System.Drawing.Size(82, 20);
-            this.lblTraktPassword.TabIndex = 2;
-            this.lblTraktPassword.Text = "Password:";
-            // 
-            // lblTraktUser
-            // 
-            this.lblTraktUser.AutoSize = true;
-            this.lblTraktUser.Location = new System.Drawing.Point(33, 68);
-            this.lblTraktUser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTraktUser.Name = "lblTraktUser";
-            this.lblTraktUser.Size = new System.Drawing.Size(87, 20);
-            this.lblTraktUser.TabIndex = 0;
-            this.lblTraktUser.Text = "Username:";
-            // 
-            // txtTraktUser
-            // 
-            this.txtTraktUser.Location = new System.Drawing.Point(267, 62);
-            this.txtTraktUser.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtTraktUser.Name = "txtTraktUser";
-            this.txtTraktUser.Size = new System.Drawing.Size(364, 26);
-            this.txtTraktUser.TabIndex = 1;
-            this.txtTraktUser.TextChanged += new System.EventHandler(this.txtTraktUsername_TextChanged);
             // 
             // btnMaintenance
             // 
@@ -1445,6 +1343,19 @@
             this.tabPage10.Text = "Options";
             this.tabPage10.UseVisualStyleBackColor = true;
             // 
+            // txtTraktPinCode
+            // 
+            this.txtTraktPinCode.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.txtTraktPinCode.Location = new System.Drawing.Point(29, 69);
+            this.txtTraktPinCode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtTraktPinCode.Name = "txtTraktPinCode";
+            this.txtTraktPinCode.Size = new System.Drawing.Size(364, 26);
+            this.txtTraktPinCode.TabIndex = 16;
+            this.txtTraktPinCode.Text = "Authorise and then enter pin code here...";
+            this.txtTraktPinCode.Visible = false;
+            this.txtTraktPinCode.Click += new System.EventHandler(this.txtTraktPinCode_Click);
+            this.txtTraktPinCode.TextChanged += new System.EventHandler(this.txtTraktPinCode_TextChanged);
+            // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1502,10 +1413,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox grbTrakt;
-        private System.Windows.Forms.TextBox txtTraktPassword;
-        private System.Windows.Forms.Label lblTraktPassword;
-        private System.Windows.Forms.Label lblTraktUser;
-        private System.Windows.Forms.TextBox txtTraktUser;
         private System.Windows.Forms.GroupBox grbTVDb;
         private System.Windows.Forms.TextBox txtTVDbAccountId;
         private System.Windows.Forms.Label lblTVDbAccountId;
@@ -1558,11 +1465,7 @@
         private System.Windows.Forms.Label lblBatchImportSize;
         private System.Windows.Forms.NumericUpDown nudBatchSize;
         private System.Windows.Forms.Button btnMaintenance;
-        private System.Windows.Forms.RadioButton radTraktPinCode;
-        private System.Windows.Forms.RadioButton radTraktUserPass;
-        private System.Windows.Forms.Label lblTraktAuthMethod;
         private System.Windows.Forms.LinkLabel lnkTraktOAuth;
-        private System.Windows.Forms.TextBox txtTraktPinCode;
         private System.Windows.Forms.Label lblWarnPeriod;
         private System.Windows.Forms.TabControl tabTraktRater;
         private System.Windows.Forms.TabPage tabPage1;
@@ -1607,6 +1510,7 @@
         private System.Windows.Forms.Label lblCheckMoviesDelimiter;
         private System.Windows.Forms.ComboBox cboCheckMoviesDelimiter;
         private System.Windows.Forms.CheckBox chkCheckMoviesAddMoviesToCollection;
+        private System.Windows.Forms.TextBox txtTraktPinCode;
     }
 }
 
