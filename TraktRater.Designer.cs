@@ -58,6 +58,7 @@
             this.txtImdbWatchlistFile = new System.Windows.Forms.TextBox();
             this.nudBatchSize = new System.Windows.Forms.NumericUpDown();
             this.txtLetterboxdDiaryFile = new System.Windows.Forms.TextBox();
+            this.chkCheckMoviesAddWatchedToWatchlist = new System.Windows.Forms.CheckBox();
             this.txtCheckMoviesCsvFile = new System.Windows.Forms.TextBox();
             this.txtLetterboxdRatingsFile = new System.Windows.Forms.TextBox();
             this.txtLetterboxdWatchedFile = new System.Windows.Forms.TextBox();
@@ -126,16 +127,15 @@
             this.txtFlixsterUserId = new System.Windows.Forms.TextBox();
             this.chkFlixsterEnabled = new System.Windows.Forms.CheckBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.grbICheckMovies = new System.Windows.Forms.GroupBox();
+            this.grbCheckMovies = new System.Windows.Forms.GroupBox();
+            this.chkCheckMoviesAddMoviesToCollection = new System.Windows.Forms.CheckBox();
             this.lblCheckMoviesDelimiter = new System.Windows.Forms.Label();
             this.cboCheckMoviesDelimiter = new System.Windows.Forms.ComboBox();
             this.chkCheckMoviesUpdateWatchedStatus = new System.Windows.Forms.CheckBox();
-            this.chkCheckMoviesAddWatchedToWatchlist = new System.Windows.Forms.CheckBox();
             this.chkCheckMoviesEnabled = new System.Windows.Forms.CheckBox();
             this.btnCheckMoviesExportBrowse = new System.Windows.Forms.Button();
             this.lblCheckMoviesFile = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.chkCheckMoviesAddMoviesToCollection = new System.Windows.Forms.CheckBox();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -157,7 +157,7 @@
             this.tabPage6.SuspendLayout();
             this.grbFlixster.SuspendLayout();
             this.tabPage9.SuspendLayout();
-            this.grbICheckMovies.SuspendLayout();
+            this.grbCheckMovies.SuspendLayout();
             this.tabPage10.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -500,6 +500,19 @@
             this.tipHelp.SetToolTip(this.txtLetterboxdDiaryFile, "The Diary file includes everything marked as watched at a specified date, this da" +
         "te will override any movies found in the Watched file");
             this.txtLetterboxdDiaryFile.TextChanged += new System.EventHandler(this.txtLetterboxdDiaryFile_TextChanged);
+            // 
+            // chkCheckMoviesAddWatchedToWatchlist
+            // 
+            this.chkCheckMoviesAddWatchedToWatchlist.AutoSize = true;
+            this.chkCheckMoviesAddWatchedToWatchlist.Location = new System.Drawing.Point(38, 239);
+            this.chkCheckMoviesAddWatchedToWatchlist.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkCheckMoviesAddWatchedToWatchlist.Name = "chkCheckMoviesAddWatchedToWatchlist";
+            this.chkCheckMoviesAddWatchedToWatchlist.Size = new System.Drawing.Size(264, 24);
+            this.chkCheckMoviesAddWatchedToWatchlist.TabIndex = 6;
+            this.chkCheckMoviesAddWatchedToWatchlist.Text = "Add watched movies to watchlist";
+            this.tipHelp.SetToolTip(this.chkCheckMoviesAddWatchedToWatchlist, resources.GetString("chkCheckMoviesAddWatchedToWatchlist.ToolTip"));
+            this.chkCheckMoviesAddWatchedToWatchlist.UseVisualStyleBackColor = true;
+            this.chkCheckMoviesAddWatchedToWatchlist.CheckedChanged += new System.EventHandler(this.chkCheckMoviesAddWatchedToWatchlist_CheckedChanged);
             // 
             // txtCheckMoviesCsvFile
             // 
@@ -1310,7 +1323,7 @@
             // 
             // tabPage9
             // 
-            this.tabPage9.Controls.Add(this.grbICheckMovies);
+            this.tabPage9.Controls.Add(this.grbCheckMovies);
             this.tabPage9.Location = new System.Drawing.Point(4, 29);
             this.tabPage9.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage9.Name = "tabPage9";
@@ -1320,25 +1333,36 @@
             this.tabPage9.Text = "iCheckMovies";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
-            // grbICheckMovies
+            // grbCheckMovies
             // 
-            this.grbICheckMovies.Controls.Add(this.chkCheckMoviesAddMoviesToCollection);
-            this.grbICheckMovies.Controls.Add(this.lblCheckMoviesDelimiter);
-            this.grbICheckMovies.Controls.Add(this.cboCheckMoviesDelimiter);
-            this.grbICheckMovies.Controls.Add(this.chkCheckMoviesUpdateWatchedStatus);
-            this.grbICheckMovies.Controls.Add(this.chkCheckMoviesAddWatchedToWatchlist);
-            this.grbICheckMovies.Controls.Add(this.chkCheckMoviesEnabled);
-            this.grbICheckMovies.Controls.Add(this.btnCheckMoviesExportBrowse);
-            this.grbICheckMovies.Controls.Add(this.txtCheckMoviesCsvFile);
-            this.grbICheckMovies.Controls.Add(this.lblCheckMoviesFile);
-            this.grbICheckMovies.Location = new System.Drawing.Point(10, 9);
-            this.grbICheckMovies.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbICheckMovies.Name = "grbICheckMovies";
-            this.grbICheckMovies.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbICheckMovies.Size = new System.Drawing.Size(1300, 741);
-            this.grbICheckMovies.TabIndex = 0;
-            this.grbICheckMovies.TabStop = false;
-            this.grbICheckMovies.Text = "iCheckMovies";
+            this.grbCheckMovies.Controls.Add(this.chkCheckMoviesAddMoviesToCollection);
+            this.grbCheckMovies.Controls.Add(this.lblCheckMoviesDelimiter);
+            this.grbCheckMovies.Controls.Add(this.cboCheckMoviesDelimiter);
+            this.grbCheckMovies.Controls.Add(this.chkCheckMoviesUpdateWatchedStatus);
+            this.grbCheckMovies.Controls.Add(this.chkCheckMoviesAddWatchedToWatchlist);
+            this.grbCheckMovies.Controls.Add(this.chkCheckMoviesEnabled);
+            this.grbCheckMovies.Controls.Add(this.btnCheckMoviesExportBrowse);
+            this.grbCheckMovies.Controls.Add(this.txtCheckMoviesCsvFile);
+            this.grbCheckMovies.Controls.Add(this.lblCheckMoviesFile);
+            this.grbCheckMovies.Location = new System.Drawing.Point(10, 9);
+            this.grbCheckMovies.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbCheckMovies.Name = "grbCheckMovies";
+            this.grbCheckMovies.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbCheckMovies.Size = new System.Drawing.Size(1300, 741);
+            this.grbCheckMovies.TabIndex = 0;
+            this.grbCheckMovies.TabStop = false;
+            this.grbCheckMovies.Text = "iCheckMovies";
+            // 
+            // chkCheckMoviesAddMoviesToCollection
+            // 
+            this.chkCheckMoviesAddMoviesToCollection.AutoSize = true;
+            this.chkCheckMoviesAddMoviesToCollection.Location = new System.Drawing.Point(38, 307);
+            this.chkCheckMoviesAddMoviesToCollection.Name = "chkCheckMoviesAddMoviesToCollection";
+            this.chkCheckMoviesAddMoviesToCollection.Size = new System.Drawing.Size(272, 24);
+            this.chkCheckMoviesAddMoviesToCollection.TabIndex = 8;
+            this.chkCheckMoviesAddMoviesToCollection.Text = "Add collected movies to collection";
+            this.chkCheckMoviesAddMoviesToCollection.UseVisualStyleBackColor = true;
+            this.chkCheckMoviesAddMoviesToCollection.CheckedChanged += new System.EventHandler(this.chkCheckMoviesAddMoviesToCollection_CheckedChanged);
             // 
             // lblCheckMoviesDelimiter
             // 
@@ -1373,19 +1397,6 @@
             this.chkCheckMoviesUpdateWatchedStatus.Text = "Add watched movies to watched history";
             this.chkCheckMoviesUpdateWatchedStatus.UseVisualStyleBackColor = true;
             this.chkCheckMoviesUpdateWatchedStatus.CheckedChanged += new System.EventHandler(this.chkCheckMoviesUpdateWatchedStatus_CheckedChanged);
-            // 
-            // chkCheckMoviesAddWatchedToWatchlist
-            // 
-            this.chkCheckMoviesAddWatchedToWatchlist.AutoSize = true;
-            this.chkCheckMoviesAddWatchedToWatchlist.Location = new System.Drawing.Point(38, 239);
-            this.chkCheckMoviesAddWatchedToWatchlist.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.chkCheckMoviesAddWatchedToWatchlist.Name = "chkCheckMoviesAddWatchedToWatchlist";
-            this.chkCheckMoviesAddWatchedToWatchlist.Size = new System.Drawing.Size(264, 24);
-            this.chkCheckMoviesAddWatchedToWatchlist.TabIndex = 6;
-            this.chkCheckMoviesAddWatchedToWatchlist.Text = "Add watched movies to watchlist";
-            this.tipHelp.SetToolTip(this.chkCheckMoviesAddWatchedToWatchlist, resources.GetString("chkCheckMoviesAddWatchedToWatchlist.ToolTip"));
-            this.chkCheckMoviesAddWatchedToWatchlist.UseVisualStyleBackColor = true;
-            this.chkCheckMoviesAddWatchedToWatchlist.CheckedChanged += new System.EventHandler(this.chkCheckMoviesAddWatchedToWatchlist_CheckedChanged);
             // 
             // chkCheckMoviesEnabled
             // 
@@ -1434,17 +1445,6 @@
             this.tabPage10.Text = "Options";
             this.tabPage10.UseVisualStyleBackColor = true;
             // 
-            // chkCheckMoviesAddMoviesToCollection
-            // 
-            this.chkCheckMoviesAddMoviesToCollection.AutoSize = true;
-            this.chkCheckMoviesAddMoviesToCollection.Location = new System.Drawing.Point(38, 307);
-            this.chkCheckMoviesAddMoviesToCollection.Name = "chkCheckMoviesAddMoviesToCollection";
-            this.chkCheckMoviesAddMoviesToCollection.Size = new System.Drawing.Size(272, 24);
-            this.chkCheckMoviesAddMoviesToCollection.TabIndex = 8;
-            this.chkCheckMoviesAddMoviesToCollection.Text = "Add collected movies to collection";
-            this.chkCheckMoviesAddMoviesToCollection.UseVisualStyleBackColor = true;
-            this.chkCheckMoviesAddMoviesToCollection.CheckedChanged += new System.EventHandler(this.chkCheckMoviesAddMoviesToCollection_CheckedChanged);
-            // 
             // TraktRater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1492,8 +1492,8 @@
             this.grbFlixster.ResumeLayout(false);
             this.grbFlixster.PerformLayout();
             this.tabPage9.ResumeLayout(false);
-            this.grbICheckMovies.ResumeLayout(false);
-            this.grbICheckMovies.PerformLayout();
+            this.grbCheckMovies.ResumeLayout(false);
+            this.grbCheckMovies.PerformLayout();
             this.tabPage10.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -1597,7 +1597,7 @@
         private System.Windows.Forms.CheckBox chkFlixsterEnabled;
         private System.Windows.Forms.CheckBox chkFlixsterSyncWantToSee;
         private System.Windows.Forms.TabPage tabPage9;
-        private System.Windows.Forms.GroupBox grbICheckMovies;
+        private System.Windows.Forms.GroupBox grbCheckMovies;
         private System.Windows.Forms.CheckBox chkCheckMoviesEnabled;
         private System.Windows.Forms.Button btnCheckMoviesExportBrowse;
         private System.Windows.Forms.TextBox txtCheckMoviesCsvFile;

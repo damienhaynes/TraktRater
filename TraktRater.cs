@@ -856,6 +856,7 @@
             grbCriticker.Enabled = enable;
             grbLetterboxd.Enabled = enable;
             grbFlixster.Enabled = enable;
+            grbCheckMovies.Enabled = enable;
 
             HideShowTraktAuthControls();
 

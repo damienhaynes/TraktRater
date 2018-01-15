@@ -41,6 +41,9 @@ namespace TraktRater.Sites
 
         public void ImportRatings()
         {
+            // iCheckMovies does not have a compatible ratings system with trakt.tv
+            // We can sync collection, watched and watchlist data.
+
             if (ImportCancelled) return;            
 
             var cmMovieList = ParseCheckMoviesCsv();

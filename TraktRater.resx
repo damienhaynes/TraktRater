@@ -120,22 +120,19 @@
   <metadata name="tipHelp.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="tipHelp.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="txtImdbWebUsername.ToolTip" xml:space="preserve">
     <value>Your IMDb User ID starts with 'ur', you can get this from the IMDb website from the address bar when in your profile.
 
 This option only works for profiles marked as 'Public'. Private profiles should use CSV option.</value>
   </data>
-  <metadata name="dlgFileOpen.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>108, 17</value>
-  </metadata>
   <data name="chkCheckMoviesAddWatchedToWatchlist.ToolTip" xml:space="preserve">
     <value>The trakt watchlist contains movies you *want* to watch, once you watch these movies, they are automatically removed.
 Enable this setting only if you want to insert your watched movies from iCheckMovies into your watchlist, otherwise only 
 movies marked as *watchlist* will be added to your watchlist (recommended).</value>
   </data>
+  <metadata name="dlgFileOpen.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>108, 17</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>46</value>
   </metadata>
