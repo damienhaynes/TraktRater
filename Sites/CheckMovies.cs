@@ -80,25 +80,44 @@ namespace TraktRater.Sites
 
         private void AddMoviesToWatchedHistory(List<TraktMovieWatched> watchedMovies)
         {
-            UIUtils.UpdateStatus("Updating Trakt watched history with {0} movies from iCheckMovies.", watchedMovies.Count());
-
-            if (watchedMovies.Count() > 0)
+            // filter out movies that are already added to watched history
+            // get watched movies from trakt.tv
+            UIUtils.UpdateStatus("Requesting watched movies from trakt...");
+            var lWatchedTraktMovies = TraktAPI.TraktAPI.GetWatchedMovies();
+            if (lWatchedTraktMovies == null)
             {
-                int pageSize = AppSettings.BatchSize;
-                int pages = (int)System.Math.Ceiling((double)watchedMovies.Count() / pageSize);
-                for (int i = 0; i < pages; i++)
+                UIUtils.UpdateStatus("Failed to get watched movies from trakt.tv, skipping watched movie import", true);
+                Thread.Sleep(2000);
+            }
+            else
+            {
+                if (ImportCancelled) return;
+
+                UIUtils.UpdateStatus("Found {0} watched movies on trakt", lWatchedTraktMovies.Count());
+                UIUtils.UpdateStatus("Filtering out {0} watched movies that are already watched on trakt.tv", watchedMovies.Count());
+
+                watchedMovies.RemoveAll(w => lWatchedTraktMovies.FirstOrDefault(t => t.Movie.Ids.ImdbId == w.Ids.ImdbId || (t.Movie.Title.ToLowerInvariant() == w.Title.ToLowerInvariant() && t.Movie.Year == w.Year)) != null);
+
+                UIUtils.UpdateStatus("Importing {0} iCheckMovies movies as watched...", watchedMovies.Count);
+
+                if (watchedMovies.Count() > 0)
                 {
-                    if (ImportCancelled) return;
-
-                    UIUtils.UpdateStatus("Importing page {0}/{1} iCheckMovies watched history...", i + 1, pages);
-
-                    var watchedToSync = new TraktMovieWatchedSync()
+                    int pageSize = AppSettings.BatchSize;
+                    int pages = (int)System.Math.Ceiling((double)watchedMovies.Count() / pageSize);
+                    for (int i = 0; i < pages; i++)
                     {
-                        Movies = watchedMovies.Skip(i * pageSize).Take(pageSize).ToList()
-                    };
+                        if (ImportCancelled) return;
 
-                    var addToWatchedHistoryResponse = TraktAPI.TraktAPI.AddMoviesToWatchedHistory(watchedToSync);
-                    HandleResponse(addToWatchedHistoryResponse);
+                        UIUtils.UpdateStatus("Importing page {0}/{1} iCheckMovies watched history...", i + 1, pages);
+
+                        var watchedToSync = new TraktMovieWatchedSync()
+                        {
+                            Movies = watchedMovies.Skip(i * pageSize).Take(pageSize).ToList()
+                        };
+
+                        var addToWatchedHistoryResponse = TraktAPI.TraktAPI.AddMoviesToWatchedHistory(watchedToSync);
+                        HandleResponse(addToWatchedHistoryResponse);
+                    }
                 }
             }
         }

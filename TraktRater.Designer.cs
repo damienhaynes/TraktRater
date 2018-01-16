@@ -405,9 +405,10 @@
             this.chkCheckMoviesAddWatchedToWatchlist.Location = new System.Drawing.Point(38, 239);
             this.chkCheckMoviesAddWatchedToWatchlist.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkCheckMoviesAddWatchedToWatchlist.Name = "chkCheckMoviesAddWatchedToWatchlist";
-            this.chkCheckMoviesAddWatchedToWatchlist.Size = new System.Drawing.Size(264, 24);
+            this.chkCheckMoviesAddWatchedToWatchlist.Size = new System.Drawing.Size(641, 24);
             this.chkCheckMoviesAddWatchedToWatchlist.TabIndex = 6;
-            this.chkCheckMoviesAddWatchedToWatchlist.Text = "Add watched movies to watchlist";
+            this.chkCheckMoviesAddWatchedToWatchlist.Text = "Add watched movies to watchlist (If unchecked, only movies in \'watchlist\' will be" +
+    " added)";
             this.tipHelp.SetToolTip(this.chkCheckMoviesAddWatchedToWatchlist, resources.GetString("chkCheckMoviesAddWatchedToWatchlist.ToolTip"));
             this.chkCheckMoviesAddWatchedToWatchlist.UseVisualStyleBackColor = true;
             this.chkCheckMoviesAddWatchedToWatchlist.CheckedChanged += new System.EventHandler(this.chkCheckMoviesAddWatchedToWatchlist_CheckedChanged);
