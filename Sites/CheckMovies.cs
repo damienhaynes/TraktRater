@@ -94,7 +94,7 @@ namespace TraktRater.Sites
                 if (ImportCancelled) return;
 
                 UIUtils.UpdateStatus("Found {0} watched movies on trakt", lWatchedTraktMovies.Count());
-                UIUtils.UpdateStatus("Filtering out {0} watched movies that are already watched on trakt.tv", watchedMovies.Count());
+                UIUtils.UpdateStatus("Filtering out watched movies that are already watched on trakt.tv");
 
                 watchedMovies.RemoveAll(w => lWatchedTraktMovies.FirstOrDefault(t => t.Movie.Ids.ImdbId == w.Ids.ImdbId || (t.Movie.Title.ToLowerInvariant() == w.Title.ToLowerInvariant() && t.Movie.Year == w.Year)) != null);
 

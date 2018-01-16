@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TraktRater));
             this.grbTrakt = new System.Windows.Forms.GroupBox();
             this.lblWarnPeriod = new System.Windows.Forms.Label();
+            this.txtTraktPinCode = new System.Windows.Forms.TextBox();
             this.lnkTraktOAuth = new System.Windows.Forms.LinkLabel();
             this.btnMaintenance = new System.Windows.Forms.Button();
             this.grbTVDb = new System.Windows.Forms.GroupBox();
@@ -128,7 +129,7 @@
             this.btnCheckMoviesExportBrowse = new System.Windows.Forms.Button();
             this.lblCheckMoviesFile = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.txtTraktPinCode = new System.Windows.Forms.TextBox();
+            this.lblImdbNote = new System.Windows.Forms.Label();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -177,6 +178,19 @@
             this.lblWarnPeriod.Size = new System.Drawing.Size(373, 20);
             this.lblWarnPeriod.TabIndex = 17;
             this.lblWarnPeriod.Text = "You have 15 mins to enter pin code and start import";
+            // 
+            // txtTraktPinCode
+            // 
+            this.txtTraktPinCode.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.txtTraktPinCode.Location = new System.Drawing.Point(29, 69);
+            this.txtTraktPinCode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtTraktPinCode.Name = "txtTraktPinCode";
+            this.txtTraktPinCode.Size = new System.Drawing.Size(364, 26);
+            this.txtTraktPinCode.TabIndex = 16;
+            this.txtTraktPinCode.Text = "Authorise and then enter pin code here...";
+            this.txtTraktPinCode.Visible = false;
+            this.txtTraktPinCode.Click += new System.EventHandler(this.txtTraktPinCode_Click);
+            this.txtTraktPinCode.TextChanged += new System.EventHandler(this.txtTraktPinCode_TextChanged);
             // 
             // lnkTraktOAuth
             // 
@@ -451,6 +465,7 @@
             // 
             // grbImdb
             // 
+            this.grbImdb.Controls.Add(this.lblImdbNote);
             this.grbImdb.Controls.Add(this.lblImdbCustomLists);
             this.grbImdb.Controls.Add(this.btnImdbDeleteList);
             this.grbImdb.Controls.Add(this.btnImdbAddList);
@@ -567,31 +582,32 @@
             this.lblImdbDescription.Location = new System.Drawing.Point(27, 69);
             this.lblImdbDescription.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblImdbDescription.Name = "lblImdbDescription";
-            this.lblImdbDescription.Size = new System.Drawing.Size(519, 20);
+            this.lblImdbDescription.Size = new System.Drawing.Size(635, 20);
             this.lblImdbDescription.TabIndex = 1;
-            this.lblImdbDescription.Text = "Select \'CSV Import\' for static file import or \'Web Scrape\' for web retrieval:";
+            this.lblImdbDescription.Text = "Select \'CSV Import\' (recommended) for static file import or \'Web Scrape\' for web " +
+    "retrieval:";
             // 
             // rdnImdbUsername
             // 
             this.rdnImdbUsername.AutoSize = true;
-            this.rdnImdbUsername.Checked = true;
             this.rdnImdbUsername.Location = new System.Drawing.Point(32, 522);
             this.rdnImdbUsername.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rdnImdbUsername.Name = "rdnImdbUsername";
             this.rdnImdbUsername.Size = new System.Drawing.Size(126, 24);
             this.rdnImdbUsername.TabIndex = 13;
-            this.rdnImdbUsername.TabStop = true;
             this.rdnImdbUsername.Text = "Web Scrape:";
             this.rdnImdbUsername.UseVisualStyleBackColor = true;
             // 
             // rdnImdbCSV
             // 
             this.rdnImdbCSV.AutoSize = true;
+            this.rdnImdbCSV.Checked = true;
             this.rdnImdbCSV.Location = new System.Drawing.Point(28, 112);
             this.rdnImdbCSV.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rdnImdbCSV.Name = "rdnImdbCSV";
             this.rdnImdbCSV.Size = new System.Drawing.Size(121, 24);
             this.rdnImdbCSV.TabIndex = 2;
+            this.rdnImdbCSV.TabStop = true;
             this.rdnImdbCSV.Text = "CSV Import:";
             this.rdnImdbCSV.UseVisualStyleBackColor = true;
             this.rdnImdbCSV.CheckedChanged += new System.EventHandler(this.rdnImdbCSV_CheckedChanged);
@@ -1344,18 +1360,15 @@
             this.tabPage10.Text = "Options";
             this.tabPage10.UseVisualStyleBackColor = true;
             // 
-            // txtTraktPinCode
+            // lblImdbNote
             // 
-            this.txtTraktPinCode.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.txtTraktPinCode.Location = new System.Drawing.Point(29, 69);
-            this.txtTraktPinCode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtTraktPinCode.Name = "txtTraktPinCode";
-            this.txtTraktPinCode.Size = new System.Drawing.Size(364, 26);
-            this.txtTraktPinCode.TabIndex = 16;
-            this.txtTraktPinCode.Text = "Authorise and then enter pin code here...";
-            this.txtTraktPinCode.Visible = false;
-            this.txtTraktPinCode.Click += new System.EventHandler(this.txtTraktPinCode_Click);
-            this.txtTraktPinCode.TextChanged += new System.EventHandler(this.txtTraktPinCode_TextChanged);
+            this.lblImdbNote.AutoSize = true;
+            this.lblImdbNote.Location = new System.Drawing.Point(27, 635);
+            this.lblImdbNote.Name = "lblImdbNote";
+            this.lblImdbNote.Size = new System.Drawing.Size(955, 20);
+            this.lblImdbNote.TabIndex = 16;
+            this.lblImdbNote.Text = "Note: If web-scrape option is selected and fails, this may indicate a change to t" +
+    "he IMDb website. Please fallback to CSV import instead.";
             // 
             // TraktRater
             // 
@@ -1512,6 +1525,7 @@
         private System.Windows.Forms.ComboBox cboCheckMoviesDelimiter;
         private System.Windows.Forms.CheckBox chkCheckMoviesAddMoviesToCollection;
         private System.Windows.Forms.TextBox txtTraktPinCode;
+        private System.Windows.Forms.Label lblImdbNote;
     }
 }
 
