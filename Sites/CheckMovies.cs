@@ -181,8 +181,11 @@ namespace TraktRater.Sites
             }
             else if (response.NotFound.Movies.Count > 0)
             {
-                UIUtils.UpdateStatus("Unable to process {0} movies as they're not found on trakt.tv!",
-                    response.NotFound.Movies.Count);
+                UIUtils.UpdateStatus("Unable to process {0} movies as they're not found on trakt.tv!", response.NotFound.Movies.Count);
+                foreach (var movie in response.NotFound.Movies)
+                {
+                    UIUtils.UpdateStatus("Unable to process movie: Title = {0}, Year = {1}, IMDb = {2}", movie.Title, movie.Year, movie.Ids.ImdbId);
+                }
                 Thread.Sleep(1000);
             }
         }
