@@ -46,7 +46,7 @@ namespace TraktRater.Sites.API.ToDoMovies
             {
                 Ids = new TraktMovieId() { TmdbId = TheMovieDatabaseID },
                 Title = Title,
-                WatchedAt = AppSettings.WatchedOnReleaseDay ? "release" : DateTime.UtcNow.ToString().ToISO8601()
+                WatchedAt = AppSettings.WatchedOnReleaseDay ? "released" : DateTime.UtcNow.ToString().ToISO8601()
             };
         }
     }
