@@ -70,6 +70,7 @@
             txtListalMovieXMLExport.Text = AppSettings.ListalMovieFilename;
             txtListalShowXMLExport.Text = AppSettings.ListalShowFilename;
             txtCritickerMovieExportFile.Text = AppSettings.CritickerMovieFilename;
+            txtToDoMovieExportFile.Text = AppSettings.ToDoMovieFilename;
             txtLetterboxdWatchedFile.Text = AppSettings.LetterboxdWatchedFilename;
             txtLetterboxdRatingsFile.Text = AppSettings.LetterboxdRatingsFilename;
             txtLetterboxdDiaryFile.Text = AppSettings.LetterboxdDiaryFilename;
@@ -85,6 +86,7 @@
             chkCheckMoviesEnabled.Checked = AppSettings.EnableCheckMovies;
             chkListalEnabled.Checked = AppSettings.EnableListal;
             chkCritickerEnabled.Checked = AppSettings.EnableCriticker;
+            chkToDoMoviesEnabled.Checked = AppSettings.EnableToDoMovies;
             chkLetterboxdEnabled.Checked = AppSettings.EnableLetterboxd;
             chkFlixsterEnabled.Checked = AppSettings.EnableFlixster;
             chkCheckMoviesAddWatchedToWatchlist.Checked = AppSettings.CheckMoviesAddWatchedMoviesToWatchlist;
@@ -502,6 +504,28 @@
         {
             AppSettings.CheckMoviesAddToCollection = chkCheckMoviesAddMoviesToCollection.Checked;
         }
+
+        private void chkToDoMoviesEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.EnableToDoMovies = chkToDoMoviesEnabled.Checked;
+            EnableToDoMoviesControls(AppSettings.EnableToDoMovies);
+        }
+
+        private void txtToDoMovieExportFile_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.ToDoMovieFilename = txtToDoMovieExportFile.Text;
+        }
+
+        private void btnToDoMoviesExportBrowse_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "csv files|*.csv;*.txt";
+            DialogResult result = dlgFileOpen.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtToDoMovieExportFile.Text = dlgFileOpen.FileName;
+            }
+        }
+
         private void lnkLogFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(FileLog.LogDirectory);
@@ -552,6 +576,7 @@
             if (AppSettings.EnableLetterboxd)       sites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename));
             if (AppSettings.EnableFlixster)         sites.Add(new Flixster(AppSettings.FlixsterUserId, AppSettings.FlixsterSyncWantToSee));
             if (AppSettings.EnableCheckMovies)      sites.Add(new CheckMovies(AppSettings.CheckMoviesFilename, AppSettings.CheckMoviesDelimiter));
+            if (AppSettings.EnableToDoMovies)       sites.Add(new ToDoMovies(AppSettings.ToDoMovieFilename));
 
             if (!sites.Any(s => s.Enabled))
             {
@@ -787,6 +812,7 @@
             grbLetterboxd.Enabled = enable;
             grbFlixster.Enabled = enable;
             grbCheckMovies.Enabled = enable;
+            grbToDoMovies.Enabled = enable;
 
             HideShowTraktAuthControls();
 
@@ -929,6 +955,7 @@
             EnableCritickerControls(AppSettings.EnableCriticker);
             EnableLetterboxdControls(AppSettings.EnableLetterboxd);
             EnableFlixsterControls(AppSettings.EnableFlixster);
+            EnableToDoMoviesControls(AppSettings.EnableToDoMovies);
         }
 
         private void EnableCheckMoviesControls(bool enableState)
@@ -942,6 +969,13 @@
             chkCheckMoviesUpdateWatchedStatus.Enabled = enableState;
             chkCheckMoviesAddMoviesToCollection.Enabled = enableState;
             cboCheckMoviesDelimiter.Enabled = enableState;
+        }
+
+        private void EnableToDoMoviesControls(bool enableState)
+        {
+            btnToDoMoviesExportBrowse.Enabled = enableState;
+            lblToDoMovieExportFile.Enabled = enableState;
+            txtToDoMovieExportFile.Enabled = enableState;
         }
 
         #endregion

@@ -60,6 +60,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
     <Compile Include="Sites\API\iCheckMovies\CheckMoviesListItem.cs" />
+    <Compile Include="Sites\API\ToDoMovies\ToDoMoviesListItem.cs" />
     <Compile Include="Sites\CheckMovies.cs" />
     <Compile Include="Logger\FileLog.cs" />
     <Compile Include="Maintenance.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Sites\API\TVDb\TVDbShow.cs" />
     <Compile Include="Sites\API\TVDb\TVDbShowRatings.cs" />
     <Compile Include="Sites\IMDb.cs" />
+    <Compile Include="Sites\ToDoMovies.cs" />
     <Compile Include="Sites\TVDb.cs" />
     <Compile Include="Sites\IRateSite.cs" />
     <Compile Include="Sites\API\TVDb\TVDbURIs.cs" />

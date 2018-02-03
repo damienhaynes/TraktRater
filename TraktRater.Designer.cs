@@ -56,6 +56,7 @@
             this.txtLetterboxdRatingsFile = new System.Windows.Forms.TextBox();
             this.txtLetterboxdWatchedFile = new System.Windows.Forms.TextBox();
             this.grbImdb = new System.Windows.Forms.GroupBox();
+            this.lblImdbNote = new System.Windows.Forms.Label();
             this.lblImdbCustomLists = new System.Windows.Forms.Label();
             this.btnImdbDeleteList = new System.Windows.Forms.Button();
             this.btnImdbAddList = new System.Windows.Forms.Button();
@@ -128,8 +129,13 @@
             this.chkCheckMoviesEnabled = new System.Windows.Forms.CheckBox();
             this.btnCheckMoviesExportBrowse = new System.Windows.Forms.Button();
             this.lblCheckMoviesFile = new System.Windows.Forms.Label();
+            this.tabPage11 = new System.Windows.Forms.TabPage();
+            this.grbToDoMovies = new System.Windows.Forms.GroupBox();
+            this.btnToDoMoviesExportBrowse = new System.Windows.Forms.Button();
+            this.chkToDoMoviesEnabled = new System.Windows.Forms.CheckBox();
+            this.txtToDoMovieExportFile = new System.Windows.Forms.TextBox();
+            this.lblToDoMovieExportFile = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.lblImdbNote = new System.Windows.Forms.Label();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -152,6 +158,8 @@
             this.grbFlixster.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.grbCheckMovies.SuspendLayout();
+            this.tabPage11.SuspendLayout();
+            this.grbToDoMovies.SuspendLayout();
             this.tabPage10.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -490,6 +498,16 @@
             this.grbImdb.TabIndex = 0;
             this.grbImdb.TabStop = false;
             this.grbImdb.Text = "IMDb";
+            // 
+            // lblImdbNote
+            // 
+            this.lblImdbNote.AutoSize = true;
+            this.lblImdbNote.Location = new System.Drawing.Point(27, 635);
+            this.lblImdbNote.Name = "lblImdbNote";
+            this.lblImdbNote.Size = new System.Drawing.Size(955, 20);
+            this.lblImdbNote.TabIndex = 16;
+            this.lblImdbNote.Text = "Note: If web-scrape option is selected and fails, this may indicate a change to t" +
+    "he IMDb website. Please fallback to CSV import instead.";
             // 
             // lblImdbCustomLists
             // 
@@ -960,6 +978,7 @@
             this.tabTraktRater.Controls.Add(this.tabPage8);
             this.tabTraktRater.Controls.Add(this.tabPage6);
             this.tabTraktRater.Controls.Add(this.tabPage9);
+            this.tabTraktRater.Controls.Add(this.tabPage11);
             this.tabTraktRater.Controls.Add(this.tabPage10);
             this.tabTraktRater.Location = new System.Drawing.Point(6, 20);
             this.tabTraktRater.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -1316,12 +1335,12 @@
             // chkCheckMoviesEnabled
             // 
             this.chkCheckMoviesEnabled.AutoSize = true;
-            this.chkCheckMoviesEnabled.Location = new System.Drawing.Point(28, 29);
+            this.chkCheckMoviesEnabled.Location = new System.Drawing.Point(28, 38);
             this.chkCheckMoviesEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkCheckMoviesEnabled.Name = "chkCheckMoviesEnabled";
-            this.chkCheckMoviesEnabled.Size = new System.Drawing.Size(94, 24);
+            this.chkCheckMoviesEnabled.Size = new System.Drawing.Size(85, 24);
             this.chkCheckMoviesEnabled.TabIndex = 0;
-            this.chkCheckMoviesEnabled.Text = "Enabled";
+            this.chkCheckMoviesEnabled.Text = "Enable";
             this.chkCheckMoviesEnabled.UseVisualStyleBackColor = true;
             this.chkCheckMoviesEnabled.CheckedChanged += new System.EventHandler(this.chkCheckMoviesEnabled_CheckedChanged);
             // 
@@ -1348,6 +1367,74 @@
             this.lblCheckMoviesFile.TabIndex = 1;
             this.lblCheckMoviesFile.Text = "Movie list to import:";
             // 
+            // tabPage11
+            // 
+            this.tabPage11.Controls.Add(this.grbToDoMovies);
+            this.tabPage11.Location = new System.Drawing.Point(4, 29);
+            this.tabPage11.Name = "tabPage11";
+            this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage11.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage11.TabIndex = 11;
+            this.tabPage11.Text = "ToDoMovies";
+            this.tabPage11.UseVisualStyleBackColor = true;
+            // 
+            // grbToDoMovies
+            // 
+            this.grbToDoMovies.Controls.Add(this.btnToDoMoviesExportBrowse);
+            this.grbToDoMovies.Controls.Add(this.chkToDoMoviesEnabled);
+            this.grbToDoMovies.Controls.Add(this.txtToDoMovieExportFile);
+            this.grbToDoMovies.Controls.Add(this.lblToDoMovieExportFile);
+            this.grbToDoMovies.Location = new System.Drawing.Point(9, 9);
+            this.grbToDoMovies.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbToDoMovies.Name = "grbToDoMovies";
+            this.grbToDoMovies.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbToDoMovies.Size = new System.Drawing.Size(1300, 738);
+            this.grbToDoMovies.TabIndex = 8;
+            this.grbToDoMovies.TabStop = false;
+            this.grbToDoMovies.Text = "ToDoMovies";
+            // 
+            // btnToDoMoviesExportBrowse
+            // 
+            this.btnToDoMoviesExportBrowse.Location = new System.Drawing.Point(582, 81);
+            this.btnToDoMoviesExportBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnToDoMoviesExportBrowse.Name = "btnToDoMoviesExportBrowse";
+            this.btnToDoMoviesExportBrowse.Size = new System.Drawing.Size(44, 35);
+            this.btnToDoMoviesExportBrowse.TabIndex = 3;
+            this.btnToDoMoviesExportBrowse.Text = "...";
+            this.btnToDoMoviesExportBrowse.UseVisualStyleBackColor = true;
+            this.btnToDoMoviesExportBrowse.Click += new System.EventHandler(this.btnToDoMoviesExportBrowse_Click);
+            // 
+            // chkToDoMoviesEnabled
+            // 
+            this.chkToDoMoviesEnabled.AutoSize = true;
+            this.chkToDoMoviesEnabled.Location = new System.Drawing.Point(30, 42);
+            this.chkToDoMoviesEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkToDoMoviesEnabled.Name = "chkToDoMoviesEnabled";
+            this.chkToDoMoviesEnabled.Size = new System.Drawing.Size(85, 24);
+            this.chkToDoMoviesEnabled.TabIndex = 0;
+            this.chkToDoMoviesEnabled.Text = "Enable";
+            this.chkToDoMoviesEnabled.UseVisualStyleBackColor = true;
+            this.chkToDoMoviesEnabled.CheckedChanged += new System.EventHandler(this.chkToDoMoviesEnabled_CheckedChanged);
+            // 
+            // txtToDoMovieExportFile
+            // 
+            this.txtToDoMovieExportFile.Location = new System.Drawing.Point(226, 85);
+            this.txtToDoMovieExportFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtToDoMovieExportFile.Name = "txtToDoMovieExportFile";
+            this.txtToDoMovieExportFile.Size = new System.Drawing.Size(345, 26);
+            this.txtToDoMovieExportFile.TabIndex = 2;
+            this.txtToDoMovieExportFile.TextChanged += new System.EventHandler(this.txtToDoMovieExportFile_TextChanged);
+            // 
+            // lblToDoMovieExportFile
+            // 
+            this.lblToDoMovieExportFile.AutoSize = true;
+            this.lblToDoMovieExportFile.Location = new System.Drawing.Point(26, 89);
+            this.lblToDoMovieExportFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblToDoMovieExportFile.Name = "lblToDoMovieExportFile";
+            this.lblToDoMovieExportFile.Size = new System.Drawing.Size(133, 20);
+            this.lblToDoMovieExportFile.TabIndex = 1;
+            this.lblToDoMovieExportFile.Text = "Movie Export File:";
+            // 
             // tabPage10
             // 
             this.tabPage10.Controls.Add(this.grbOptions);
@@ -1359,16 +1446,6 @@
             this.tabPage10.TabIndex = 10;
             this.tabPage10.Text = "Options";
             this.tabPage10.UseVisualStyleBackColor = true;
-            // 
-            // lblImdbNote
-            // 
-            this.lblImdbNote.AutoSize = true;
-            this.lblImdbNote.Location = new System.Drawing.Point(27, 635);
-            this.lblImdbNote.Name = "lblImdbNote";
-            this.lblImdbNote.Size = new System.Drawing.Size(955, 20);
-            this.lblImdbNote.TabIndex = 16;
-            this.lblImdbNote.Text = "Note: If web-scrape option is selected and fails, this may indicate a change to t" +
-    "he IMDb website. Please fallback to CSV import instead.";
             // 
             // TraktRater
             // 
@@ -1419,6 +1496,9 @@
             this.tabPage9.ResumeLayout(false);
             this.grbCheckMovies.ResumeLayout(false);
             this.grbCheckMovies.PerformLayout();
+            this.tabPage11.ResumeLayout(false);
+            this.grbToDoMovies.ResumeLayout(false);
+            this.grbToDoMovies.PerformLayout();
             this.tabPage10.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -1526,6 +1606,12 @@
         private System.Windows.Forms.CheckBox chkCheckMoviesAddMoviesToCollection;
         private System.Windows.Forms.TextBox txtTraktPinCode;
         private System.Windows.Forms.Label lblImdbNote;
+        private System.Windows.Forms.TabPage tabPage11;
+        private System.Windows.Forms.GroupBox grbToDoMovies;
+        private System.Windows.Forms.Button btnToDoMoviesExportBrowse;
+        private System.Windows.Forms.CheckBox chkToDoMoviesEnabled;
+        private System.Windows.Forms.TextBox txtToDoMovieExportFile;
+        private System.Windows.Forms.Label lblToDoMovieExportFile;
     }
 }
 

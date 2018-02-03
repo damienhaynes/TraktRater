@@ -35,6 +35,7 @@
         const string cListalMovieFilename = "ListalMovieFilename";
         const string cListalShowFilename = "ListalShowFilename";
         const string cCritickerMovieFilename = "CritickerMovieFilename";
+        const string cToDoMovieFilename = "ToDoMovieFilename";
         const string cLetterboxdRatingsFilename = "LetterboxdRatingsFilename";
         const string cLetterboxdWatchedFilename = "LetterboxdWatchedFilename";
         const string cLetterboxdDiaryFilename = "LetterboxdDiaryFilename";
@@ -55,6 +56,7 @@
         const string cEnableLetterboxd = "EnableLetterboxd";
         const string cEnableFlixster = "EnableFlixster";
         const string cEnableCheckMovies = "EnableCheckMovies";
+        const string cEnableToDoMovies = "EnableToDoMovies";
         const string cLogLevel = "LogLevel";
         const string cBatchSize = "BatchSize";
         const string cWatchedOnReleaseDay = "WatchedOnReleaseDay";
@@ -99,6 +101,8 @@
 
         public static string CritickerMovieFilename { get; set; }
 
+        public static string ToDoMovieFilename { get; set; }
+
         public static string LetterboxdRatingsFilename { get; set; }
         
         public static string LetterboxdWatchedFilename { get; set; }
@@ -124,7 +128,8 @@
         public static bool EnableListal { get; set; }
         public static bool EnableCriticker { get; set; }
         public static bool EnableLetterboxd { get; set; }
-        public static bool EnableFlixster { get; set; }        
+        public static bool EnableFlixster { get; set; }
+        public static bool EnableToDoMovies { get; set; }
 
         public static LoggingSeverity LogSeverityLevel { get; set; }
 
@@ -178,6 +183,7 @@
                 ListalMovieFilename = xmlReader.GetSettingValueAsString(cListalMovieFilename, string.Empty);
                 ListalShowFilename = xmlReader.GetSettingValueAsString(cListalShowFilename, string.Empty);
                 CritickerMovieFilename = xmlReader.GetSettingValueAsString(cCritickerMovieFilename, string.Empty);
+                ToDoMovieFilename = xmlReader.GetSettingValueAsString(cToDoMovieFilename, string.Empty);
                 LetterboxdRatingsFilename = xmlReader.GetSettingValueAsString(cLetterboxdRatingsFilename, string.Empty);
                 LetterboxdWatchedFilename = xmlReader.GetSettingValueAsString(cLetterboxdWatchedFilename, string.Empty);
                 LetterboxdDiaryFilename = xmlReader.GetSettingValueAsString(cLetterboxdDiaryFilename, string.Empty);
@@ -198,6 +204,7 @@
                 EnableLetterboxd = xmlReader.GetSettingValueAsBool(cEnableLetterboxd, false);
                 EnableFlixster = xmlReader.GetSettingValueAsBool(cEnableFlixster, false);
                 EnableCheckMovies = xmlReader.GetSettingValueAsBool(cEnableCheckMovies, false);
+                EnableToDoMovies = xmlReader.GetSettingValueAsBool(cEnableToDoMovies, false);
                 LogSeverityLevel = (LoggingSeverity)(xmlReader.GetSettingValueAsInt(cLogLevel, 3));
                 BatchSize = xmlReader.GetSettingValueAsInt(cBatchSize, 50);
                 WatchedOnReleaseDay = xmlReader.GetSettingValueAsBool(cWatchedOnReleaseDay, false);
@@ -249,6 +256,7 @@
             xmlWriter.WriteSetting(cListalMovieFilename, ListalMovieFilename);
             xmlWriter.WriteSetting(cListalShowFilename, ListalShowFilename);
             xmlWriter.WriteSetting(cCritickerMovieFilename, CritickerMovieFilename);
+            xmlWriter.WriteSetting(cToDoMovieFilename, ToDoMovieFilename);
             xmlWriter.WriteSetting(cLetterboxdRatingsFilename, LetterboxdRatingsFilename);
             xmlWriter.WriteSetting(cLetterboxdWatchedFilename, LetterboxdWatchedFilename);
             xmlWriter.WriteSetting(cLetterboxdDiaryFilename, LetterboxdDiaryFilename);
@@ -269,6 +277,7 @@
             xmlWriter.WriteSetting(cEnableLetterboxd, EnableLetterboxd.ToString());
             xmlWriter.WriteSetting(cEnableFlixster, EnableFlixster.ToString());
             xmlWriter.WriteSetting(cEnableCheckMovies, EnableCheckMovies.ToString());
+            xmlWriter.WriteSetting(cEnableToDoMovies, EnableToDoMovies.ToString());
             xmlWriter.WriteSetting(cLogLevel, ((int)LogSeverityLevel).ToString());
             xmlWriter.WriteSetting(cBatchSize, BatchSize.ToString());
             xmlWriter.WriteSetting(cWatchedOnReleaseDay, WatchedOnReleaseDay.ToString());
