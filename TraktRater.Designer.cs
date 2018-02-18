@@ -93,10 +93,10 @@
             this.txtListalMovieXMLExport = new System.Windows.Forms.TextBox();
             this.lblListalMovieExportFile = new System.Windows.Forms.Label();
             this.grbCriticker = new System.Windows.Forms.GroupBox();
-            this.btnCritickerMovieExportBrowse = new System.Windows.Forms.Button();
+            this.btnCritickerCSVExportBrowse = new System.Windows.Forms.Button();
             this.chkCritickerEnabled = new System.Windows.Forms.CheckBox();
-            this.txtCritickerMovieExportFile = new System.Windows.Forms.TextBox();
-            this.lblCritickerMovieExportFile = new System.Windows.Forms.Label();
+            this.txtCritickerCSVExportFile = new System.Windows.Forms.TextBox();
+            this.lblCritickerCSVExportFile = new System.Windows.Forms.Label();
             this.tabTraktRater = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -912,10 +912,10 @@
             // 
             // grbCriticker
             // 
-            this.grbCriticker.Controls.Add(this.btnCritickerMovieExportBrowse);
+            this.grbCriticker.Controls.Add(this.btnCritickerCSVExportBrowse);
             this.grbCriticker.Controls.Add(this.chkCritickerEnabled);
-            this.grbCriticker.Controls.Add(this.txtCritickerMovieExportFile);
-            this.grbCriticker.Controls.Add(this.lblCritickerMovieExportFile);
+            this.grbCriticker.Controls.Add(this.txtCritickerCSVExportFile);
+            this.grbCriticker.Controls.Add(this.lblCritickerCSVExportFile);
             this.grbCriticker.Location = new System.Drawing.Point(9, 9);
             this.grbCriticker.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grbCriticker.Name = "grbCriticker";
@@ -925,16 +925,16 @@
             this.grbCriticker.TabStop = false;
             this.grbCriticker.Text = "Criticker";
             // 
-            // btnCritickerMovieExportBrowse
+            // btnCritickerCSVExportBrowse
             // 
-            this.btnCritickerMovieExportBrowse.Location = new System.Drawing.Point(582, 81);
-            this.btnCritickerMovieExportBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnCritickerMovieExportBrowse.Name = "btnCritickerMovieExportBrowse";
-            this.btnCritickerMovieExportBrowse.Size = new System.Drawing.Size(44, 35);
-            this.btnCritickerMovieExportBrowse.TabIndex = 3;
-            this.btnCritickerMovieExportBrowse.Text = "...";
-            this.btnCritickerMovieExportBrowse.UseVisualStyleBackColor = true;
-            this.btnCritickerMovieExportBrowse.Click += new System.EventHandler(this.btnCritickerMovieExportBrowse_Click);
+            this.btnCritickerCSVExportBrowse.Location = new System.Drawing.Point(582, 81);
+            this.btnCritickerCSVExportBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnCritickerCSVExportBrowse.Name = "btnCritickerCSVExportBrowse";
+            this.btnCritickerCSVExportBrowse.Size = new System.Drawing.Size(44, 35);
+            this.btnCritickerCSVExportBrowse.TabIndex = 3;
+            this.btnCritickerCSVExportBrowse.Text = "...";
+            this.btnCritickerCSVExportBrowse.UseVisualStyleBackColor = true;
+            this.btnCritickerCSVExportBrowse.Click += new System.EventHandler(this.btnCritickerCSVExportBrowse_Click);
             // 
             // chkCritickerEnabled
             // 
@@ -948,24 +948,24 @@
             this.chkCritickerEnabled.UseVisualStyleBackColor = true;
             this.chkCritickerEnabled.CheckedChanged += new System.EventHandler(this.chkCritickerEnabled_CheckedChanged);
             // 
-            // txtCritickerMovieExportFile
+            // txtCritickerCSVExportFile
             // 
-            this.txtCritickerMovieExportFile.Location = new System.Drawing.Point(226, 85);
-            this.txtCritickerMovieExportFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtCritickerMovieExportFile.Name = "txtCritickerMovieExportFile";
-            this.txtCritickerMovieExportFile.Size = new System.Drawing.Size(345, 26);
-            this.txtCritickerMovieExportFile.TabIndex = 2;
-            this.txtCritickerMovieExportFile.TextChanged += new System.EventHandler(this.txtCritickerMovieExportFile_TextChanged);
+            this.txtCritickerCSVExportFile.Location = new System.Drawing.Point(226, 85);
+            this.txtCritickerCSVExportFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtCritickerCSVExportFile.Name = "txtCritickerCSVExportFile";
+            this.txtCritickerCSVExportFile.Size = new System.Drawing.Size(345, 26);
+            this.txtCritickerCSVExportFile.TabIndex = 2;
+            this.txtCritickerCSVExportFile.TextChanged += new System.EventHandler(this.txtCritickerMovieExportFile_TextChanged);
             // 
-            // lblCritickerMovieExportFile
+            // lblCritickerCSVExportFile
             // 
-            this.lblCritickerMovieExportFile.AutoSize = true;
-            this.lblCritickerMovieExportFile.Location = new System.Drawing.Point(26, 89);
-            this.lblCritickerMovieExportFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblCritickerMovieExportFile.Name = "lblCritickerMovieExportFile";
-            this.lblCritickerMovieExportFile.Size = new System.Drawing.Size(133, 20);
-            this.lblCritickerMovieExportFile.TabIndex = 1;
-            this.lblCritickerMovieExportFile.Text = "Movie Export File:";
+            this.lblCritickerCSVExportFile.AutoSize = true;
+            this.lblCritickerCSVExportFile.Location = new System.Drawing.Point(26, 89);
+            this.lblCritickerCSVExportFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCritickerCSVExportFile.Name = "lblCritickerCSVExportFile";
+            this.lblCritickerCSVExportFile.Size = new System.Drawing.Size(121, 20);
+            this.lblCritickerCSVExportFile.TabIndex = 1;
+            this.lblCritickerCSVExportFile.Text = "CSV Export File";
             // 
             // tabTraktRater
             // 
@@ -1551,10 +1551,10 @@
         private System.Windows.Forms.CheckBox chkListalEnabled;
         private System.Windows.Forms.CheckBox chkTMDbSyncWatchlist;
         private System.Windows.Forms.GroupBox grbCriticker;
-        private System.Windows.Forms.Button btnCritickerMovieExportBrowse;
+        private System.Windows.Forms.Button btnCritickerCSVExportBrowse;
         private System.Windows.Forms.CheckBox chkCritickerEnabled;
-        private System.Windows.Forms.TextBox txtCritickerMovieExportFile;
-        private System.Windows.Forms.Label lblCritickerMovieExportFile;
+        private System.Windows.Forms.TextBox txtCritickerCSVExportFile;
+        private System.Windows.Forms.Label lblCritickerCSVExportFile;
         private System.Windows.Forms.LinkLabel lnkLogFolder;
         private System.Windows.Forms.Label lblBatchImportSize;
         private System.Windows.Forms.NumericUpDown nudBatchSize;

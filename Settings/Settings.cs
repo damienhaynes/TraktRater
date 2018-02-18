@@ -34,7 +34,7 @@
         const string cListalSyncWatchlist = "ListalSyncWatchlist";
         const string cListalMovieFilename = "ListalMovieFilename";
         const string cListalShowFilename = "ListalShowFilename";
-        const string cCritickerMovieFilename = "CritickerMovieFilename";
+        const string cCritickerCSVFilename = "CritickerCSVFilename";
         const string cToDoMovieFilename = "ToDoMovieFilename";
         const string cLetterboxdRatingsFilename = "LetterboxdRatingsFilename";
         const string cLetterboxdWatchedFilename = "LetterboxdWatchedFilename";
@@ -99,7 +99,7 @@
 
         public static string ListalShowFilename { get; set; }
 
-        public static string CritickerMovieFilename { get; set; }
+        public static string CritickerCSVFilename { get; set; }
 
         public static string ToDoMovieFilename { get; set; }
 
@@ -182,7 +182,7 @@
                 ListalSyncWatchlist = xmlReader.GetSettingValueAsBool(cListalSyncWatchlist, false);
                 ListalMovieFilename = xmlReader.GetSettingValueAsString(cListalMovieFilename, string.Empty);
                 ListalShowFilename = xmlReader.GetSettingValueAsString(cListalShowFilename, string.Empty);
-                CritickerMovieFilename = xmlReader.GetSettingValueAsString(cCritickerMovieFilename, string.Empty);
+                CritickerCSVFilename = xmlReader.GetSettingValueAsString(cCritickerCSVFilename, string.Empty);
                 ToDoMovieFilename = xmlReader.GetSettingValueAsString(cToDoMovieFilename, string.Empty);
                 LetterboxdRatingsFilename = xmlReader.GetSettingValueAsString(cLetterboxdRatingsFilename, string.Empty);
                 LetterboxdWatchedFilename = xmlReader.GetSettingValueAsString(cLetterboxdWatchedFilename, string.Empty);
@@ -255,7 +255,7 @@
             xmlWriter.WriteSetting(cListalSyncWatchlist, ListalSyncWatchlist.ToString());
             xmlWriter.WriteSetting(cListalMovieFilename, ListalMovieFilename);
             xmlWriter.WriteSetting(cListalShowFilename, ListalShowFilename);
-            xmlWriter.WriteSetting(cCritickerMovieFilename, CritickerMovieFilename);
+            xmlWriter.WriteSetting(cCritickerCSVFilename, CritickerCSVFilename);
             xmlWriter.WriteSetting(cToDoMovieFilename, ToDoMovieFilename);
             xmlWriter.WriteSetting(cLetterboxdRatingsFilename, LetterboxdRatingsFilename);
             xmlWriter.WriteSetting(cLetterboxdWatchedFilename, LetterboxdWatchedFilename);

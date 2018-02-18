@@ -69,7 +69,7 @@
             chkListalWebWatchlist.Checked = AppSettings.ListalSyncWatchlist;
             txtListalMovieXMLExport.Text = AppSettings.ListalMovieFilename;
             txtListalShowXMLExport.Text = AppSettings.ListalShowFilename;
-            txtCritickerMovieExportFile.Text = AppSettings.CritickerMovieFilename;
+            txtCritickerCSVExportFile.Text = AppSettings.CritickerCSVFilename;
             txtToDoMovieExportFile.Text = AppSettings.ToDoMovieFilename;
             txtLetterboxdWatchedFile.Text = AppSettings.LetterboxdWatchedFilename;
             txtLetterboxdRatingsFile.Text = AppSettings.LetterboxdRatingsFilename;
@@ -256,13 +256,13 @@
             }
         }
 
-        private void btnCritickerMovieExportBrowse_Click(object sender, EventArgs e)
+        private void btnCritickerCSVExportBrowse_Click(object sender, EventArgs e)
         {
-            dlgFileOpen.Filter = "XML files|*.xml";
+            dlgFileOpen.Filter = "CSV files|*.csv";
             DialogResult result = dlgFileOpen.ShowDialog(this);
             if (result == DialogResult.OK)
             {
-                txtCritickerMovieExportFile.Text = dlgFileOpen.FileName;
+                txtCritickerCSVExportFile.Text = dlgFileOpen.FileName;
             }
         }
 
@@ -318,7 +318,7 @@
 
         private void txtCritickerMovieExportFile_TextChanged(object sender, EventArgs e)
         {
-            AppSettings.CritickerMovieFilename = txtCritickerMovieExportFile.Text;
+            AppSettings.CritickerCSVFilename = txtCritickerCSVExportFile.Text;
         }
 
         private void chkListalWebWatchlist_CheckedChanged(object sender, EventArgs e)
@@ -572,7 +572,7 @@
             if (AppSettings.EnableIMDb)             sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, AppSettings.IMDbCustomLists, rdnImdbCSV.Checked));
             if (AppSettings.EnableIMDb)             sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
             if (AppSettings.EnableListal)           sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
-            if (AppSettings.EnableCriticker)        sites.Add(new Criticker(AppSettings.CritickerMovieFilename));
+            if (AppSettings.EnableCriticker)        sites.Add(new Criticker(AppSettings.CritickerCSVFilename));
             if (AppSettings.EnableLetterboxd)       sites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename));
             if (AppSettings.EnableFlixster)         sites.Add(new Flixster(AppSettings.FlixsterUserId, AppSettings.FlixsterSyncWantToSee));
             if (AppSettings.EnableCheckMovies)      sites.Add(new CheckMovies(AppSettings.CheckMoviesFilename, AppSettings.CheckMoviesDelimiter));
@@ -919,9 +919,9 @@
 
         private void EnableCritickerControls(bool enableState)
         {
-            lblCritickerMovieExportFile.Enabled = enableState;
-            txtCritickerMovieExportFile.Enabled = enableState;
-            btnCritickerMovieExportBrowse.Enabled = enableState;
+            lblCritickerCSVExportFile.Enabled = enableState;
+            txtCritickerCSVExportFile.Enabled = enableState;
+            btnCritickerCSVExportBrowse.Enabled = enableState;
         }
 
         private void EnableLetterboxdControls(bool enableState)
