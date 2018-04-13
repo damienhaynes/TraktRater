@@ -165,14 +165,15 @@
             // 
             // grbTrakt
             // 
+            this.grbTrakt.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbTrakt.Controls.Add(this.lblWarnPeriod);
             this.grbTrakt.Controls.Add(this.txtTraktPinCode);
             this.grbTrakt.Controls.Add(this.lnkTraktOAuth);
-            this.grbTrakt.Location = new System.Drawing.Point(9, 9);
-            this.grbTrakt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbTrakt.Location = new System.Drawing.Point(6, 6);
             this.grbTrakt.Name = "grbTrakt";
-            this.grbTrakt.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbTrakt.Size = new System.Drawing.Size(1300, 738);
+            this.grbTrakt.Size = new System.Drawing.Size(561, 348);
             this.grbTrakt.TabIndex = 0;
             this.grbTrakt.TabStop = false;
             this.grbTrakt.Text = "Trakt";
@@ -180,20 +181,18 @@
             // lblWarnPeriod
             // 
             this.lblWarnPeriod.AutoSize = true;
-            this.lblWarnPeriod.Location = new System.Drawing.Point(29, 108);
-            this.lblWarnPeriod.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblWarnPeriod.Location = new System.Drawing.Point(19, 70);
             this.lblWarnPeriod.Name = "lblWarnPeriod";
-            this.lblWarnPeriod.Size = new System.Drawing.Size(373, 20);
+            this.lblWarnPeriod.Size = new System.Drawing.Size(250, 13);
             this.lblWarnPeriod.TabIndex = 17;
             this.lblWarnPeriod.Text = "You have 15 mins to enter pin code and start import";
             // 
             // txtTraktPinCode
             // 
             this.txtTraktPinCode.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.txtTraktPinCode.Location = new System.Drawing.Point(29, 69);
-            this.txtTraktPinCode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtTraktPinCode.Location = new System.Drawing.Point(19, 45);
             this.txtTraktPinCode.Name = "txtTraktPinCode";
-            this.txtTraktPinCode.Size = new System.Drawing.Size(364, 26);
+            this.txtTraktPinCode.Size = new System.Drawing.Size(244, 20);
             this.txtTraktPinCode.TabIndex = 16;
             this.txtTraktPinCode.Text = "Authorise and then enter pin code here...";
             this.txtTraktPinCode.Visible = false;
@@ -203,10 +202,9 @@
             // lnkTraktOAuth
             // 
             this.lnkTraktOAuth.AutoSize = true;
-            this.lnkTraktOAuth.Location = new System.Drawing.Point(29, 36);
-            this.lnkTraktOAuth.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lnkTraktOAuth.Location = new System.Drawing.Point(19, 23);
             this.lnkTraktOAuth.Name = "lnkTraktOAuth";
-            this.lnkTraktOAuth.Size = new System.Drawing.Size(299, 20);
+            this.lnkTraktOAuth.Size = new System.Drawing.Size(203, 13);
             this.lnkTraktOAuth.TabIndex = 15;
             this.lnkTraktOAuth.TabStop = true;
             this.lnkTraktOAuth.Text = "Click to Authorise access to your account";
@@ -214,10 +212,9 @@
             // 
             // btnMaintenance
             // 
-            this.btnMaintenance.Location = new System.Drawing.Point(32, 269);
-            this.btnMaintenance.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnMaintenance.Location = new System.Drawing.Point(21, 175);
             this.btnMaintenance.Name = "btnMaintenance";
-            this.btnMaintenance.Size = new System.Drawing.Size(414, 40);
+            this.btnMaintenance.Size = new System.Drawing.Size(276, 26);
             this.btnMaintenance.TabIndex = 5;
             this.btnMaintenance.Text = "Cleanup / Maintenance...";
             this.btnMaintenance.UseVisualStyleBackColor = true;
@@ -225,14 +222,15 @@
             // 
             // grbTVDb
             // 
+            this.grbTVDb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbTVDb.Controls.Add(this.chkTVDbEnabled);
             this.grbTVDb.Controls.Add(this.txtTVDbAccountId);
             this.grbTVDb.Controls.Add(this.lblTVDbAccountId);
-            this.grbTVDb.Location = new System.Drawing.Point(9, 9);
-            this.grbTVDb.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbTVDb.Location = new System.Drawing.Point(6, 6);
             this.grbTVDb.Name = "grbTVDb";
-            this.grbTVDb.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbTVDb.Size = new System.Drawing.Size(1304, 741);
+            this.grbTVDb.Size = new System.Drawing.Size(468, 254);
             this.grbTVDb.TabIndex = 3;
             this.grbTVDb.TabStop = false;
             this.grbTVDb.Text = "TVDb";
@@ -240,10 +238,9 @@
             // chkTVDbEnabled
             // 
             this.chkTVDbEnabled.AutoSize = true;
-            this.chkTVDbEnabled.Location = new System.Drawing.Point(28, 29);
-            this.chkTVDbEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkTVDbEnabled.Location = new System.Drawing.Point(19, 19);
             this.chkTVDbEnabled.Name = "chkTVDbEnabled";
-            this.chkTVDbEnabled.Size = new System.Drawing.Size(94, 24);
+            this.chkTVDbEnabled.Size = new System.Drawing.Size(65, 17);
             this.chkTVDbEnabled.TabIndex = 0;
             this.chkTVDbEnabled.Text = "Enabled";
             this.chkTVDbEnabled.UseVisualStyleBackColor = true;
@@ -251,10 +248,9 @@
             // 
             // txtTVDbAccountId
             // 
-            this.txtTVDbAccountId.Location = new System.Drawing.Point(262, 71);
-            this.txtTVDbAccountId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtTVDbAccountId.Location = new System.Drawing.Point(175, 46);
             this.txtTVDbAccountId.Name = "txtTVDbAccountId";
-            this.txtTVDbAccountId.Size = new System.Drawing.Size(364, 26);
+            this.txtTVDbAccountId.Size = new System.Drawing.Size(244, 20);
             this.txtTVDbAccountId.TabIndex = 2;
             this.tipHelp.SetToolTip(this.txtTVDbAccountId, "The Account Identifier can be found in the account tab of\r\nhttp://thetvdb.com web" +
         "site. It is 16 hexidecimal characters e.g.\r\n\r\nEB6D329D10E3835A");
@@ -263,19 +259,19 @@
             // lblTVDbAccountId
             // 
             this.lblTVDbAccountId.AutoSize = true;
-            this.lblTVDbAccountId.Location = new System.Drawing.Point(24, 75);
-            this.lblTVDbAccountId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTVDbAccountId.Location = new System.Drawing.Point(16, 49);
             this.lblTVDbAccountId.Name = "lblTVDbAccountId";
-            this.lblTVDbAccountId.Size = new System.Drawing.Size(138, 20);
+            this.lblTVDbAccountId.Size = new System.Drawing.Size(93, 13);
             this.lblTVDbAccountId.TabIndex = 1;
             this.lblTVDbAccountId.Text = "Account Identifier:";
             // 
             // btnStartSync
             // 
-            this.btnStartSync.Location = new System.Drawing.Point(6, 825);
-            this.btnStartSync.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnStartSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStartSync.Location = new System.Drawing.Point(4, 407);
             this.btnStartSync.Name = "btnStartSync";
-            this.btnStartSync.Size = new System.Drawing.Size(1331, 40);
+            this.btnStartSync.Size = new System.Drawing.Size(577, 26);
             this.btnStartSync.TabIndex = 8;
             this.btnStartSync.Text = "Start Import";
             this.btnStartSync.UseVisualStyleBackColor = true;
@@ -283,33 +279,34 @@
             // 
             // pbrImportProgress
             // 
-            this.pbrImportProgress.Location = new System.Drawing.Point(8, 874);
-            this.pbrImportProgress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pbrImportProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbrImportProgress.Location = new System.Drawing.Point(5, 437);
             this.pbrImportProgress.Name = "pbrImportProgress";
-            this.pbrImportProgress.Size = new System.Drawing.Size(1329, 35);
+            this.pbrImportProgress.Size = new System.Drawing.Size(576, 23);
             this.pbrImportProgress.TabIndex = 9;
             // 
             // grbReport
             // 
+            this.grbReport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbReport.Controls.Add(this.lnkLogFolder);
             this.grbReport.Controls.Add(this.lblStatusMessage);
             this.grbReport.Controls.Add(this.label5);
-            this.grbReport.Location = new System.Drawing.Point(6, 925);
-            this.grbReport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbReport.Location = new System.Drawing.Point(4, 461);
             this.grbReport.Name = "grbReport";
-            this.grbReport.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbReport.Size = new System.Drawing.Size(1331, 75);
+            this.grbReport.Size = new System.Drawing.Size(577, 49);
             this.grbReport.TabIndex = 10;
             this.grbReport.TabStop = false;
             this.grbReport.Text = "Report";
             // 
             // lnkLogFolder
             // 
+            this.lnkLogFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkLogFolder.AutoSize = true;
-            this.lnkLogFolder.Location = new System.Drawing.Point(1192, 31);
-            this.lnkLogFolder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lnkLogFolder.Location = new System.Drawing.Point(480, 19);
             this.lnkLogFolder.Name = "lnkLogFolder";
-            this.lnkLogFolder.Size = new System.Drawing.Size(128, 20);
+            this.lnkLogFolder.Size = new System.Drawing.Size(86, 13);
             this.lnkLogFolder.TabIndex = 2;
             this.lnkLogFolder.TabStop = true;
             this.lnkLogFolder.Text = "Open Log Folder";
@@ -317,19 +314,21 @@
             // 
             // lblStatusMessage
             // 
-            this.lblStatusMessage.Location = new System.Drawing.Point(116, 31);
-            this.lblStatusMessage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblStatusMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblStatusMessage.AutoEllipsis = true;
+            this.lblStatusMessage.Location = new System.Drawing.Point(77, 17);
             this.lblStatusMessage.Name = "lblStatusMessage";
-            this.lblStatusMessage.Size = new System.Drawing.Size(1068, 35);
+            this.lblStatusMessage.Size = new System.Drawing.Size(389, 23);
             this.lblStatusMessage.TabIndex = 1;
             this.lblStatusMessage.Text = "Ready for anything!";
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(10, 31);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label5.Location = new System.Drawing.Point(7, 17);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(104, 35);
+            this.label5.Size = new System.Drawing.Size(69, 23);
             this.label5.TabIndex = 0;
             this.label5.Text = "Status:";
             // 
@@ -347,10 +346,9 @@
             this.txtImdbRatingsFilename.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtImdbRatingsFilename.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtImdbRatingsFilename.Enabled = false;
-            this.txtImdbRatingsFilename.Location = new System.Drawing.Point(262, 140);
-            this.txtImdbRatingsFilename.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtImdbRatingsFilename.Location = new System.Drawing.Point(175, 91);
             this.txtImdbRatingsFilename.Name = "txtImdbRatingsFilename";
-            this.txtImdbRatingsFilename.Size = new System.Drawing.Size(310, 26);
+            this.txtImdbRatingsFilename.Size = new System.Drawing.Size(208, 20);
             this.txtImdbRatingsFilename.TabIndex = 4;
             this.tipHelp.SetToolTip(this.txtImdbRatingsFilename, "You can export your ratings history to csv from your IMDb account settings.\r\nOnce" +
         " you have downloaded file, you can specify filename in this textbox.");
@@ -360,10 +358,9 @@
             // 
             this.txtImdbWebUsername.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtImdbWebUsername.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
-            this.txtImdbWebUsername.Location = new System.Drawing.Point(266, 519);
-            this.txtImdbWebUsername.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtImdbWebUsername.Location = new System.Drawing.Point(175, 255);
             this.txtImdbWebUsername.Name = "txtImdbWebUsername";
-            this.txtImdbWebUsername.Size = new System.Drawing.Size(307, 26);
+            this.txtImdbWebUsername.Size = new System.Drawing.Size(206, 20);
             this.txtImdbWebUsername.TabIndex = 14;
             this.tipHelp.SetToolTip(this.txtImdbWebUsername, resources.GetString("txtImdbWebUsername.ToolTip"));
             this.txtImdbWebUsername.TextChanged += new System.EventHandler(this.txtImdbUsername_TextChanged);
@@ -372,10 +369,9 @@
             // 
             this.txtImdbWatchlistFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtImdbWatchlistFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
-            this.txtImdbWatchlistFile.Location = new System.Drawing.Point(262, 209);
-            this.txtImdbWatchlistFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtImdbWatchlistFile.Location = new System.Drawing.Point(175, 134);
             this.txtImdbWatchlistFile.Name = "txtImdbWatchlistFile";
-            this.txtImdbWatchlistFile.Size = new System.Drawing.Size(310, 26);
+            this.txtImdbWatchlistFile.Size = new System.Drawing.Size(208, 20);
             this.txtImdbWatchlistFile.TabIndex = 7;
             this.tipHelp.SetToolTip(this.txtImdbWatchlistFile, "Leave field blank if you\'re not interested in importing a watchlist from IMDb to " +
         "trakt.tv.");
@@ -383,8 +379,7 @@
             // 
             // nudBatchSize
             // 
-            this.nudBatchSize.Location = new System.Drawing.Point(201, 152);
-            this.nudBatchSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudBatchSize.Location = new System.Drawing.Point(134, 99);
             this.nudBatchSize.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -396,7 +391,7 @@
             0,
             0});
             this.nudBatchSize.Name = "nudBatchSize";
-            this.nudBatchSize.Size = new System.Drawing.Size(156, 26);
+            this.nudBatchSize.Size = new System.Drawing.Size(104, 20);
             this.nudBatchSize.TabIndex = 4;
             this.tipHelp.SetToolTip(this.nudBatchSize, "Set the size of the batch when importing items to trakt.tv. Set lower if having i" +
         "ssues with the server.");
@@ -412,10 +407,9 @@
             this.txtLetterboxdDiaryFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtLetterboxdDiaryFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtLetterboxdDiaryFile.Enabled = false;
-            this.txtLetterboxdDiaryFile.Location = new System.Drawing.Point(30, 266);
-            this.txtLetterboxdDiaryFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtLetterboxdDiaryFile.Location = new System.Drawing.Point(20, 173);
             this.txtLetterboxdDiaryFile.Name = "txtLetterboxdDiaryFile";
-            this.txtLetterboxdDiaryFile.Size = new System.Drawing.Size(310, 26);
+            this.txtLetterboxdDiaryFile.Size = new System.Drawing.Size(208, 20);
             this.txtLetterboxdDiaryFile.TabIndex = 0;
             this.tipHelp.SetToolTip(this.txtLetterboxdDiaryFile, "The Diary file includes everything marked as watched at a specified date, this da" +
         "te will override any movies found in the Watched file");
@@ -424,10 +418,9 @@
             // chkCheckMoviesAddWatchedToWatchlist
             // 
             this.chkCheckMoviesAddWatchedToWatchlist.AutoSize = true;
-            this.chkCheckMoviesAddWatchedToWatchlist.Location = new System.Drawing.Point(38, 239);
-            this.chkCheckMoviesAddWatchedToWatchlist.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkCheckMoviesAddWatchedToWatchlist.Location = new System.Drawing.Point(25, 155);
             this.chkCheckMoviesAddWatchedToWatchlist.Name = "chkCheckMoviesAddWatchedToWatchlist";
-            this.chkCheckMoviesAddWatchedToWatchlist.Size = new System.Drawing.Size(641, 24);
+            this.chkCheckMoviesAddWatchedToWatchlist.Size = new System.Drawing.Size(438, 17);
             this.chkCheckMoviesAddWatchedToWatchlist.TabIndex = 6;
             this.chkCheckMoviesAddWatchedToWatchlist.Text = "Add watched movies to watchlist (If unchecked, only movies in \'watchlist\' will be" +
     " added)";
@@ -440,10 +433,9 @@
             this.txtCheckMoviesCsvFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtCheckMoviesCsvFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtCheckMoviesCsvFile.Enabled = false;
-            this.txtCheckMoviesCsvFile.Location = new System.Drawing.Point(38, 116);
-            this.txtCheckMoviesCsvFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtCheckMoviesCsvFile.Location = new System.Drawing.Point(25, 75);
             this.txtCheckMoviesCsvFile.Name = "txtCheckMoviesCsvFile";
-            this.txtCheckMoviesCsvFile.Size = new System.Drawing.Size(310, 26);
+            this.txtCheckMoviesCsvFile.Size = new System.Drawing.Size(208, 20);
             this.txtCheckMoviesCsvFile.TabIndex = 2;
             this.txtCheckMoviesCsvFile.TextChanged += new System.EventHandler(this.txtCheckMoviesCsvFile_TextChanged);
             // 
@@ -452,10 +444,9 @@
             this.txtLetterboxdRatingsFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtLetterboxdRatingsFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtLetterboxdRatingsFile.Enabled = false;
-            this.txtLetterboxdRatingsFile.Location = new System.Drawing.Point(30, 118);
-            this.txtLetterboxdRatingsFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtLetterboxdRatingsFile.Location = new System.Drawing.Point(20, 77);
             this.txtLetterboxdRatingsFile.Name = "txtLetterboxdRatingsFile";
-            this.txtLetterboxdRatingsFile.Size = new System.Drawing.Size(310, 26);
+            this.txtLetterboxdRatingsFile.Size = new System.Drawing.Size(208, 20);
             this.txtLetterboxdRatingsFile.TabIndex = 2;
             this.txtLetterboxdRatingsFile.TextChanged += new System.EventHandler(this.txtLetterboxdRatingsFile_TextChanged);
             // 
@@ -464,15 +455,17 @@
             this.txtLetterboxdWatchedFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtLetterboxdWatchedFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtLetterboxdWatchedFile.Enabled = false;
-            this.txtLetterboxdWatchedFile.Location = new System.Drawing.Point(30, 191);
-            this.txtLetterboxdWatchedFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtLetterboxdWatchedFile.Location = new System.Drawing.Point(20, 124);
             this.txtLetterboxdWatchedFile.Name = "txtLetterboxdWatchedFile";
-            this.txtLetterboxdWatchedFile.Size = new System.Drawing.Size(310, 26);
+            this.txtLetterboxdWatchedFile.Size = new System.Drawing.Size(208, 20);
             this.txtLetterboxdWatchedFile.TabIndex = 6;
             this.txtLetterboxdWatchedFile.TextChanged += new System.EventHandler(this.txtLetterboxdWatchedFile_TextChanged);
             // 
             // grbImdb
             // 
+            this.grbImdb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbImdb.Controls.Add(this.lblImdbNote);
             this.grbImdb.Controls.Add(this.lblImdbCustomLists);
             this.grbImdb.Controls.Add(this.btnImdbDeleteList);
@@ -490,21 +483,20 @@
             this.grbImdb.Controls.Add(this.txtImdbWebUsername);
             this.grbImdb.Controls.Add(this.btnImdbRatingsBrowse);
             this.grbImdb.Controls.Add(this.txtImdbRatingsFilename);
-            this.grbImdb.Location = new System.Drawing.Point(9, 9);
-            this.grbImdb.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbImdb.Location = new System.Drawing.Point(6, 6);
             this.grbImdb.Name = "grbImdb";
-            this.grbImdb.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbImdb.Size = new System.Drawing.Size(1300, 741);
+            this.grbImdb.Size = new System.Drawing.Size(561, 350);
             this.grbImdb.TabIndex = 0;
             this.grbImdb.TabStop = false;
             this.grbImdb.Text = "IMDb";
             // 
             // lblImdbNote
             // 
-            this.lblImdbNote.AutoSize = true;
-            this.lblImdbNote.Location = new System.Drawing.Point(27, 635);
+            this.lblImdbNote.AutoEllipsis = true;
+            this.lblImdbNote.Location = new System.Drawing.Point(18, 308);
+            this.lblImdbNote.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblImdbNote.Name = "lblImdbNote";
-            this.lblImdbNote.Size = new System.Drawing.Size(955, 20);
+            this.lblImdbNote.Size = new System.Drawing.Size(428, 37);
             this.lblImdbNote.TabIndex = 16;
             this.lblImdbNote.Text = "Note: If web-scrape option is selected and fails, this may indicate a change to t" +
     "he IMDb website. Please fallback to CSV import instead.";
@@ -512,19 +504,17 @@
             // lblImdbCustomLists
             // 
             this.lblImdbCustomLists.AutoSize = true;
-            this.lblImdbCustomLists.Location = new System.Drawing.Point(262, 260);
-            this.lblImdbCustomLists.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblImdbCustomLists.Location = new System.Drawing.Point(175, 160);
             this.lblImdbCustomLists.Name = "lblImdbCustomLists";
-            this.lblImdbCustomLists.Size = new System.Drawing.Size(105, 20);
+            this.lblImdbCustomLists.Size = new System.Drawing.Size(69, 13);
             this.lblImdbCustomLists.TabIndex = 9;
             this.lblImdbCustomLists.Text = "Custom Lists:";
             // 
             // btnImdbDeleteList
             // 
-            this.btnImdbDeleteList.Location = new System.Drawing.Point(585, 399);
-            this.btnImdbDeleteList.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnImdbDeleteList.Location = new System.Drawing.Point(390, 209);
             this.btnImdbDeleteList.Name = "btnImdbDeleteList";
-            this.btnImdbDeleteList.Size = new System.Drawing.Size(42, 35);
+            this.btnImdbDeleteList.Size = new System.Drawing.Size(28, 23);
             this.btnImdbDeleteList.TabIndex = 12;
             this.btnImdbDeleteList.Text = "-";
             this.btnImdbDeleteList.UseVisualStyleBackColor = true;
@@ -532,10 +522,9 @@
             // 
             // btnImdbAddList
             // 
-            this.btnImdbAddList.Location = new System.Drawing.Point(585, 352);
-            this.btnImdbAddList.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnImdbAddList.Location = new System.Drawing.Point(390, 179);
             this.btnImdbAddList.Name = "btnImdbAddList";
-            this.btnImdbAddList.Size = new System.Drawing.Size(42, 35);
+            this.btnImdbAddList.Size = new System.Drawing.Size(28, 23);
             this.btnImdbAddList.TabIndex = 11;
             this.btnImdbAddList.Text = "+";
             this.btnImdbAddList.UseVisualStyleBackColor = true;
@@ -544,20 +533,17 @@
             // lsImdbCustomLists
             // 
             this.lsImdbCustomLists.FormattingEnabled = true;
-            this.lsImdbCustomLists.ItemHeight = 20;
-            this.lsImdbCustomLists.Location = new System.Drawing.Point(262, 289);
-            this.lsImdbCustomLists.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lsImdbCustomLists.Location = new System.Drawing.Point(175, 179);
             this.lsImdbCustomLists.Name = "lsImdbCustomLists";
-            this.lsImdbCustomLists.Size = new System.Drawing.Size(310, 204);
+            this.lsImdbCustomLists.Size = new System.Drawing.Size(208, 69);
             this.lsImdbCustomLists.TabIndex = 10;
             // 
             // chkIMDbEnabled
             // 
             this.chkIMDbEnabled.AutoSize = true;
-            this.chkIMDbEnabled.Location = new System.Drawing.Point(28, 29);
-            this.chkIMDbEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkIMDbEnabled.Location = new System.Drawing.Point(19, 19);
             this.chkIMDbEnabled.Name = "chkIMDbEnabled";
-            this.chkIMDbEnabled.Size = new System.Drawing.Size(94, 24);
+            this.chkIMDbEnabled.Size = new System.Drawing.Size(65, 17);
             this.chkIMDbEnabled.TabIndex = 0;
             this.chkIMDbEnabled.Text = "Enabled";
             this.chkIMDbEnabled.UseVisualStyleBackColor = true;
@@ -565,10 +551,9 @@
             // 
             // btnImdbWatchlistBrowse
             // 
-            this.btnImdbWatchlistBrowse.Location = new System.Drawing.Point(585, 205);
-            this.btnImdbWatchlistBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnImdbWatchlistBrowse.Location = new System.Drawing.Point(390, 131);
             this.btnImdbWatchlistBrowse.Name = "btnImdbWatchlistBrowse";
-            this.btnImdbWatchlistBrowse.Size = new System.Drawing.Size(42, 35);
+            this.btnImdbWatchlistBrowse.Size = new System.Drawing.Size(28, 23);
             this.btnImdbWatchlistBrowse.TabIndex = 8;
             this.btnImdbWatchlistBrowse.Text = "...";
             this.btnImdbWatchlistBrowse.UseVisualStyleBackColor = true;
@@ -577,30 +562,27 @@
             // lblImdbWatchlistFile
             // 
             this.lblImdbWatchlistFile.AutoSize = true;
-            this.lblImdbWatchlistFile.Location = new System.Drawing.Point(262, 181);
-            this.lblImdbWatchlistFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblImdbWatchlistFile.Location = new System.Drawing.Point(175, 116);
             this.lblImdbWatchlistFile.Name = "lblImdbWatchlistFile";
-            this.lblImdbWatchlistFile.Size = new System.Drawing.Size(107, 20);
+            this.lblImdbWatchlistFile.Size = new System.Drawing.Size(73, 13);
             this.lblImdbWatchlistFile.TabIndex = 6;
             this.lblImdbWatchlistFile.Text = "Watchlist File:";
             // 
             // lblImdbRatingsFile
             // 
             this.lblImdbRatingsFile.AutoSize = true;
-            this.lblImdbRatingsFile.Location = new System.Drawing.Point(258, 115);
-            this.lblImdbRatingsFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblImdbRatingsFile.Location = new System.Drawing.Point(172, 75);
             this.lblImdbRatingsFile.Name = "lblImdbRatingsFile";
-            this.lblImdbRatingsFile.Size = new System.Drawing.Size(97, 20);
+            this.lblImdbRatingsFile.Size = new System.Drawing.Size(65, 13);
             this.lblImdbRatingsFile.TabIndex = 3;
             this.lblImdbRatingsFile.Text = "Ratings File:";
             // 
             // lblImdbDescription
             // 
             this.lblImdbDescription.AutoSize = true;
-            this.lblImdbDescription.Location = new System.Drawing.Point(27, 69);
-            this.lblImdbDescription.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblImdbDescription.Location = new System.Drawing.Point(18, 45);
             this.lblImdbDescription.Name = "lblImdbDescription";
-            this.lblImdbDescription.Size = new System.Drawing.Size(635, 20);
+            this.lblImdbDescription.Size = new System.Drawing.Size(423, 13);
             this.lblImdbDescription.TabIndex = 1;
             this.lblImdbDescription.Text = "Select \'CSV Import\' (recommended) for static file import or \'Web Scrape\' for web " +
     "retrieval:";
@@ -608,10 +590,9 @@
             // rdnImdbUsername
             // 
             this.rdnImdbUsername.AutoSize = true;
-            this.rdnImdbUsername.Location = new System.Drawing.Point(32, 522);
-            this.rdnImdbUsername.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.rdnImdbUsername.Location = new System.Drawing.Point(19, 257);
             this.rdnImdbUsername.Name = "rdnImdbUsername";
-            this.rdnImdbUsername.Size = new System.Drawing.Size(126, 24);
+            this.rdnImdbUsername.Size = new System.Drawing.Size(88, 17);
             this.rdnImdbUsername.TabIndex = 13;
             this.rdnImdbUsername.Text = "Web Scrape:";
             this.rdnImdbUsername.UseVisualStyleBackColor = true;
@@ -620,10 +601,9 @@
             // 
             this.rdnImdbCSV.AutoSize = true;
             this.rdnImdbCSV.Checked = true;
-            this.rdnImdbCSV.Location = new System.Drawing.Point(28, 112);
-            this.rdnImdbCSV.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.rdnImdbCSV.Location = new System.Drawing.Point(19, 73);
             this.rdnImdbCSV.Name = "rdnImdbCSV";
-            this.rdnImdbCSV.Size = new System.Drawing.Size(121, 24);
+            this.rdnImdbCSV.Size = new System.Drawing.Size(81, 17);
             this.rdnImdbCSV.TabIndex = 2;
             this.rdnImdbCSV.TabStop = true;
             this.rdnImdbCSV.Text = "CSV Import:";
@@ -633,10 +613,9 @@
             // chkImdbWebWatchlist
             // 
             this.chkImdbWebWatchlist.AutoSize = true;
-            this.chkImdbWebWatchlist.Location = new System.Drawing.Point(266, 559);
-            this.chkImdbWebWatchlist.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkImdbWebWatchlist.Location = new System.Drawing.Point(175, 281);
             this.chkImdbWebWatchlist.Name = "chkImdbWebWatchlist";
-            this.chkImdbWebWatchlist.Size = new System.Drawing.Size(139, 24);
+            this.chkImdbWebWatchlist.Size = new System.Drawing.Size(97, 17);
             this.chkImdbWebWatchlist.TabIndex = 15;
             this.chkImdbWebWatchlist.Text = "Sync Watchlist";
             this.chkImdbWebWatchlist.UseVisualStyleBackColor = true;
@@ -645,10 +624,9 @@
             // btnImdbRatingsBrowse
             // 
             this.btnImdbRatingsBrowse.Enabled = false;
-            this.btnImdbRatingsBrowse.Location = new System.Drawing.Point(584, 138);
-            this.btnImdbRatingsBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnImdbRatingsBrowse.Location = new System.Drawing.Point(389, 90);
             this.btnImdbRatingsBrowse.Name = "btnImdbRatingsBrowse";
-            this.btnImdbRatingsBrowse.Size = new System.Drawing.Size(44, 35);
+            this.btnImdbRatingsBrowse.Size = new System.Drawing.Size(29, 23);
             this.btnImdbRatingsBrowse.TabIndex = 5;
             this.btnImdbRatingsBrowse.Text = "...";
             this.btnImdbRatingsBrowse.UseVisualStyleBackColor = true;
@@ -660,15 +638,16 @@
             // 
             // grbTMDb
             // 
+            this.grbTMDb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbTMDb.Controls.Add(this.chkTMDbSyncWatchlist);
             this.grbTMDb.Controls.Add(this.chkTMDbEnabled);
             this.grbTMDb.Controls.Add(this.lnkTMDbStart);
             this.grbTMDb.Controls.Add(this.lblTMDbMessage);
-            this.grbTMDb.Location = new System.Drawing.Point(9, 9);
-            this.grbTMDb.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbTMDb.Location = new System.Drawing.Point(6, 6);
             this.grbTMDb.Name = "grbTMDb";
-            this.grbTMDb.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbTMDb.Size = new System.Drawing.Size(1300, 741);
+            this.grbTMDb.Size = new System.Drawing.Size(561, 350);
             this.grbTMDb.TabIndex = 4;
             this.grbTMDb.TabStop = false;
             this.grbTMDb.Text = "TMDb";
@@ -676,10 +655,9 @@
             // chkTMDbSyncWatchlist
             // 
             this.chkTMDbSyncWatchlist.AutoSize = true;
-            this.chkTMDbSyncWatchlist.Location = new System.Drawing.Point(30, 65);
-            this.chkTMDbSyncWatchlist.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkTMDbSyncWatchlist.Location = new System.Drawing.Point(20, 42);
             this.chkTMDbSyncWatchlist.Name = "chkTMDbSyncWatchlist";
-            this.chkTMDbSyncWatchlist.Size = new System.Drawing.Size(139, 24);
+            this.chkTMDbSyncWatchlist.Size = new System.Drawing.Size(97, 17);
             this.chkTMDbSyncWatchlist.TabIndex = 1;
             this.chkTMDbSyncWatchlist.Text = "Sync Watchlist";
             this.chkTMDbSyncWatchlist.UseVisualStyleBackColor = true;
@@ -688,10 +666,9 @@
             // chkTMDbEnabled
             // 
             this.chkTMDbEnabled.AutoSize = true;
-            this.chkTMDbEnabled.Location = new System.Drawing.Point(30, 29);
-            this.chkTMDbEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkTMDbEnabled.Location = new System.Drawing.Point(20, 19);
             this.chkTMDbEnabled.Name = "chkTMDbEnabled";
-            this.chkTMDbEnabled.Size = new System.Drawing.Size(94, 24);
+            this.chkTMDbEnabled.Size = new System.Drawing.Size(65, 17);
             this.chkTMDbEnabled.TabIndex = 0;
             this.chkTMDbEnabled.Text = "Enabled";
             this.chkTMDbEnabled.UseVisualStyleBackColor = true;
@@ -700,10 +677,9 @@
             // lnkTMDbStart
             // 
             this.lnkTMDbStart.AutoSize = true;
-            this.lnkTMDbStart.Location = new System.Drawing.Point(27, 151);
-            this.lnkTMDbStart.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lnkTMDbStart.Location = new System.Drawing.Point(18, 98);
             this.lnkTMDbStart.Name = "lnkTMDbStart";
-            this.lnkTMDbStart.Size = new System.Drawing.Size(170, 20);
+            this.lnkTMDbStart.Size = new System.Drawing.Size(113, 13);
             this.lnkTMDbStart.TabIndex = 3;
             this.lnkTMDbStart.TabStop = true;
             this.lnkTMDbStart.Text = "Start Request Process";
@@ -711,38 +687,40 @@
             // 
             // lblTMDbMessage
             // 
-            this.lblTMDbMessage.Location = new System.Drawing.Point(26, 99);
-            this.lblTMDbMessage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTMDbMessage.Location = new System.Drawing.Point(17, 64);
             this.lblTMDbMessage.Name = "lblTMDbMessage";
-            this.lblTMDbMessage.Size = new System.Drawing.Size(609, 68);
+            this.lblTMDbMessage.Size = new System.Drawing.Size(406, 44);
             this.lblTMDbMessage.TabIndex = 2;
             this.lblTMDbMessage.Text = "To get user ratings from TMDb you must first allow this application to access you" +
     "r account details. This needs to be done by you in a webbrowser.";
             // 
             // grbOptions
             // 
+            this.grbOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbOptions.Controls.Add(this.chkSetWatchedOnReleaseDay);
             this.grbOptions.Controls.Add(this.nudBatchSize);
             this.grbOptions.Controls.Add(this.lblBatchImportSize);
             this.grbOptions.Controls.Add(this.chkIgnoreWatchedForWatchlists);
             this.grbOptions.Controls.Add(this.chkMarkAsWatched);
             this.grbOptions.Controls.Add(this.btnMaintenance);
-            this.grbOptions.Location = new System.Drawing.Point(9, 9);
-            this.grbOptions.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbOptions.Location = new System.Drawing.Point(6, 6);
             this.grbOptions.Name = "grbOptions";
-            this.grbOptions.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbOptions.Size = new System.Drawing.Size(1300, 738);
+            this.grbOptions.Size = new System.Drawing.Size(561, 348);
             this.grbOptions.TabIndex = 0;
             this.grbOptions.TabStop = false;
             this.grbOptions.Text = "Options";
             // 
             // chkSetWatchedOnReleaseDay
             // 
+            this.chkSetWatchedOnReleaseDay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkSetWatchedOnReleaseDay.AutoEllipsis = true;
             this.chkSetWatchedOnReleaseDay.AutoSize = true;
-            this.chkSetWatchedOnReleaseDay.Location = new System.Drawing.Point(32, 101);
-            this.chkSetWatchedOnReleaseDay.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkSetWatchedOnReleaseDay.Location = new System.Drawing.Point(21, 66);
             this.chkSetWatchedOnReleaseDay.Name = "chkSetWatchedOnReleaseDay";
-            this.chkSetWatchedOnReleaseDay.Size = new System.Drawing.Size(741, 24);
+            this.chkSetWatchedOnReleaseDay.Size = new System.Drawing.Size(501, 17);
             this.chkSetWatchedOnReleaseDay.TabIndex = 2;
             this.chkSetWatchedOnReleaseDay.Text = "Set the watched date to the release date of the movie or episode when data is not" +
     " available in export";
@@ -752,20 +730,18 @@
             // lblBatchImportSize
             // 
             this.lblBatchImportSize.AutoSize = true;
-            this.lblBatchImportSize.Location = new System.Drawing.Point(27, 160);
-            this.lblBatchImportSize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblBatchImportSize.Location = new System.Drawing.Point(18, 104);
             this.lblBatchImportSize.Name = "lblBatchImportSize";
-            this.lblBatchImportSize.Size = new System.Drawing.Size(140, 20);
+            this.lblBatchImportSize.Size = new System.Drawing.Size(93, 13);
             this.lblBatchImportSize.TabIndex = 3;
             this.lblBatchImportSize.Text = "Batch Import Size:";
             // 
             // chkIgnoreWatchedForWatchlists
             // 
             this.chkIgnoreWatchedForWatchlists.AutoSize = true;
-            this.chkIgnoreWatchedForWatchlists.Location = new System.Drawing.Point(32, 65);
-            this.chkIgnoreWatchedForWatchlists.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkIgnoreWatchedForWatchlists.Location = new System.Drawing.Point(21, 42);
             this.chkIgnoreWatchedForWatchlists.Name = "chkIgnoreWatchedForWatchlists";
-            this.chkIgnoreWatchedForWatchlists.Size = new System.Drawing.Size(407, 24);
+            this.chkIgnoreWatchedForWatchlists.Size = new System.Drawing.Size(277, 17);
             this.chkIgnoreWatchedForWatchlists.TabIndex = 1;
             this.chkIgnoreWatchedForWatchlists.Text = "Ignore watched items when syncing to your Watchlist";
             this.chkIgnoreWatchedForWatchlists.UseVisualStyleBackColor = true;
@@ -774,10 +750,9 @@
             // chkMarkAsWatched
             // 
             this.chkMarkAsWatched.AutoSize = true;
-            this.chkMarkAsWatched.Location = new System.Drawing.Point(32, 29);
-            this.chkMarkAsWatched.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkMarkAsWatched.Location = new System.Drawing.Point(21, 19);
             this.chkMarkAsWatched.Name = "chkMarkAsWatched";
-            this.chkMarkAsWatched.Size = new System.Drawing.Size(472, 24);
+            this.chkMarkAsWatched.Size = new System.Drawing.Size(322, 17);
             this.chkMarkAsWatched.TabIndex = 0;
             this.chkMarkAsWatched.Text = "Mark episodes and movies as watched if they have been rated";
             this.chkMarkAsWatched.UseVisualStyleBackColor = true;
@@ -785,6 +760,9 @@
             // 
             // grbListal
             // 
+            this.grbListal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbListal.Controls.Add(this.chkListalEnabled);
             this.grbListal.Controls.Add(this.lblListalShowExportFile);
             this.grbListal.Controls.Add(this.btnListalShowXMLExport);
@@ -795,11 +773,9 @@
             this.grbListal.Controls.Add(this.btnListalMovieXMLExport);
             this.grbListal.Controls.Add(this.txtListalMovieXMLExport);
             this.grbListal.Controls.Add(this.lblListalMovieExportFile);
-            this.grbListal.Location = new System.Drawing.Point(9, 9);
-            this.grbListal.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbListal.Location = new System.Drawing.Point(6, 6);
             this.grbListal.Name = "grbListal";
-            this.grbListal.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbListal.Size = new System.Drawing.Size(1300, 741);
+            this.grbListal.Size = new System.Drawing.Size(466, 254);
             this.grbListal.TabIndex = 6;
             this.grbListal.TabStop = false;
             this.grbListal.Text = "Listal";
@@ -807,10 +783,9 @@
             // chkListalEnabled
             // 
             this.chkListalEnabled.AutoSize = true;
-            this.chkListalEnabled.Location = new System.Drawing.Point(30, 40);
-            this.chkListalEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkListalEnabled.Location = new System.Drawing.Point(20, 26);
             this.chkListalEnabled.Name = "chkListalEnabled";
-            this.chkListalEnabled.Size = new System.Drawing.Size(94, 24);
+            this.chkListalEnabled.Size = new System.Drawing.Size(65, 17);
             this.chkListalEnabled.TabIndex = 0;
             this.chkListalEnabled.Text = "Enabled";
             this.chkListalEnabled.UseVisualStyleBackColor = true;
@@ -819,19 +794,17 @@
             // lblListalShowExportFile
             // 
             this.lblListalShowExportFile.AutoSize = true;
-            this.lblListalShowExportFile.Location = new System.Drawing.Point(24, 138);
-            this.lblListalShowExportFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblListalShowExportFile.Location = new System.Drawing.Point(16, 90);
             this.lblListalShowExportFile.Name = "lblListalShowExportFile";
-            this.lblListalShowExportFile.Size = new System.Drawing.Size(156, 20);
+            this.lblListalShowExportFile.Size = new System.Drawing.Size(106, 13);
             this.lblListalShowExportFile.TabIndex = 4;
             this.lblListalShowExportFile.Text = "TV Show Export File:";
             // 
             // btnListalShowXMLExport
             // 
-            this.btnListalShowXMLExport.Location = new System.Drawing.Point(588, 122);
-            this.btnListalShowXMLExport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnListalShowXMLExport.Location = new System.Drawing.Point(392, 79);
             this.btnListalShowXMLExport.Name = "btnListalShowXMLExport";
-            this.btnListalShowXMLExport.Size = new System.Drawing.Size(44, 35);
+            this.btnListalShowXMLExport.Size = new System.Drawing.Size(29, 23);
             this.btnListalShowXMLExport.TabIndex = 6;
             this.btnListalShowXMLExport.Text = "...";
             this.btnListalShowXMLExport.UseVisualStyleBackColor = true;
@@ -839,30 +812,27 @@
             // 
             // txtListalShowXMLExport
             // 
-            this.txtListalShowXMLExport.Location = new System.Drawing.Point(233, 126);
-            this.txtListalShowXMLExport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtListalShowXMLExport.Location = new System.Drawing.Point(155, 82);
             this.txtListalShowXMLExport.Name = "txtListalShowXMLExport";
-            this.txtListalShowXMLExport.Size = new System.Drawing.Size(345, 26);
+            this.txtListalShowXMLExport.Size = new System.Drawing.Size(231, 20);
             this.txtListalShowXMLExport.TabIndex = 5;
             this.txtListalShowXMLExport.TextChanged += new System.EventHandler(this.txtListalShowXMLExport_TextChanged);
             // 
             // lblListalLinkInfo
             // 
             this.lblListalLinkInfo.AutoSize = true;
-            this.lblListalLinkInfo.Location = new System.Drawing.Point(26, 229);
-            this.lblListalLinkInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblListalLinkInfo.Location = new System.Drawing.Point(17, 149);
             this.lblListalLinkInfo.Name = "lblListalLinkInfo";
-            this.lblListalLinkInfo.Size = new System.Drawing.Size(514, 20);
+            this.lblListalLinkInfo.Size = new System.Drawing.Size(346, 13);
             this.lblListalLinkInfo.TabIndex = 8;
             this.lblListalLinkInfo.Text = "Logon into the Listal website, then download export files from link below:";
             // 
             // lnkListalExport
             // 
             this.lnkListalExport.AutoSize = true;
-            this.lnkListalExport.Location = new System.Drawing.Point(26, 260);
-            this.lnkListalExport.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lnkListalExport.Location = new System.Drawing.Point(17, 169);
             this.lnkListalExport.Name = "lnkListalExport";
-            this.lnkListalExport.Size = new System.Drawing.Size(237, 20);
+            this.lnkListalExport.Size = new System.Drawing.Size(157, 13);
             this.lnkListalExport.TabIndex = 9;
             this.lnkListalExport.TabStop = true;
             this.lnkListalExport.Text = "Get your Listal export file(s) here";
@@ -871,10 +841,9 @@
             // chkListalWebWatchlist
             // 
             this.chkListalWebWatchlist.AutoSize = true;
-            this.chkListalWebWatchlist.Location = new System.Drawing.Point(233, 179);
-            this.chkListalWebWatchlist.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkListalWebWatchlist.Location = new System.Drawing.Point(155, 116);
             this.chkListalWebWatchlist.Name = "chkListalWebWatchlist";
-            this.chkListalWebWatchlist.Size = new System.Drawing.Size(218, 24);
+            this.chkListalWebWatchlist.Size = new System.Drawing.Size(150, 17);
             this.chkListalWebWatchlist.TabIndex = 7;
             this.chkListalWebWatchlist.Text = "Sync Wantlist to Watchlist";
             this.chkListalWebWatchlist.UseVisualStyleBackColor = true;
@@ -882,10 +851,9 @@
             // 
             // btnListalMovieXMLExport
             // 
-            this.btnListalMovieXMLExport.Location = new System.Drawing.Point(588, 82);
-            this.btnListalMovieXMLExport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnListalMovieXMLExport.Location = new System.Drawing.Point(392, 53);
             this.btnListalMovieXMLExport.Name = "btnListalMovieXMLExport";
-            this.btnListalMovieXMLExport.Size = new System.Drawing.Size(44, 35);
+            this.btnListalMovieXMLExport.Size = new System.Drawing.Size(29, 23);
             this.btnListalMovieXMLExport.TabIndex = 3;
             this.btnListalMovieXMLExport.Text = "...";
             this.btnListalMovieXMLExport.UseVisualStyleBackColor = true;
@@ -893,44 +861,42 @@
             // 
             // txtListalMovieXMLExport
             // 
-            this.txtListalMovieXMLExport.Location = new System.Drawing.Point(233, 86);
-            this.txtListalMovieXMLExport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtListalMovieXMLExport.Location = new System.Drawing.Point(155, 56);
             this.txtListalMovieXMLExport.Name = "txtListalMovieXMLExport";
-            this.txtListalMovieXMLExport.Size = new System.Drawing.Size(345, 26);
+            this.txtListalMovieXMLExport.Size = new System.Drawing.Size(231, 20);
             this.txtListalMovieXMLExport.TabIndex = 2;
             this.txtListalMovieXMLExport.TextChanged += new System.EventHandler(this.txtListalMovieXMLExport_TextChanged);
             // 
             // lblListalMovieExportFile
             // 
             this.lblListalMovieExportFile.AutoSize = true;
-            this.lblListalMovieExportFile.Location = new System.Drawing.Point(24, 92);
-            this.lblListalMovieExportFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblListalMovieExportFile.Location = new System.Drawing.Point(16, 60);
             this.lblListalMovieExportFile.Name = "lblListalMovieExportFile";
-            this.lblListalMovieExportFile.Size = new System.Drawing.Size(133, 20);
+            this.lblListalMovieExportFile.Size = new System.Drawing.Size(91, 13);
             this.lblListalMovieExportFile.TabIndex = 1;
             this.lblListalMovieExportFile.Text = "Movie Export File:";
             // 
             // grbCriticker
             // 
+            this.grbCriticker.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbCriticker.Controls.Add(this.btnCritickerCSVExportBrowse);
             this.grbCriticker.Controls.Add(this.chkCritickerEnabled);
             this.grbCriticker.Controls.Add(this.txtCritickerCSVExportFile);
             this.grbCriticker.Controls.Add(this.lblCritickerCSVExportFile);
-            this.grbCriticker.Location = new System.Drawing.Point(9, 9);
-            this.grbCriticker.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbCriticker.Location = new System.Drawing.Point(6, 6);
             this.grbCriticker.Name = "grbCriticker";
-            this.grbCriticker.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbCriticker.Size = new System.Drawing.Size(1300, 738);
+            this.grbCriticker.Size = new System.Drawing.Size(466, 252);
             this.grbCriticker.TabIndex = 7;
             this.grbCriticker.TabStop = false;
             this.grbCriticker.Text = "Criticker";
             // 
             // btnCritickerCSVExportBrowse
             // 
-            this.btnCritickerCSVExportBrowse.Location = new System.Drawing.Point(582, 81);
-            this.btnCritickerCSVExportBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnCritickerCSVExportBrowse.Location = new System.Drawing.Point(388, 53);
             this.btnCritickerCSVExportBrowse.Name = "btnCritickerCSVExportBrowse";
-            this.btnCritickerCSVExportBrowse.Size = new System.Drawing.Size(44, 35);
+            this.btnCritickerCSVExportBrowse.Size = new System.Drawing.Size(29, 23);
             this.btnCritickerCSVExportBrowse.TabIndex = 3;
             this.btnCritickerCSVExportBrowse.Text = "...";
             this.btnCritickerCSVExportBrowse.UseVisualStyleBackColor = true;
@@ -939,10 +905,9 @@
             // chkCritickerEnabled
             // 
             this.chkCritickerEnabled.AutoSize = true;
-            this.chkCritickerEnabled.Location = new System.Drawing.Point(30, 45);
-            this.chkCritickerEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkCritickerEnabled.Location = new System.Drawing.Point(20, 29);
             this.chkCritickerEnabled.Name = "chkCritickerEnabled";
-            this.chkCritickerEnabled.Size = new System.Drawing.Size(94, 24);
+            this.chkCritickerEnabled.Size = new System.Drawing.Size(65, 17);
             this.chkCritickerEnabled.TabIndex = 0;
             this.chkCritickerEnabled.Text = "Enabled";
             this.chkCritickerEnabled.UseVisualStyleBackColor = true;
@@ -950,25 +915,26 @@
             // 
             // txtCritickerCSVExportFile
             // 
-            this.txtCritickerCSVExportFile.Location = new System.Drawing.Point(226, 85);
-            this.txtCritickerCSVExportFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtCritickerCSVExportFile.Location = new System.Drawing.Point(151, 55);
             this.txtCritickerCSVExportFile.Name = "txtCritickerCSVExportFile";
-            this.txtCritickerCSVExportFile.Size = new System.Drawing.Size(345, 26);
+            this.txtCritickerCSVExportFile.Size = new System.Drawing.Size(231, 20);
             this.txtCritickerCSVExportFile.TabIndex = 2;
             this.txtCritickerCSVExportFile.TextChanged += new System.EventHandler(this.txtCritickerMovieExportFile_TextChanged);
             // 
             // lblCritickerCSVExportFile
             // 
             this.lblCritickerCSVExportFile.AutoSize = true;
-            this.lblCritickerCSVExportFile.Location = new System.Drawing.Point(26, 89);
-            this.lblCritickerCSVExportFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCritickerCSVExportFile.Location = new System.Drawing.Point(17, 58);
             this.lblCritickerCSVExportFile.Name = "lblCritickerCSVExportFile";
-            this.lblCritickerCSVExportFile.Size = new System.Drawing.Size(121, 20);
+            this.lblCritickerCSVExportFile.Size = new System.Drawing.Size(80, 13);
             this.lblCritickerCSVExportFile.TabIndex = 1;
             this.lblCritickerCSVExportFile.Text = "CSV Export File";
             // 
             // tabTraktRater
             // 
+            this.tabTraktRater.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabTraktRater.Controls.Add(this.tabPage1);
             this.tabTraktRater.Controls.Add(this.tabPage2);
             this.tabTraktRater.Controls.Add(this.tabPage3);
@@ -980,21 +946,19 @@
             this.tabTraktRater.Controls.Add(this.tabPage9);
             this.tabTraktRater.Controls.Add(this.tabPage11);
             this.tabTraktRater.Controls.Add(this.tabPage10);
-            this.tabTraktRater.Location = new System.Drawing.Point(6, 20);
-            this.tabTraktRater.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabTraktRater.Location = new System.Drawing.Point(4, 13);
             this.tabTraktRater.Name = "tabTraktRater";
             this.tabTraktRater.SelectedIndex = 0;
-            this.tabTraktRater.Size = new System.Drawing.Size(1331, 795);
+            this.tabTraktRater.Size = new System.Drawing.Size(581, 388);
             this.tabTraktRater.TabIndex = 10;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.grbTrakt);
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage1.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Size = new System.Drawing.Size(573, 362);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Login";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1002,11 +966,10 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.grbTVDb);
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage2.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Size = new System.Drawing.Size(478, 266);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "TVDb";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1014,11 +977,10 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.grbTMDb);
-            this.tabPage3.Location = new System.Drawing.Point(4, 29);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage3.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage3.Size = new System.Drawing.Size(573, 362);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "TMDb";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1026,11 +988,10 @@
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.grbImdb);
-            this.tabPage4.Location = new System.Drawing.Point(4, 29);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage4.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage4.Size = new System.Drawing.Size(573, 362);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "IMDb";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1038,11 +999,10 @@
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.grbListal);
-            this.tabPage5.Location = new System.Drawing.Point(4, 29);
-            this.tabPage5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage5.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage5.Size = new System.Drawing.Size(478, 266);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Listal";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -1050,11 +1010,10 @@
             // tabPage7
             // 
             this.tabPage7.Controls.Add(this.grbCriticker);
-            this.tabPage7.Location = new System.Drawing.Point(4, 29);
-            this.tabPage7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage7.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage7.Size = new System.Drawing.Size(478, 266);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "Criticker";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -1062,17 +1021,19 @@
             // tabPage8
             // 
             this.tabPage8.Controls.Add(this.grbLetterboxd);
-            this.tabPage8.Location = new System.Drawing.Point(4, 29);
-            this.tabPage8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage8.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage8.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage8.Size = new System.Drawing.Size(478, 266);
             this.tabPage8.TabIndex = 7;
             this.tabPage8.Text = "Letterboxd";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
             // grbLetterboxd
             // 
+            this.grbLetterboxd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbLetterboxd.Controls.Add(this.lblLetterboxdWatched);
             this.grbLetterboxd.Controls.Add(this.btnLetterboxdWatchedBrowse);
             this.grbLetterboxd.Controls.Add(this.txtLetterboxdWatchedFile);
@@ -1083,11 +1044,9 @@
             this.grbLetterboxd.Controls.Add(this.btnLetterboxdRatingsBrowse);
             this.grbLetterboxd.Controls.Add(this.txtLetterboxdRatingsFile);
             this.grbLetterboxd.Controls.Add(this.chkLetterboxdEnabled);
-            this.grbLetterboxd.Location = new System.Drawing.Point(9, 9);
-            this.grbLetterboxd.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbLetterboxd.Location = new System.Drawing.Point(6, 6);
             this.grbLetterboxd.Name = "grbLetterboxd";
-            this.grbLetterboxd.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbLetterboxd.Size = new System.Drawing.Size(1300, 741);
+            this.grbLetterboxd.Size = new System.Drawing.Size(466, 254);
             this.grbLetterboxd.TabIndex = 0;
             this.grbLetterboxd.TabStop = false;
             this.grbLetterboxd.Text = "Letterboxd";
@@ -1095,20 +1054,18 @@
             // lblLetterboxdWatched
             // 
             this.lblLetterboxdWatched.AutoSize = true;
-            this.lblLetterboxdWatched.Location = new System.Drawing.Point(26, 166);
-            this.lblLetterboxdWatched.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLetterboxdWatched.Location = new System.Drawing.Point(17, 108);
             this.lblLetterboxdWatched.Name = "lblLetterboxdWatched";
-            this.lblLetterboxdWatched.Size = new System.Drawing.Size(106, 20);
+            this.lblLetterboxdWatched.Size = new System.Drawing.Size(73, 13);
             this.lblLetterboxdWatched.TabIndex = 4;
             this.lblLetterboxdWatched.Text = "Watched File:";
             // 
             // btnLetterboxdWatchedBrowse
             // 
             this.btnLetterboxdWatchedBrowse.Enabled = false;
-            this.btnLetterboxdWatchedBrowse.Location = new System.Drawing.Point(351, 188);
-            this.btnLetterboxdWatchedBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLetterboxdWatchedBrowse.Location = new System.Drawing.Point(234, 122);
             this.btnLetterboxdWatchedBrowse.Name = "btnLetterboxdWatchedBrowse";
-            this.btnLetterboxdWatchedBrowse.Size = new System.Drawing.Size(44, 35);
+            this.btnLetterboxdWatchedBrowse.Size = new System.Drawing.Size(29, 23);
             this.btnLetterboxdWatchedBrowse.TabIndex = 7;
             this.btnLetterboxdWatchedBrowse.Text = "...";
             this.btnLetterboxdWatchedBrowse.UseVisualStyleBackColor = true;
@@ -1117,20 +1074,18 @@
             // lblLetterboxdDiary
             // 
             this.lblLetterboxdDiary.AutoSize = true;
-            this.lblLetterboxdDiary.Location = new System.Drawing.Point(26, 241);
-            this.lblLetterboxdDiary.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLetterboxdDiary.Location = new System.Drawing.Point(17, 157);
             this.lblLetterboxdDiary.Name = "lblLetterboxdDiary";
-            this.lblLetterboxdDiary.Size = new System.Drawing.Size(78, 20);
+            this.lblLetterboxdDiary.Size = new System.Drawing.Size(53, 13);
             this.lblLetterboxdDiary.TabIndex = 8;
             this.lblLetterboxdDiary.Text = "Diary File:";
             // 
             // btnLetterboxdDiaryBrowse
             // 
             this.btnLetterboxdDiaryBrowse.Enabled = false;
-            this.btnLetterboxdDiaryBrowse.Location = new System.Drawing.Point(351, 262);
-            this.btnLetterboxdDiaryBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLetterboxdDiaryBrowse.Location = new System.Drawing.Point(234, 170);
             this.btnLetterboxdDiaryBrowse.Name = "btnLetterboxdDiaryBrowse";
-            this.btnLetterboxdDiaryBrowse.Size = new System.Drawing.Size(44, 35);
+            this.btnLetterboxdDiaryBrowse.Size = new System.Drawing.Size(29, 23);
             this.btnLetterboxdDiaryBrowse.TabIndex = 1;
             this.btnLetterboxdDiaryBrowse.Text = "...";
             this.btnLetterboxdDiaryBrowse.UseVisualStyleBackColor = true;
@@ -1139,20 +1094,18 @@
             // lblLetterboxdRatingsFile
             // 
             this.lblLetterboxdRatingsFile.AutoSize = true;
-            this.lblLetterboxdRatingsFile.Location = new System.Drawing.Point(26, 92);
-            this.lblLetterboxdRatingsFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLetterboxdRatingsFile.Location = new System.Drawing.Point(17, 60);
             this.lblLetterboxdRatingsFile.Name = "lblLetterboxdRatingsFile";
-            this.lblLetterboxdRatingsFile.Size = new System.Drawing.Size(97, 20);
+            this.lblLetterboxdRatingsFile.Size = new System.Drawing.Size(65, 13);
             this.lblLetterboxdRatingsFile.TabIndex = 1;
             this.lblLetterboxdRatingsFile.Text = "Ratings File:";
             // 
             // btnLetterboxdRatingsBrowse
             // 
             this.btnLetterboxdRatingsBrowse.Enabled = false;
-            this.btnLetterboxdRatingsBrowse.Location = new System.Drawing.Point(351, 114);
-            this.btnLetterboxdRatingsBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLetterboxdRatingsBrowse.Location = new System.Drawing.Point(234, 74);
             this.btnLetterboxdRatingsBrowse.Name = "btnLetterboxdRatingsBrowse";
-            this.btnLetterboxdRatingsBrowse.Size = new System.Drawing.Size(44, 35);
+            this.btnLetterboxdRatingsBrowse.Size = new System.Drawing.Size(29, 23);
             this.btnLetterboxdRatingsBrowse.TabIndex = 3;
             this.btnLetterboxdRatingsBrowse.Text = "...";
             this.btnLetterboxdRatingsBrowse.UseVisualStyleBackColor = true;
@@ -1161,10 +1114,9 @@
             // chkLetterboxdEnabled
             // 
             this.chkLetterboxdEnabled.AutoSize = true;
-            this.chkLetterboxdEnabled.Location = new System.Drawing.Point(30, 42);
-            this.chkLetterboxdEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkLetterboxdEnabled.Location = new System.Drawing.Point(20, 27);
             this.chkLetterboxdEnabled.Name = "chkLetterboxdEnabled";
-            this.chkLetterboxdEnabled.Size = new System.Drawing.Size(85, 24);
+            this.chkLetterboxdEnabled.Size = new System.Drawing.Size(59, 17);
             this.chkLetterboxdEnabled.TabIndex = 0;
             this.chkLetterboxdEnabled.Text = "Enable";
             this.chkLetterboxdEnabled.UseVisualStyleBackColor = true;
@@ -1173,27 +1125,27 @@
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.grbFlixster);
-            this.tabPage6.Location = new System.Drawing.Point(4, 29);
-            this.tabPage6.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage6.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage6.Size = new System.Drawing.Size(478, 266);
             this.tabPage6.TabIndex = 9;
             this.tabPage6.Text = "Flixster";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
             // grbFlixster
             // 
+            this.grbFlixster.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbFlixster.Controls.Add(this.chkFlixsterSyncWantToSee);
             this.grbFlixster.Controls.Add(this.lblFlixsterUserIdDesc);
             this.grbFlixster.Controls.Add(this.lblFlisterUserId);
             this.grbFlixster.Controls.Add(this.txtFlixsterUserId);
             this.grbFlixster.Controls.Add(this.chkFlixsterEnabled);
-            this.grbFlixster.Location = new System.Drawing.Point(9, 6);
-            this.grbFlixster.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbFlixster.Location = new System.Drawing.Point(6, 4);
             this.grbFlixster.Name = "grbFlixster";
-            this.grbFlixster.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbFlixster.Size = new System.Drawing.Size(1300, 741);
+            this.grbFlixster.Size = new System.Drawing.Size(466, 254);
             this.grbFlixster.TabIndex = 0;
             this.grbFlixster.TabStop = false;
             this.grbFlixster.Text = "Flixster";
@@ -1201,10 +1153,9 @@
             // chkFlixsterSyncWantToSee
             // 
             this.chkFlixsterSyncWantToSee.AutoSize = true;
-            this.chkFlixsterSyncWantToSee.Location = new System.Drawing.Point(30, 172);
-            this.chkFlixsterSyncWantToSee.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkFlixsterSyncWantToSee.Location = new System.Drawing.Point(20, 112);
             this.chkFlixsterSyncWantToSee.Name = "chkFlixsterSyncWantToSee";
-            this.chkFlixsterSyncWantToSee.Size = new System.Drawing.Size(260, 24);
+            this.chkFlixsterSyncWantToSee.Size = new System.Drawing.Size(180, 17);
             this.chkFlixsterSyncWantToSee.TabIndex = 3;
             this.chkFlixsterSyncWantToSee.Text = "Sync \'Want To See\' to Watchlist";
             this.chkFlixsterSyncWantToSee.UseVisualStyleBackColor = true;
@@ -1212,11 +1163,11 @@
             // 
             // lblFlixsterUserIdDesc
             // 
+            this.lblFlixsterUserIdDesc.AutoEllipsis = true;
             this.lblFlixsterUserIdDesc.AutoSize = true;
-            this.lblFlixsterUserIdDesc.Location = new System.Drawing.Point(26, 234);
-            this.lblFlixsterUserIdDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblFlixsterUserIdDesc.Location = new System.Drawing.Point(17, 152);
             this.lblFlixsterUserIdDesc.Name = "lblFlixsterUserIdDesc";
-            this.lblFlixsterUserIdDesc.Size = new System.Drawing.Size(684, 20);
+            this.lblFlixsterUserIdDesc.Size = new System.Drawing.Size(468, 13);
             this.lblFlixsterUserIdDesc.TabIndex = 4;
             this.lblFlixsterUserIdDesc.Text = "Get your User ID from your profile page URL e.g. http://www.flixster.com/user/YOU" +
     "R_USER_ID/";
@@ -1224,10 +1175,9 @@
             // lblFlisterUserId
             // 
             this.lblFlisterUserId.AutoSize = true;
-            this.lblFlisterUserId.Location = new System.Drawing.Point(26, 92);
-            this.lblFlisterUserId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblFlisterUserId.Location = new System.Drawing.Point(17, 60);
             this.lblFlisterUserId.Name = "lblFlisterUserId";
-            this.lblFlisterUserId.Size = new System.Drawing.Size(68, 20);
+            this.lblFlisterUserId.Size = new System.Drawing.Size(46, 13);
             this.lblFlisterUserId.TabIndex = 1;
             this.lblFlisterUserId.Text = "User ID:";
             // 
@@ -1236,20 +1186,18 @@
             this.txtFlixsterUserId.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtFlixsterUserId.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtFlixsterUserId.Enabled = false;
-            this.txtFlixsterUserId.Location = new System.Drawing.Point(30, 118);
-            this.txtFlixsterUserId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtFlixsterUserId.Location = new System.Drawing.Point(20, 77);
             this.txtFlixsterUserId.Name = "txtFlixsterUserId";
-            this.txtFlixsterUserId.Size = new System.Drawing.Size(310, 26);
+            this.txtFlixsterUserId.Size = new System.Drawing.Size(208, 20);
             this.txtFlixsterUserId.TabIndex = 2;
             this.txtFlixsterUserId.TextChanged += new System.EventHandler(this.txtFlixsterUserId_TextChanged);
             // 
             // chkFlixsterEnabled
             // 
             this.chkFlixsterEnabled.AutoSize = true;
-            this.chkFlixsterEnabled.Location = new System.Drawing.Point(30, 42);
-            this.chkFlixsterEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkFlixsterEnabled.Location = new System.Drawing.Point(20, 27);
             this.chkFlixsterEnabled.Name = "chkFlixsterEnabled";
-            this.chkFlixsterEnabled.Size = new System.Drawing.Size(85, 24);
+            this.chkFlixsterEnabled.Size = new System.Drawing.Size(59, 17);
             this.chkFlixsterEnabled.TabIndex = 0;
             this.chkFlixsterEnabled.Text = "Enable";
             this.chkFlixsterEnabled.UseVisualStyleBackColor = true;
@@ -1258,17 +1206,20 @@
             // tabPage9
             // 
             this.tabPage9.Controls.Add(this.grbCheckMovies);
-            this.tabPage9.Location = new System.Drawing.Point(4, 29);
-            this.tabPage9.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage9.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.tabPage9.Size = new System.Drawing.Size(478, 266);
             this.tabPage9.TabIndex = 9;
             this.tabPage9.Text = "iCheckMovies";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
             // grbCheckMovies
             // 
+            this.grbCheckMovies.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbCheckMovies.Controls.Add(this.chkCheckMoviesAddMoviesToCollection);
             this.grbCheckMovies.Controls.Add(this.lblCheckMoviesDelimiter);
             this.grbCheckMovies.Controls.Add(this.cboCheckMoviesDelimiter);
@@ -1278,11 +1229,9 @@
             this.grbCheckMovies.Controls.Add(this.btnCheckMoviesExportBrowse);
             this.grbCheckMovies.Controls.Add(this.txtCheckMoviesCsvFile);
             this.grbCheckMovies.Controls.Add(this.lblCheckMoviesFile);
-            this.grbCheckMovies.Location = new System.Drawing.Point(10, 9);
-            this.grbCheckMovies.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbCheckMovies.Location = new System.Drawing.Point(7, 6);
             this.grbCheckMovies.Name = "grbCheckMovies";
-            this.grbCheckMovies.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbCheckMovies.Size = new System.Drawing.Size(1300, 741);
+            this.grbCheckMovies.Size = new System.Drawing.Size(466, 254);
             this.grbCheckMovies.TabIndex = 0;
             this.grbCheckMovies.TabStop = false;
             this.grbCheckMovies.Text = "iCheckMovies";
@@ -1290,9 +1239,10 @@
             // chkCheckMoviesAddMoviesToCollection
             // 
             this.chkCheckMoviesAddMoviesToCollection.AutoSize = true;
-            this.chkCheckMoviesAddMoviesToCollection.Location = new System.Drawing.Point(38, 307);
+            this.chkCheckMoviesAddMoviesToCollection.Location = new System.Drawing.Point(25, 200);
+            this.chkCheckMoviesAddMoviesToCollection.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chkCheckMoviesAddMoviesToCollection.Name = "chkCheckMoviesAddMoviesToCollection";
-            this.chkCheckMoviesAddMoviesToCollection.Size = new System.Drawing.Size(272, 24);
+            this.chkCheckMoviesAddMoviesToCollection.Size = new System.Drawing.Size(187, 17);
             this.chkCheckMoviesAddMoviesToCollection.TabIndex = 8;
             this.chkCheckMoviesAddMoviesToCollection.Text = "Add collected movies to collection";
             this.chkCheckMoviesAddMoviesToCollection.UseVisualStyleBackColor = true;
@@ -1301,9 +1251,10 @@
             // lblCheckMoviesDelimiter
             // 
             this.lblCheckMoviesDelimiter.AutoSize = true;
-            this.lblCheckMoviesDelimiter.Location = new System.Drawing.Point(36, 157);
+            this.lblCheckMoviesDelimiter.Location = new System.Drawing.Point(24, 102);
+            this.lblCheckMoviesDelimiter.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCheckMoviesDelimiter.Name = "lblCheckMoviesDelimiter";
-            this.lblCheckMoviesDelimiter.Size = new System.Drawing.Size(71, 20);
+            this.lblCheckMoviesDelimiter.Size = new System.Drawing.Size(47, 13);
             this.lblCheckMoviesDelimiter.TabIndex = 4;
             this.lblCheckMoviesDelimiter.Text = "Delimiter";
             // 
@@ -1314,19 +1265,19 @@
             this.cboCheckMoviesDelimiter.Items.AddRange(new object[] {
             "Comma",
             "Semicolon"});
-            this.cboCheckMoviesDelimiter.Location = new System.Drawing.Point(38, 187);
+            this.cboCheckMoviesDelimiter.Location = new System.Drawing.Point(25, 122);
+            this.cboCheckMoviesDelimiter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboCheckMoviesDelimiter.Name = "cboCheckMoviesDelimiter";
-            this.cboCheckMoviesDelimiter.Size = new System.Drawing.Size(310, 28);
+            this.cboCheckMoviesDelimiter.Size = new System.Drawing.Size(208, 21);
             this.cboCheckMoviesDelimiter.TabIndex = 5;
             this.cboCheckMoviesDelimiter.SelectedIndexChanged += new System.EventHandler(this.cboCheckMoviesDelimiter_SelectedIndexChanged);
             // 
             // chkCheckMoviesUpdateWatchedStatus
             // 
             this.chkCheckMoviesUpdateWatchedStatus.AutoSize = true;
-            this.chkCheckMoviesUpdateWatchedStatus.Location = new System.Drawing.Point(38, 273);
-            this.chkCheckMoviesUpdateWatchedStatus.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkCheckMoviesUpdateWatchedStatus.Location = new System.Drawing.Point(25, 177);
             this.chkCheckMoviesUpdateWatchedStatus.Name = "chkCheckMoviesUpdateWatchedStatus";
-            this.chkCheckMoviesUpdateWatchedStatus.Size = new System.Drawing.Size(313, 24);
+            this.chkCheckMoviesUpdateWatchedStatus.Size = new System.Drawing.Size(214, 17);
             this.chkCheckMoviesUpdateWatchedStatus.TabIndex = 7;
             this.chkCheckMoviesUpdateWatchedStatus.Text = "Add watched movies to watched history";
             this.chkCheckMoviesUpdateWatchedStatus.UseVisualStyleBackColor = true;
@@ -1335,10 +1286,9 @@
             // chkCheckMoviesEnabled
             // 
             this.chkCheckMoviesEnabled.AutoSize = true;
-            this.chkCheckMoviesEnabled.Location = new System.Drawing.Point(28, 38);
-            this.chkCheckMoviesEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkCheckMoviesEnabled.Location = new System.Drawing.Point(19, 25);
             this.chkCheckMoviesEnabled.Name = "chkCheckMoviesEnabled";
-            this.chkCheckMoviesEnabled.Size = new System.Drawing.Size(85, 24);
+            this.chkCheckMoviesEnabled.Size = new System.Drawing.Size(59, 17);
             this.chkCheckMoviesEnabled.TabIndex = 0;
             this.chkCheckMoviesEnabled.Text = "Enable";
             this.chkCheckMoviesEnabled.UseVisualStyleBackColor = true;
@@ -1347,10 +1297,9 @@
             // btnCheckMoviesExportBrowse
             // 
             this.btnCheckMoviesExportBrowse.Enabled = false;
-            this.btnCheckMoviesExportBrowse.Location = new System.Drawing.Point(361, 112);
-            this.btnCheckMoviesExportBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnCheckMoviesExportBrowse.Location = new System.Drawing.Point(241, 73);
             this.btnCheckMoviesExportBrowse.Name = "btnCheckMoviesExportBrowse";
-            this.btnCheckMoviesExportBrowse.Size = new System.Drawing.Size(42, 35);
+            this.btnCheckMoviesExportBrowse.Size = new System.Drawing.Size(28, 23);
             this.btnCheckMoviesExportBrowse.TabIndex = 3;
             this.btnCheckMoviesExportBrowse.Text = "...";
             this.btnCheckMoviesExportBrowse.UseVisualStyleBackColor = true;
@@ -1360,45 +1309,45 @@
             // 
             this.lblCheckMoviesFile.AutoSize = true;
             this.lblCheckMoviesFile.Enabled = false;
-            this.lblCheckMoviesFile.Location = new System.Drawing.Point(36, 89);
-            this.lblCheckMoviesFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCheckMoviesFile.Location = new System.Drawing.Point(24, 58);
             this.lblCheckMoviesFile.Name = "lblCheckMoviesFile";
-            this.lblCheckMoviesFile.Size = new System.Drawing.Size(143, 20);
+            this.lblCheckMoviesFile.Size = new System.Drawing.Size(97, 13);
             this.lblCheckMoviesFile.TabIndex = 1;
             this.lblCheckMoviesFile.Text = "Movie list to import:";
             // 
             // tabPage11
             // 
             this.tabPage11.Controls.Add(this.grbToDoMovies);
-            this.tabPage11.Location = new System.Drawing.Point(4, 29);
+            this.tabPage11.Location = new System.Drawing.Point(4, 22);
+            this.tabPage11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage11.Name = "tabPage11";
-            this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage11.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage11.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage11.Size = new System.Drawing.Size(478, 266);
             this.tabPage11.TabIndex = 11;
             this.tabPage11.Text = "ToDoMovies";
             this.tabPage11.UseVisualStyleBackColor = true;
             // 
             // grbToDoMovies
             // 
+            this.grbToDoMovies.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbToDoMovies.Controls.Add(this.btnToDoMoviesExportBrowse);
             this.grbToDoMovies.Controls.Add(this.chkToDoMoviesEnabled);
             this.grbToDoMovies.Controls.Add(this.txtToDoMovieExportFile);
             this.grbToDoMovies.Controls.Add(this.lblToDoMovieExportFile);
-            this.grbToDoMovies.Location = new System.Drawing.Point(9, 9);
-            this.grbToDoMovies.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grbToDoMovies.Location = new System.Drawing.Point(6, 6);
             this.grbToDoMovies.Name = "grbToDoMovies";
-            this.grbToDoMovies.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbToDoMovies.Size = new System.Drawing.Size(1300, 738);
+            this.grbToDoMovies.Size = new System.Drawing.Size(466, 252);
             this.grbToDoMovies.TabIndex = 8;
             this.grbToDoMovies.TabStop = false;
             this.grbToDoMovies.Text = "ToDoMovies";
             // 
             // btnToDoMoviesExportBrowse
             // 
-            this.btnToDoMoviesExportBrowse.Location = new System.Drawing.Point(582, 81);
-            this.btnToDoMoviesExportBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnToDoMoviesExportBrowse.Location = new System.Drawing.Point(388, 53);
             this.btnToDoMoviesExportBrowse.Name = "btnToDoMoviesExportBrowse";
-            this.btnToDoMoviesExportBrowse.Size = new System.Drawing.Size(44, 35);
+            this.btnToDoMoviesExportBrowse.Size = new System.Drawing.Size(29, 23);
             this.btnToDoMoviesExportBrowse.TabIndex = 3;
             this.btnToDoMoviesExportBrowse.Text = "...";
             this.btnToDoMoviesExportBrowse.UseVisualStyleBackColor = true;
@@ -1407,10 +1356,9 @@
             // chkToDoMoviesEnabled
             // 
             this.chkToDoMoviesEnabled.AutoSize = true;
-            this.chkToDoMoviesEnabled.Location = new System.Drawing.Point(30, 42);
-            this.chkToDoMoviesEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkToDoMoviesEnabled.Location = new System.Drawing.Point(20, 27);
             this.chkToDoMoviesEnabled.Name = "chkToDoMoviesEnabled";
-            this.chkToDoMoviesEnabled.Size = new System.Drawing.Size(85, 24);
+            this.chkToDoMoviesEnabled.Size = new System.Drawing.Size(59, 17);
             this.chkToDoMoviesEnabled.TabIndex = 0;
             this.chkToDoMoviesEnabled.Text = "Enable";
             this.chkToDoMoviesEnabled.UseVisualStyleBackColor = true;
@@ -1418,50 +1366,45 @@
             // 
             // txtToDoMovieExportFile
             // 
-            this.txtToDoMovieExportFile.Location = new System.Drawing.Point(226, 85);
-            this.txtToDoMovieExportFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtToDoMovieExportFile.Location = new System.Drawing.Point(151, 55);
             this.txtToDoMovieExportFile.Name = "txtToDoMovieExportFile";
-            this.txtToDoMovieExportFile.Size = new System.Drawing.Size(345, 26);
+            this.txtToDoMovieExportFile.Size = new System.Drawing.Size(231, 20);
             this.txtToDoMovieExportFile.TabIndex = 2;
             this.txtToDoMovieExportFile.TextChanged += new System.EventHandler(this.txtToDoMovieExportFile_TextChanged);
             // 
             // lblToDoMovieExportFile
             // 
             this.lblToDoMovieExportFile.AutoSize = true;
-            this.lblToDoMovieExportFile.Location = new System.Drawing.Point(26, 89);
-            this.lblToDoMovieExportFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblToDoMovieExportFile.Location = new System.Drawing.Point(17, 58);
             this.lblToDoMovieExportFile.Name = "lblToDoMovieExportFile";
-            this.lblToDoMovieExportFile.Size = new System.Drawing.Size(133, 20);
+            this.lblToDoMovieExportFile.Size = new System.Drawing.Size(91, 13);
             this.lblToDoMovieExportFile.TabIndex = 1;
             this.lblToDoMovieExportFile.Text = "Movie Export File:";
             // 
             // tabPage10
             // 
             this.tabPage10.Controls.Add(this.grbOptions);
-            this.tabPage10.Location = new System.Drawing.Point(4, 29);
-            this.tabPage10.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage10.Size = new System.Drawing.Size(1323, 762);
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage10.Size = new System.Drawing.Size(573, 362);
             this.tabPage10.TabIndex = 10;
             this.tabPage10.Text = "Options";
             this.tabPage10.UseVisualStyleBackColor = true;
             // 
             // TraktRater
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1342, 1011);
+            this.ClientSize = new System.Drawing.Size(589, 524);
             this.Controls.Add(this.tabTraktRater);
             this.Controls.Add(this.grbReport);
             this.Controls.Add(this.pbrImportProgress);
             this.Controls.Add(this.btnStartSync);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(510, 467);
             this.Name = "TraktRater";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Trakt Rater";
             this.grbTrakt.ResumeLayout(false);
             this.grbTrakt.PerformLayout();
