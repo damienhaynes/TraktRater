@@ -878,6 +878,7 @@
             btnImdbDeleteList.Enabled = enableState;
             txtImdbWebUsername.Enabled = enableState;
             chkImdbWebWatchlist.Enabled = enableState;
+            lblImdbNote.Enabled = enableState;
         }
 
         private void EnableImdbCSVControls(bool isCSV)

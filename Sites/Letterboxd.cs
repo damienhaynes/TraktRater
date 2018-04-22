@@ -210,8 +210,7 @@
         #endregion
 
         #region Private Methods
-
-        // TODO: Move to common static method to share with IMDb
+        
         private bool ParseCSVFile(string aFilename, out List<Dictionary<string, string>> aParsedCSV)
         {
             aParsedCSV = new List<Dictionary<string, string>>();
@@ -250,9 +249,13 @@
                         lExportItem.Add(lFieldHeadings[lIndex], field);
                         lIndex++;
                     }
-
-                    // add to list of items
-                    aParsedCSV.Add(lExportItem);
+                    
+                    // check no invalid entries                                    
+                    if (!string.IsNullOrEmpty(lExportItem[LetterboxdFieldMapping.cTitle]))
+                    {
+                        // add to list of items
+                        aParsedCSV.Add(lExportItem);
+                    }
                 }
                 lParser.Close();
             }
@@ -306,36 +309,33 @@
 
         private string GetDateAdded(Dictionary<string, string> aItem)
         {
-            try
+            var lResult = DateTime.UtcNow;
+
+            if (aItem.ContainsKey(LetterboxdFieldMapping.cDateAdded))
             {
-                return DateTime.ParseExact(aItem[LetterboxdFieldMapping.cDateAdded], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None).ToString().ToISO8601();
+                DateTime.TryParse(aItem[LetterboxdFieldMapping.cDateAdded], CultureInfo.InvariantCulture, DateTimeStyles.None, out lResult);
             }
-            catch
-            {
-                return DateTime.UtcNow.ToString().ToISO8601();
-            }
+
+            return lResult.ToString().ToISO8601();
         }
 
         private string GetWatchedDate(Dictionary<string, string> aItem)
         {
-            try
+            var lResult = DateTime.UtcNow;
+
+            // check if diary field exists for Watched Date
+            if (aItem.ContainsKey(LetterboxdFieldMapping.cWatchedDate))
             {
-                // check if diary field exists for Watched Date
-                if (aItem.ContainsKey(LetterboxdFieldMapping.cWatchedDate))
-                {
-                    return DateTime.ParseExact(aItem[LetterboxdFieldMapping.cWatchedDate], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None).ToString().ToISO8601();
-                }
-                else
-                {
-                    // fallback to the date it was added into the watched file
-                    // use release day if setting is enabled
-                    return AppSettings.WatchedOnReleaseDay ? "released" : GetDateAdded(aItem);
-                }
+                DateTime.TryParse(aItem[LetterboxdFieldMapping.cWatchedDate], CultureInfo.InvariantCulture, DateTimeStyles.None, out lResult);
             }
-            catch
+            else
             {
-                return AppSettings.WatchedOnReleaseDay ? "released" : DateTime.UtcNow.ToString().ToISO8601();
+                // fallback to the date it was added into the watched file
+                // use release day if setting is enabled
+                return AppSettings.WatchedOnReleaseDay ? "released" : GetDateAdded(aItem);
             }
+
+            return lResult.ToString().ToISO8601();
         }
 
         #endregion
