@@ -721,11 +721,11 @@
                 {
                     Maintenance.RemoveMoviesFromWatchlist();
                 }
-                if (settings.ResumeEpisodes)
+                if (settings.PausedEpisodes)
                 {
                     Maintenance.RemoveEpisodePausedState();
                 }
-                if (settings.ResumeMovies)
+                if (settings.PausedMovies)
                 {
                     Maintenance.RemoveMoviePausedState();
                 }

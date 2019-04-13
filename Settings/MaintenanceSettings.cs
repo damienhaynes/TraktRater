@@ -14,7 +14,7 @@
         public bool WatchlistShows { get; set; }
         public bool WatchlistSeasons { get; set; }
         public bool WatchlistMovies { get; set; }
-        public bool ResumeEpisodes { get; set; }
-        public bool ResumeMovies { get; set; }
+        public bool PausedEpisodes { get; set; }
+        public bool PausedMovies { get; set; }
     }
 }

@@ -100,12 +100,12 @@
 
         private void chkEpisodeResumeTimes_Click(object sender, EventArgs e)
         {
-            Settings.ResumeEpisodes = chkEpisodePausedStates.Checked;
+            Settings.PausedEpisodes = chkEpisodePausedStates.Checked;
         }
 
         private void chkMovieResumeTimes_Click(object sender, EventArgs e)
         {
-            Settings.ResumeMovies = chkMoviePausedStates.Checked;
+            Settings.PausedMovies = chkMoviePausedStates.Checked;
         }
         #endregion
     }
