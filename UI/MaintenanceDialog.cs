@@ -22,7 +22,7 @@
         #region Form Events
         private void btnStart_Click(object sender, EventArgs e)
         {
-            string warning = "Are you really sure you want to remove the selected items from your trakt account?";
+            string warning = "Are you really sure you want to remove the selected items from your trakt.tv account?";
 
             // give user a warning about what they about to do!
             if (MessageBox.Show(warning, "Maintenance", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
@@ -96,6 +96,16 @@
         private void chkMovieRatings_Click(object sender, EventArgs e)
         {
             Settings.RatedMovies = chkMovieRatings.Checked;
+        }
+
+        private void chkEpisodeResumeTimes_Click(object sender, EventArgs e)
+        {
+            Settings.ResumeEpisodes = chkEpisodePausedStates.Checked;
+        }
+
+        private void chkMovieResumeTimes_Click(object sender, EventArgs e)
+        {
+            Settings.ResumeMovies = chkMoviePausedStates.Checked;
         }
         #endregion
     }

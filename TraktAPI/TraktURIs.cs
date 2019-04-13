@@ -43,5 +43,9 @@
         public const string UserListItems = "https://api.trakt.tv/users/{0}/lists/{1}/items?extended={2}";
         public const string UserListItemsAdd = "https://api.trakt.tv/users/{0}/lists/{1}/items";
         public const string UserListItemsRemove = "https://api.trakt.tv/users/{0}/lists/{1}/items/remove";
+
+        public const string SyncPausedMovies = "https://api.trakt.tv/sync/playback/movies";
+        public const string SyncPausedEpisodes = "https://api.trakt.tv/sync/playback/episodes";
+        public const string SyncPausedRemove = "https://api.trakt.tv/sync/playback/{0}";
     }
 }

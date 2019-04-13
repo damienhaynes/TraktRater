@@ -532,5 +532,75 @@
                 Thread.Sleep(2000);
             }
         }
+
+        public static void RemoveEpisodePausedState()
+        {
+            if (Cancel) return;
+            
+            // get paused info for episodes
+            UIUtils.UpdateStatus("Getting paused state for episodes from trakt.tv");
+            var pausedEpisodes = TraktAPI.TraktAPI.GetPausedEpisodes();
+            if (pausedEpisodes != null)
+            {
+                int i = 0;
+                int count = pausedEpisodes.Count(p => p.Type == "episode");
+                UIUtils.UpdateStatus($"Found {count} episodes with a paused state on trakt.tv");
+
+                // remove pause info for each episode
+                foreach (var item in pausedEpisodes.Where(p => p.Type == "episode"))
+                {
+                    if (Cancel) return;
+
+                    UIUtils.UpdateStatus($"[{++i}/{count}] Removing paused state for {item.Show.Title} - {item.Episode.Season}x{item.Episode.Number} - {item.Episode.Title} from trakt.tv. Paused At={item.PausedAt}, Progress={item.Progress}%");
+                    bool syncResponse = TraktAPI.TraktAPI.RemovePausedState(item.Id);
+                    if (syncResponse == false)
+                    {
+                        UIUtils.UpdateStatus($"Failed to remove paused state for {item.Show.Title} - {item.Episode.Season}x{item.Episode.Number} - {item.Episode.Title} from trakt.tv", true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of paused epsiodes from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
+
+        public static void RemoveMoviePausedState()
+        {
+            if (Cancel) return;
+
+            // get paused info for episodes
+            UIUtils.UpdateStatus("Getting paused state for movies from trakt.tv");
+            var pausedMovies = TraktAPI.TraktAPI.GetPausedMovies();
+            if (pausedMovies != null)
+            {
+                int i = 0;
+                int count = pausedMovies.Count(p => p.Type == "movie");
+                UIUtils.UpdateStatus($"Found {count} movies with a paused state on trakt.tv");
+
+                // remove pause info for each episode
+                foreach (var item in pausedMovies.Where(p => p.Type == "movie"))
+                {
+                    if (Cancel) return;
+
+                    UIUtils.UpdateStatus($"[{++i}/{count}] Removing paused state for {item.Movie.Title} ({item.Movie.Year}) from trakt.tv. Paused At={item.PausedAt}, Progress={item.Progress}%");
+                    bool syncResponse = TraktAPI.TraktAPI.RemovePausedState(item.Id);
+                    if (syncResponse == false)
+                    {
+                        UIUtils.UpdateStatus($"Failed to remove paused state for {item.Movie.Title} ({item.Movie.Year}) from trakt.tv", true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of paused movies from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
     }
 }

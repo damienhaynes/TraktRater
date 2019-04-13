@@ -397,6 +397,15 @@
 
         #endregion
 
+        #region Pausesd State
+
+        public static bool RemovePausedState(uint id)
+        {
+            return TraktWeb.DeleteFromTrakt(string.Format(TraktURIs.SyncPausedRemove, id));
+        }
+
+        #endregion
+
         #endregion
 
         #region Get Current User Data
@@ -608,6 +617,22 @@
         {
             var response = TraktWeb.PostToTrakt(string.Format(TraktURIs.UserListItemsAdd, username, id), items.ToJSON());
             return response.FromJSON<TraktSyncResponse>();
+        }
+
+        #endregion
+
+        #region Paused State
+
+        public static IEnumerable<TraktSyncPausedMovie> GetPausedMovies()
+        {
+            var response = TraktWeb.GetFromTrakt(TraktURIs.SyncPausedMovies);
+            return response.FromJSONArray<TraktSyncPausedMovie>();
+        }
+
+        public static IEnumerable<TraktSyncPausedEpisode> GetPausedEpisodes()
+        {
+            var response = TraktWeb.GetFromTrakt(TraktURIs.SyncPausedEpisodes);
+            return response.FromJSONArray<TraktSyncPausedEpisode>();
         }
 
         #endregion

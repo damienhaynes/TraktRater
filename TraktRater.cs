@@ -721,6 +721,14 @@
                 {
                     Maintenance.RemoveMoviesFromWatchlist();
                 }
+                if (settings.ResumeEpisodes)
+                {
+                    Maintenance.RemoveEpisodePausedState();
+                }
+                if (settings.ResumeMovies)
+                {
+                    Maintenance.RemoveMoviePausedState();
+                }
 
                 // finished
                 SetControlState(true);

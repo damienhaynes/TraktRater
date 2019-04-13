@@ -114,6 +114,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktEpisode.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeEx.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeId.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktEpisodeSummary.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeRating.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeRatingEx.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeRatingSync.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktShow.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowWatchlist.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSyncAll.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktSyncPaused.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSyncResponse.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowSummary.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktShowPlays.cs" />
