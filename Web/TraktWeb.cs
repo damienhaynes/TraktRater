@@ -49,8 +49,7 @@
         /// <returns>The response from Server</returns>
         public static string Transmit(string address, string data, bool logResponse = true)
         {
-            if (OnDataSend != null)
-                OnDataSend(address, data);
+            OnDataSend?.Invoke(address, data);
 
             try
             {
@@ -83,16 +82,13 @@
                         using (var reader = new StreamReader(stream))
                         {
                             ret = reader.ReadToEnd();
-
-                            if (OnDataErrorReceived != null)
-                                OnDataErrorReceived(ret);
+                            OnDataErrorReceived?.Invoke(ret);
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    if (OnDataErrorReceived != null)
-                        OnDataErrorReceived(e.Message);
+                    OnDataErrorReceived?.Invoke(e.Message);
                 }
                 return ret;
             }
@@ -100,8 +96,7 @@
 
         public static string TransmitExtended(string address)
         {
-            if (OnDataSend != null)
-                OnDataSend(address, null);
+            OnDataSend?.Invoke(address, null);
 
             try
             {
@@ -115,9 +110,8 @@
                 Stream stream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(stream);
                 string strResponse = reader.ReadToEnd();
-
-                if (OnDataReceived != null)
-                    OnDataReceived(strResponse);
+                
+                OnDataReceived?.Invoke(strResponse);
 
                 stream.Close();
                 reader.Close();
@@ -127,9 +121,7 @@
             }
             catch (Exception e)
             {
-                if (OnDataErrorReceived != null)
-                    OnDataErrorReceived(e.Message);
-
+                OnDataErrorReceived?.Invoke(e.Message);
                 return null;
             }
         }
@@ -142,8 +134,7 @@
 
         public static string GetFromTrakt(string address, string method = "GET")
         {
-            if (OnDataSend != null)
-                OnDataSend(address, null);
+            OnDataSend?.Invoke(address, null);
 
             var request = WebRequest.Create(address) as HttpWebRequest;
 
@@ -160,15 +151,14 @@
 
             try
             {
-                WebResponse response = (HttpWebResponse)request.GetResponse();
+                var response = request.GetResponse() as HttpWebResponse;
                 if (response == null) return null;
 
                 Stream stream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(stream);
                 string strResponse = reader.ReadToEnd();
 
-                if (OnDataReceived != null)
-                    OnDataReceived(strResponse);
+                OnDataReceived?.Invoke(string.IsNullOrEmpty(strResponse) ? response.StatusCode.ToString() : strResponse);
 
                 stream.Close();
                 reader.Close();
@@ -178,9 +168,7 @@
             }
             catch (WebException e)
             {
-                if (OnDataErrorReceived != null)
-                    OnDataErrorReceived(e.Message);
-
+                OnDataErrorReceived?.Invoke(e.Message);
                 return null;
             }
         }
@@ -218,9 +206,8 @@
                 Stream responseStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(responseStream);
                 string strResponse = reader.ReadToEnd();
-
-                if (OnDataReceived != null)
-                    OnDataReceived(strResponse);
+                
+                OnDataReceived?.Invoke(strResponse);
 
                 // cleanup
                 postStream.Close();
@@ -232,9 +219,7 @@
             }
             catch (WebException e)
             {
-                if (OnDataErrorReceived != null)
-                    OnDataErrorReceived(e.Message);
-
+                OnDataErrorReceived?.Invoke(e.Message);
                 return null;
             }
         }
