@@ -54,11 +54,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Export.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Extensions\NumberExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
+    <Compile Include="Settings\ExportItems.cs" />
     <Compile Include="Sites\API\Criticker\CritickerItem.cs" />
     <Compile Include="Sites\API\iCheckMovies\CheckMoviesListItem.cs" />
     <Compile Include="Sites\API\ToDoMovies\ToDoMoviesListItem.cs" />
@@ -175,6 +177,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\ExportDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ExportDialog.Designer.cs">
+      <DependentUpon>ExportDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MaintenanceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +205,9 @@
     </Compile>
     <EmbeddedResource Include="TraktRater.resx">
       <DependentUpon>TraktRater.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ExportDialog.resx">
+      <DependentUpon>ExportDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MaintenanceDialog.resx">
       <DependentUpon>MaintenanceDialog.cs</DependentUpon>

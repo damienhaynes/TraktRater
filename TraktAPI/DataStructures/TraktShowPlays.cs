@@ -12,6 +12,9 @@
         [DataMember(Name = "last_watched_at")]
         public string WatchedAt { get; set; }
 
+        [DataMember(Name = "last_updated_at")]
+        public string UpdatedAt { get; set; }
+
         [DataMember(Name = "show")]
         public TraktShow Show { get; set; }
 

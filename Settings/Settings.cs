@@ -60,6 +60,8 @@
         const string cLogLevel = "LogLevel";
         const string cBatchSize = "BatchSize";
         const string cWatchedOnReleaseDay = "WatchedOnReleaseDay";
+        const string cCsvExportItems = "CsvExportItems";
+        const string cCsvExportPath = "CsvExportPath";
         #endregion
 
         #region Settings
@@ -130,6 +132,9 @@
         public static bool EnableLetterboxd { get; set; }
         public static bool EnableFlixster { get; set; }
         public static bool EnableToDoMovies { get; set; }
+
+        public static ExportItems CsvExportItems { get; set; }
+        public static string CsvExportPath { get; set; }
 
         public static LoggingSeverity LogSeverityLevel { get; set; }
 
@@ -208,6 +213,8 @@
                 LogSeverityLevel = (LoggingSeverity)(xmlReader.GetSettingValueAsInt(cLogLevel, 3));
                 BatchSize = xmlReader.GetSettingValueAsInt(cBatchSize, 50);
                 WatchedOnReleaseDay = xmlReader.GetSettingValueAsBool(cWatchedOnReleaseDay, false);
+                CsvExportItems = xmlReader.GetSettingValueAsString(cCsvExportItems, new ExportItems().ToJSON()).FromJSON<ExportItems>();
+                CsvExportPath = xmlReader.GetSettingValueAsString(cCsvExportPath, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"TraktRater\Export"));
 
                 // save settings, might be some new settings added
                 Save();
@@ -281,6 +288,8 @@
             xmlWriter.WriteSetting(cLogLevel, ((int)LogSeverityLevel).ToString());
             xmlWriter.WriteSetting(cBatchSize, BatchSize.ToString());
             xmlWriter.WriteSetting(cWatchedOnReleaseDay, WatchedOnReleaseDay.ToString());
+            xmlWriter.WriteSetting(cCsvExportItems, CsvExportItems.ToJSON());
+            xmlWriter.WriteSetting(cCsvExportPath, CsvExportPath);
 
             // save file
             xmlWriter.Save(SettingsFile);

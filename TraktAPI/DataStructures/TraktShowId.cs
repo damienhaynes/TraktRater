@@ -13,8 +13,5 @@
 
         [DataMember(Name = "tvdb", EmitDefaultValue = false)]
         public int? TvdbId { get; set; }
-
-        [DataMember(Name = "tvrage", EmitDefaultValue = false)]
-        public int? TvRageId { get; set; }
     }
 }

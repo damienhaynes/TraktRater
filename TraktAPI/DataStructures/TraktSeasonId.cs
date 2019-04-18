@@ -10,8 +10,5 @@
 
         [DataMember(Name = "tvdb")]
         public int? TvdbId { get; set; }
-
-        [DataMember(Name = "tvrage")]
-        public int? TvRageId { get; set; }
     }
 }

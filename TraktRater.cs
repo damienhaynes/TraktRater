@@ -27,6 +27,7 @@
 
         readonly List<IRateSite> sites = new List<IRateSite>();
         static bool maintenanceRunning = false;
+        static bool exportRunning = false;
         static bool importRunning = false;
         static bool importCancelled = false;
         static string pinCode = string.Empty;
@@ -553,6 +554,22 @@
             StartMaintenance(maintenanceDlg.Settings);
         }
 
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            var exportDlg = new ExportDialog(AppSettings.CsvExportPath, AppSettings.CsvExportItems);
+
+            DialogResult result = exportDlg.ShowDialog(this);
+
+            if (result != DialogResult.OK)
+                return;
+
+            // save settings
+            AppSettings.CsvExportPath = exportDlg.ExportPath;
+            AppSettings.CsvExportItems = exportDlg.ItemsToExport;
+
+            // perform export for user
+            StartExport(exportDlg.ItemsToExport);
+        }
         #endregion
 
         #region Import Actions
@@ -745,6 +762,117 @@
 
             UIUtils.UpdateStatus("Cancelling Maintenance...");
             Maintenance.Cancel = true;
+        }
+        #endregion
+
+        #region Export to CSV
+        private void StartExport(ExportItems items)
+        {
+            if (!CheckAccountDetails() || exportRunning)
+                return;
+
+            // update file log with new name
+            FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
+
+            var mainThread = new Thread(o =>
+            {
+                exportRunning = true;
+                Export.Cancel = false;
+
+                // only one import/export at a time
+                SetControlState(false);
+
+                // Clear Progress
+                ClearProgress();
+
+                // Login to trakt.tv
+                if (!Login())
+                    return;
+
+                // export user data from trakt.tv
+                if (AppSettings.CsvExportItems.WatchedHistoryEpisodes)
+                {
+                    Export.CreateWatchedEpisodeCsv();
+                }
+                if (AppSettings.CsvExportItems.WatchedHistoryMovies)
+                {
+                    Export.CreateWatchedMoviesCsv();
+                }
+                if (AppSettings.CsvExportItems.CollectedEpisodes)
+                {
+                    Export.CreateCollectedEpisodeCsv();
+                }
+                if (AppSettings.CsvExportItems.CollectedMovies)
+                {
+                    Export.CreateCollectedMoviesCsv();
+                }
+                if (AppSettings.CsvExportItems.RatedEpisodes)
+                {
+                    Export.CreateRatedEpisodeCsv();
+                }
+                if (AppSettings.CsvExportItems.RatedSeasons)
+                {
+                    Export.CreateRatedSeasonsCsv();
+                }
+                if (AppSettings.CsvExportItems.RatedShows)
+                {
+                    Export.CreateRatedShowsCsv();
+                }
+                if (AppSettings.CsvExportItems.RatedMovies)
+                {
+                    Export.CreateRatedMoviesCsv();
+                }
+                if (AppSettings.CsvExportItems.WatchlistEpisodes)
+                {
+                    Export.CreateWatchlistEpisodesCsv();
+                }
+                if (AppSettings.CsvExportItems.WatchlistSeasons)
+                {
+                    Export.CreateWatchlistSeasonsCsv();
+                }
+                if (AppSettings.CsvExportItems.WatchlistShows)
+                {
+                    Export.CreateWatchlistShowsCsv();
+                }
+                if (AppSettings.CsvExportItems.WatchlistMovies)
+                {
+                    Export.CreateWatchlistMoviesCsv();
+                }
+                if (AppSettings.CsvExportItems.PausedEpisodes)
+                {
+                    Export.CreatePausedEpisodesCsv();
+                }
+                if (AppSettings.CsvExportItems.PausedMovies)
+                {
+                    Export.CreatePausedMoviesCsv();
+                }
+
+                // finished
+                SetControlState(true);
+                UIUtils.UpdateStatus("Export Complete!");
+                exportRunning = false;
+
+                // open folder to exported files
+                try
+                {
+                    Process.Start("explorer.exe", AppSettings.CsvExportPath);
+                }
+                catch
+                {
+                    UIUtils.UpdateStatus("Failed to open folder to exported files", true);
+                }
+
+            });
+
+            mainThread.Start();
+        }
+
+        private void CancelExport()
+        {
+            if (!exportRunning) return;
+
+            UIUtils.UpdateStatus("Cancelling CSV Export...");
+            Export.Cancel = true;
         }
         #endregion
 

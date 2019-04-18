@@ -136,6 +136,7 @@
             this.txtToDoMovieExportFile = new System.Windows.Forms.TextBox();
             this.lblToDoMovieExportFile = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.btnExport = new System.Windows.Forms.Button();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -747,6 +748,7 @@
             this.grbOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grbOptions.Controls.Add(this.btnExport);
             this.grbOptions.Controls.Add(this.chkSetWatchedOnReleaseDay);
             this.grbOptions.Controls.Add(this.nudBatchSize);
             this.grbOptions.Controls.Add(this.lblBatchImportSize);
@@ -1419,7 +1421,7 @@
             this.tabPage11.Controls.Add(this.grbToDoMovies);
             this.tabPage11.Location = new System.Drawing.Point(4, 29);
             this.tabPage11.Name = "tabPage11";
-            this.tabPage11.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage11.Size = new System.Drawing.Size(864, 564);
             this.tabPage11.TabIndex = 11;
             this.tabPage11.Text = "ToDoMovies";
@@ -1496,6 +1498,16 @@
             this.tabPage10.TabIndex = 10;
             this.tabPage10.Text = "Options";
             this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(32, 318);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(414, 40);
+            this.btnExport.TabIndex = 6;
+            this.btnExport.Text = "Export from trakt to CSV...";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // TraktRater
             // 
@@ -1661,6 +1673,7 @@
         private System.Windows.Forms.CheckBox chkToDoMoviesEnabled;
         private System.Windows.Forms.TextBox txtToDoMovieExportFile;
         private System.Windows.Forms.Label lblToDoMovieExportFile;
+        private System.Windows.Forms.Button btnExport;
     }
 }
 
