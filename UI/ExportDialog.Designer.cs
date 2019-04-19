@@ -32,6 +32,15 @@
             this.btnExport = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.grbExport = new System.Windows.Forms.GroupBox();
+            this.lnkCheckAll = new System.Windows.Forms.LinkLabel();
+            this.chkLikedLists = new System.Windows.Forms.CheckBox();
+            this.chkLikedComments = new System.Windows.Forms.CheckBox();
+            this.chkListComments = new System.Windows.Forms.CheckBox();
+            this.chkMovieComments = new System.Windows.Forms.CheckBox();
+            this.chkShowComments = new System.Windows.Forms.CheckBox();
+            this.chkSeasonComments = new System.Windows.Forms.CheckBox();
+            this.chkEpisodeComments = new System.Windows.Forms.CheckBox();
+            this.chkCustomLists = new System.Windows.Forms.CheckBox();
             this.chkMoviePausedStates = new System.Windows.Forms.CheckBox();
             this.chkEpisodePausedStates = new System.Windows.Forms.CheckBox();
             this.chkMovieWatchlist = new System.Windows.Forms.CheckBox();
@@ -51,21 +60,14 @@
             this.btnBrowsePath = new System.Windows.Forms.Button();
             this.txtExportPath = new System.Windows.Forms.TextBox();
             this.fbdExportPath = new System.Windows.Forms.FolderBrowserDialog();
-            this.chkCustomLists = new System.Windows.Forms.CheckBox();
-            this.chkEpisodeComments = new System.Windows.Forms.CheckBox();
-            this.chkSeasonComments = new System.Windows.Forms.CheckBox();
-            this.chkShowComments = new System.Windows.Forms.CheckBox();
-            this.chkMovieComments = new System.Windows.Forms.CheckBox();
-            this.chkListComments = new System.Windows.Forms.CheckBox();
-            this.chkLikedComments = new System.Windows.Forms.CheckBox();
-            this.chkLikedLists = new System.Windows.Forms.CheckBox();
+            this.lnkUncheckAll = new System.Windows.Forms.LinkLabel();
             this.grbExport.SuspendLayout();
             this.grbPath.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(461, 643);
+            this.btnExport.Location = new System.Drawing.Point(462, 674);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(176, 36);
             this.btnExport.TabIndex = 1;
@@ -75,7 +77,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(279, 643);
+            this.btnCancel.Location = new System.Drawing.Point(280, 674);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(176, 36);
             this.btnCancel.TabIndex = 2;
@@ -85,6 +87,8 @@
             // 
             // grbExport
             // 
+            this.grbExport.Controls.Add(this.lnkUncheckAll);
+            this.grbExport.Controls.Add(this.lnkCheckAll);
             this.grbExport.Controls.Add(this.chkLikedLists);
             this.grbExport.Controls.Add(this.chkLikedComments);
             this.grbExport.Controls.Add(this.chkListComments);
@@ -112,9 +116,108 @@
             this.grbExport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grbExport.Name = "grbExport";
             this.grbExport.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbExport.Size = new System.Drawing.Size(628, 507);
+            this.grbExport.Size = new System.Drawing.Size(628, 538);
             this.grbExport.TabIndex = 3;
             this.grbExport.TabStop = false;
+            // 
+            // lnkCheckAll
+            // 
+            this.lnkCheckAll.AutoSize = true;
+            this.lnkCheckAll.Location = new System.Drawing.Point(530, 499);
+            this.lnkCheckAll.Name = "lnkCheckAll";
+            this.lnkCheckAll.Size = new System.Drawing.Size(75, 20);
+            this.lnkCheckAll.TabIndex = 23;
+            this.lnkCheckAll.TabStop = true;
+            this.lnkCheckAll.Text = "Check All";
+            this.lnkCheckAll.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSelectAll_LinkClicked);
+            // 
+            // chkLikedLists
+            // 
+            this.chkLikedLists.AutoSize = true;
+            this.chkLikedLists.Location = new System.Drawing.Point(342, 449);
+            this.chkLikedLists.Name = "chkLikedLists";
+            this.chkLikedLists.Size = new System.Drawing.Size(101, 24);
+            this.chkLikedLists.TabIndex = 22;
+            this.chkLikedLists.Text = "List Likes";
+            this.chkLikedLists.UseVisualStyleBackColor = true;
+            this.chkLikedLists.CheckedChanged += new System.EventHandler(this.chkLikedLists_CheckedChanged);
+            // 
+            // chkLikedComments
+            // 
+            this.chkLikedComments.AutoSize = true;
+            this.chkLikedComments.Location = new System.Drawing.Point(342, 409);
+            this.chkLikedComments.Name = "chkLikedComments";
+            this.chkLikedComments.Size = new System.Drawing.Size(145, 24);
+            this.chkLikedComments.TabIndex = 21;
+            this.chkLikedComments.Text = "Comment Likes";
+            this.chkLikedComments.UseVisualStyleBackColor = true;
+            this.chkLikedComments.CheckedChanged += new System.EventHandler(this.chkLikedComments_CheckedChanged);
+            // 
+            // chkListComments
+            // 
+            this.chkListComments.AutoSize = true;
+            this.chkListComments.Location = new System.Drawing.Point(342, 372);
+            this.chkListComments.Name = "chkListComments";
+            this.chkListComments.Size = new System.Drawing.Size(141, 24);
+            this.chkListComments.TabIndex = 20;
+            this.chkListComments.Text = "List Comments";
+            this.chkListComments.UseVisualStyleBackColor = true;
+            this.chkListComments.CheckedChanged += new System.EventHandler(this.chkListComments_CheckedChanged);
+            // 
+            // chkMovieComments
+            // 
+            this.chkMovieComments.AutoSize = true;
+            this.chkMovieComments.Location = new System.Drawing.Point(342, 335);
+            this.chkMovieComments.Name = "chkMovieComments";
+            this.chkMovieComments.Size = new System.Drawing.Size(157, 24);
+            this.chkMovieComments.TabIndex = 19;
+            this.chkMovieComments.Text = "Movie Comments";
+            this.chkMovieComments.UseVisualStyleBackColor = true;
+            this.chkMovieComments.CheckedChanged += new System.EventHandler(this.chkMovieComments_CheckedChanged);
+            // 
+            // chkShowComments
+            // 
+            this.chkShowComments.AutoSize = true;
+            this.chkShowComments.Location = new System.Drawing.Point(342, 296);
+            this.chkShowComments.Name = "chkShowComments";
+            this.chkShowComments.Size = new System.Drawing.Size(156, 24);
+            this.chkShowComments.TabIndex = 18;
+            this.chkShowComments.Text = "Show Comments";
+            this.chkShowComments.UseVisualStyleBackColor = true;
+            this.chkShowComments.CheckedChanged += new System.EventHandler(this.chkShowComments_CheckedChanged);
+            // 
+            // chkSeasonComments
+            // 
+            this.chkSeasonComments.AutoSize = true;
+            this.chkSeasonComments.Location = new System.Drawing.Point(342, 258);
+            this.chkSeasonComments.Name = "chkSeasonComments";
+            this.chkSeasonComments.Size = new System.Drawing.Size(171, 24);
+            this.chkSeasonComments.TabIndex = 17;
+            this.chkSeasonComments.Text = "Season Comments";
+            this.chkSeasonComments.UseVisualStyleBackColor = true;
+            this.chkSeasonComments.CheckedChanged += new System.EventHandler(this.chkSeasonComments_CheckedChanged);
+            // 
+            // chkEpisodeComments
+            // 
+            this.chkEpisodeComments.AutoSize = true;
+            this.chkEpisodeComments.Location = new System.Drawing.Point(342, 219);
+            this.chkEpisodeComments.Name = "chkEpisodeComments";
+            this.chkEpisodeComments.Size = new System.Drawing.Size(174, 24);
+            this.chkEpisodeComments.TabIndex = 16;
+            this.chkEpisodeComments.Text = "Episode Comments";
+            this.chkEpisodeComments.UseVisualStyleBackColor = true;
+            this.chkEpisodeComments.CheckedChanged += new System.EventHandler(this.chkEpisodeComments_CheckedChanged);
+            // 
+            // chkCustomLists
+            // 
+            this.chkCustomLists.AutoSize = true;
+            this.chkCustomLists.Location = new System.Drawing.Point(342, 181);
+            this.chkCustomLists.Name = "chkCustomLists";
+            this.chkCustomLists.Size = new System.Drawing.Size(127, 24);
+            this.chkCustomLists.TabIndex = 15;
+            this.chkCustomLists.Text = "Custom Lists";
+            this.chkCustomLists.UseVisualStyleBackColor = true;
+            this.chkCustomLists.CheckedChanged += new System.EventHandler(this.chkCustomLists_CheckedChanged);
             // 
             // chkMoviePausedStates
             // 
@@ -125,7 +228,7 @@
             this.chkMoviePausedStates.TabIndex = 14;
             this.chkMoviePausedStates.Text = "Movie Paused States";
             this.chkMoviePausedStates.UseVisualStyleBackColor = true;
-            this.chkMoviePausedStates.Click += new System.EventHandler(this.chkMoviePausedStates_Click);
+            this.chkMoviePausedStates.CheckedChanged += new System.EventHandler(this.chkMoviePausedStates_CheckedChanged);
             // 
             // chkEpisodePausedStates
             // 
@@ -136,7 +239,7 @@
             this.chkEpisodePausedStates.TabIndex = 13;
             this.chkEpisodePausedStates.Text = "Episode Paused States";
             this.chkEpisodePausedStates.UseVisualStyleBackColor = true;
-            this.chkEpisodePausedStates.Click += new System.EventHandler(this.chkEpisodePausedStates_Click);
+            this.chkEpisodePausedStates.CheckedChanged += new System.EventHandler(this.chkEpisodePausedStates_CheckedChanged);
             // 
             // chkMovieWatchlist
             // 
@@ -147,7 +250,7 @@
             this.chkMovieWatchlist.TabIndex = 8;
             this.chkMovieWatchlist.Text = "Movie Watchlist";
             this.chkMovieWatchlist.UseVisualStyleBackColor = true;
-            this.chkMovieWatchlist.Click += new System.EventHandler(this.chkMovieWatchlist_Click);
+            this.chkMovieWatchlist.CheckedChanged += new System.EventHandler(this.chkMovieWatchlist_CheckedChanged);
             // 
             // chkSeasonWatchlist
             // 
@@ -158,7 +261,7 @@
             this.chkSeasonWatchlist.TabIndex = 7;
             this.chkSeasonWatchlist.Text = "Season Watchlist";
             this.chkSeasonWatchlist.UseVisualStyleBackColor = true;
-            this.chkSeasonWatchlist.Click += new System.EventHandler(this.chkSeasonWatchlist_Click);
+            this.chkSeasonWatchlist.CheckedChanged += new System.EventHandler(this.chkSeasonWatchlist_CheckedChanged);
             // 
             // chkShowWatchlist
             // 
@@ -169,7 +272,7 @@
             this.chkShowWatchlist.TabIndex = 6;
             this.chkShowWatchlist.Text = "Show Watchlist";
             this.chkShowWatchlist.UseVisualStyleBackColor = true;
-            this.chkShowWatchlist.Click += new System.EventHandler(this.chkShowWatchlist_Click);
+            this.chkShowWatchlist.CheckedChanged += new System.EventHandler(this.chkShowWatchlist_CheckedChanged);
             // 
             // chkEpisodeWatchlist
             // 
@@ -180,7 +283,7 @@
             this.chkEpisodeWatchlist.TabIndex = 5;
             this.chkEpisodeWatchlist.Text = "Episode Watchlist";
             this.chkEpisodeWatchlist.UseVisualStyleBackColor = true;
-            this.chkEpisodeWatchlist.Click += new System.EventHandler(this.chkEpisodeWatchlist_Click);
+            this.chkEpisodeWatchlist.CheckedChanged += new System.EventHandler(this.chkEpisodeWatchlist_CheckedChanged);
             // 
             // chkMovieRatings
             // 
@@ -191,7 +294,7 @@
             this.chkMovieRatings.TabIndex = 12;
             this.chkMovieRatings.Text = "Movie Ratings";
             this.chkMovieRatings.UseVisualStyleBackColor = true;
-            this.chkMovieRatings.Click += new System.EventHandler(this.chkMovieRatings_Click);
+            this.chkMovieRatings.CheckedChanged += new System.EventHandler(this.chkMovieRatings_CheckedChanged);
             // 
             // chkSeasonRatings
             // 
@@ -202,7 +305,7 @@
             this.chkSeasonRatings.TabIndex = 11;
             this.chkSeasonRatings.Text = "Season Ratings";
             this.chkSeasonRatings.UseVisualStyleBackColor = true;
-            this.chkSeasonRatings.Click += new System.EventHandler(this.chkSeasonRatings_Click);
+            this.chkSeasonRatings.CheckedChanged += new System.EventHandler(this.chkSeasonRatings_CheckedChanged);
             // 
             // chkShowRatings
             // 
@@ -213,7 +316,7 @@
             this.chkShowRatings.TabIndex = 10;
             this.chkShowRatings.Text = "Show Ratings";
             this.chkShowRatings.UseVisualStyleBackColor = true;
-            this.chkShowRatings.Click += new System.EventHandler(this.chkShowRatings_Click);
+            this.chkShowRatings.CheckedChanged += new System.EventHandler(this.chkShowRatings_CheckedChanged);
             // 
             // chkEpisodeRatings
             // 
@@ -224,7 +327,7 @@
             this.chkEpisodeRatings.TabIndex = 9;
             this.chkEpisodeRatings.Text = "Episode Ratings";
             this.chkEpisodeRatings.UseVisualStyleBackColor = true;
-            this.chkEpisodeRatings.Click += new System.EventHandler(this.chkEpisodeRatings_Click);
+            this.chkEpisodeRatings.CheckedChanged += new System.EventHandler(this.chkEpisodeRatings_CheckedChanged);
             // 
             // chkMovieCollection
             // 
@@ -235,7 +338,7 @@
             this.chkMovieCollection.TabIndex = 4;
             this.chkMovieCollection.Text = "Movie Collection";
             this.chkMovieCollection.UseVisualStyleBackColor = true;
-            this.chkMovieCollection.Click += new System.EventHandler(this.chkMovieCollection_Click);
+            this.chkMovieCollection.CheckedChanged += new System.EventHandler(this.chkMovieCollection_CheckedChanged);
             // 
             // chkEpisodeCollection
             // 
@@ -246,7 +349,7 @@
             this.chkEpisodeCollection.TabIndex = 3;
             this.chkEpisodeCollection.Text = "Episode Collection";
             this.chkEpisodeCollection.UseVisualStyleBackColor = true;
-            this.chkEpisodeCollection.Click += new System.EventHandler(this.chkEpisodeCollection_Click);
+            this.chkEpisodeCollection.CheckedChanged += new System.EventHandler(this.chkEpisodeCollection_CheckedChanged);
             // 
             // chkMovieWatchedHistory
             // 
@@ -257,7 +360,7 @@
             this.chkMovieWatchedHistory.TabIndex = 2;
             this.chkMovieWatchedHistory.Text = "Movie Watched History";
             this.chkMovieWatchedHistory.UseVisualStyleBackColor = true;
-            this.chkMovieWatchedHistory.Click += new System.EventHandler(this.chkMovieWatchedHistory_Click);
+            this.chkMovieWatchedHistory.CheckedChanged += new System.EventHandler(this.chkMovieWatchedHistory_CheckedChanged);
             // 
             // chkEpisodeWatchedHistory
             // 
@@ -283,7 +386,7 @@
             // 
             this.grbPath.Controls.Add(this.btnBrowsePath);
             this.grbPath.Controls.Add(this.txtExportPath);
-            this.grbPath.Location = new System.Drawing.Point(12, 529);
+            this.grbPath.Location = new System.Drawing.Point(13, 560);
             this.grbPath.Name = "grbPath";
             this.grbPath.Size = new System.Drawing.Size(625, 92);
             this.grbPath.TabIndex = 4;
@@ -312,99 +415,22 @@
             // 
             this.fbdExportPath.Description = "Select folder to create CSV files in:";
             // 
-            // chkCustomLists
+            // lnkUncheckAll
             // 
-            this.chkCustomLists.AutoSize = true;
-            this.chkCustomLists.Location = new System.Drawing.Point(342, 181);
-            this.chkCustomLists.Name = "chkCustomLists";
-            this.chkCustomLists.Size = new System.Drawing.Size(127, 24);
-            this.chkCustomLists.TabIndex = 15;
-            this.chkCustomLists.Text = "Custom Lists";
-            this.chkCustomLists.UseVisualStyleBackColor = true;
-            this.chkCustomLists.Click += new System.EventHandler(this.chkCustomLists_Click);
-            // 
-            // chkEpisodeComments
-            // 
-            this.chkEpisodeComments.AutoSize = true;
-            this.chkEpisodeComments.Location = new System.Drawing.Point(342, 219);
-            this.chkEpisodeComments.Name = "chkEpisodeComments";
-            this.chkEpisodeComments.Size = new System.Drawing.Size(174, 24);
-            this.chkEpisodeComments.TabIndex = 16;
-            this.chkEpisodeComments.Text = "Episode Comments";
-            this.chkEpisodeComments.UseVisualStyleBackColor = true;
-            this.chkEpisodeComments.Click += new System.EventHandler(this.chkEpisodeComments_Click);
-            // 
-            // chkSeasonComments
-            // 
-            this.chkSeasonComments.AutoSize = true;
-            this.chkSeasonComments.Location = new System.Drawing.Point(342, 258);
-            this.chkSeasonComments.Name = "chkSeasonComments";
-            this.chkSeasonComments.Size = new System.Drawing.Size(171, 24);
-            this.chkSeasonComments.TabIndex = 17;
-            this.chkSeasonComments.Text = "Season Comments";
-            this.chkSeasonComments.UseVisualStyleBackColor = true;
-            this.chkSeasonComments.Click += new System.EventHandler(this.chkSeasonComments_Click);
-            // 
-            // chkShowComments
-            // 
-            this.chkShowComments.AutoSize = true;
-            this.chkShowComments.Location = new System.Drawing.Point(342, 296);
-            this.chkShowComments.Name = "chkShowComments";
-            this.chkShowComments.Size = new System.Drawing.Size(156, 24);
-            this.chkShowComments.TabIndex = 18;
-            this.chkShowComments.Text = "Show Comments";
-            this.chkShowComments.UseVisualStyleBackColor = true;
-            this.chkShowComments.Click += new System.EventHandler(this.chkShowComments_Click);
-            // 
-            // chkMovieComments
-            // 
-            this.chkMovieComments.AutoSize = true;
-            this.chkMovieComments.Location = new System.Drawing.Point(342, 335);
-            this.chkMovieComments.Name = "chkMovieComments";
-            this.chkMovieComments.Size = new System.Drawing.Size(157, 24);
-            this.chkMovieComments.TabIndex = 19;
-            this.chkMovieComments.Text = "Movie Comments";
-            this.chkMovieComments.UseVisualStyleBackColor = true;
-            this.chkMovieComments.Click += new System.EventHandler(this.chkMovieComments_Click);
-            // 
-            // chkListComments
-            // 
-            this.chkListComments.AutoSize = true;
-            this.chkListComments.Location = new System.Drawing.Point(342, 372);
-            this.chkListComments.Name = "chkListComments";
-            this.chkListComments.Size = new System.Drawing.Size(141, 24);
-            this.chkListComments.TabIndex = 20;
-            this.chkListComments.Text = "List Comments";
-            this.chkListComments.UseVisualStyleBackColor = true;
-            this.chkListComments.Click += new System.EventHandler(this.chkListComments_Click);
-            // 
-            // chkLikedComments
-            // 
-            this.chkLikedComments.AutoSize = true;
-            this.chkLikedComments.Location = new System.Drawing.Point(342, 409);
-            this.chkLikedComments.Name = "chkLikedComments";
-            this.chkLikedComments.Size = new System.Drawing.Size(145, 24);
-            this.chkLikedComments.TabIndex = 21;
-            this.chkLikedComments.Text = "Comment Likes";
-            this.chkLikedComments.UseVisualStyleBackColor = true;
-            this.chkLikedComments.Click += new System.EventHandler(this.chkLikedComments_Click);
-            // 
-            // chkLikedLists
-            // 
-            this.chkLikedLists.AutoSize = true;
-            this.chkLikedLists.Location = new System.Drawing.Point(342, 449);
-            this.chkLikedLists.Name = "chkLikedLists";
-            this.chkLikedLists.Size = new System.Drawing.Size(101, 24);
-            this.chkLikedLists.TabIndex = 22;
-            this.chkLikedLists.Text = "List Likes";
-            this.chkLikedLists.UseVisualStyleBackColor = true;
-            this.chkLikedLists.Click += new System.EventHandler(this.chkLikedLists_Click);
+            this.lnkUncheckAll.AutoSize = true;
+            this.lnkUncheckAll.Location = new System.Drawing.Point(431, 499);
+            this.lnkUncheckAll.Name = "lnkUncheckAll";
+            this.lnkUncheckAll.Size = new System.Drawing.Size(93, 20);
+            this.lnkUncheckAll.TabIndex = 24;
+            this.lnkUncheckAll.TabStop = true;
+            this.lnkUncheckAll.Text = "Uncheck All";
+            this.lnkUncheckAll.Click += new System.EventHandler(this.lnkUncheckAll_Click);
             // 
             // ExportDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(652, 693);
+            this.ClientSize = new System.Drawing.Size(652, 722);
             this.Controls.Add(this.grbPath);
             this.Controls.Add(this.grbExport);
             this.Controls.Add(this.btnCancel);
@@ -454,5 +480,7 @@
         private System.Windows.Forms.CheckBox chkEpisodeComments;
         private System.Windows.Forms.CheckBox chkLikedLists;
         private System.Windows.Forms.CheckBox chkLikedComments;
+        private System.Windows.Forms.LinkLabel lnkCheckAll;
+        private System.Windows.Forms.LinkLabel lnkUncheckAll;
     }
 }

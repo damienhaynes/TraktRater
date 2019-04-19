@@ -71,117 +71,140 @@ namespace TraktRater.UI
                 ExportPath = txtExportPath.Text = fbdExportPath.SelectedPath;
             }
         }
+        
+        private void lnkSelectAll_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // iterate through each checkbox in the groupbox and check it
+            foreach(var control in grbExport.Controls)
+            {
+                if (control is CheckBox)
+                {
+                    ((CheckBox)control).Checked = true;
+                }
+            }
+        }
+        
+        private void lnkUncheckAll_Click(object sender, EventArgs e)
+        {
+            // iterate through each checkbox in the groupbox and uncheck it
+            foreach (var control in grbExport.Controls)
+            {
+                if (control is CheckBox)
+                {
+                    ((CheckBox)control).Checked = false;
+                }
+            }
+        }
 
         private void chkEpisodeWatchedHistory_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.WatchedHistoryEpisodes = chkEpisodeWatchedHistory.Checked;
         }
 
-        private void chkMovieWatchedHistory_Click(object sender, EventArgs e)
+        private void chkMovieWatchedHistory_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.WatchedHistoryMovies = chkMovieWatchedHistory.Checked;
         }
 
-        private void chkEpisodeCollection_Click(object sender, EventArgs e)
+        private void chkEpisodeCollection_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.CollectedEpisodes = chkEpisodeCollection.Checked;
         }
 
-        private void chkMovieCollection_Click(object sender, EventArgs e)
+        private void chkMovieCollection_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.CollectedMovies = chkMovieCollection.Checked;
         }
 
-        private void chkEpisodeWatchlist_Click(object sender, EventArgs e)
+        private void chkEpisodeWatchlist_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.WatchlistEpisodes = chkEpisodeWatchlist.Checked;
         }
 
-        private void chkShowWatchlist_Click(object sender, EventArgs e)
+        private void chkShowWatchlist_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.WatchlistShows = chkShowWatchlist.Checked;
         }
 
-        private void chkSeasonWatchlist_Click(object sender, EventArgs e)
+        private void chkSeasonWatchlist_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.WatchlistSeasons = chkSeasonWatchlist.Checked;
         }
 
-        private void chkMovieWatchlist_Click(object sender, EventArgs e)
+        private void chkMovieWatchlist_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.WatchlistMovies = chkMovieWatchlist.Checked;
         }
 
-        private void chkEpisodeRatings_Click(object sender, EventArgs e)
+        private void chkEpisodeRatings_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.RatedEpisodes = chkEpisodeRatings.Checked;
         }
 
-        private void chkShowRatings_Click(object sender, EventArgs e)
+        private void chkShowRatings_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.RatedShows = chkShowRatings.Checked;
         }
 
-        private void chkSeasonRatings_Click(object sender, EventArgs e)
+        private void chkSeasonRatings_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.RatedSeasons = chkSeasonRatings.Checked;
         }
 
-        private void chkMovieRatings_Click(object sender, EventArgs e)
+        private void chkMovieRatings_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.RatedMovies = chkMovieRatings.Checked;
         }
 
-        private void chkEpisodePausedStates_Click(object sender, EventArgs e)
+        private void chkEpisodePausedStates_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.PausedEpisodes = chkEpisodePausedStates.Checked;
         }
 
-        private void chkMoviePausedStates_Click(object sender, EventArgs e)
+        private void chkMoviePausedStates_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.PausedMovies = chkMoviePausedStates.Checked;
         }
 
-        private void chkCustomLists_Click(object sender, EventArgs e)
+        private void chkCustomLists_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.CustomLists = chkCustomLists.Checked;
         }
 
-        private void chkEpisodeComments_Click(object sender, EventArgs e)
+        private void chkEpisodeComments_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.CommentedEpisodes = chkEpisodeComments.Checked;
         }
 
-        private void chkSeasonComments_Click(object sender, EventArgs e)
+        private void chkSeasonComments_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.CommentedSeasons = chkSeasonComments.Checked;
         }
 
-        private void chkShowComments_Click(object sender, EventArgs e)
+        private void chkShowComments_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.CommentedShows = chkShowComments.Checked;
         }
 
-        private void chkMovieComments_Click(object sender, EventArgs e)
+        private void chkMovieComments_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.CommentedMovies = chkMovieComments.Checked;
         }
 
-        private void chkListComments_Click(object sender, EventArgs e)
+        private void chkListComments_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.CommentedLists = chkListComments.Checked;
         }
 
-        private void chkLikedComments_Click(object sender, EventArgs e)
+        private void chkLikedComments_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.LikedComments = chkLikedComments.Checked;
         }
 
-        private void chkLikedLists_Click(object sender, EventArgs e)
+        private void chkLikedLists_CheckedChanged(object sender, EventArgs e)
         {
             ItemsToExport.LikedLists = chkLikedLists.Checked;
         }
         #endregion
-
     }
 }
