@@ -107,6 +107,12 @@
         {
             Settings.PausedMovies = chkMoviePausedStates.Checked;
         }
+
+        private void chkCustomLists_Click(object sender, EventArgs e)
+        {
+            Settings.CustomLists = chkCustomLists.Checked;
+        }
         #endregion
+
     }
 }

@@ -16,5 +16,6 @@
         public bool WatchlistMovies { get; set; }
         public bool PausedEpisodes { get; set; }
         public bool PausedMovies { get; set; }
+        public bool CustomLists { get; set; }
     }
 }

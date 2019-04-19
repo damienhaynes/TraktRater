@@ -602,5 +602,39 @@
                 Thread.Sleep(2000);
             }
         }
+
+        public static void RemoveCustomLists()
+        {
+            if (Cancel) return;
+
+            // get paused info for episodes
+            UIUtils.UpdateStatus("Getting custom lists from trakt.tv");
+            var customLists = TraktAPI.TraktAPI.GetCustomLists();
+            if (customLists != null)
+            {
+                int i = 0;
+                int count = customLists.Count();
+                UIUtils.UpdateStatus($"Found {count} custom lists on trakt.tv");
+                
+                foreach (var item in customLists)
+                {
+                    if (Cancel) return;
+
+                    UIUtils.UpdateStatus($"[{++i}/{count}] Removing custom list '{item.Name}' from trakt.tv.");
+                    bool syncResponse = TraktAPI.TraktAPI.DeleteCustomList(item.Ids.Trakt.ToString());
+                    if (syncResponse == false)
+                    {
+                        UIUtils.UpdateStatus($"Failed to remove custom list '{item.Name}' from trakt.tv", true);
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current custom lists from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
     }
 }

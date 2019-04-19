@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MaintenanceDialog));
             this.grbMaintenance = new System.Windows.Forms.GroupBox();
+            this.chkMoviePausedStates = new System.Windows.Forms.CheckBox();
             this.chkEpisodePausedStates = new System.Windows.Forms.CheckBox();
             this.chkMovieWatchlist = new System.Windows.Forms.CheckBox();
             this.chkSeasonWatchlist = new System.Windows.Forms.CheckBox();
@@ -46,12 +47,13 @@
             this.lblSelect = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.chkMoviePausedStates = new System.Windows.Forms.CheckBox();
+            this.chkCustomLists = new System.Windows.Forms.CheckBox();
             this.grbMaintenance.SuspendLayout();
             this.SuspendLayout();
             // 
             // grbMaintenance
             // 
+            this.grbMaintenance.Controls.Add(this.chkCustomLists);
             this.grbMaintenance.Controls.Add(this.chkMoviePausedStates);
             this.grbMaintenance.Controls.Add(this.chkEpisodePausedStates);
             this.grbMaintenance.Controls.Add(this.chkMovieWatchlist);
@@ -74,6 +76,17 @@
             this.grbMaintenance.Size = new System.Drawing.Size(628, 378);
             this.grbMaintenance.TabIndex = 0;
             this.grbMaintenance.TabStop = false;
+            // 
+            // chkMoviePausedStates
+            // 
+            this.chkMoviePausedStates.AutoSize = true;
+            this.chkMoviePausedStates.Location = new System.Drawing.Point(340, 258);
+            this.chkMoviePausedStates.Name = "chkMoviePausedStates";
+            this.chkMoviePausedStates.Size = new System.Drawing.Size(185, 24);
+            this.chkMoviePausedStates.TabIndex = 14;
+            this.chkMoviePausedStates.Text = "Movie Paused States";
+            this.chkMoviePausedStates.UseVisualStyleBackColor = true;
+            this.chkMoviePausedStates.Click += new System.EventHandler(this.chkMovieResumeTimes_Click);
             // 
             // chkEpisodePausedStates
             // 
@@ -250,16 +263,16 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // chkMoviePausedStates
+            // chkCustomLists
             // 
-            this.chkMoviePausedStates.AutoSize = true;
-            this.chkMoviePausedStates.Location = new System.Drawing.Point(340, 258);
-            this.chkMoviePausedStates.Name = "chkMoviePausedStates";
-            this.chkMoviePausedStates.Size = new System.Drawing.Size(185, 24);
-            this.chkMoviePausedStates.TabIndex = 14;
-            this.chkMoviePausedStates.Text = "Movie Paused States";
-            this.chkMoviePausedStates.UseVisualStyleBackColor = true;
-            this.chkMoviePausedStates.Click += new System.EventHandler(this.chkMovieResumeTimes_Click);
+            this.chkCustomLists.AutoSize = true;
+            this.chkCustomLists.Location = new System.Drawing.Point(340, 296);
+            this.chkCustomLists.Name = "chkCustomLists";
+            this.chkCustomLists.Size = new System.Drawing.Size(127, 24);
+            this.chkCustomLists.TabIndex = 15;
+            this.chkCustomLists.Text = "Custom Lists";
+            this.chkCustomLists.UseVisualStyleBackColor = true;
+            this.chkCustomLists.Click += new System.EventHandler(this.chkCustomLists_Click);
             // 
             // MaintenanceDialog
             // 
@@ -305,5 +318,6 @@
         private System.Windows.Forms.CheckBox chkEpisodeWatchlist;
         private System.Windows.Forms.CheckBox chkEpisodePausedStates;
         private System.Windows.Forms.CheckBox chkMoviePausedStates;
+        private System.Windows.Forms.CheckBox chkCustomLists;
     }
 }

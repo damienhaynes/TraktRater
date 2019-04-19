@@ -746,6 +746,10 @@
                 {
                     Maintenance.RemoveMoviePausedState();
                 }
+                if (settings.CustomLists)
+                {
+                    Maintenance.RemoveCustomLists();
+                }
 
                 // finished
                 SetControlState(true);
