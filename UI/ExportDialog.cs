@@ -35,6 +35,11 @@ namespace TraktRater.UI
             chkMovieWatchedHistory.Checked = ItemsToExport.WatchedHistoryMovies;
             chkEpisodeWatchedHistory.Checked = ItemsToExport.WatchedHistoryEpisodes;
             chkCustomLists.Checked = ItemsToExport.CustomLists;
+            chkEpisodeComments.Checked = ItemsToExport.CommentedEpisodes;
+            chkSeasonComments.Checked = ItemsToExport.CommentedSeasons;
+            chkShowComments.Checked = ItemsToExport.CommentedShows;
+            chkMovieComments.Checked = ItemsToExport.CommentedMovies;
+            chkListComments.Checked = ItemsToExport.CommentedLists;
 
             txtExportPath.Text = ExportPath;
             #endregion
@@ -139,7 +144,32 @@ namespace TraktRater.UI
         {
             ItemsToExport.CustomLists = chkCustomLists.Checked;
         }
+
+        private void chkEpisodeComments_Click(object sender, EventArgs e)
+        {
+            ItemsToExport.CommentedEpisodes = chkEpisodeComments.Checked;
+        }
+
+        private void chkSeasonComments_Click(object sender, EventArgs e)
+        {
+            ItemsToExport.CommentedSeasons = chkSeasonComments.Checked;
+        }
+
+        private void chkShowComments_Click(object sender, EventArgs e)
+        {
+            ItemsToExport.CommentedShows = chkShowComments.Checked;
+        }
+
+        private void chkMovieComments_Click(object sender, EventArgs e)
+        {
+            ItemsToExport.CommentedMovies = chkMovieComments.Checked;
+        }
+
+        private void chkListComments_Click(object sender, EventArgs e)
+        {
+            ItemsToExport.CommentedLists = chkListComments.Checked;
+        }
         #endregion
-        
+
     }
 }

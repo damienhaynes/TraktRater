@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
 
     using global::TraktRater.Extensions;
     using global::TraktRater.TraktAPI.DataStructures;
@@ -635,6 +636,41 @@
             return response.FromJSONArray<TraktSyncPausedEpisode>();
         }
 
+        #endregion
+
+        #region Comments
+        /// <summary>
+        /// Get comments for user sorted by most recent
+        /// </summary>
+        /// <param name="username">Username of person that made comment</param>
+        /// <param name="commentType">all, reviews, shouts</param>
+        /// <param name="type"> all, movies, shows, seasons, episodes, lists</param>
+        /// <param name="extendedInfoParams">Extended Info: min, full, images (comma separated)</param>
+        public static TraktComments GetUsersComments(string username = "me", string commentType = "all", string type = "all", string extendedInfoParams = "min", int page = 1, int maxItems = 50)
+        {
+            var headers = new WebHeaderCollection();
+
+            var response = TraktWeb.GetFromTrakt(string.Format(TraktURIs.UserComments, username, commentType, type, extendedInfoParams, page, maxItems), out headers);
+            if (response == null)
+                return null;
+
+            try
+            {
+                return new TraktComments
+                {
+                    CurrentPage = page,
+                    TotalItemsPerPage = maxItems,
+                    TotalPages = int.Parse(headers["X-Pagination-Page-Count"]),
+                    TotalItems = int.Parse(headers["X-Pagination-Item-Count"]),
+                    Comments = response.FromJSONArray<TraktCommentItem>()
+                };
+            }
+            catch
+            {
+                // most likely bad header response
+                return null;
+            }
+        }
         #endregion
 
         #endregion

@@ -43,6 +43,7 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -113,6 +114,9 @@
     <Compile Include="Sites\TVDb.cs" />
     <Compile Include="Sites\IRateSite.cs" />
     <Compile Include="Sites\API\TVDb\TVDbURIs.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktComment.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktCommentItem.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktComments.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisode.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeEx.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeId.cs" />
@@ -143,6 +147,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktOAuthError.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktOAuthLogin.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktOAuthToken.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktPagination.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktPerson.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktPersonId.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeason.cs" />

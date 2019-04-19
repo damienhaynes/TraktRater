@@ -52,6 +52,11 @@
             this.txtExportPath = new System.Windows.Forms.TextBox();
             this.fbdExportPath = new System.Windows.Forms.FolderBrowserDialog();
             this.chkCustomLists = new System.Windows.Forms.CheckBox();
+            this.chkEpisodeComments = new System.Windows.Forms.CheckBox();
+            this.chkSeasonComments = new System.Windows.Forms.CheckBox();
+            this.chkShowComments = new System.Windows.Forms.CheckBox();
+            this.chkMovieComments = new System.Windows.Forms.CheckBox();
+            this.chkListComments = new System.Windows.Forms.CheckBox();
             this.grbExport.SuspendLayout();
             this.grbPath.SuspendLayout();
             this.SuspendLayout();
@@ -78,6 +83,11 @@
             // 
             // grbExport
             // 
+            this.grbExport.Controls.Add(this.chkListComments);
+            this.grbExport.Controls.Add(this.chkMovieComments);
+            this.grbExport.Controls.Add(this.chkShowComments);
+            this.grbExport.Controls.Add(this.chkSeasonComments);
+            this.grbExport.Controls.Add(this.chkEpisodeComments);
             this.grbExport.Controls.Add(this.chkCustomLists);
             this.grbExport.Controls.Add(this.chkMoviePausedStates);
             this.grbExport.Controls.Add(this.chkEpisodePausedStates);
@@ -309,6 +319,61 @@
             this.chkCustomLists.UseVisualStyleBackColor = true;
             this.chkCustomLists.Click += new System.EventHandler(this.chkCustomLists_Click);
             // 
+            // chkEpisodeComments
+            // 
+            this.chkEpisodeComments.AutoSize = true;
+            this.chkEpisodeComments.Location = new System.Drawing.Point(342, 219);
+            this.chkEpisodeComments.Name = "chkEpisodeComments";
+            this.chkEpisodeComments.Size = new System.Drawing.Size(174, 24);
+            this.chkEpisodeComments.TabIndex = 16;
+            this.chkEpisodeComments.Text = "Episode Comments";
+            this.chkEpisodeComments.UseVisualStyleBackColor = true;
+            this.chkEpisodeComments.Click += new System.EventHandler(this.chkEpisodeComments_Click);
+            // 
+            // chkSeasonComments
+            // 
+            this.chkSeasonComments.AutoSize = true;
+            this.chkSeasonComments.Location = new System.Drawing.Point(342, 258);
+            this.chkSeasonComments.Name = "chkSeasonComments";
+            this.chkSeasonComments.Size = new System.Drawing.Size(171, 24);
+            this.chkSeasonComments.TabIndex = 17;
+            this.chkSeasonComments.Text = "Season Comments";
+            this.chkSeasonComments.UseVisualStyleBackColor = true;
+            this.chkSeasonComments.Click += new System.EventHandler(this.chkSeasonComments_Click);
+            // 
+            // chkShowComments
+            // 
+            this.chkShowComments.AutoSize = true;
+            this.chkShowComments.Location = new System.Drawing.Point(342, 296);
+            this.chkShowComments.Name = "chkShowComments";
+            this.chkShowComments.Size = new System.Drawing.Size(156, 24);
+            this.chkShowComments.TabIndex = 18;
+            this.chkShowComments.Text = "Show Comments";
+            this.chkShowComments.UseVisualStyleBackColor = true;
+            this.chkShowComments.Click += new System.EventHandler(this.chkShowComments_Click);
+            // 
+            // chkMovieComments
+            // 
+            this.chkMovieComments.AutoSize = true;
+            this.chkMovieComments.Location = new System.Drawing.Point(342, 335);
+            this.chkMovieComments.Name = "chkMovieComments";
+            this.chkMovieComments.Size = new System.Drawing.Size(157, 24);
+            this.chkMovieComments.TabIndex = 19;
+            this.chkMovieComments.Text = "Movie Comments";
+            this.chkMovieComments.UseVisualStyleBackColor = true;
+            this.chkMovieComments.Click += new System.EventHandler(this.chkMovieComments_Click);
+            // 
+            // chkListComments
+            // 
+            this.chkListComments.AutoSize = true;
+            this.chkListComments.Location = new System.Drawing.Point(342, 372);
+            this.chkListComments.Name = "chkListComments";
+            this.chkListComments.Size = new System.Drawing.Size(141, 24);
+            this.chkListComments.TabIndex = 20;
+            this.chkListComments.Text = "List Comments";
+            this.chkListComments.UseVisualStyleBackColor = true;
+            this.chkListComments.Click += new System.EventHandler(this.chkListComments_Click);
+            // 
             // ExportDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -356,5 +421,10 @@
         private System.Windows.Forms.TextBox txtExportPath;
         private System.Windows.Forms.FolderBrowserDialog fbdExportPath;
         private System.Windows.Forms.CheckBox chkCustomLists;
+        private System.Windows.Forms.CheckBox chkListComments;
+        private System.Windows.Forms.CheckBox chkMovieComments;
+        private System.Windows.Forms.CheckBox chkShowComments;
+        private System.Windows.Forms.CheckBox chkSeasonComments;
+        private System.Windows.Forms.CheckBox chkEpisodeComments;
     }
 }

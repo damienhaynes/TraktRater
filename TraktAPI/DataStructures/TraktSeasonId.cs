@@ -10,5 +10,8 @@
 
         [DataMember(Name = "tvdb")]
         public int? TvdbId { get; set; }
+
+        [DataMember(Name = "trakt")]
+        public int? Trakt { get; set; }
     }
 }

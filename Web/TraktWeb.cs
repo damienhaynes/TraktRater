@@ -134,6 +134,14 @@
 
         public static string GetFromTrakt(string address, string method = "GET")
         {
+            WebHeaderCollection headerCollection;
+            return GetFromTrakt(address, out headerCollection, method);
+        }
+
+        public static string GetFromTrakt(string address, out WebHeaderCollection headerCollection, string method = "GET")
+        {
+            headerCollection = new WebHeaderCollection();
+
             OnDataSend?.Invoke(address, null);
 
             var request = WebRequest.Create(address) as HttpWebRequest;
@@ -157,6 +165,8 @@
                 Stream stream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(stream);
                 string strResponse = reader.ReadToEnd();
+
+                headerCollection = response.Headers;
 
                 OnDataReceived?.Invoke(string.IsNullOrEmpty(strResponse) ? response.StatusCode.ToString() : strResponse);
 

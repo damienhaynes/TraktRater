@@ -854,6 +854,26 @@
                 {
                     Export.CreateCustomListsCsv();
                 }
+                if (AppSettings.CsvExportItems.CommentedEpisodes)
+                {
+                    Export.CreateCommentedEpisodesCsv();
+                }
+                if (AppSettings.CsvExportItems.CommentedSeasons)
+                {
+                    Export.CreateCommentedSeasonsCsv();
+                }
+                if (AppSettings.CsvExportItems.CommentedShows)
+                {
+                    Export.CreateCommentedShowsCsv();
+                }
+                if (AppSettings.CsvExportItems.CommentedMovies)
+                {
+                    Export.CreateCommentedMoviesCsv();
+                }
+                if (AppSettings.CsvExportItems.CommentedLists)
+                {
+                    Export.CreateCommentedListsCsv();
+                }
 
                 // finished
                 SetControlState(true);

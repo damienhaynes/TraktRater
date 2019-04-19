@@ -17,5 +17,10 @@
         public bool PausedEpisodes { get; set; }
         public bool PausedMovies { get; set; }
         public bool CustomLists { get; set; }
+        public bool CommentedEpisodes { get; set; }
+        public bool CommentedSeasons { get; set; }
+        public bool CommentedShows { get; set; }
+        public bool CommentedMovies { get; set; }
+        public bool CommentedLists { get; set; }
     }
 }

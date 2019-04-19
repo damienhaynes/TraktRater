@@ -47,5 +47,8 @@
         public const string SyncPausedMovies = "https://api.trakt.tv/sync/playback/movies";
         public const string SyncPausedEpisodes = "https://api.trakt.tv/sync/playback/episodes";
         public const string SyncPausedRemove = "https://api.trakt.tv/sync/playback/{0}";
+
+        public const string UserComments = "https://api.trakt.tv/users/{0}/comments/{1}/{2}?extended={3}&page={4}&limit={5}&include_replies=false";
+
     }
 }

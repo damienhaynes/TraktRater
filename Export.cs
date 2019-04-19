@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Linq;
 using TraktRater.UI;
 using TraktRater.Settings;
 
@@ -635,6 +636,306 @@ namespace TraktRater
                     Thread.Sleep(2000);
                 }
 
+            }
+        }
+
+        public static void CreateCommentedEpisodesCsv()
+        {
+            if (Cancel) return;
+
+            int i = 0;
+            UIUtils.UpdateStatus($"Getting commented episodes from trakt.tv, Page: {++i}");
+            var firstPage = TraktAPI.TraktAPI.GetUsersComments(type: "episodes");
+            if (firstPage != null)
+            {
+                int pageCount = firstPage.TotalPages;
+
+                // store the results from the first page request
+                var pagedItems = firstPage.Comments;
+                
+                for (i = 2; i <= firstPage.TotalPages; i++)
+                {
+                    UIUtils.UpdateStatus($"Getting commented episodes from trakt.tv, Page: {i}/{pageCount}");
+                    var nextPage = TraktAPI.TraktAPI.GetUsersComments(type: "episodes", page: i);
+                    if (nextPage == null) break;
+
+                    // add the next page of items to the collection
+                    pagedItems = pagedItems.Union(nextPage.Comments);
+                }
+                
+                var episodesCommented = new List<object>();
+                foreach (var item in pagedItems)
+                {
+                    episodesCommented.Add(new
+                    {
+                        Id = item.Comment.Id,
+                        ParentId = item.Comment.ParentId,
+                        Comment = item.Comment.Text,
+                        IsSpoiler = item.Comment.IsSpoiler,
+                        IsReview = item.Comment.IsReview,
+                        Replies = item.Comment.Replies,
+                        Likes = item.Comment.Likes,
+                        UserRating = item.Comment.UserRating,
+                        CreatedAt = item.Comment.CreatedAt,
+                        UpdatedAt = item.Comment.UpdatedAt,
+                        ShowTraktId = item.Show.Ids.Trakt,
+                        ShowTvdbId = item.Show.Ids.TvdbId,
+                        ShowImdbId = item.Show.Ids.ImdbId,
+                        ShowTmdbId = item.Show.Ids.TmdbId,
+                        ShowSlug = item.Show.Ids.Slug,
+                        ShowTitle = item.Show.Title,
+                        ShowYear = item.Show.Year,
+                        EpisodeImdbId = item.Episode.Ids.ImdbId,
+                        EpisodeTmdbId = item.Episode.Ids.TmdbId,
+                        EpisodeTraktId = item.Episode.Ids.Trakt,
+                        EpisodeTvdbId = item.Episode.Ids.TvdbId,
+                        Episode = item.Episode.Number,
+                        Season = item.Episode.Season
+                    });
+                }
+
+                UIUtils.UpdateStatus("Creating commented episodes csv file");
+                WriteToCsv(Path.Combine(AppSettings.CsvExportPath, "commented_episodes.csv"), episodesCommented);
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of commented episodes from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
+
+        public static void CreateCommentedSeasonsCsv()
+        {
+            if (Cancel) return;
+
+            int i = 0;
+            UIUtils.UpdateStatus($"Getting commented seasons from trakt.tv, Page: {++i}");
+            var firstPage = TraktAPI.TraktAPI.GetUsersComments(type: "seasons");
+            if (firstPage != null)
+            {
+                int pageCount = firstPage.TotalPages;
+
+                // store the results from the first page request
+                var pagedItems = firstPage.Comments;
+
+                for (i = 2; i <= firstPage.TotalPages; i++)
+                {
+                    UIUtils.UpdateStatus($"Getting commented seasons from trakt.tv, Page: {i}/{pageCount}");
+                    var nextPage = TraktAPI.TraktAPI.GetUsersComments(type: "seasons", page: i);
+                    if (nextPage == null) break;
+
+                    // add the next page of items to the collection
+                    pagedItems = pagedItems.Union(nextPage.Comments);
+                }
+
+                var seasonsCommented = new List<object>();
+                foreach (var item in pagedItems)
+                {
+                    seasonsCommented.Add(new
+                    {
+                        Id = item.Comment.Id,
+                        ParentId = item.Comment.ParentId,
+                        Comment = item.Comment.Text,
+                        IsSpoiler = item.Comment.IsSpoiler,
+                        IsReview = item.Comment.IsReview,
+                        Replies = item.Comment.Replies,
+                        Likes = item.Comment.Likes,
+                        UserRating = item.Comment.UserRating,
+                        CreatedAt = item.Comment.CreatedAt,
+                        UpdatedAt = item.Comment.UpdatedAt,
+                        ShowTraktId = item.Show.Ids.Trakt,
+                        ShowTvdbId = item.Show.Ids.TvdbId,
+                        ShowImdbId = item.Show.Ids.ImdbId,
+                        ShowTmdbId = item.Show.Ids.TmdbId,
+                        ShowSlug = item.Show.Ids.Slug,
+                        ShowTitle = item.Show.Title,
+                        ShowYear = item.Show.Year,
+                        SeasonTraktId = item.Season.Ids.Trakt,           
+                        SeasonTmdbId = item.Season.Ids.TmdbId,
+                        SeasonsTvdbId = item.Season.Ids.TvdbId,
+                        Season = item.Season.Number
+                    });
+                }
+
+                UIUtils.UpdateStatus("Creating commented seasons csv file");
+                WriteToCsv(Path.Combine(AppSettings.CsvExportPath, "commented_seasons.csv"), seasonsCommented);
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of commented seasons from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
+
+        public static void CreateCommentedShowsCsv()
+        {
+            if (Cancel) return;
+
+            int i = 0;
+            UIUtils.UpdateStatus($"Getting commented shows from trakt.tv, Page: {++i}");
+            var firstPage = TraktAPI.TraktAPI.GetUsersComments(type: "shows");
+            if (firstPage != null)
+            {
+                int pageCount = firstPage.TotalPages;
+
+                // store the results from the first page request
+                var pagedItems = firstPage.Comments;
+
+                for (i = 2; i <= firstPage.TotalPages; i++)
+                {
+                    UIUtils.UpdateStatus($"Getting commented shows from trakt.tv, Page: {i}/{pageCount}");
+                    var nextPage = TraktAPI.TraktAPI.GetUsersComments(type: "shows", page: i);
+                    if (nextPage == null) break;
+
+                    // add the next page of items to the collection
+                    pagedItems = pagedItems.Union(nextPage.Comments);
+                }
+
+                var showsCommented = new List<object>();
+                foreach (var item in pagedItems)
+                {
+                    showsCommented.Add(new
+                    {
+                        Id = item.Comment.Id,
+                        ParentId = item.Comment.ParentId,
+                        Comment = item.Comment.Text,
+                        IsSpoiler = item.Comment.IsSpoiler,
+                        IsReview = item.Comment.IsReview,
+                        Replies = item.Comment.Replies,
+                        Likes = item.Comment.Likes,
+                        UserRating = item.Comment.UserRating,
+                        CreatedAt = item.Comment.CreatedAt,
+                        UpdatedAt = item.Comment.UpdatedAt,
+                        ShowTraktId = item.Show.Ids.Trakt,
+                        ShowTvdbId = item.Show.Ids.TvdbId,
+                        ShowImdbId = item.Show.Ids.ImdbId,
+                        ShowTmdbId = item.Show.Ids.TmdbId,
+                        ShowSlug = item.Show.Ids.Slug,
+                        ShowTitle = item.Show.Title,
+                        ShowYear = item.Show.Year
+                    });
+                }
+
+                UIUtils.UpdateStatus("Creating commented shows csv file");
+                WriteToCsv(Path.Combine(AppSettings.CsvExportPath, "commented_shows.csv"), showsCommented);
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of commented shows from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
+
+        public static void CreateCommentedMoviesCsv()
+        {
+            if (Cancel) return;
+
+            int i = 0;
+            UIUtils.UpdateStatus($"Getting commented movies from trakt.tv, Page: {++i}");
+            var firstPage = TraktAPI.TraktAPI.GetUsersComments(type: "movies");
+            if (firstPage != null)
+            {
+                int pageCount = firstPage.TotalPages;
+
+                // store the results from the first page request
+                var pagedItems = firstPage.Comments;
+
+                for (i = 2; i <= firstPage.TotalPages; i++)
+                {
+                    UIUtils.UpdateStatus($"Getting commented movies from trakt.tv, Page: {i}/{pageCount}");
+                    var nextPage = TraktAPI.TraktAPI.GetUsersComments(type: "movies", page: i);
+                    if (nextPage == null) break;
+
+                    // add the next page of items to the collection
+                    pagedItems = pagedItems.Union(nextPage.Comments);
+                }
+
+                var moviesCommented = new List<object>();
+                foreach (var item in pagedItems)
+                {
+                    moviesCommented.Add(new
+                    {
+                        Id = item.Comment.Id,
+                        ParentId = item.Comment.ParentId,
+                        Comment = item.Comment.Text,
+                        IsSpoiler = item.Comment.IsSpoiler,
+                        IsReview = item.Comment.IsReview,
+                        Replies = item.Comment.Replies,
+                        Likes = item.Comment.Likes,
+                        UserRating = item.Comment.UserRating,
+                        CreatedAt = item.Comment.CreatedAt,
+                        UpdatedAt = item.Comment.UpdatedAt,
+                        MovieTraktId = item.Movie.Ids.Trakt,
+                        MovieImdbId = item.Movie.Ids.ImdbId,
+                        MovieTmdbId = item.Movie.Ids.TmdbId,
+                        MovieSlug = item.Movie.Ids.Slug,
+                        MovieTitle = item.Movie.Title,
+                        MovieYear = item.Movie.Year
+                    });
+                }
+
+                UIUtils.UpdateStatus("Creating commented movies csv file");
+                WriteToCsv(Path.Combine(AppSettings.CsvExportPath, "commented_movies.csv"), moviesCommented);
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of commented movies from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
+
+        public static void CreateCommentedListsCsv()
+        {
+            if (Cancel) return;
+
+            int i = 0;
+            UIUtils.UpdateStatus($"Getting commented lists from trakt.tv, Page: {++i}");
+            var firstPage = TraktAPI.TraktAPI.GetUsersComments(type: "lists");
+            if (firstPage != null)
+            {
+                int pageCount = firstPage.TotalPages;
+
+                // store the results from the first page request
+                var pagedItems = firstPage.Comments;
+
+                for (i = 2; i <= firstPage.TotalPages; i++)
+                {
+                    UIUtils.UpdateStatus($"Getting commented lists from trakt.tv, Page: {i}/{pageCount}");
+                    var nextPage = TraktAPI.TraktAPI.GetUsersComments(type: "lists", page: i);
+                    if (nextPage == null) break;
+
+                    // add the next page of items to the collection
+                    pagedItems = pagedItems.Union(nextPage.Comments);
+                }
+
+                var listsCommented = new List<object>();
+                foreach (var item in pagedItems)
+                {
+                    listsCommented.Add(new
+                    {
+                        Id = item.Comment.Id,
+                        ParentId = item.Comment.ParentId,
+                        Comment = item.Comment.Text,
+                        IsSpoiler = item.Comment.IsSpoiler,
+                        IsReview = item.Comment.IsReview,
+                        Replies = item.Comment.Replies,
+                        Likes = item.Comment.Likes,
+                        UserRating = item.Comment.UserRating,
+                        CreatedAt = item.Comment.CreatedAt,
+                        UpdatedAt = item.Comment.UpdatedAt,
+                        ListId = item.List.Ids.Trakt,
+                        ListSlug = item.List.Ids.Slug,
+                        ListName = item.List.Name
+                    });
+                }
+
+                UIUtils.UpdateStatus("Creating commented lists csv file");
+                WriteToCsv(Path.Combine(AppSettings.CsvExportPath, "commented_lists.csv"), listsCommented);
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of commented lists from trakt.tv", true);
+                Thread.Sleep(2000);
             }
         }
 
