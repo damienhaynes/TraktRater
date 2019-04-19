@@ -5,6 +5,9 @@
     [DataContract]
     public class TraktListDetail : TraktList
     {
+        [DataMember(Name = "created_at")]
+        public string CreatedAt { get; set; }
+
         [DataMember(Name = "updated_at")]
         public string UpdatedAt { get; set; }
 

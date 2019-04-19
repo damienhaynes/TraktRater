@@ -34,6 +34,7 @@ namespace TraktRater.UI
             chkEpisodeCollection.Checked = ItemsToExport.CollectedEpisodes;
             chkMovieWatchedHistory.Checked = ItemsToExport.WatchedHistoryMovies;
             chkEpisodeWatchedHistory.Checked = ItemsToExport.WatchedHistoryEpisodes;
+            chkCustomLists.Checked = ItemsToExport.CustomLists;
 
             txtExportPath.Text = ExportPath;
             #endregion
@@ -133,6 +134,12 @@ namespace TraktRater.UI
         {
             ItemsToExport.PausedMovies = chkMoviePausedStates.Checked;
         }
+
+        private void chkCustomLists_Click(object sender, EventArgs e)
+        {
+            ItemsToExport.CustomLists = chkCustomLists.Checked;
+        }
         #endregion
+        
     }
 }

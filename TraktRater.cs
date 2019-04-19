@@ -846,6 +846,10 @@
                 {
                     Export.CreatePausedMoviesCsv();
                 }
+                if (AppSettings.CsvExportItems.CustomLists)
+                {
+                    Export.CreateCustomListsCsv();
+                }
 
                 // finished
                 SetControlState(true);

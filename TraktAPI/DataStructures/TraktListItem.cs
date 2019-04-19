@@ -5,6 +5,12 @@
     [DataContract]
     public class TraktListItem
     {
+        [DataMember(Name = "rank")]
+        public int Rank { get; set; }
+
+        [DataMember(Name = "id")]
+        public int Id { get; set; }
+
         [DataMember(Name = "listed_at")]
         public string ListedAt { get; set; }
 
@@ -18,10 +24,10 @@
         public TraktShow Show { get; set; }
 
         [DataMember(Name = "season")]
-        public TraktSeason Season { get; set; }
+        public TraktSeasonEx Season { get; set; }
 
         [DataMember(Name = "episode")]
-        public TraktEpisode Episode { get; set; }
+        public TraktEpisodeSummary Episode { get; set; }
 
         [DataMember(Name = "person")]
         public TraktPerson Person { get; set; }

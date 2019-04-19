@@ -51,13 +51,14 @@
             this.btnBrowsePath = new System.Windows.Forms.Button();
             this.txtExportPath = new System.Windows.Forms.TextBox();
             this.fbdExportPath = new System.Windows.Forms.FolderBrowserDialog();
+            this.chkCustomLists = new System.Windows.Forms.CheckBox();
             this.grbExport.SuspendLayout();
             this.grbPath.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(462, 513);
+            this.btnExport.Location = new System.Drawing.Point(461, 643);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(176, 36);
             this.btnExport.TabIndex = 1;
@@ -67,7 +68,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(280, 513);
+            this.btnCancel.Location = new System.Drawing.Point(279, 643);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(176, 36);
             this.btnCancel.TabIndex = 2;
@@ -77,6 +78,7 @@
             // 
             // grbExport
             // 
+            this.grbExport.Controls.Add(this.chkCustomLists);
             this.grbExport.Controls.Add(this.chkMoviePausedStates);
             this.grbExport.Controls.Add(this.chkEpisodePausedStates);
             this.grbExport.Controls.Add(this.chkMovieWatchlist);
@@ -96,14 +98,14 @@
             this.grbExport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grbExport.Name = "grbExport";
             this.grbExport.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grbExport.Size = new System.Drawing.Size(628, 376);
+            this.grbExport.Size = new System.Drawing.Size(628, 507);
             this.grbExport.TabIndex = 3;
             this.grbExport.TabStop = false;
             // 
             // chkMoviePausedStates
             // 
             this.chkMoviePausedStates.AutoSize = true;
-            this.chkMoviePausedStates.Location = new System.Drawing.Point(340, 258);
+            this.chkMoviePausedStates.Location = new System.Drawing.Point(342, 143);
             this.chkMoviePausedStates.Name = "chkMoviePausedStates";
             this.chkMoviePausedStates.Size = new System.Drawing.Size(185, 24);
             this.chkMoviePausedStates.TabIndex = 14;
@@ -114,7 +116,7 @@
             // chkEpisodePausedStates
             // 
             this.chkEpisodePausedStates.AutoSize = true;
-            this.chkEpisodePausedStates.Location = new System.Drawing.Point(340, 219);
+            this.chkEpisodePausedStates.Location = new System.Drawing.Point(342, 104);
             this.chkEpisodePausedStates.Name = "chkEpisodePausedStates";
             this.chkEpisodePausedStates.Size = new System.Drawing.Size(202, 24);
             this.chkEpisodePausedStates.TabIndex = 13;
@@ -168,7 +170,7 @@
             // 
             // chkMovieRatings
             // 
-            this.chkMovieRatings.Location = new System.Drawing.Point(340, 180);
+            this.chkMovieRatings.Location = new System.Drawing.Point(342, 65);
             this.chkMovieRatings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkMovieRatings.Name = "chkMovieRatings";
             this.chkMovieRatings.Size = new System.Drawing.Size(219, 26);
@@ -179,7 +181,7 @@
             // 
             // chkSeasonRatings
             // 
-            this.chkSeasonRatings.Location = new System.Drawing.Point(340, 142);
+            this.chkSeasonRatings.Location = new System.Drawing.Point(13, 447);
             this.chkSeasonRatings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkSeasonRatings.Name = "chkSeasonRatings";
             this.chkSeasonRatings.Size = new System.Drawing.Size(219, 26);
@@ -190,7 +192,7 @@
             // 
             // chkShowRatings
             // 
-            this.chkShowRatings.Location = new System.Drawing.Point(340, 103);
+            this.chkShowRatings.Location = new System.Drawing.Point(13, 408);
             this.chkShowRatings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkShowRatings.Name = "chkShowRatings";
             this.chkShowRatings.Size = new System.Drawing.Size(219, 26);
@@ -201,7 +203,7 @@
             // 
             // chkEpisodeRatings
             // 
-            this.chkEpisodeRatings.Location = new System.Drawing.Point(340, 65);
+            this.chkEpisodeRatings.Location = new System.Drawing.Point(13, 370);
             this.chkEpisodeRatings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkEpisodeRatings.Name = "chkEpisodeRatings";
             this.chkEpisodeRatings.Size = new System.Drawing.Size(219, 26);
@@ -267,7 +269,7 @@
             // 
             this.grbPath.Controls.Add(this.btnBrowsePath);
             this.grbPath.Controls.Add(this.txtExportPath);
-            this.grbPath.Location = new System.Drawing.Point(13, 399);
+            this.grbPath.Location = new System.Drawing.Point(12, 529);
             this.grbPath.Name = "grbPath";
             this.grbPath.Size = new System.Drawing.Size(625, 92);
             this.grbPath.TabIndex = 4;
@@ -296,11 +298,22 @@
             // 
             this.fbdExportPath.Description = "Select folder to create CSV files in:";
             // 
+            // chkCustomLists
+            // 
+            this.chkCustomLists.AutoSize = true;
+            this.chkCustomLists.Location = new System.Drawing.Point(342, 181);
+            this.chkCustomLists.Name = "chkCustomLists";
+            this.chkCustomLists.Size = new System.Drawing.Size(127, 24);
+            this.chkCustomLists.TabIndex = 15;
+            this.chkCustomLists.Text = "Custom Lists";
+            this.chkCustomLists.UseVisualStyleBackColor = true;
+            this.chkCustomLists.Click += new System.EventHandler(this.chkCustomLists_Click);
+            // 
             // ExportDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(650, 563);
+            this.ClientSize = new System.Drawing.Size(652, 693);
             this.Controls.Add(this.grbPath);
             this.Controls.Add(this.grbExport);
             this.Controls.Add(this.btnCancel);
@@ -342,5 +355,6 @@
         private System.Windows.Forms.Button btnBrowsePath;
         private System.Windows.Forms.TextBox txtExportPath;
         private System.Windows.Forms.FolderBrowserDialog fbdExportPath;
+        private System.Windows.Forms.CheckBox chkCustomLists;
     }
 }

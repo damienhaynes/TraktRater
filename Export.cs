@@ -536,6 +536,108 @@ namespace TraktRater
             }
         }
 
+        public static void CreateCustomListsCsv()
+        {
+            if (Cancel) return;
+
+            // First get the users custom lists
+
+            UIUtils.UpdateStatus("Getting custom lists from trakt.tv");
+            var customLists = TraktAPI.TraktAPI.GetCustomLists();
+            if (customLists != null)
+            {
+                var lists = new List<object>();
+                foreach (var item in customLists)
+                {
+                    lists.Add(new
+                    {
+                        TraktId = item.Ids.Trakt,
+                        Slug = item.Ids.Slug,
+                        Name = item.Name,
+                        Description = item.Description,
+                        Privacy = item.Privacy,
+                        DisplayNumbers = item.DisplayNumbers,
+                        AllowComments = item.AllowComments,
+                        SortBy = item.SortBy,
+                        SortHow = item.SortHow,
+                        ItemCount = item.ItemCount,
+                        CommentCount = item.Comments,
+                        Likes = item.Likes,
+                        CreatedAt = item.CreatedAt,
+                        UpdatedAt = item.UpdatedAt
+                    });
+                }
+
+                UIUtils.UpdateStatus("Creating custom lists csv file");
+                WriteToCsv(Path.Combine(AppSettings.CsvExportPath, "custom_lists.csv"), lists);
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current custom lists from trakt.tv", true);
+                Thread.Sleep(2000);
+                return;
+            }
+
+            // Next get the items for each custom list
+
+            foreach(var list in customLists)
+            {
+                UIUtils.UpdateStatus($"Getting custom list items for '{list.Name}' from trakt.tv");
+                var customListItems = TraktAPI.TraktAPI.GetCustomListItems(list.Ids.Trakt.ToString());
+                if (customListItems != null)
+                {
+                    var listItems = new List<object>();
+                    foreach (var item in customListItems)
+                    {
+                        // important to check for null as an item may be of a different type
+                        // NB: the season object does not return for episodes, so get season number from episode object
+                        listItems.Add(new
+                        {
+                            Rank = item.Rank,
+                            Id = item.Id,
+                            Type = item.Type,
+                            ListedAt = item.ListedAt,
+                            MovieTitle = item.Movie?.Title,
+                            MovieYear = item.Movie?.Year,
+                            MovieTraktId = item.Movie?.Ids.Trakt,
+                            MovieImdbId = item.Movie?.Ids.ImdbId,
+                            MovieTmdbId = item.Movie?.Ids.TmdbId,
+                            MovieSlug = item.Movie?.Ids.Slug,
+                            ShowTitle = item.Show?.Title,
+                            ShowYear = item.Show?.Year,
+                            ShowTraktId = item.Show?.Ids.Trakt,
+                            ShowTvdbId = item.Show?.Ids.TvdbId,
+                            ShowTmdbId = item.Show?.Ids.TmdbId,
+                            ShowSlug = item.Show?.Ids.Slug,
+                            SeasonTvdbId = item.Season?.Ids.TvdbId,
+                            SeasonTmdbId = item.Season?.Ids.TmdbId,
+                            SeasonNumber = item.Season?.Number.ToString() ?? item.Episode?.Season.ToString(),
+                            EpisodeNumber = item.Episode?.Number,
+                            EpisodeTraktId = item.Episode?.Ids.Trakt,
+                            EpisodeTvdbId = item.Episode?.Ids.TvdbId,
+                            EpisodeTmdbId = item.Episode?.Ids.TmdbId,
+                            EpisodeImdbId = item.Episode?.Ids.ImdbId,
+                            PersonName = item.Person?.Name,
+                            PersonTraktId = item.Person?.Ids.Trakt,
+                            PersonImdbId = item.Person?.Ids.ImdbId,
+                            PersonTmdbId = item.Person?.Ids.TmdbId,
+                            PersonSlug = item.Person?.Ids.Slug
+                        });                        
+                    }
+
+                    UIUtils.UpdateStatus($"Creating custom list '{list.Name}' csv file");
+                    // using the slug for the filename should be file system friendly
+                    WriteToCsv(Path.Combine(AppSettings.CsvExportPath, $"custom_list_{list.Ids.Slug}.csv"), listItems);
+                }
+                else
+                {
+                    UIUtils.UpdateStatus($"Failed to get current custom list items for '{list.Name}' from trakt.tv", true);
+                    Thread.Sleep(2000);
+                }
+
+            }
+        }
+
         private static void WriteToCsv(string filename, List<object> records)
         {
             string directory = Path.GetDirectoryName(filename);

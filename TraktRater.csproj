@@ -146,6 +146,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktPerson.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktPersonId.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeason.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktSeasonEx.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeasonId.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeasonSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeasonWatchlist.cs" />
