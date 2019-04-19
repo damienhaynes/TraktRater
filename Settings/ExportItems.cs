@@ -22,5 +22,7 @@
         public bool CommentedShows { get; set; }
         public bool CommentedMovies { get; set; }
         public bool CommentedLists { get; set; }
+        public bool LikedLists { get; set; }
+        public bool LikedComments { get; set; }
     }
 }

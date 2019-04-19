@@ -57,6 +57,8 @@
             this.chkShowComments = new System.Windows.Forms.CheckBox();
             this.chkMovieComments = new System.Windows.Forms.CheckBox();
             this.chkListComments = new System.Windows.Forms.CheckBox();
+            this.chkLikedComments = new System.Windows.Forms.CheckBox();
+            this.chkLikedLists = new System.Windows.Forms.CheckBox();
             this.grbExport.SuspendLayout();
             this.grbPath.SuspendLayout();
             this.SuspendLayout();
@@ -83,6 +85,8 @@
             // 
             // grbExport
             // 
+            this.grbExport.Controls.Add(this.chkLikedLists);
+            this.grbExport.Controls.Add(this.chkLikedComments);
             this.grbExport.Controls.Add(this.chkListComments);
             this.grbExport.Controls.Add(this.chkMovieComments);
             this.grbExport.Controls.Add(this.chkShowComments);
@@ -374,6 +378,28 @@
             this.chkListComments.UseVisualStyleBackColor = true;
             this.chkListComments.Click += new System.EventHandler(this.chkListComments_Click);
             // 
+            // chkLikedComments
+            // 
+            this.chkLikedComments.AutoSize = true;
+            this.chkLikedComments.Location = new System.Drawing.Point(342, 409);
+            this.chkLikedComments.Name = "chkLikedComments";
+            this.chkLikedComments.Size = new System.Drawing.Size(145, 24);
+            this.chkLikedComments.TabIndex = 21;
+            this.chkLikedComments.Text = "Comment Likes";
+            this.chkLikedComments.UseVisualStyleBackColor = true;
+            this.chkLikedComments.Click += new System.EventHandler(this.chkLikedComments_Click);
+            // 
+            // chkLikedLists
+            // 
+            this.chkLikedLists.AutoSize = true;
+            this.chkLikedLists.Location = new System.Drawing.Point(342, 449);
+            this.chkLikedLists.Name = "chkLikedLists";
+            this.chkLikedLists.Size = new System.Drawing.Size(101, 24);
+            this.chkLikedLists.TabIndex = 22;
+            this.chkLikedLists.Text = "List Likes";
+            this.chkLikedLists.UseVisualStyleBackColor = true;
+            this.chkLikedLists.Click += new System.EventHandler(this.chkLikedLists_Click);
+            // 
             // ExportDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -426,5 +452,7 @@
         private System.Windows.Forms.CheckBox chkShowComments;
         private System.Windows.Forms.CheckBox chkSeasonComments;
         private System.Windows.Forms.CheckBox chkEpisodeComments;
+        private System.Windows.Forms.CheckBox chkLikedLists;
+        private System.Windows.Forms.CheckBox chkLikedComments;
     }
 }

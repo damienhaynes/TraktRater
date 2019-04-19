@@ -673,6 +673,41 @@
         }
         #endregion
 
+        #region Likes
+        /// <summary>
+        /// Gets the current users liked items (comments and/or lists)
+        /// </summary>
+        /// <param name="type">The type of liked item: all (default), lists or comments</param>
+        /// <param name="extendedInfoParams">Extended Info: min, full, images (comma separated)</param>
+        /// <param name="page">Page Number</param>
+        /// <param name="maxItems">Maximum number of items to request per page (this should be consistent per page request)</param>
+        public static TraktLikes GetLikedItems(string type = "all", string extendedInfoParams = "min", int page = 1, int maxItems = 10)
+        {
+            var headers = new WebHeaderCollection();
+
+            var response = TraktWeb.GetFromTrakt(string.Format(TraktURIs.UserLikedItems, type, extendedInfoParams, page, maxItems), out headers);
+            if (response == null)
+                return null;
+
+            try
+            {
+                return new TraktLikes
+                {
+                    CurrentPage = page,
+                    TotalItemsPerPage = maxItems,
+                    TotalPages = int.Parse(headers["X-Pagination-Page-Count"]),
+                    TotalItems = int.Parse(headers["X-Pagination-Item-Count"]),
+                    Likes = response.FromJSONArray<TraktLike>()
+                };
+            }
+            catch
+            {
+                // most likely bad header response
+                return null;
+            }
+        }
+        #endregion
+
         #endregion
     }
 }

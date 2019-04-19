@@ -130,6 +130,8 @@
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeWatchedSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeWatchlist.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktId.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktLike.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktLikes.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktList.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktListDetail.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktListItem.cs" />

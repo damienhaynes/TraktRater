@@ -40,6 +40,8 @@ namespace TraktRater.UI
             chkShowComments.Checked = ItemsToExport.CommentedShows;
             chkMovieComments.Checked = ItemsToExport.CommentedMovies;
             chkListComments.Checked = ItemsToExport.CommentedLists;
+            chkLikedLists.Checked = ItemsToExport.LikedLists;
+            chkLikedComments.Checked = ItemsToExport.LikedComments;
 
             txtExportPath.Text = ExportPath;
             #endregion
@@ -168,6 +170,16 @@ namespace TraktRater.UI
         private void chkListComments_Click(object sender, EventArgs e)
         {
             ItemsToExport.CommentedLists = chkListComments.Checked;
+        }
+
+        private void chkLikedComments_Click(object sender, EventArgs e)
+        {
+            ItemsToExport.LikedComments = chkLikedComments.Checked;
+        }
+
+        private void chkLikedLists_Click(object sender, EventArgs e)
+        {
+            ItemsToExport.LikedLists = chkLikedLists.Checked;
         }
         #endregion
 

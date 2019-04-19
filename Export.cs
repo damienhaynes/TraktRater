@@ -939,6 +939,103 @@ namespace TraktRater
             }
         }
 
+        public static void CreateLikedListsCsv()
+        {
+            if (Cancel) return;
+
+            int i = 0;
+            UIUtils.UpdateStatus($"Getting liked lists from trakt.tv, Page: {++i}");
+            var firstPage = TraktAPI.TraktAPI.GetLikedItems(type: "lists");
+            if (firstPage != null)
+            {
+                int pageCount = firstPage.TotalPages;
+
+                // store the results from the first page request
+                var pagedItems = firstPage.Likes;
+
+                for (i = 2; i <= firstPage.TotalPages; i++)
+                {
+                    UIUtils.UpdateStatus($"Getting commented lists from trakt.tv, Page: {i}/{pageCount}");
+                    var nextPage = TraktAPI.TraktAPI.GetLikedItems(type: "lists", page: i);
+                    if (nextPage == null) break;
+
+                    // add the next page of items to the collection
+                    pagedItems = pagedItems.Union(nextPage.Likes);
+                }
+
+                var listsLiked = new List<object>();
+                foreach (var item in pagedItems)
+                {
+                    listsLiked.Add(new
+                    {   
+                        ListId = item.List.Ids.Trakt,
+                        LikedAt = item.LikedAt,
+                        ListSlug = item.List.Ids.Slug,
+                        ListName = item.List.Name,
+                        Likes = item.List.Likes
+                    });
+                }
+
+                UIUtils.UpdateStatus("Creating liked lists csv file");
+                WriteToCsv(Path.Combine(AppSettings.CsvExportPath, "liked_lists.csv"), listsLiked);
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of liked lists from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
+
+        public static void CreateLikedCommentsCsv()
+        {
+            if (Cancel) return;
+
+            int i = 0;
+            UIUtils.UpdateStatus($"Getting liked comments from trakt.tv, Page: {++i}");
+            var firstPage = TraktAPI.TraktAPI.GetLikedItems(type: "comments");
+            if (firstPage != null)
+            {
+                int pageCount = firstPage.TotalPages;
+
+                // store the results from the first page request
+                var pagedItems = firstPage.Likes;
+
+                for (i = 2; i <= firstPage.TotalPages; i++)
+                {
+                    UIUtils.UpdateStatus($"Getting liked comments from trakt.tv, Page: {i}/{pageCount}");
+                    var nextPage = TraktAPI.TraktAPI.GetLikedItems(type: "comments", page: i);
+                    if (nextPage == null) break;
+
+                    // add the next page of items to the collection
+                    pagedItems = pagedItems.Union(nextPage.Likes);
+                }
+
+                var commentsLiked = new List<object>();
+                foreach (var item in pagedItems)
+                {
+                    commentsLiked.Add(new
+                    {
+                        Id = item.Comment.Id,
+                        LikedAt = item.LikedAt,
+                        ParentId = item.Comment.ParentId,
+                        Comment = item.Comment.Text,
+                        IsSpoiler = item.Comment.IsSpoiler,
+                        IsReview = item.Comment.IsReview,
+                        Replies = item.Comment.Replies,
+                        Likes = item.Comment.Likes
+                    });
+                }
+
+                UIUtils.UpdateStatus("Creating liked comments csv file");
+                WriteToCsv(Path.Combine(AppSettings.CsvExportPath, "liked_comments.csv"), commentsLiked);
+            }
+            else
+            {
+                UIUtils.UpdateStatus("Failed to get current list of liked comments from trakt.tv", true);
+                Thread.Sleep(2000);
+            }
+        }
+
         private static void WriteToCsv(string filename, List<object> records)
         {
             string directory = Path.GetDirectoryName(filename);

@@ -874,6 +874,14 @@
                 {
                     Export.CreateCommentedListsCsv();
                 }
+                if (AppSettings.CsvExportItems.LikedComments)
+                {
+                    Export.CreateLikedCommentsCsv();
+                }
+                if (AppSettings.CsvExportItems.LikedLists)
+                {
+                    Export.CreateLikedListsCsv();
+                }
 
                 // finished
                 SetControlState(true);
