@@ -77,6 +77,7 @@
             this.lnkTMDbStart = new System.Windows.Forms.LinkLabel();
             this.lblTMDbMessage = new System.Windows.Forms.Label();
             this.grbOptions = new System.Windows.Forms.GroupBox();
+            this.btnExport = new System.Windows.Forms.Button();
             this.chkSetWatchedOnReleaseDay = new System.Windows.Forms.CheckBox();
             this.lblBatchImportSize = new System.Windows.Forms.Label();
             this.chkIgnoreWatchedForWatchlists = new System.Windows.Forms.CheckBox();
@@ -136,7 +137,6 @@
             this.txtToDoMovieExportFile = new System.Windows.Forms.TextBox();
             this.lblToDoMovieExportFile = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.btnExport = new System.Windows.Forms.Button();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -763,6 +763,16 @@
             this.grbOptions.TabIndex = 0;
             this.grbOptions.TabStop = false;
             this.grbOptions.Text = "Options";
+            // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(32, 318);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(414, 40);
+            this.btnExport.TabIndex = 6;
+            this.btnExport.Text = "Export from trakt to CSV...";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // chkSetWatchedOnReleaseDay
             // 
@@ -1499,25 +1509,16 @@
             this.tabPage10.Text = "Options";
             this.tabPage10.UseVisualStyleBackColor = true;
             // 
-            // btnExport
-            // 
-            this.btnExport.Location = new System.Drawing.Point(32, 318);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(414, 40);
-            this.btnExport.TabIndex = 6;
-            this.btnExport.Text = "Export from trakt to CSV...";
-            this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
-            // 
             // TraktRater
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(884, 806);
             this.Controls.Add(this.tabTraktRater);
             this.Controls.Add(this.grbReport);
             this.Controls.Add(this.pbrImportProgress);
             this.Controls.Add(this.btnStartSync);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MinimumSize = new System.Drawing.Size(754, 688);

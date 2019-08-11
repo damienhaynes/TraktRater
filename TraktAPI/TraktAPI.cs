@@ -709,5 +709,19 @@
         #endregion
 
         #endregion
+
+        #region Search Methods
+
+        /// <summary>
+        /// Gets the seasons for a show
+        /// </summary>
+        /// <param name="id">the id of the tv show. Trakt ID, Trakt slug, or IMDb ID Example: game-of-thrones.</param>
+        public static IEnumerable<TraktSeasonSummary> GetShowSeasons(string id, string extendedParameter = "full")
+        {
+            var response = TraktWeb.GetFromTrakt(string.Format(TraktURIs.SeasonSummary, id));
+            return response.FromJSONArray<TraktSeasonSummary>();
+        }
+
+        #endregion
     }
 }

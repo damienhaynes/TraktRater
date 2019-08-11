@@ -14,6 +14,8 @@
 
         public int TvdbId { get; set; }
 
+        public int TraktId { get; set; }
+
         public string ImdbId { get; set; }
 
         public string Created { get; set; }

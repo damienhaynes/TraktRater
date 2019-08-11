@@ -203,14 +203,9 @@
             FileLog.Info("Found {0} tv episode ratings in CSV file", lImdbCsvEpisodes.Count);
             if (lImdbCsvEpisodes.Any())
             {
-                // we can't rely on the imdb id as trakt most likely wont have the info for episodes
-
-                // search and cache all series info needed for syncing
-                // use the tvdb API to first search for each unique series name
-                // then GetSeries by TVDb ID to get a list of all episodes
-                // each episode will have TVDb ID which we can use for syncing.
-
-                lImdbEpisodes.AddRange(lImdbCsvEpisodes.Select(Helper.GetIMDbEpisodeFromTVDb).Where(imdbEpisode => imdbEpisode != null));
+                // we can't rely on the epsiode imdb id as trakt most likely wont have the info for episodes
+                
+                lImdbEpisodes.AddRange(lImdbCsvEpisodes.Select(Helper.GetIMDbEpisodeFromTrakt).Where(imdbEpisode => imdbEpisode != null));
 
                 UIUtils.UpdateStatus("Retrieving existing tv episode ratings from trakt.tv");
                 var currentUserEpisodeRatings = TraktAPI.GetRatedEpisodes();
@@ -220,7 +215,7 @@
                     UIUtils.UpdateStatus("Found {0} user tv episode ratings on trakt.tv", currentUserEpisodeRatings.Count());
 
                     // Filter out episodes to rate from existing ratings online
-                    lImdbEpisodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => c.Episode.Ids.TvdbId == e.TvdbId || c.Episode.Ids.ImdbId == e.ImdbId));
+                    lImdbEpisodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => c.Episode.Ids.Trakt == e.TraktId));
                 }
 
                 UIUtils.UpdateStatus("Importing {0} episode ratings to trakt.tv", lImdbEpisodes.Count());
@@ -470,7 +465,7 @@
             {
                 UIUtils.UpdateStatus("Found {0} IMDb watchlist episodes", lImdbCsvEpisodes.Count());
 
-                lImdbEpisodes.AddRange(lImdbCsvEpisodes.Select(Helper.GetIMDbEpisodeFromTVDb).Where(imdbEpisode => imdbEpisode != null));
+                lImdbEpisodes.AddRange(lImdbCsvEpisodes.Select(Helper.GetIMDbEpisodeFromTrakt).Where(imdbEpisode => imdbEpisode != null));
 
                 // filter out existing watchlist episodes
                 UIUtils.UpdateStatus("Requesting existing watchlist episodes from trakt...");
@@ -479,7 +474,7 @@
                 {
                     UIUtils.UpdateStatus("Found {0} watchlist episodes on trakt", watchlistTraktEpisodes.Count());
                     UIUtils.UpdateStatus("Filtering out watchlist episodes that are already in watchlist on trakt.tv");
-                    lImdbEpisodes.RemoveAll(e => watchlistTraktEpisodes.FirstOrDefault(w => w.Episode.Ids.ImdbId == e.ImdbId || w.Episode.Ids.TvdbId == e.TvdbId) != null);
+                    lImdbEpisodes.RemoveAll(e => watchlistTraktEpisodes.FirstOrDefault(w => w.Episode.Ids.Trakt == e.TraktId) != null);
                 }
 
                 if (AppSettings.IgnoreWatchedForWatchlist && lImdbEpisodes.Count > 0)
@@ -690,9 +685,12 @@
             {
                 var lParser = new TextFieldParser(aFilename) { TextFieldType = FieldType.Delimited };
                 lParser.SetDelimiters(",");
+                lParser.HasFieldsEnclosedInQuotes = true;
+                
                 while (!lParser.EndOfData)
                 {
                     lRecordNumber++;
+
                     // processing fields in row
                     string[] lFields = lParser.ReadFields();
 
@@ -702,7 +700,6 @@
                     {
                         lFieldHeadings = lFields;
                         FileLog.Info($"Found headers: {string.Join(", ", lFieldHeadings)}");
-
                         continue;
                     }
 

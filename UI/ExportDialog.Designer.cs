@@ -32,6 +32,7 @@
             this.btnExport = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.grbExport = new System.Windows.Forms.GroupBox();
+            this.lnkUncheckAll = new System.Windows.Forms.LinkLabel();
             this.lnkCheckAll = new System.Windows.Forms.LinkLabel();
             this.chkLikedLists = new System.Windows.Forms.CheckBox();
             this.chkLikedComments = new System.Windows.Forms.CheckBox();
@@ -60,7 +61,6 @@
             this.btnBrowsePath = new System.Windows.Forms.Button();
             this.txtExportPath = new System.Windows.Forms.TextBox();
             this.fbdExportPath = new System.Windows.Forms.FolderBrowserDialog();
-            this.lnkUncheckAll = new System.Windows.Forms.LinkLabel();
             this.grbExport.SuspendLayout();
             this.grbPath.SuspendLayout();
             this.SuspendLayout();
@@ -119,6 +119,17 @@
             this.grbExport.Size = new System.Drawing.Size(628, 538);
             this.grbExport.TabIndex = 3;
             this.grbExport.TabStop = false;
+            // 
+            // lnkUncheckAll
+            // 
+            this.lnkUncheckAll.AutoSize = true;
+            this.lnkUncheckAll.Location = new System.Drawing.Point(431, 499);
+            this.lnkUncheckAll.Name = "lnkUncheckAll";
+            this.lnkUncheckAll.Size = new System.Drawing.Size(93, 20);
+            this.lnkUncheckAll.TabIndex = 24;
+            this.lnkUncheckAll.TabStop = true;
+            this.lnkUncheckAll.Text = "Uncheck All";
+            this.lnkUncheckAll.Click += new System.EventHandler(this.lnkUncheckAll_Click);
             // 
             // lnkCheckAll
             // 
@@ -415,21 +426,11 @@
             // 
             this.fbdExportPath.Description = "Select folder to create CSV files in:";
             // 
-            // lnkUncheckAll
-            // 
-            this.lnkUncheckAll.AutoSize = true;
-            this.lnkUncheckAll.Location = new System.Drawing.Point(431, 499);
-            this.lnkUncheckAll.Name = "lnkUncheckAll";
-            this.lnkUncheckAll.Size = new System.Drawing.Size(93, 20);
-            this.lnkUncheckAll.TabIndex = 24;
-            this.lnkUncheckAll.TabStop = true;
-            this.lnkUncheckAll.Text = "Uncheck All";
-            this.lnkUncheckAll.Click += new System.EventHandler(this.lnkUncheckAll_Click);
-            // 
             // ExportDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(652, 722);
             this.Controls.Add(this.grbPath);
             this.Controls.Add(this.grbExport);

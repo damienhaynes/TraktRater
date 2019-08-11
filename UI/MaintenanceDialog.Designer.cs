@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MaintenanceDialog));
             this.grbMaintenance = new System.Windows.Forms.GroupBox();
+            this.chkCustomLists = new System.Windows.Forms.CheckBox();
             this.chkMoviePausedStates = new System.Windows.Forms.CheckBox();
             this.chkEpisodePausedStates = new System.Windows.Forms.CheckBox();
             this.chkMovieWatchlist = new System.Windows.Forms.CheckBox();
@@ -47,7 +48,6 @@
             this.lblSelect = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.chkCustomLists = new System.Windows.Forms.CheckBox();
             this.grbMaintenance.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,6 +76,17 @@
             this.grbMaintenance.Size = new System.Drawing.Size(628, 378);
             this.grbMaintenance.TabIndex = 0;
             this.grbMaintenance.TabStop = false;
+            // 
+            // chkCustomLists
+            // 
+            this.chkCustomLists.AutoSize = true;
+            this.chkCustomLists.Location = new System.Drawing.Point(340, 296);
+            this.chkCustomLists.Name = "chkCustomLists";
+            this.chkCustomLists.Size = new System.Drawing.Size(127, 24);
+            this.chkCustomLists.TabIndex = 15;
+            this.chkCustomLists.Text = "Custom Lists";
+            this.chkCustomLists.UseVisualStyleBackColor = true;
+            this.chkCustomLists.Click += new System.EventHandler(this.chkCustomLists_Click);
             // 
             // chkMoviePausedStates
             // 
@@ -263,22 +274,12 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // chkCustomLists
-            // 
-            this.chkCustomLists.AutoSize = true;
-            this.chkCustomLists.Location = new System.Drawing.Point(340, 296);
-            this.chkCustomLists.Name = "chkCustomLists";
-            this.chkCustomLists.Size = new System.Drawing.Size(127, 24);
-            this.chkCustomLists.TabIndex = 15;
-            this.chkCustomLists.Text = "Custom Lists";
-            this.chkCustomLists.UseVisualStyleBackColor = true;
-            this.chkCustomLists.Click += new System.EventHandler(this.chkCustomLists_Click);
-            // 
             // MaintenanceDialog
             // 
             this.AcceptButton = this.btnStart;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScroll = true;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(644, 448);
             this.Controls.Add(this.btnCancel);

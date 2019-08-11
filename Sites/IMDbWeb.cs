@@ -284,7 +284,7 @@
                 // then GetSeries by TVDb ID to get a list of all episodes
                 // each episode will have TVDb ID which we can use for syncing.
 
-                imdbEpisodes.AddRange(episodes.Select(Helper.GetIMDbEpisodeFromTVDb).Where(imdbEpisode => imdbEpisode != null));
+                imdbEpisodes.AddRange(episodes.Select(Helper.GetIMDbEpisodeFromTrakt).Where(imdbEpisode => imdbEpisode != null));
 
                 UIUtils.UpdateStatus("Retrieving existing tv episode ratings from trakt.tv");
                 var currentUserEpisodeRatings = TraktAPI.GetRatedEpisodes();
@@ -294,7 +294,7 @@
                     UIUtils.UpdateStatus("Found {0} user tv episode ratings on trakt.tv", currentUserEpisodeRatings.Count());
 
                     // Filter out episodes to rate from existing ratings online
-                    imdbEpisodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => c.Episode.Ids.TvdbId == e.TvdbId));
+                    imdbEpisodes.RemoveAll(e => currentUserEpisodeRatings.Any(c => c.Episode.Ids.Trakt == e.TraktId));
                 }
 
                 UIUtils.UpdateStatus("Importing {0} episode ratings to trakt.tv", imdbEpisodes.Count());
@@ -543,7 +543,7 @@
                 {
                     UIUtils.UpdateStatus("Found {0} IMDb watchlist episodes", episodes.Count());
 
-                    imdbEpisodes.AddRange(episodes.Select(Helper.GetIMDbEpisodeFromTVDb).Where(imdbEpisode => imdbEpisode != null));
+                    imdbEpisodes.AddRange(episodes.Select(Helper.GetIMDbEpisodeFromTrakt).Where(imdbEpisode => imdbEpisode != null));
 
                     // filter out existing watchlist episodes
                     UIUtils.UpdateStatus("Requesting existing watchlist episodes from trakt...");
@@ -552,7 +552,7 @@
                     {
                         UIUtils.UpdateStatus("Found {0} watchlist episodes on trakt", watchlistTraktEpisodes.Count());
                         UIUtils.UpdateStatus("Filtering out watchlist episodes that are already in watchlist on trakt.tv");
-                        imdbEpisodes.RemoveAll(e => watchlistTraktEpisodes.FirstOrDefault(w => w.Episode.Ids.ImdbId == e.ImdbId || w.Episode.Ids.TvdbId == e.TvdbId) != null);
+                        imdbEpisodes.RemoveAll(e => watchlistTraktEpisodes.FirstOrDefault(w => w.Episode.Ids.Trakt == e.TraktId) != null);
                     }
 
                     if (AppSettings.IgnoreWatchedForWatchlist && episodes.Count > 0)

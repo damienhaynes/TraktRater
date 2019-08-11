@@ -28,28 +28,29 @@
         public const string SyncRatings = @"http://api.trakt.tv/sync/ratings";
         public const string SyncWatchlist = @"http://api.trakt.tv/sync/watchlist";
         public const string SyncWatched = @"http://api.trakt.tv/sync/history";
-        public const string SyncCollection = "https://api.trakt.tv/sync/collection";
-        public const string SyncWatchedRemove = "https://api.trakt.tv/sync/history/remove";
-        public const string SyncCollectionRemove = "https://api.trakt.tv/sync/collection/remove";
-        public const string SyncRatingsRemove = "https://api.trakt.tv/sync/ratings/remove";
-        public const string SyncWatchlistRemove = "https://api.trakt.tv/sync/watchlist/remove";
+        public const string SyncCollection = @"https://api.trakt.tv/sync/collection";
+        public const string SyncWatchedRemove = @"https://api.trakt.tv/sync/history/remove";
+        public const string SyncCollectionRemove = @"https://api.trakt.tv/sync/collection/remove";
+        public const string SyncRatingsRemove = @"https://api.trakt.tv/sync/ratings/remove";
+        public const string SyncWatchlistRemove = @"https://api.trakt.tv/sync/watchlist/remove";
 
         public const string ShowSummary = @"http://api.trakt.tv/shows/{0}?extended=full";
 
-        public const string UserLists = "https://api.trakt.tv/users/{0}/lists";
-        public const string UserListAdd = "https://api.trakt.tv/users/{0}/lists";
-        public const string UserListDelete = "https://api.trakt.tv/users/{0}/lists/{1}";
+        public const string UserLists = @"https://api.trakt.tv/users/{0}/lists";
+        public const string UserListAdd = @"https://api.trakt.tv/users/{0}/lists";
+        public const string UserListDelete = @"https://api.trakt.tv/users/{0}/lists/{1}";
         
-        public const string UserListItems = "https://api.trakt.tv/users/{0}/lists/{1}/items?extended={2}";
-        public const string UserListItemsAdd = "https://api.trakt.tv/users/{0}/lists/{1}/items";
-        public const string UserListItemsRemove = "https://api.trakt.tv/users/{0}/lists/{1}/items/remove";
+        public const string UserListItems = @"https://api.trakt.tv/users/{0}/lists/{1}/items?extended={2}";
+        public const string UserListItemsAdd = @"https://api.trakt.tv/users/{0}/lists/{1}/items";
+        public const string UserListItemsRemove = @"https://api.trakt.tv/users/{0}/lists/{1}/items/remove";
 
-        public const string SyncPausedMovies = "https://api.trakt.tv/sync/playback/movies";
-        public const string SyncPausedEpisodes = "https://api.trakt.tv/sync/playback/episodes";
-        public const string SyncPausedRemove = "https://api.trakt.tv/sync/playback/{0}";
+        public const string SyncPausedMovies = @"https://api.trakt.tv/sync/playback/movies";
+        public const string SyncPausedEpisodes = @"https://api.trakt.tv/sync/playback/episodes";
+        public const string SyncPausedRemove = @"https://api.trakt.tv/sync/playback/{0}";
 
-        public const string UserLikedItems = "https://api.trakt.tv/users/likes/{0}?extended={1}&page={2}&limit={3}";
-        public const string UserComments = "https://api.trakt.tv/users/{0}/comments/{1}/{2}?extended={3}&page={4}&limit={5}&include_replies=false";
+        public const string UserLikedItems = @"https://api.trakt.tv/users/likes/{0}?extended={1}&page={2}&limit={3}";
+        public const string UserComments = @"https://api.trakt.tv/users/{0}/comments/{1}/{2}?extended={3}&page={4}&limit={5}&include_replies=false";
 
+        public const string SeasonSummary = @"http://api.trakt.tv/shows/{0}/seasons?extended=episodes";
     }
 }
