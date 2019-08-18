@@ -195,6 +195,7 @@
 
             // IMDb populates title field in the form "show: episode"
             // Some shows also include colons so should only remove last one.
+            // TODO: it's also possible that an episode has a colon!
             var parts = title.Split(':');
 
             if (parts.Count() == 2)
@@ -347,6 +348,8 @@
 
         public static IMDbEpisode GetIMDbEpisodeFromTrakt(Dictionary<string, string> episode)
         {
+            if (IMDb.mImportCancelled) return null;
+
             try
             {
                 string tvEpisodeName = GetEpisodeName(episode[IMDbFieldMapping.cTitle]);
@@ -376,9 +379,7 @@
 
                 // we know it exists already, so just query it
                 var episodeInfo = seasonInfo.Episodes.FirstOrDefault(e => e.Title.ToLowerInvariant() == tvEpisodeName.ToLowerInvariant());
-
-                // Note: Web Parsing does not use the IMDb ID for the episode, only the show.
-                //       we're also not setting the created date from the webrequest.
+                
                 var imdbEpisode = new IMDbEpisode
                 {
                     EpisodeName = tvEpisodeName,
@@ -404,6 +405,85 @@
             catch (Exception e)
             {
                 UIUtils.UpdateStatus($"Failed to get episode info for '{episode[IMDbFieldMapping.cTitle]}' from trakt.tv, Reason: '{e.Message}'", true);
+                Thread.Sleep(2000);
+                return null;
+            }
+        }
+
+        public static IMDbEpisode GetIMDbEpisodeFromTrakt<T>(T episode)
+        {
+            try
+            {
+                string tvEpisodeName = null;
+                int? tvEpisodeRating = null;
+                string tvEpisodeRatedAt = null;
+                string tvEpisodeWatchlistedAt = null;
+                string tvEpisodeImdbId = null;
+                string tvShowName = null;
+                
+                if (episode is IMDbRateItem)
+                {
+                    tvShowName = GetShowName((episode as IMDbRateItem).Title);
+                    tvEpisodeName = GetEpisodeName((episode as IMDbRateItem).Title);
+                    tvEpisodeRating = (episode as IMDbRateItem).MyRating;
+                    tvEpisodeRatedAt = (episode as IMDbRateItem).RatedDate;
+                    tvEpisodeImdbId = (episode as IMDbRateItem).Id;
+                }
+                else if (episode is IMDbListItem)
+                {
+                    tvShowName = GetShowName((episode as IMDbListItem).Title);
+                    tvEpisodeName = GetEpisodeName((episode as IMDbListItem).Title);
+                    tvEpisodeRating = (episode as IMDbListItem).MyRating;
+                    tvEpisodeWatchlistedAt = (episode as IMDbListItem).CreatedDate;
+                    tvEpisodeImdbId = (episode as IMDbListItem).Id;
+                }
+
+                // get all seasons for show basis the tv show name 
+                // the IMDb ID in CSV file is the episode ID and not show ID!
+                // the Year and Release Date is the episode Year and Release Date
+                UIUtils.UpdateStatus($"Getting sesaon/episode summary for tv show '{tvShowName}' on trakt.tv");
+
+                var searchResults = TraktAPI.TraktAPI.GetShowSeasons(tvShowName.ToSlug());
+                if (searchResults == null)
+                {
+                    UIUtils.UpdateStatus($"Failed to get season/episode summary for tv show {tvShowName.ToSlug()} on trakt.tv", true);
+                    Thread.Sleep(2000);
+                    return null;
+                }
+
+                // find the episode name in the list of episodes from the season summary
+                // fallback to episode IMDb Id
+                var seasonInfo = searchResults.FirstOrDefault(season => season?.Episodes.FirstOrDefault(ep => (ep.Title?.ToLowerInvariant() == tvEpisodeName.ToLowerInvariant()) ||
+                                                                                                              (ep.Ids?.ImdbId == tvEpisodeImdbId)) != null);
+                if (seasonInfo == null)
+                {
+                    UIUtils.UpdateStatus($"Failed to find matching episode name '{tvShowName}: {tvEpisodeName} [{tvEpisodeImdbId}]' in available season episodes on trakt.tv");
+                    Thread.Sleep(2000);
+                    return null;
+                }
+
+                // we know it exists already, so just query it
+                var episodeInfo = seasonInfo.Episodes.FirstOrDefault(e => (e.Title.ToLowerInvariant() == tvEpisodeName.ToLowerInvariant()) ||
+                                                                          (e.Ids?.ImdbId == tvEpisodeImdbId));
+
+                var imdbEpisode = new IMDbEpisode
+                {
+                    EpisodeName = episodeInfo.Title,
+                    EpisodeNumber = (int)episodeInfo.Number,
+                    SeasonNumber = (int)episodeInfo.Season,
+                    ShowName = tvShowName,
+                    TraktId = (int)episodeInfo.Ids.Trakt,
+                    Rating = tvEpisodeRating ?? 0,
+                    Created = episode is IMDbRateItem ? tvEpisodeRatedAt : tvEpisodeWatchlistedAt
+                };
+                                
+                return imdbEpisode;
+            }
+            catch (Exception e)
+            {
+                string ep = episode is IMDbRateItem ? (episode as IMDbRateItem).Title : (episode as IMDbListItem).Title;
+                
+                UIUtils.UpdateStatus($"Failed to get episode info for '{ep}' from trakt.tv, Reason: '{e.Message}', StackTrace: '{e.StackTrace}'", true);
                 Thread.Sleep(2000);
                 return null;
             }
