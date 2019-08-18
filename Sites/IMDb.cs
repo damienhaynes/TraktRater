@@ -110,7 +110,7 @@
 
                 foreach (var list in mCustomListsCsvs)
                 {
-                    UIUtils.UpdateStatus($"Reading IMDb custom list '{list}' export...");
+                    UIUtils.UpdateStatus($"Reading IMDb custom list '{list}'");
 
                     var lListCsvItems = ParseCsvFile<IMDbListItem>(list, mCsvConfiguration);
                     if (lListCsvItems == null)

@@ -214,7 +214,7 @@
                 BatchSize = xmlReader.GetSettingValueAsInt(cBatchSize, 50);
                 WatchedOnReleaseDay = xmlReader.GetSettingValueAsBool(cWatchedOnReleaseDay, false);
                 CsvExportItems = xmlReader.GetSettingValueAsString(cCsvExportItems, new ExportItems().ToJSON()).FromJSON<ExportItems>();
-                CsvExportPath = xmlReader.GetSettingValueAsString(cCsvExportPath, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"TraktRater\Export"));
+                CsvExportPath = xmlReader.GetSettingValueAsString(cCsvExportPath, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"TraktRater", @"Export"));
 
                 // save settings, might be some new settings added
                 Save();
