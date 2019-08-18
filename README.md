@@ -10,7 +10,7 @@ Users can also use this tool to remove any user data from their account at trakt
 Usage
 -----
 
- * First ensure you are running on a Windows Platform with [.Net Framework 4.0](http://www.microsoft.com/en-us/download/details.aspx?id=17851) installed. TraktRater can run on Mac OS and Linux, however you need to execute using [Mono](http://www.monodevelop.com/download/).
+ * First ensure you are running on a Windows Platform with [.NET Framework 4.7.2](https://dotnet.microsoft.com/download/dotnet-framework/net472) installed. TraktRater can run on Mac OS and Linux, however you need to execute using [Mono](https://www.mono-project.com/download/stable/).
  * Download the latest TraktRater release from the repository [downloads](https://github.com/damienhaynes/TraktRater/releases) section.
  * Run the TraktRater.exe tool from the download location.
  * Allow the application to access your account from the Login tab:    
