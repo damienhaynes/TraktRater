@@ -48,6 +48,8 @@
             mRatingsFileCsv = aRatingsFile;
             mWatchlistFileCsv = aWatchlistFile;
             mCustomListsCsvs = aImdbCustomLists;
+
+            SetCSVHelperOptions();
         }
 
         #endregion
@@ -72,7 +74,7 @@
             {
                 mCsvConfiguration.RegisterClassMap<IMDbRatingCsvMap>();
                 
-                lRatedCsvItems = ParseCsvFile<IMDbRateItem>(mRatingsFileCsv, mCsvConfiguration);
+                lRatedCsvItems = ParseCsvFile<IMDbRateItem>(mRatingsFileCsv);
                 if (lRatedCsvItems == null)
                 {
                     UIUtils.UpdateStatus("Failed to parse IMDb ratings file!", true);
@@ -90,7 +92,7 @@
             {
                 mCsvConfiguration.RegisterClassMap<IMDbListCsvMap>();
 
-                lWatchlistCsvItems = ParseCsvFile<IMDbListItem>(mWatchlistFileCsv, mCsvConfiguration);
+                lWatchlistCsvItems = ParseCsvFile<IMDbListItem>(mWatchlistFileCsv);
                 if (lWatchlistCsvItems == null)
                 {
                     UIUtils.UpdateStatus("Failed to parse IMDb watchlist file!", true);
@@ -112,7 +114,7 @@
                 {
                     UIUtils.UpdateStatus($"Reading IMDb custom list '{list}'");
 
-                    var lListCsvItems = ParseCsvFile<IMDbListItem>(list, mCsvConfiguration);
+                    var lListCsvItems = ParseCsvFile<IMDbListItem>(list);
                     if (lListCsvItems == null)
                     {
                         UIUtils.UpdateStatus("Failed to parse IMDb custom list file!", true);
@@ -739,19 +741,27 @@
 
         #region Private Methods
         
-        private List<T> ParseCsvFile<T>(string aFilename, CsvConfiguration aConfig)
+        private void SetCSVHelperOptions()
         {
-            try
-            {
-                var textReader = File.OpenText(aFilename);
-                var csv = new CsvReader(textReader, aConfig);
+            mCsvConfiguration.IsHeaderCaseSensitive = false;
 
-                return csv.GetRecords<T>().ToList();
-            }
-            catch(Exception e)
+            // IMDb use "." for decimal seperator so set culture to cater for this            
+            mCsvConfiguration.CultureInfo = new System.Globalization.CultureInfo("en-US");
+
+            // if we're unable parse a row, log the details for analysis
+            mCsvConfiguration.IgnoreReadingExceptions = true;
+            mCsvConfiguration.ReadingExceptionCallback = (ex, row) =>
             {
-                FileLog.Error($"Error parsing '{aFilename}'. Exception = '{e.Message}', Stack = '{e.StackTrace}'");
-                return null;
+                FileLog.Error($"Error reading row '{ex.Data["CsvHelper"]}'");
+            };
+        }
+
+        private List<T> ParseCsvFile<T>(string aFilename)
+        {
+            using (var reader = new StreamReader(aFilename))
+            using (var csv = new CsvReader(reader, mCsvConfiguration))
+            {
+                return csv.GetRecords<T>().ToList();
             }
         }
         
