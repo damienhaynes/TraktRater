@@ -756,6 +756,12 @@
             };
         }
 
+        /// <summary>
+        /// Returns records of a IMDb CSV rating or list file.
+        /// </summary>
+        /// <typeparam name="T">IMDbListItem or IMDbRateItem</typeparam>
+        /// <param name="aFilename">Full path to CSV file to read</param>
+        /// <returns>Records of type T</returns>
         private List<T> ParseCsvFile<T>(string aFilename)
         {
             using (var reader = new StreamReader(aFilename))
