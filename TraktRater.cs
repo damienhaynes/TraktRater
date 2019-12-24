@@ -129,7 +129,17 @@
         #endregion
 
         #region UI Events
-        
+
+        private void pbPaypal_Click( object sender, EventArgs e )
+        {
+            Process.Start( @"https://www.paypal.me/damienlhaynes" );
+        }
+
+        private void lnkPaypal_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
+        {
+            Process.Start( @"https://www.paypal.me/damienlhaynes" );
+        }
+
         private void lnkTraktOAuth_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // if we have already authorised, un-register so can sign-in and authorise again
