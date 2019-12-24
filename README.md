@@ -5,7 +5,11 @@ TraktRater is a tool written in C# to help users transfer user episode, show and
 
 Users can also use this tool to remove any user data from their account at trakt.tv or export their personal data to CSV files.
 
+
 [**DOWNLOADS**](https://github.com/damienhaynes/TraktRater/releases)
+
+If you enjoy using this tool, consider donating below to encourage continued development:
+https://www.paypal.me/damienlhaynes
 
 Usage
 -----
