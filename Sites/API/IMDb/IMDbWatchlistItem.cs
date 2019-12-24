@@ -22,8 +22,6 @@
             Map(m => m.Votes).Name("Num Votes");
             Map(m => m.ReleaseDate).Name("Release Date");
             Map(m => m.Directors).Name("Directors");
-            Map(m => m.MyRating).Name("Your Rating");
-            Map(m => m.RatedDate).Name("Date Rated");
         }
     }
 
@@ -31,7 +29,7 @@
     {
         /// <summary>
         /// Example Header as of 17th Aug 2019 (same for watchlist and custom lists)
-        /// Position,Const,Created,Modified,Description,Title,URL,Title Type,IMDb Rating,Runtime (mins),Year,Genres,Num Votes,Release Date,Directors,Your Rating,Date Rated
+        /// Position,Const,Created,Modified,Description,Title,URL,Title Type,IMDb Rating,Runtime (mins),Year,Genres,Num Votes,Release Date,Directors
         /// </summary>
 
         public int? Position { get; set; }
@@ -63,11 +61,7 @@
         public string ReleaseDate { get; set; }
 
         public string Directors { get; set; }
-
-        public int? MyRating { get; set; }
-
-        public string RatedDate { get; set; }
-
+        
         public TraktMovie ToTraktMovie()
         {
             return new TraktMovie()

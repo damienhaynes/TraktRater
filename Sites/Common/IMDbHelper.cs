@@ -433,7 +433,6 @@
                 {
                     tvShowName = GetShowName((episode as IMDbListItem).Title);
                     tvEpisodeName = GetEpisodeName((episode as IMDbListItem).Title);
-                    tvEpisodeRating = (episode as IMDbListItem).MyRating;
                     tvEpisodeWatchlistedAt = (episode as IMDbListItem).CreatedDate;
                     tvEpisodeImdbId = (episode as IMDbListItem).Id;
                 }
