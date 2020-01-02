@@ -640,7 +640,7 @@
                     var lImdbCsvListMovies = lIMDbCsvListItems.Where(l => l.Type.ItemType() == IMDbType.Movie).Select(m => m.ToTraktMovie()).ToList();
                     var lImdbCsvListShows = lIMDbCsvListItems.Where(l => l.Type.ItemType() == IMDbType.Show).Select(m => m.ToTraktShow()).ToList();
 
-                    FileLog.Info($"Found {lIMDbCsvListItems.Count} movies and {lImdbCsvListShows.Count} shows in IMDb {lListName} list", lListName);
+                    FileLog.Info($"Found {lIMDbCsvListItems.Count} movies and {lImdbCsvListShows.Count} shows in IMDb {lListName} list");
 
                     // if the list already exists, get current items for list 
                     if (!lListCreated)

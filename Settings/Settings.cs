@@ -39,6 +39,7 @@
         const string cLetterboxdRatingsFilename = "LetterboxdRatingsFilename";
         const string cLetterboxdWatchedFilename = "LetterboxdWatchedFilename";
         const string cLetterboxdDiaryFilename = "LetterboxdDiaryFilename";
+        const string cLetterboxdCustomLists = "LetterboxdCustomLists";
         const string cFlixsterUserId = "FlixsterUserId";
         const string cFlixsterSyncWantToSee = "FlixsterSyncWantToSee";
         const string cMarkAsWatched = "MarkAsWatched";
@@ -110,6 +111,8 @@
         public static string LetterboxdWatchedFilename { get; set; }
 
         public static string LetterboxdDiaryFilename { get; set; }
+
+        public static List<string> LetterboxdCustomLists { get; set; }
 
         public static string FlixsterUserId { get; set; }
 
@@ -192,6 +195,7 @@
                 LetterboxdRatingsFilename = xmlReader.GetSettingValueAsString(cLetterboxdRatingsFilename, string.Empty);
                 LetterboxdWatchedFilename = xmlReader.GetSettingValueAsString(cLetterboxdWatchedFilename, string.Empty);
                 LetterboxdDiaryFilename = xmlReader.GetSettingValueAsString(cLetterboxdDiaryFilename, string.Empty);
+                LetterboxdCustomLists = xmlReader.GetSettingValueAsString( cLetterboxdCustomLists, string.Empty ).FromJSONArray<string>().ToList();
                 FlixsterUserId = xmlReader.GetSettingValueAsString(cFlixsterUserId, string.Empty);
                 FlixsterSyncWantToSee = xmlReader.GetSettingValueAsBool(cFlixsterSyncWantToSee, true);
                 CheckMoviesFilename = xmlReader.GetSettingValueAsString(cCheckMoviesFilename, string.Empty);
@@ -267,6 +271,7 @@
             xmlWriter.WriteSetting(cLetterboxdRatingsFilename, LetterboxdRatingsFilename);
             xmlWriter.WriteSetting(cLetterboxdWatchedFilename, LetterboxdWatchedFilename);
             xmlWriter.WriteSetting(cLetterboxdDiaryFilename, LetterboxdDiaryFilename);
+            xmlWriter.WriteSetting(cLetterboxdCustomLists, LetterboxdCustomLists.ToJSON());
             xmlWriter.WriteSetting(cFlixsterUserId, FlixsterUserId);
             xmlWriter.WriteSetting(cFlixsterSyncWantToSee, FlixsterSyncWantToSee.ToString());
             xmlWriter.WriteSetting(cCheckMoviesFilename, CheckMoviesFilename);

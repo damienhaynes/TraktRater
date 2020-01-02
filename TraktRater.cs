@@ -75,6 +75,7 @@
             txtLetterboxdWatchedFile.Text = AppSettings.LetterboxdWatchedFilename;
             txtLetterboxdRatingsFile.Text = AppSettings.LetterboxdRatingsFilename;
             txtLetterboxdDiaryFile.Text = AppSettings.LetterboxdDiaryFilename;
+            listLetterboxdCustomLists.Items.AddRange(AppSettings.LetterboxdCustomLists.ToArray() );
             txtFlixsterUserId.Text = AppSettings.FlixsterUserId;
             txtCheckMoviesCsvFile.Text = AppSettings.CheckMoviesFilename;
             chkFlixsterSyncWantToSee.Checked = AppSettings.FlixsterSyncWantToSee;
@@ -459,6 +460,31 @@
             EnableLetterboxdControls(AppSettings.EnableLetterboxd);
         }
 
+        private void btnLetterBoxAddList_Click( object sender, EventArgs e )
+        {
+            dlgFileOpen.Filter = "CSV files|*.csv";
+            DialogResult result = dlgFileOpen.ShowDialog( this );
+            if ( result == DialogResult.OK )
+            {
+                if ( AppSettings.LetterboxdCustomLists.Contains( dlgFileOpen.FileName ) )
+                    return;
+
+                listLetterboxdCustomLists.Items.Add( dlgFileOpen.FileName );
+                AppSettings.LetterboxdCustomLists.Add( dlgFileOpen.FileName );
+            }
+        }
+
+        private void btnLetterBoxRemoveList_Click( object sender, EventArgs e )
+        {
+            var lSelectedItem = listLetterboxdCustomLists.SelectedItem;
+            if ( lSelectedItem == null ) return;
+
+            listLetterboxdCustomLists.Items.Remove( lSelectedItem );
+
+            if ( AppSettings.LetterboxdCustomLists.Contains( lSelectedItem.ToString() ) )
+                AppSettings.LetterboxdCustomLists.Remove( lSelectedItem.ToString() );
+        }
+
         private void chkFlixsterEnabled_CheckedChanged(object sender, EventArgs e)
         {
             AppSettings.EnableFlixster = chkFlixsterEnabled.Checked;
@@ -600,7 +626,7 @@
             if (AppSettings.EnableIMDb)             sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
             if (AppSettings.EnableListal)           sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
             if (AppSettings.EnableCriticker)        sites.Add(new Criticker(AppSettings.CritickerCSVFilename));
-            if (AppSettings.EnableLetterboxd)       sites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename));
+            if (AppSettings.EnableLetterboxd)       sites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename, AppSettings.LetterboxdCustomLists) );
             if (AppSettings.EnableFlixster)         sites.Add(new Flixster(AppSettings.FlixsterUserId, AppSettings.FlixsterSyncWantToSee));
             if (AppSettings.EnableCheckMovies)      sites.Add(new CheckMovies(AppSettings.CheckMoviesFilename, AppSettings.CheckMoviesDelimiter));
             if (AppSettings.EnableToDoMovies)       sites.Add(new ToDoMovies(AppSettings.ToDoMovieFilename));
@@ -1118,6 +1144,10 @@
             txtLetterboxdDiaryFile.Enabled = enableState;
             txtLetterboxdRatingsFile.Enabled = enableState;
             txtLetterboxdWatchedFile.Enabled = enableState;
+            lblLetterboxdCustomList.Enabled = enableState;
+            listLetterboxdCustomLists.Enabled = enableState;
+            btnLetterBoxAddList.Enabled = enableState;
+            btnLetterBoxRemoveList.Enabled = enableState;
         }
 
         private void EnableFlixsterControls(bool enableState)
