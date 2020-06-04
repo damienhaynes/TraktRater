@@ -2,6 +2,7 @@
 *.exe
 *.pdb
 *.suo
+.vs
 /obj/x86/Release/DesignTimeResolveAssemblyReferences.cache
 /obj/x86/Release/DesignTimeResolveAssemblyReferencesInput.cache
 /obj/x86/Release/TempPE/Properties.Resources.Designer.cs.dll
@@ -37,3 +38,4 @@ obj
 /packages/CsvHelper.2.16.3.0/lib/netstandard1.3/CsvHelper.xml
 /packages/CsvHelper.2.16.3.0/lib/portable40-net40+sl5+win8+wp8+wpa81/CsvHelper.dll
 /packages/CsvHelper.2.16.3.0/lib/portable40-net40+sl5+win8+wp8+wpa81/CsvHelper.xml
+/packages/CsvHelper.2.16.3.0/.signature.p7s
