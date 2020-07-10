@@ -398,7 +398,7 @@
                 {
                     // get watched movies from trakt so we don't import movies into watchlist that are already watched
                     // we may already have this if we imported rated items as watched
-                    if (lWatchedTraktMovies != null)
+                    if (lWatchedTraktMovies == null)
                     {
                         UIUtils.UpdateStatus("Requesting watched movies from trakt...");
                         lWatchedTraktMovies = TraktAPI.GetWatchedMovies();
