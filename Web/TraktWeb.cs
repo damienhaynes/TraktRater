@@ -92,7 +92,7 @@
                 }
                 return ret;
             }
-         }
+        }
 
         public static string TransmitExtended(string address)
         {
@@ -110,7 +110,7 @@
                 Stream stream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(stream);
                 string strResponse = reader.ReadToEnd();
-                
+
                 OnDataReceived?.Invoke(strResponse);
 
                 stream.Close();
@@ -118,6 +118,36 @@
                 response.Close();
 
                 return strResponse;
+            }
+            catch (Exception e)
+            {
+                OnDataErrorReceived?.Invoke(e.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the CSV file as a stream reader object.
+        /// </summary>
+        /// <param name="address">The URI to use</param>
+        /// <returns>The response from Server</returns>
+        public static StreamReader GetCsvStream(string address)
+        {
+            OnDataSend?.Invoke(address, null);
+
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(address);
+                request.UserAgent = AppSettings.UserAgent;
+                request.Accept = "text/csv";
+
+                var response = (HttpWebResponse)request.GetResponse();
+                if (response == null) return null;
+
+                Stream stream = response.GetResponseStream();
+                StreamReader streamReader = new StreamReader(stream);
+                OnDataReceived?.Invoke(response.StatusCode.ToString());
+                return streamReader;
             }
             catch (Exception e)
             {
@@ -208,7 +238,7 @@
                 // post to trakt
                 Stream postStream = request.GetRequestStream();
                 postStream.Write(data, 0, data.Length);
-                
+
                 // get the response
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response == null) return null;
@@ -216,7 +246,7 @@
                 Stream responseStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(responseStream);
                 string strResponse = reader.ReadToEnd();
-                
+
                 OnDataReceived?.Invoke(strResponse);
 
                 // cleanup
