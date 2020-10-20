@@ -25,12 +25,12 @@
 
         #region Variables
 
-        readonly List<IRateSite> sites = new List<IRateSite>();
-        static bool maintenanceRunning = false;
-        static bool exportRunning = false;
-        static bool importRunning = false;
-        static bool importCancelled = false;
-        static string pinCode = string.Empty;
+        readonly List<IRateSite> mSites = new List<IRateSite>();
+        static bool mMaintenanceRunning = false;
+        static bool mExportRunning = false;
+        static bool mImportRunning = false;
+        static bool mImportCancelled = false;
+        static string mPinCode = string.Empty;
         #endregion
 
         #region Constants
@@ -60,40 +60,55 @@
             // populate fields
             HideShowTraktAuthControls();
             
+            chkTVDbEnabled.Checked = AppSettings.EnableTVDb;
             txtTVDbAccountId.Text = AppSettings.TVDbAccountIdentifier;
+
+            chkTMDbEnabled.Checked = AppSettings.EnableTMDb;
             chkTMDbSyncWatchlist.Checked = AppSettings.TMDbSyncWatchlist;
+
+            chkIMDbEnabled.Checked = AppSettings.EnableIMDb;
+            lsImdbCustomLists.Items.AddRange(AppSettings.IMDbCustomLists.ToArray());
             txtImdbRatingsFilename.Text = AppSettings.IMDbRatingsFilename;
             txtImdbWatchlistFile.Text = AppSettings.IMDbWatchlistFilename;
             txtImdbWebUsername.Text = AppSettings.IMDbUsername;
             chkImdbWebWatchlist.Checked = AppSettings.IMDbSyncWatchlist;
-            lsImdbCustomLists.Items.AddRange(AppSettings.IMDbCustomLists.ToArray());
+
+            chkListalEnabled.Checked = AppSettings.EnableListal;
             chkListalWebWatchlist.Checked = AppSettings.ListalSyncWatchlist;
             txtListalMovieXMLExport.Text = AppSettings.ListalMovieFilename;
             txtListalShowXMLExport.Text = AppSettings.ListalShowFilename;
+
+            chkCritickerEnabled.Checked = AppSettings.EnableCriticker;
             txtCritickerCSVExportFile.Text = AppSettings.CritickerCSVFilename;
+
+            chkToDoMoviesEnabled.Checked = AppSettings.EnableToDoMovies;
             txtToDoMovieExportFile.Text = AppSettings.ToDoMovieFilename;
+
+            chkLetterboxdEnabled.Checked = AppSettings.EnableLetterboxd;
             txtLetterboxdWatchedFile.Text = AppSettings.LetterboxdWatchedFilename;
             txtLetterboxdRatingsFile.Text = AppSettings.LetterboxdRatingsFilename;
             txtLetterboxdDiaryFile.Text = AppSettings.LetterboxdDiaryFilename;
-            listLetterboxdCustomLists.Items.AddRange(AppSettings.LetterboxdCustomLists.ToArray() );
-            txtFlixsterUserId.Text = AppSettings.FlixsterUserId;
-            txtCheckMoviesCsvFile.Text = AppSettings.CheckMoviesFilename;
-            chkFlixsterSyncWantToSee.Checked = AppSettings.FlixsterSyncWantToSee;
-            cboCheckMoviesDelimiter.SelectedIndex = AppSettings.CheckMoviesDelimiter;
-            chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
-            chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
-            chkTVDbEnabled.Checked = AppSettings.EnableTVDb;
-            chkTMDbEnabled.Checked = AppSettings.EnableTMDb;
-            chkIMDbEnabled.Checked = AppSettings.EnableIMDb;
-            chkCheckMoviesEnabled.Checked = AppSettings.EnableCheckMovies;
-            chkListalEnabled.Checked = AppSettings.EnableListal;
-            chkCritickerEnabled.Checked = AppSettings.EnableCriticker;
-            chkToDoMoviesEnabled.Checked = AppSettings.EnableToDoMovies;
-            chkLetterboxdEnabled.Checked = AppSettings.EnableLetterboxd;
+            listLetterboxdCustomLists.Items.AddRange(AppSettings.LetterboxdCustomLists.ToArray());
+
             chkFlixsterEnabled.Checked = AppSettings.EnableFlixster;
+            chkFlixsterSyncWantToSee.Checked = AppSettings.FlixsterSyncWantToSee;
+            txtFlixsterUserId.Text = AppSettings.FlixsterUserId;
+
+            chkCheckMoviesEnabled.Checked = AppSettings.EnableCheckMovies;
+            cboCheckMoviesDelimiter.SelectedIndex = AppSettings.CheckMoviesDelimiter;
             chkCheckMoviesAddWatchedToWatchlist.Checked = AppSettings.CheckMoviesAddWatchedMoviesToWatchlist;
             chkCheckMoviesUpdateWatchedStatus.Checked = AppSettings.CheckMoviesUpdateWatchedHistory;
             chkCheckMoviesAddMoviesToCollection.Checked = AppSettings.CheckMoviesAddToCollection;
+            txtCheckMoviesCsvFile.Text = AppSettings.CheckMoviesFilename;
+
+            chkMovieLensEnabled.Checked = AppSettings.EnableMovieLens;
+            txtMovieLensRatings.Text = AppSettings.MovieLensRatingsFilename;
+            txtMovieLensActivity.Text = AppSettings.MovieLensActivityFilename;
+            txtMovieLensWishlist.Text = AppSettings.MovieLensWishListFilename;
+            txtMovieLensTags.Text = AppSettings.MovieLensTagsFilename;
+
+            chkMarkAsWatched.Checked = AppSettings.MarkAsWatched;
+            chkIgnoreWatchedForWatchlists.Checked = AppSettings.IgnoreWatchedForWatchlist;
             chkSetWatchedOnReleaseDay.Checked = AppSettings.WatchedOnReleaseDay;
             nudBatchSize.Value = AppSettings.BatchSize;
 
@@ -152,7 +167,7 @@
                 txtTraktPinCode.Visible = true;
                 txtTraktPinCode.Text = cTraktPinCodeWaterMark;
                 txtTraktPinCode.ForeColor = SystemColors.GrayText;
-                pinCode = string.Empty;
+                mPinCode = string.Empty;
 
                 lblWarnPeriod.Visible = false;
             }
@@ -171,7 +186,7 @@
             {
                 txtTraktPinCode.Text = string.Empty;
                 txtTraktPinCode.ForeColor = SystemColors.WindowText;
-                pinCode = string.Empty;
+                mPinCode = string.Empty;
             }
         }
 
@@ -179,7 +194,7 @@
         {
             if (txtTraktPinCode.Text != cTraktPinCodeWaterMark)
             {
-                pinCode = txtTraktPinCode.Text;
+                mPinCode = txtTraktPinCode.Text;
                 txtTraktPinCode.ForeColor = SystemColors.WindowText;
             }
         }
@@ -191,11 +206,11 @@
 
         private void btnStartSync_Click(object sender, EventArgs e)
         {
-            if (importRunning)
+            if (mImportRunning)
             {
                 CancelImport();
             }
-            else if (maintenanceRunning)
+            else if (mMaintenanceRunning)
             {
                 CancelMaintenance();
             }
@@ -563,6 +578,72 @@
             }
         }
 
+        private void chkMovieLensEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            AppSettings.EnableMovieLens = chkMovieLensEnabled.Checked;
+            EnableMovieLensControls(AppSettings.EnableMovieLens);
+        }
+
+        private void txtMovieLensRatings_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.MovieLensRatingsFilename = txtMovieLensRatings.Text;
+        }
+
+        private void txtMovieLensWishlist_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.MovieLensWishListFilename = txtMovieLensWishlist.Text;
+        }
+
+        private void txtMovieLensActivity_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.MovieLensActivityFilename = txtMovieLensActivity.Text;
+        }
+
+        private void txtMovieLensTags_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.MovieLensTagsFilename = txtMovieLensTags.Text;
+        }
+
+        private void btnMovieLensRatings_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "csv files|*.csv;*.txt";
+            DialogResult lResult = dlgFileOpen.ShowDialog(this);
+            if (lResult == DialogResult.OK)
+            {
+                txtMovieLensRatings.Text = dlgFileOpen.FileName;
+            }
+        }
+
+        private void btnMovieLensWishlist_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "csv files|*.csv;*.txt";
+            DialogResult lResult = dlgFileOpen.ShowDialog(this);
+            if (lResult == DialogResult.OK)
+            {
+                txtMovieLensWishlist.Text = dlgFileOpen.FileName;
+            }
+        }
+
+        private void btnMovieLensActivity_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "csv files|*.csv;*.txt";
+            DialogResult lResult = dlgFileOpen.ShowDialog(this);
+            if (lResult == DialogResult.OK)
+            {
+                txtMovieLensActivity.Text = dlgFileOpen.FileName;
+            }
+        }
+
+        private void btnMovieLensTags_Click(object sender, EventArgs e)
+        {
+            dlgFileOpen.Filter = "csv files|*.csv;*.txt";
+            DialogResult lResult = dlgFileOpen.ShowDialog(this);
+            if (lResult == DialogResult.OK)
+            {
+                txtMovieLensTags.Text = dlgFileOpen.FileName;
+            }
+        }
+
         private void lnkLogFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(FileLog.LogDirectory);
@@ -606,32 +687,34 @@
             // perform export for user
             StartExport(exportDlg.ItemsToExport);
         }
+
         #endregion
 
         #region Import Actions
         private void StartImport()
         {
-            if (!CheckAccountDetails() || importRunning)
+            if (!CheckAccountDetails() || mImportRunning)
                 return;
 
             // update file log with new name
             FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
 
-            sites.Clear();
+            mSites.Clear();
 
             // add import sites for processing
-            if (AppSettings.EnableTMDb)             sites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
-            if (AppSettings.EnableTVDb)             sites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
-            if (AppSettings.EnableIMDb)             sites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, AppSettings.IMDbCustomLists, rdnImdbCSV.Checked));
-            if (AppSettings.EnableIMDb)             sites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
-            if (AppSettings.EnableListal)           sites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
-            if (AppSettings.EnableCriticker)        sites.Add(new Criticker(AppSettings.CritickerCSVFilename));
-            if (AppSettings.EnableLetterboxd)       sites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename, AppSettings.LetterboxdCustomLists) );
-            if (AppSettings.EnableFlixster)         sites.Add(new Flixster(AppSettings.FlixsterUserId, AppSettings.FlixsterSyncWantToSee));
-            if (AppSettings.EnableCheckMovies)      sites.Add(new CheckMovies(AppSettings.CheckMoviesFilename, AppSettings.CheckMoviesDelimiter));
-            if (AppSettings.EnableToDoMovies)       sites.Add(new ToDoMovies(AppSettings.ToDoMovieFilename));
+            if (AppSettings.EnableTMDb)             mSites.Add(new TMDb(AppSettings.TMDbRequestToken, AppSettings.TMDbSessionId));
+            if (AppSettings.EnableTVDb)             mSites.Add(new TVDb(AppSettings.TVDbAccountIdentifier));
+            if (AppSettings.EnableIMDb)             mSites.Add(new IMDb(AppSettings.IMDbRatingsFilename, AppSettings.IMDbWatchlistFilename, AppSettings.IMDbCustomLists, rdnImdbCSV.Checked));
+            if (AppSettings.EnableIMDb)             mSites.Add(new IMDbWeb(AppSettings.IMDbUsername, rdnImdbUsername.Checked));
+            if (AppSettings.EnableListal)           mSites.Add(new Listal(AppSettings.ListalMovieFilename, AppSettings.ListalShowFilename, AppSettings.ListalSyncWatchlist));
+            if (AppSettings.EnableCriticker)        mSites.Add(new Criticker(AppSettings.CritickerCSVFilename));
+            if (AppSettings.EnableLetterboxd)       mSites.Add(new Letterboxd(AppSettings.LetterboxdRatingsFilename, AppSettings.LetterboxdWatchedFilename, AppSettings.LetterboxdDiaryFilename, AppSettings.LetterboxdCustomLists) );
+            if (AppSettings.EnableFlixster)         mSites.Add(new Flixster(AppSettings.FlixsterUserId, AppSettings.FlixsterSyncWantToSee));
+            if (AppSettings.EnableCheckMovies)      mSites.Add(new CheckMovies(AppSettings.CheckMoviesFilename, AppSettings.CheckMoviesDelimiter));
+            if (AppSettings.EnableToDoMovies)       mSites.Add(new ToDoMovies(AppSettings.ToDoMovieFilename));
+            if (AppSettings.EnableMovieLens)        mSites.Add(new MovieLens(AppSettings.MovieLensRatingsFilename, AppSettings.MovieLensActivityFilename, AppSettings.MovieLensTagsFilename, AppSettings.MovieLensWishListFilename));
 
-            if (!sites.Any(s => s.Enabled))
+            if (!mSites.Any(s => s.Enabled))
             {
                 UIUtils.UpdateStatus("No sites enabled or incorrect site information supplied!", true);
                 return;
@@ -640,7 +723,7 @@
             #region Import
             var importThread = new Thread(o =>
             {
-                importRunning = true;
+                mImportRunning = true;
 
                 // only one import at a time
                 SetControlState(false);
@@ -653,12 +736,12 @@
                     return;
 
                 // import ratings
-                foreach (var site in sites.Where(s => s.Enabled))
+                foreach (var site in mSites.Where(s => s.Enabled))
                 {
                     UIUtils.UpdateStatus(string.Format("Starting import from {0}", site.Name));
                     try
                     {   
-                        if (!importCancelled)
+                        if (!mImportCancelled)
                             site.ImportRatings();
                     }
                     catch (Exception e)
@@ -672,8 +755,8 @@
                 // finished
                 SetControlState(true);
                 UIUtils.UpdateStatus("Import Complete!");
-                importRunning = false;
-                importCancelled = false;
+                mImportRunning = false;
+                mImportCancelled = false;
             });
 
             importThread.Start();
@@ -682,16 +765,16 @@
 
         private void CancelImport()
         {
-            if (!importRunning) return;
+            if (!mImportRunning) return;
 
             UIUtils.UpdateStatus("Cancelling Import...");
 
-            importCancelled = true;
+            mImportCancelled = true;
 
             Thread cancelThread = new Thread(o =>
             {
                 // cancel import
-                foreach (var site in sites.Where(s => s.Enabled))
+                foreach (var site in mSites.Where(s => s.Enabled))
                 {
                     site.Cancel();
                 }
@@ -704,7 +787,7 @@
         #region Maintenance Actions
         private void StartMaintenance(MaintenanceSettings settings)
         {
-            if (!CheckAccountDetails() || maintenanceRunning)
+            if (!CheckAccountDetails() || mMaintenanceRunning)
                 return;
 
             // update file log with new name
@@ -712,7 +795,7 @@
 
             var maintThread = new Thread(o =>
             {
-                maintenanceRunning = true;
+                mMaintenanceRunning = true;
                 Maintenance.Cancel = false;
 
                 // only one import at a time
@@ -790,7 +873,7 @@
                 // finished
                 SetControlState(true);
                 UIUtils.UpdateStatus("Maintenance Complete!");
-                maintenanceRunning = false;
+                mMaintenanceRunning = false;
             });
 
             maintThread.Start();
@@ -798,7 +881,7 @@
 
         private void CancelMaintenance()
         {
-            if (!maintenanceRunning) return;
+            if (!mMaintenanceRunning) return;
 
             UIUtils.UpdateStatus("Cancelling Maintenance...");
             Maintenance.Cancel = true;
@@ -808,7 +891,7 @@
         #region Export to CSV
         private void StartExport(ExportItems items)
         {
-            if (!CheckAccountDetails() || exportRunning)
+            if (!CheckAccountDetails() || mExportRunning)
                 return;
 
             // update file log with new name
@@ -816,7 +899,7 @@
 
             var mainThread = new Thread(o =>
             {
-                exportRunning = true;
+                mExportRunning = true;
                 Export.Cancel = false;
 
                 // only one import/export at a time
@@ -922,7 +1005,7 @@
                 // finished
                 SetControlState(true);
                 UIUtils.UpdateStatus("Export Complete!");
-                exportRunning = false;
+                mExportRunning = false;
 
                 // open folder to exported files
                 try
@@ -941,7 +1024,7 @@
 
         private void CancelExport()
         {
-            if (!exportRunning) return;
+            if (!mExportRunning) return;
 
             UIUtils.UpdateStatus("Cancelling CSV Export...");
             Export.Cancel = true;
@@ -953,22 +1036,22 @@
         private bool Login()
         {
             // exchange pin-code for access token or refresh existing token
-            UIUtils.UpdateStatus("Exchanging {0} for access-token...", pinCode.Length == 8 ? "pin-code" : "refresh-token");
-            var response = TraktAPI.TraktAPI.GetOAuthToken(pinCode.Length == 8 ? pinCode : AppSettings.TraktOAuthToken);
+            UIUtils.UpdateStatus("Exchanging {0} for access-token...", mPinCode.Length == 8 ? "pin-code" : "refresh-token");
+            var response = TraktAPI.TraktAPI.GetOAuthToken(mPinCode.Length == 8 ? mPinCode : AppSettings.TraktOAuthToken);
             if (response == null || string.IsNullOrEmpty(response.AccessToken))
             {
                 UIUtils.UpdateStatus("Unable to login to trakt, check log for details", true);
                 SetControlState(true);
-                importRunning = false;
-                importCancelled = false;
-                maintenanceRunning = false;
-                pinCode = string.Empty;
+                mImportRunning = false;
+                mImportCancelled = false;
+                mMaintenanceRunning = false;
+                mPinCode = string.Empty;
                 return false;
             }
 
             // save the refresh-token for next time
             AppSettings.TraktOAuthToken = response.RefreshToken;
-            pinCode = string.Empty;
+            mPinCode = string.Empty;
 
             return true;
         }
@@ -977,7 +1060,7 @@
         {
             if (string.IsNullOrEmpty(AppSettings.TraktOAuthToken))
             {
-                if (string.IsNullOrEmpty(pinCode) || pinCode.Length != 8)
+                if (string.IsNullOrEmpty(mPinCode) || mPinCode.Length != 8)
                 {
                     UIUtils.UpdateStatus("You must authorise TraktRater to access your trakt.tv account and enter the 8 character pin code with-in 15 minutes of starting an import", true);
                     return false;
@@ -1000,32 +1083,33 @@
             lblWarnPeriod.Visible = false;
         }
 
-        private void SetControlState(bool enable)
+        private void SetControlState(bool aEnabled)
         {
             if (InvokeRequired)
             {
                 SetControlStateDelegate setControlState = SetControlState;
-                Invoke(setControlState, enable);
+                Invoke(setControlState, aEnabled);
                 return;
             }
 
-            grbOptions.Enabled = enable;
-            grbTrakt.Enabled = enable;
+            grbOptions.Enabled = aEnabled;
+            grbTrakt.Enabled = aEnabled;
 
-            grbImdb.Enabled = enable;
-            grbTMDb.Enabled = enable;
-            grbTVDb.Enabled = enable;
-            grbListal.Enabled = enable;
-            grbCriticker.Enabled = enable;
-            grbLetterboxd.Enabled = enable;
-            grbFlixster.Enabled = enable;
-            grbCheckMovies.Enabled = enable;
-            grbToDoMovies.Enabled = enable;
+            grbImdb.Enabled = aEnabled;
+            grbTMDb.Enabled = aEnabled;
+            grbTVDb.Enabled = aEnabled;
+            grbListal.Enabled = aEnabled;
+            grbCriticker.Enabled = aEnabled;
+            grbLetterboxd.Enabled = aEnabled;
+            grbFlixster.Enabled = aEnabled;
+            grbCheckMovies.Enabled = aEnabled;
+            grbToDoMovies.Enabled = aEnabled;
+            grbMovieLens.Enabled = aEnabled;
 
             HideShowTraktAuthControls();
 
-            btnStartSync.Text = enable ? cImportReadyText : cCancelText;
-            pbrImportProgress.Style = enable ? ProgressBarStyle.Continuous : ProgressBarStyle.Marquee;
+            btnStartSync.Text = aEnabled ? cImportReadyText : cCancelText;
+            pbrImportProgress.Style = aEnabled ? ProgressBarStyle.Continuous : ProgressBarStyle.Marquee;
         }
 
         private void ClearProgress()
@@ -1158,19 +1242,6 @@
             lblFlixsterUserIdDesc.Enabled = enableState;
         }
 
-        private void EnableExternalSourceControlsInGroupBoxes()
-        {
-            EnableImdbControls(AppSettings.EnableIMDb);
-            EnableTmdbControls(AppSettings.EnableTMDb);
-            EnableCheckMoviesControls(AppSettings.EnableCheckMovies);
-            EnableTvdbControls(AppSettings.EnableTVDb);
-            EnableListalControls(AppSettings.EnableListal);
-            EnableCritickerControls(AppSettings.EnableCriticker);
-            EnableLetterboxdControls(AppSettings.EnableLetterboxd);
-            EnableFlixsterControls(AppSettings.EnableFlixster);
-            EnableToDoMoviesControls(AppSettings.EnableToDoMovies);
-        }
-
         private void EnableCheckMoviesControls(bool enableState)
         {
             btnCheckMoviesExportBrowse.Enabled = enableState;
@@ -1191,7 +1262,38 @@
             txtToDoMovieExportFile.Enabled = enableState;
         }
 
-        #endregion
+        private void EnableMovieLensControls(bool enableState)
+        {
+            lblMovieLensActivity.Enabled = enableState;
+            txtMovieLensActivity.Enabled = enableState;
+            btnMovieLensActivity.Enabled = enableState;
 
+            lblMovieLensRatings.Enabled = enableState;
+            txtMovieLensRatings.Enabled = enableState;
+            btnMovieLensRatings.Enabled = enableState;
+
+            lblMovieLensTags.Enabled = enableState;
+            txtMovieLensTags.Enabled = enableState;
+            btnMovieLensTags.Enabled = enableState;
+
+            lblMovieLensWishlist.Enabled = enableState;
+            txtMovieLensWishlist.Enabled = enableState;
+            btnMovieLensWishlist.Enabled = enableState;
+        }
+
+        private void EnableExternalSourceControlsInGroupBoxes()
+        {
+            EnableImdbControls(AppSettings.EnableIMDb);
+            EnableTmdbControls(AppSettings.EnableTMDb);
+            EnableCheckMoviesControls(AppSettings.EnableCheckMovies);
+            EnableTvdbControls(AppSettings.EnableTVDb);
+            EnableListalControls(AppSettings.EnableListal);
+            EnableCritickerControls(AppSettings.EnableCriticker);
+            EnableLetterboxdControls(AppSettings.EnableLetterboxd);
+            EnableFlixsterControls(AppSettings.EnableFlixster);
+            EnableToDoMoviesControls(AppSettings.EnableToDoMovies);
+            EnableMovieLensControls(AppSettings.EnableMovieLens);
+        }
+        #endregion
     }
 }

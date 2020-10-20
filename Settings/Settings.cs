@@ -58,11 +58,16 @@
         const string cEnableFlixster = "EnableFlixster";
         const string cEnableCheckMovies = "EnableCheckMovies";
         const string cEnableToDoMovies = "EnableToDoMovies";
+        const string cEnableMovieLens = "EnableMovieLens";
         const string cLogLevel = "LogLevel";
         const string cBatchSize = "BatchSize";
         const string cWatchedOnReleaseDay = "WatchedOnReleaseDay";
         const string cCsvExportItems = "CsvExportItems";
         const string cCsvExportPath = "CsvExportPath";
+        const string cMovieLensRatingsFilename = "MovieLensRatingsFilename";
+        const string cMovieLensWishListFilename = "MovieLensWishListFilename";
+        const string cMovieLensActivityLogFilename = "MovieLensActivityLogFilename";
+        const string cMovieLensTagsFilename = "MovieLensTagFilename";
         #endregion
 
         #region Settings
@@ -118,6 +123,14 @@
 
         public static bool FlixsterSyncWantToSee { get; set; }
 
+        public static string MovieLensRatingsFilename { get; set; }
+
+        public static string MovieLensWishListFilename { get; set; }
+
+        public static string MovieLensActivityFilename { get; set; }
+        
+        public static string MovieLensTagsFilename { get; set; }
+
         public static bool MarkAsWatched { get; set; }
 
         public static bool IgnoreWatchedForWatchlist { get; set; }
@@ -135,6 +148,8 @@
         public static bool EnableLetterboxd { get; set; }
         public static bool EnableFlixster { get; set; }
         public static bool EnableToDoMovies { get; set; }
+
+        public static bool EnableMovieLens { get; set; }
 
         public static ExportItems CsvExportItems { get; set; }
         public static string CsvExportPath { get; set; }
@@ -196,6 +211,10 @@
                 LetterboxdWatchedFilename = xmlReader.GetSettingValueAsString(cLetterboxdWatchedFilename, string.Empty);
                 LetterboxdDiaryFilename = xmlReader.GetSettingValueAsString(cLetterboxdDiaryFilename, string.Empty);
                 LetterboxdCustomLists = xmlReader.GetSettingValueAsString( cLetterboxdCustomLists, string.Empty ).FromJSONArray<string>().ToList();
+                MovieLensRatingsFilename = xmlReader.GetSettingValueAsString(cMovieLensRatingsFilename, string.Empty);
+                MovieLensWishListFilename = xmlReader.GetSettingValueAsString(cMovieLensWishListFilename, string.Empty);
+                MovieLensActivityFilename = xmlReader.GetSettingValueAsString(cMovieLensActivityLogFilename, string.Empty);
+                MovieLensTagsFilename = xmlReader.GetSettingValueAsString(cMovieLensTagsFilename, string.Empty);
                 FlixsterUserId = xmlReader.GetSettingValueAsString(cFlixsterUserId, string.Empty);
                 FlixsterSyncWantToSee = xmlReader.GetSettingValueAsBool(cFlixsterSyncWantToSee, true);
                 CheckMoviesFilename = xmlReader.GetSettingValueAsString(cCheckMoviesFilename, string.Empty);
@@ -214,6 +233,7 @@
                 EnableFlixster = xmlReader.GetSettingValueAsBool(cEnableFlixster, false);
                 EnableCheckMovies = xmlReader.GetSettingValueAsBool(cEnableCheckMovies, false);
                 EnableToDoMovies = xmlReader.GetSettingValueAsBool(cEnableToDoMovies, false);
+                EnableMovieLens = xmlReader.GetSettingValueAsBool(cEnableMovieLens, false);
                 LogSeverityLevel = (LoggingSeverity)(xmlReader.GetSettingValueAsInt(cLogLevel, 3));
                 BatchSize = xmlReader.GetSettingValueAsInt(cBatchSize, 50);
                 WatchedOnReleaseDay = xmlReader.GetSettingValueAsBool(cWatchedOnReleaseDay, false);
@@ -272,6 +292,10 @@
             xmlWriter.WriteSetting(cLetterboxdWatchedFilename, LetterboxdWatchedFilename);
             xmlWriter.WriteSetting(cLetterboxdDiaryFilename, LetterboxdDiaryFilename);
             xmlWriter.WriteSetting(cLetterboxdCustomLists, LetterboxdCustomLists.ToJSON());
+            xmlWriter.WriteSetting(cMovieLensRatingsFilename, MovieLensRatingsFilename);
+            xmlWriter.WriteSetting(cMovieLensWishListFilename, MovieLensWishListFilename);
+            xmlWriter.WriteSetting(cMovieLensActivityLogFilename, MovieLensActivityFilename);
+            xmlWriter.WriteSetting(cMovieLensTagsFilename, MovieLensTagsFilename);
             xmlWriter.WriteSetting(cFlixsterUserId, FlixsterUserId);
             xmlWriter.WriteSetting(cFlixsterSyncWantToSee, FlixsterSyncWantToSee.ToString());
             xmlWriter.WriteSetting(cCheckMoviesFilename, CheckMoviesFilename);
@@ -290,6 +314,7 @@
             xmlWriter.WriteSetting(cEnableFlixster, EnableFlixster.ToString());
             xmlWriter.WriteSetting(cEnableCheckMovies, EnableCheckMovies.ToString());
             xmlWriter.WriteSetting(cEnableToDoMovies, EnableToDoMovies.ToString());
+            xmlWriter.WriteSetting(cEnableMovieLens, EnableMovieLens.ToString());
             xmlWriter.WriteSetting(cLogLevel, ((int)LogSeverityLevel).ToString());
             xmlWriter.WriteSetting(cBatchSize, BatchSize.ToString());
             xmlWriter.WriteSetting(cWatchedOnReleaseDay, WatchedOnReleaseDay.ToString());
