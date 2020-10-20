@@ -72,14 +72,31 @@ namespace TraktRater.Sites
 
         public void ImportRatings()
         {
-            List<MovieLensItem> lRatings;
+            List<MovieLensRatingItem> lRatings;
+            List<MovieLensActivityItem.MovieRatingActivity> lRatingActivities = new List<MovieLensActivityItem.MovieRatingActivity>();
 
             if (mImportCancelled) return;
 
+            if (mImportActivities)
+            {
+                // the activity log gives us some more detail when importing 
+                // such as the date/time a movie was rated
+                var lActivities = ParseMovieActivitiesCsv();
+                UIUtils.UpdateStatus($"Found {lActivities.Count} activities in Movie Lens Activity Log CSV file");
+
+                // select 'rating' activities 
+                lRatingActivities = lActivities.Where(a => a.ActionType == "rating").Select(r => r.ToRatingActivity()).ToList();
+                UIUtils.UpdateStatus($"Found {lRatingActivities.Count} rating activities in Movie Lens Activity Log CSV file");
+            }
+
             if (mImportRatings)
             {
-                lRatings = ParseMovieListRatingsCsv();
-                var lRatedMovies = lRatings.Where(tdm => tdm.Rating > 0).Select(tdm => tdm.ToTraktRatedMovie()).ToList();
+                lRatings = ParseMovieRatingsCsv();
+                UIUtils.UpdateStatus($"Found {lRatings.Count} ratings in Movie Lens Rating CSV file");
+
+                var lRatedMovies = lRatings.Where(tdm => tdm.Rating > 0)
+                                           .Select(tdm => tdm.ToTraktRatedMovie(lRatingActivities.FirstOrDefault(r => r.MovieId == tdm.MovieId))).ToList();
+
                 if (lRatedMovies.Any())
                 {
                     AddMoviesToRatings(lRatedMovies);
@@ -149,15 +166,26 @@ namespace TraktRater.Sites
             }
         }
 
-        private List<MovieLensItem> ParseMovieListRatingsCsv()
+        private List<MovieLensRatingItem> ParseMovieRatingsCsv()
         {
-            mCsvConfiguration.RegisterClassMap<CSVFileDefinitionMap>();
+            mCsvConfiguration.RegisterClassMap<CSVRatingsFileDefinitionMap>();
 
             UIUtils.UpdateStatus("Parsing Movie Lens Ratings CSV file");
             var textReader = File.OpenText(mRatingsFilename);
 
             var csv = new CsvReader(textReader, mCsvConfiguration);
-            return csv.GetRecords<MovieLensItem>().ToList();
+            return csv.GetRecords<MovieLensRatingItem>().ToList();
+        }
+
+        private List<MovieLensActivityItem> ParseMovieActivitiesCsv()
+        {
+            mCsvConfiguration.RegisterClassMap<CSVActivityFileDefinitionMap>();
+
+            UIUtils.UpdateStatus("Parsing Movie Lens Activity Log CSV file");
+            var textReader = File.OpenText(mActivityFilename);
+
+            var csv = new CsvReader(textReader, mCsvConfiguration);
+            return csv.GetRecords<MovieLensActivityItem>().ToList();
         }
     }
 }

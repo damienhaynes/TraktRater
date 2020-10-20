@@ -6,9 +6,9 @@ using System;
 
 namespace TraktRater.Sites.API.MovieLens
 {
-    sealed class CSVFileDefinitionMap : CsvClassMap<MovieLensItem>
+    sealed class CSVRatingsFileDefinitionMap : CsvClassMap<MovieLensRatingItem>
     {
-        public CSVFileDefinitionMap()
+        public CSVRatingsFileDefinitionMap()
         {
             Map(m => m.MovieId).Name("movie_id");
             Map(m => m.ImdbId).Name("imdb_id");
@@ -19,7 +19,7 @@ namespace TraktRater.Sites.API.MovieLens
         }
     }
 
-    class MovieLensItem
+    class MovieLensRatingItem
     {
         public string Title { get; set; }        
         public float Rating { get; set; }
@@ -28,7 +28,7 @@ namespace TraktRater.Sites.API.MovieLens
         public int ImdbId { get; set; }
         public int TmdbId { get; set; }
 
-        public TraktMovieRating ToTraktRatedMovie()
+        public TraktMovieRating ToTraktRatedMovie(MovieLensActivityItem.MovieRatingActivity aRatingActivity)
         {
             return new TraktMovieRating()
             {
@@ -38,7 +38,8 @@ namespace TraktRater.Sites.API.MovieLens
                     ImdbId = "tt" + ImdbId.ToString().PadLeft(7, '0')
                 },
                 // rating is a decimal between 0 and 5
-                Rating = (int)(Rating * 2)
+                Rating = (int)(Rating * 2),
+                RatedAt = GetRatingDate(aRatingActivity)
             };
         }
 
@@ -54,5 +55,17 @@ namespace TraktRater.Sites.API.MovieLens
                 WatchedAt = AppSettings.WatchedOnReleaseDay ? "released" : DateTime.UtcNow.ToString().ToISO8601()
             };
         }
+
+        private string GetRatingDate(MovieLensActivityItem.MovieRatingActivity aRatingActivity)
+        {
+            if (aRatingActivity == null)
+                return null;
+
+            if (!DateTime.TryParse(aRatingActivity.Date, out DateTime lResult))
+                return null;
+
+            return lResult.ToString().ToISO8601();
+        }
+
     }
 }
