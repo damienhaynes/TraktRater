@@ -4,6 +4,7 @@ using global::TraktRater.Settings;
 using global::TraktRater.Sites.API.MovieLens;
 using global::TraktRater.TraktAPI.DataStructures;
 using global::TraktRater.UI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -100,6 +101,68 @@ namespace TraktRater.Sites
                 if (lRatedMovies.Any())
                 {
                     AddMoviesToRatings(lRatedMovies);
+                    if (mImportCancelled) return;
+
+                    // mark rated movies as watched
+                    if (AppSettings.MarkAsWatched)
+                    {
+                        var lWatchedMovies = lRatings.Where(tdm => tdm.Rating > 0)
+                                                     .Select(tdm => tdm.ToTraktWatchedMovie(lRatingActivities.FirstOrDefault(r => r.MovieId == tdm.MovieId))).ToList();
+
+                        if (lWatchedMovies.Any())
+                        {
+                            AddMoviesToWatchedHistory(lWatchedMovies);
+                            if (mImportCancelled) return;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddMoviesToWatchedHistory(List<TraktMovieWatched> aWatchedMovies)
+        {
+            // get watched movies from trakt.tv
+            UIUtils.UpdateStatus("Requesting watched movies from trakt...");
+            var lWatchedTraktMovies = TraktAPI.TraktAPI.GetWatchedMovies();
+            if (lWatchedTraktMovies == null)
+            {
+                UIUtils.UpdateStatus("Failed to get watched movies from trakt.tv, skipping watched movie import", true);
+                Thread.Sleep(2000);
+            }
+            else
+            {
+                if (mImportCancelled) return;
+
+                UIUtils.UpdateStatus($"Found {lWatchedTraktMovies.Count()} watched movies on trakt");
+                UIUtils.UpdateStatus("Filtering out watched movies that are already watched on trakt.tv");
+
+                aWatchedMovies.RemoveAll(w => lWatchedTraktMovies.FirstOrDefault(t => t.Movie.Ids.ImdbId == w.Ids.ImdbId || t.Movie.Ids.TmdbId == w.Ids.TmdbId) != null);
+
+                // mark all rated movies as watched
+                UIUtils.UpdateStatus($"Importing {aWatchedMovies.Count} Movie Lens movies as watched...");
+
+                int lPageSize = AppSettings.BatchSize;
+                int lPages = (int)Math.Ceiling((double)aWatchedMovies.Count / lPageSize);
+                for (int i = 0; i < lPages; i++)
+                {
+                    UIUtils.UpdateStatus($"Importing page {i + 1}/{lPages} Movie Lens movies as watched...");
+
+                    var lMoviesToSync = new TraktMovieWatchedSync()
+                    {
+                        Movies = aWatchedMovies.Skip(i * lPageSize).Take(lPageSize).ToList()
+                    };
+
+                    var lResponse = TraktAPI.TraktAPI.AddMoviesToWatchedHistory(lMoviesToSync);
+                    if (lResponse == null)
+                    {
+                        UIUtils.UpdateStatus("Failed to send watched status for Movie Lens movies to trakt.tv", true);
+                        Thread.Sleep(2000);
+                    }
+                    else if (lResponse.NotFound.Movies.Count > 0)
+                    {
+                        UIUtils.UpdateStatus($"Unable to sync watched states for {lResponse.NotFound.Movies.Count} movies as they're not found on trakt.tv!");
+                        Thread.Sleep(1000);
+                    }
                     if (mImportCancelled) return;
                 }
             }

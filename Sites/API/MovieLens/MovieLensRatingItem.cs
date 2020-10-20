@@ -43,7 +43,7 @@ namespace TraktRater.Sites.API.MovieLens
             };
         }
 
-        public TraktMovieWatched ToTraktWatchedMovie()
+        public TraktMovieWatched ToTraktWatchedMovie(MovieLensActivityItem.MovieRatingActivity aRatingActivity)
         {
             return new TraktMovieWatched()
             {
@@ -52,7 +52,7 @@ namespace TraktRater.Sites.API.MovieLens
                     TmdbId = TmdbId,
                     ImdbId = "tt" + ImdbId.ToString().PadLeft(7, '0')
                 },
-                WatchedAt = AppSettings.WatchedOnReleaseDay ? "released" : DateTime.UtcNow.ToString().ToISO8601()
+                WatchedAt = AppSettings.WatchedOnReleaseDay ? "released" : GetRatingDate(aRatingActivity)
             };
         }
 
