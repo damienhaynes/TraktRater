@@ -31,7 +31,7 @@ namespace TraktRater.Sites.API.MovieLens
 
             return new MovieRatingActivity()
             {
-                MovieId = lActivity.MovieId,
+                MovieId = lActivity?.MovieId,
                 Date = DateTime
             };
         }
@@ -53,7 +53,7 @@ namespace TraktRater.Sites.API.MovieLens
         }
         public class MovieRatingActivity
         {
-            public int MovieId { get; set; }
+            public int? MovieId { get; set; }
 
             public string Date { get; set; }
         }

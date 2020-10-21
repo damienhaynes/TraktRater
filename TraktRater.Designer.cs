@@ -160,6 +160,7 @@
             this.txtMovieLensRatings = new System.Windows.Forms.TextBox();
             this.chkMovieLensEnabled = new System.Windows.Forms.CheckBox();
             this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.lblMovieLensNote = new System.Windows.Forms.Label();
             this.grbTrakt.SuspendLayout();
             this.grbTVDb.SuspendLayout();
             this.grbReport.SuspendLayout();
@@ -460,10 +461,10 @@
             this.txtMovieLensActivity.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtMovieLensActivity.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtMovieLensActivity.Enabled = false;
-            this.txtMovieLensActivity.Location = new System.Drawing.Point(19, 170);
+            this.txtMovieLensActivity.Location = new System.Drawing.Point(18, 220);
             this.txtMovieLensActivity.Name = "txtMovieLensActivity";
             this.txtMovieLensActivity.Size = new System.Drawing.Size(288, 20);
-            this.txtMovieLensActivity.TabIndex = 9;
+            this.txtMovieLensActivity.TabIndex = 1;
             this.tipHelp.SetToolTip(this.txtMovieLensActivity, "The Diary file includes everything marked as watched at a specified date, this da" +
         "te will override any movies found in the Watched file");
             this.txtMovieLensActivity.TextChanged += new System.EventHandler(this.txtMovieLensActivity_TextChanged);
@@ -473,10 +474,10 @@
             this.txtMovieLensTags.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtMovieLensTags.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtMovieLensTags.Enabled = false;
-            this.txtMovieLensTags.Location = new System.Drawing.Point(19, 216);
+            this.txtMovieLensTags.Location = new System.Drawing.Point(18, 172);
             this.txtMovieLensTags.Name = "txtMovieLensTags";
             this.txtMovieLensTags.Size = new System.Drawing.Size(288, 20);
-            this.txtMovieLensTags.TabIndex = 18;
+            this.txtMovieLensTags.TabIndex = 11;
             this.tipHelp.SetToolTip(this.txtMovieLensTags, "The Diary file includes everything marked as watched at a specified date, this da" +
         "te will override any movies found in the Watched file");
             this.txtMovieLensTags.TextChanged += new System.EventHandler(this.txtMovieLensTags_TextChanged);
@@ -1547,6 +1548,7 @@
             // 
             // grbMovieLens
             // 
+            this.grbMovieLens.Controls.Add(this.lblMovieLensNote);
             this.grbMovieLens.Controls.Add(this.lblMovieLensTags);
             this.grbMovieLens.Controls.Add(this.btnMovieLensTags);
             this.grbMovieLens.Controls.Add(this.txtMovieLensTags);
@@ -1570,19 +1572,19 @@
             // lblMovieLensTags
             // 
             this.lblMovieLensTags.AutoSize = true;
-            this.lblMovieLensTags.Location = new System.Drawing.Point(16, 201);
+            this.lblMovieLensTags.Location = new System.Drawing.Point(16, 156);
             this.lblMovieLensTags.Name = "lblMovieLensTags";
             this.lblMovieLensTags.Size = new System.Drawing.Size(53, 13);
-            this.lblMovieLensTags.TabIndex = 20;
+            this.lblMovieLensTags.TabIndex = 9;
             this.lblMovieLensTags.Text = "Tags File:";
             // 
             // btnMovieLensTags
             // 
             this.btnMovieLensTags.Enabled = false;
-            this.btnMovieLensTags.Location = new System.Drawing.Point(312, 215);
+            this.btnMovieLensTags.Location = new System.Drawing.Point(312, 169);
             this.btnMovieLensTags.Name = "btnMovieLensTags";
             this.btnMovieLensTags.Size = new System.Drawing.Size(29, 23);
-            this.btnMovieLensTags.TabIndex = 19;
+            this.btnMovieLensTags.TabIndex = 12;
             this.btnMovieLensTags.Text = "...";
             this.btnMovieLensTags.UseVisualStyleBackColor = true;
             this.btnMovieLensTags.Click += new System.EventHandler(this.btnMovieLensTags_Click);
@@ -1590,19 +1592,19 @@
             // lblMovieLensWishlist
             // 
             this.lblMovieLensWishlist.AutoSize = true;
-            this.lblMovieLensWishlist.Location = new System.Drawing.Point(16, 107);
+            this.lblMovieLensWishlist.Location = new System.Drawing.Point(16, 108);
             this.lblMovieLensWishlist.Name = "lblMovieLensWishlist";
             this.lblMovieLensWishlist.Size = new System.Drawing.Size(72, 13);
-            this.lblMovieLensWishlist.TabIndex = 14;
+            this.lblMovieLensWishlist.TabIndex = 5;
             this.lblMovieLensWishlist.Text = "Wish List File:";
             // 
             // btnMovieLensWishlist
             // 
             this.btnMovieLensWishlist.Enabled = false;
-            this.btnMovieLensWishlist.Location = new System.Drawing.Point(312, 123);
+            this.btnMovieLensWishlist.Location = new System.Drawing.Point(312, 121);
             this.btnMovieLensWishlist.Name = "btnMovieLensWishlist";
             this.btnMovieLensWishlist.Size = new System.Drawing.Size(29, 23);
-            this.btnMovieLensWishlist.TabIndex = 16;
+            this.btnMovieLensWishlist.TabIndex = 8;
             this.btnMovieLensWishlist.Text = "...";
             this.btnMovieLensWishlist.UseVisualStyleBackColor = true;
             this.btnMovieLensWishlist.Click += new System.EventHandler(this.btnMovieLensWishlist_Click);
@@ -1612,28 +1614,28 @@
             this.txtMovieLensWishlist.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtMovieLensWishlist.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtMovieLensWishlist.Enabled = false;
-            this.txtMovieLensWishlist.Location = new System.Drawing.Point(19, 124);
+            this.txtMovieLensWishlist.Location = new System.Drawing.Point(18, 124);
             this.txtMovieLensWishlist.Name = "txtMovieLensWishlist";
             this.txtMovieLensWishlist.Size = new System.Drawing.Size(288, 20);
-            this.txtMovieLensWishlist.TabIndex = 15;
+            this.txtMovieLensWishlist.TabIndex = 7;
             this.txtMovieLensWishlist.TextChanged += new System.EventHandler(this.txtMovieLensWishlist_TextChanged);
             // 
             // lblMovieLensActivity
             // 
             this.lblMovieLensActivity.AutoSize = true;
-            this.lblMovieLensActivity.Location = new System.Drawing.Point(16, 154);
+            this.lblMovieLensActivity.Location = new System.Drawing.Point(16, 204);
             this.lblMovieLensActivity.Name = "lblMovieLensActivity";
             this.lblMovieLensActivity.Size = new System.Drawing.Size(84, 13);
-            this.lblMovieLensActivity.TabIndex = 17;
+            this.lblMovieLensActivity.TabIndex = 0;
             this.lblMovieLensActivity.Text = "Activity Log File:";
             // 
             // btnMovieLensActivity
             // 
             this.btnMovieLensActivity.Enabled = false;
-            this.btnMovieLensActivity.Location = new System.Drawing.Point(312, 169);
+            this.btnMovieLensActivity.Location = new System.Drawing.Point(312, 217);
             this.btnMovieLensActivity.Name = "btnMovieLensActivity";
             this.btnMovieLensActivity.Size = new System.Drawing.Size(29, 23);
-            this.btnMovieLensActivity.TabIndex = 10;
+            this.btnMovieLensActivity.TabIndex = 2;
             this.btnMovieLensActivity.Text = "...";
             this.btnMovieLensActivity.UseVisualStyleBackColor = true;
             this.btnMovieLensActivity.Click += new System.EventHandler(this.btnMovieLensActivity_Click);
@@ -1644,16 +1646,16 @@
             this.lblMovieLensRatings.Location = new System.Drawing.Point(16, 60);
             this.lblMovieLensRatings.Name = "lblMovieLensRatings";
             this.lblMovieLensRatings.Size = new System.Drawing.Size(65, 13);
-            this.lblMovieLensRatings.TabIndex = 11;
+            this.lblMovieLensRatings.TabIndex = 1;
             this.lblMovieLensRatings.Text = "Ratings File:";
             // 
             // btnMovieLensRatings
             // 
             this.btnMovieLensRatings.Enabled = false;
-            this.btnMovieLensRatings.Location = new System.Drawing.Point(312, 77);
+            this.btnMovieLensRatings.Location = new System.Drawing.Point(312, 73);
             this.btnMovieLensRatings.Name = "btnMovieLensRatings";
             this.btnMovieLensRatings.Size = new System.Drawing.Size(29, 23);
-            this.btnMovieLensRatings.TabIndex = 13;
+            this.btnMovieLensRatings.TabIndex = 4;
             this.btnMovieLensRatings.Text = "...";
             this.btnMovieLensRatings.UseVisualStyleBackColor = true;
             this.btnMovieLensRatings.Click += new System.EventHandler(this.btnMovieLensRatings_Click);
@@ -1663,10 +1665,10 @@
             this.txtMovieLensRatings.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtMovieLensRatings.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtMovieLensRatings.Enabled = false;
-            this.txtMovieLensRatings.Location = new System.Drawing.Point(19, 78);
+            this.txtMovieLensRatings.Location = new System.Drawing.Point(18, 76);
             this.txtMovieLensRatings.Name = "txtMovieLensRatings";
             this.txtMovieLensRatings.Size = new System.Drawing.Size(288, 20);
-            this.txtMovieLensRatings.TabIndex = 12;
+            this.txtMovieLensRatings.TabIndex = 3;
             this.txtMovieLensRatings.TextChanged += new System.EventHandler(this.txtMovieLensRatings_TextChanged);
             // 
             // chkMovieLensEnabled
@@ -1675,7 +1677,7 @@
             this.chkMovieLensEnabled.Location = new System.Drawing.Point(19, 27);
             this.chkMovieLensEnabled.Name = "chkMovieLensEnabled";
             this.chkMovieLensEnabled.Size = new System.Drawing.Size(59, 17);
-            this.chkMovieLensEnabled.TabIndex = 1;
+            this.chkMovieLensEnabled.TabIndex = 0;
             this.chkMovieLensEnabled.Text = "Enable";
             this.chkMovieLensEnabled.UseVisualStyleBackColor = true;
             this.chkMovieLensEnabled.CheckedChanged += new System.EventHandler(this.chkMovieLensEnabled_CheckedChanged);
@@ -1690,6 +1692,16 @@
             this.tabPage10.TabIndex = 10;
             this.tabPage10.Text = "Options";
             this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // lblMovieLensNote
+            // 
+            this.lblMovieLensNote.AutoSize = true;
+            this.lblMovieLensNote.Location = new System.Drawing.Point(15, 253);
+            this.lblMovieLensNote.Name = "lblMovieLensNote";
+            this.lblMovieLensNote.Size = new System.Drawing.Size(567, 13);
+            this.lblMovieLensNote.TabIndex = 13;
+            this.lblMovieLensNote.Text = "Note that when providing an activity log, more details can be used for imports su" +
+    "ch as the date/time a movie was rated.";
             // 
             // TraktRater
             // 
@@ -1885,6 +1897,7 @@
         private System.Windows.Forms.Label lblMovieLensTags;
         private System.Windows.Forms.Button btnMovieLensTags;
         private System.Windows.Forms.TextBox txtMovieLensTags;
+        private System.Windows.Forms.Label lblMovieLensNote;
     }
 }
 

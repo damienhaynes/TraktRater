@@ -1,14 +1,15 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
-using global::TraktRater.Settings;
-using global::TraktRater.Sites.API.MovieLens;
-using global::TraktRater.TraktAPI.DataStructures;
-using global::TraktRater.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using TraktRater.Logger;
+using TraktRater.Settings;
+using TraktRater.Sites.API.MovieLens;
+using TraktRater.TraktAPI.DataStructures;
+using TraktRater.UI;
 
 namespace TraktRater.Sites
 {
@@ -57,6 +58,8 @@ namespace TraktRater.Sites
             }
 
             Enabled = mImportRatings | mImportActivities | mImportTags | mImportWishlist;
+
+            if (Enabled) SetCSVHelperOptions();
         }
 
         public string Name
@@ -249,6 +252,21 @@ namespace TraktRater.Sites
 
             var csv = new CsvReader(textReader, mCsvConfiguration);
             return csv.GetRecords<MovieLensActivityItem>().ToList();
+        }
+
+        private void SetCSVHelperOptions()
+        {
+            mCsvConfiguration.IsHeaderCaseSensitive = false;
+
+            // MovieLens use "." for decimal seperator so set culture to cater for this            
+            mCsvConfiguration.CultureInfo = new System.Globalization.CultureInfo("en-US");
+
+            // if we're unable parse a row, log the details for analysis
+            mCsvConfiguration.IgnoreReadingExceptions = true;
+            mCsvConfiguration.ReadingExceptionCallback = (ex, row) =>
+            {
+                FileLog.Error($"Error reading row '{ex.Data["CsvHelper"]}'");
+            };
         }
     }
 }
