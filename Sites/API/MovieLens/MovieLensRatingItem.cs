@@ -28,7 +28,7 @@ namespace TraktRater.Sites.API.MovieLens
         public int ImdbId { get; set; }
         public int TmdbId { get; set; }
 
-        public TraktMovieRating ToTraktRatedMovie(MovieLensActivityItem.MovieRatingActivity aRatingActivity)
+        public TraktMovieRating ToTraktRatedMovie(MovieLensActivityItem.ActivityDate aRatingActivity)
         {
             return new TraktMovieRating()
             {
@@ -43,7 +43,7 @@ namespace TraktRater.Sites.API.MovieLens
             };
         }
 
-        public TraktMovieWatched ToTraktWatchedMovie(MovieLensActivityItem.MovieRatingActivity aRatingActivity)
+        public TraktMovieWatched ToTraktWatchedMovie(MovieLensActivityItem.ActivityDate aRatingActivity)
         {
             return new TraktMovieWatched()
             {
@@ -56,7 +56,7 @@ namespace TraktRater.Sites.API.MovieLens
             };
         }
 
-        private string GetRatingDate(MovieLensActivityItem.MovieRatingActivity aRatingActivity)
+        private string GetRatingDate(MovieLensActivityItem.ActivityDate aRatingActivity)
         {
             if (aRatingActivity == null)
                 return null;
@@ -66,6 +66,5 @@ namespace TraktRater.Sites.API.MovieLens
 
             return lResult.ToString().ToISO8601();
         }
-
     }
 }

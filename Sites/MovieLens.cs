@@ -45,7 +45,8 @@ namespace TraktRater.Sites
                 mImportActivities = File.Exists(mActivityFilename);
             }
 
-            mTagsFilename = aTagsFilename;
+            // tags are currently ignored
+            mTagsFilename = aTagsFilename; 
             if (!string.IsNullOrEmpty(mTagsFilename))
             {
                 mImportTags = File.Exists(mTagsFilename);
@@ -76,10 +77,13 @@ namespace TraktRater.Sites
 
         public void ImportRatings()
         {
-            List<MovieLensRatingItem> lRatings;
-            List<MovieLensActivityItem.MovieRatingActivity> lRatingActivities = new List<MovieLensActivityItem.MovieRatingActivity>();
-
             if (mImportCancelled) return;
+
+            List<MovieLensRatingItem> lRatings;
+            List<MovieLensWishlistItem> lWishlist;
+            
+            List<MovieLensActivityItem.ActivityDate> lRatingActivities = new List<MovieLensActivityItem.ActivityDate>();
+            List<MovieLensActivityItem.ActivityDate> lUserListActivities = new List<MovieLensActivityItem.ActivityDate>();
 
             if (mImportActivities)
             {
@@ -91,8 +95,14 @@ namespace TraktRater.Sites
                 // select 'rating' activities 
                 lRatingActivities = lActivities.Where(a => a.ActionType == "rating").Select(r => r.ToRatingActivity()).ToList();
                 UIUtils.UpdateStatus($"Found {lRatingActivities.Count} rating activities in Movie Lens Activity Log CSV file");
-            }
 
+                // select 'user-list' activities
+                // NB: presumably there is future support for other list types, wishlist appears to have listId == 1
+                // we may need to update this in the future to filter by list Id
+                lUserListActivities = lActivities.Where(a => a.ActionType == "user-list").Select(w => w.ToUserListActivity()).ToList();
+                UIUtils.UpdateStatus($"Found {lUserListActivities.Count} user-list activities in Movie Lens Activity Log CSV file");
+            }
+            
             if (mImportRatings)
             {
                 lRatings = ParseMovieRatingsCsv();
@@ -118,6 +128,19 @@ namespace TraktRater.Sites
                             if (mImportCancelled) return;
                         }
                     }
+                }
+            }
+
+            if (mImportWishlist)
+            {
+                lWishlist = ParseMovieWishlistCsv();
+                UIUtils.UpdateStatus($"Found {lWishlist.Count} wishlist items in Movie Lens Wishlist CSV file");
+
+                var lWishlistedMovies = lWishlist.Select(tdm => tdm.ToTraktWatchlistMovie()).ToList();
+
+                if (lWishlistedMovies.Any())
+                {
+                    AddMoviesToWatchlist(lWishlistedMovies);
                 }
             }
         }
@@ -214,6 +237,76 @@ namespace TraktRater.Sites
             }
         }
 
+        private void AddMoviesToWatchlist(List<TraktMovie> aWatchlistMovies)
+        {
+            // filter out already watchlisted items
+            UIUtils.UpdateStatus("Requesting existing watchlisted movies from trakt...");
+            var lWatchlistTraktMovies = TraktAPI.TraktAPI.GetWatchlistMovies();
+            if (lWatchlistTraktMovies == null)
+            {
+                UIUtils.UpdateStatus("Failed to get watchlisted movies from trakt.tv, skipping watchlisted movie import", true);
+                Thread.Sleep(2000);
+                return;
+            }
+
+            UIUtils.UpdateStatus($"Found {lWatchlistTraktMovies.Count()} watchlist movies on trakt");
+            UIUtils.UpdateStatus("Filtering out watchlist movies that are already in watchlist on trakt.tv");
+            aWatchlistMovies.RemoveAll(w => lWatchlistTraktMovies.FirstOrDefault(t => t.Movie.Ids.ImdbId == w.Ids.ImdbId ||
+                                                                                      t.Movie.Ids.TmdbId == w.Ids.TmdbId) != null);
+
+            // further filter out any watched items (optional)
+            if (AppSettings.IgnoreWatchedForWatchlist && aWatchlistMovies.Count > 0)
+            {
+                if (mImportCancelled) return;
+
+                // get watched movies from trakt so we don't import movies into watchlist that are already watched
+                // NB: we may have already done this, but let's do it again in case we have added more from ratings                
+
+                UIUtils.UpdateStatus("Requesting watched movies from trakt...");
+                var lWatchedTraktMovies = TraktAPI.TraktAPI.GetWatchedMovies();
+                if (lWatchedTraktMovies == null)
+                {
+                    UIUtils.UpdateStatus("Failed to get watched movies from trakt.tv", true);
+                    Thread.Sleep(2000);
+                }
+                else
+                {
+                    UIUtils.UpdateStatus($"Found {lWatchedTraktMovies.Count()} watched movies on trakt");
+                    UIUtils.UpdateStatus("Filtering out watchlist movies that are watched on trakt.tv");
+
+                    // remove movies from sync list which are watched already
+                    aWatchlistMovies.RemoveAll(w => lWatchedTraktMovies.FirstOrDefault(t => t.Movie.Ids.ImdbId == w.Ids.ImdbId ||
+                                                                                            t.Movie.Ids.TmdbId == w.Ids.TmdbId) != null);
+                }
+            }
+
+            int lPageSize = AppSettings.BatchSize;
+            int lPages = (int)Math.Ceiling((double)aWatchlistMovies.Count / lPageSize);
+            for (int i = 0; i < lPages; i++)
+            {
+                if (mImportCancelled) return;
+
+                UIUtils.UpdateStatus($"Importing page {i + 1}/{lPages} Movie Lens movies into watchlist...");                
+
+                var lMoviesToSync = new TraktMovieSync()
+                {
+                    Movies = aWatchlistMovies.Skip(i * lPageSize).Take(lPageSize).ToList()
+                };
+
+                var lResponse = TraktAPI.TraktAPI.AddMoviesToWatchlist(lMoviesToSync);
+                if (lResponse == null)
+                {
+                    UIUtils.UpdateStatus("Failed to send watchlist for Movie Lens movies to trakt.tv", true);
+                    Thread.Sleep(2000);
+                }
+                else if (lResponse.NotFound.Movies.Count > 0)
+                {
+                    UIUtils.UpdateStatus($"Unable to sync watchlist for {lResponse.NotFound.Movies.Count} movies as they're not found on trakt.tv!");
+                    Thread.Sleep(1000);
+                }
+            }
+        }
+
         private void HandleResponse(TraktSyncResponse aResponse)
         {
             if (aResponse == null)
@@ -241,6 +334,17 @@ namespace TraktRater.Sites
 
             var csv = new CsvReader(textReader, mCsvConfiguration);
             return csv.GetRecords<MovieLensRatingItem>().ToList();
+        }
+
+        private List<MovieLensWishlistItem> ParseMovieWishlistCsv()
+        {
+            mCsvConfiguration.RegisterClassMap<CSVWishlistFileDefinitionMap>();
+
+            UIUtils.UpdateStatus("Parsing Movie Lens Wishlist CSV file");
+            var textReader = File.OpenText(mWishlistFilename);
+
+            var csv = new CsvReader(textReader, mCsvConfiguration);
+            return csv.GetRecords<MovieLensWishlistItem>().ToList();
         }
 
         private List<MovieLensActivityItem> ParseMovieActivitiesCsv()
