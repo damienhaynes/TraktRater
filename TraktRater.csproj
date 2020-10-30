@@ -71,6 +71,9 @@
     <Compile Include="Sites\API\IMDb\IMDbRateItem.cs" />
     <Compile Include="Sites\API\IMDb\IMDbWatchlistItem.cs" />
     <Compile Include="Sites\API\Letterboxd\LetterboxdListItem.cs" />
+    <Compile Include="Sites\API\MovieLens\MovieLensActivityItem.cs" />
+    <Compile Include="Sites\API\MovieLens\MovieLensRatingItem.cs" />
+    <Compile Include="Sites\API\MovieLens\MovieLensWishlistItem.cs" />
     <Compile Include="Sites\API\ToDoMovies\ToDoMoviesListItem.cs" />
     <Compile Include="Sites\CheckMovies.cs" />
     <Compile Include="Logger\FileLog.cs" />
@@ -107,6 +110,7 @@
     <Compile Include="Sites\API\TMDb\TMDbSessionResponse.cs" />
     <Compile Include="Sites\Letterboxd.cs" />
     <Compile Include="Sites\Listal.cs" />
+    <Compile Include="Sites\MovieLens.cs" />
     <Compile Include="Sites\TMDb.cs" />
     <Compile Include="Sites\API\TMDb\TMDbAccountInfo.cs" />
     <Compile Include="Sites\API\TMDb\TMDbTokenResponse.cs" />

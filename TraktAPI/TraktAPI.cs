@@ -11,7 +11,7 @@
     /// <summary>
     /// Object that communicates with the Trakt API
     /// </summary>
-    public class TraktAPI
+    public static class TraktAPI
     {
         const string ApplicationId = "4feebb4e3791029816a401952c09fa5b446ed4a81b01d600031e422f0d3ae86d";
         const string SecretId = "0d4557136b35ab6234ec3bb659bbcc5b04e7781c4019508496b2b0086cba1fa0";
