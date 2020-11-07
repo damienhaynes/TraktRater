@@ -5,7 +5,7 @@
 
     static class Program
     {
-        public static TraktRater MainWindow;
+        public static TraktRaterApp MainWindow;
 
         /// <summary>
         /// The main entry point for the application.
@@ -16,7 +16,7 @@
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MainWindow = new TraktRater();
+            MainWindow = new TraktRaterApp();
             Application.Run(MainWindow);
         }
     }

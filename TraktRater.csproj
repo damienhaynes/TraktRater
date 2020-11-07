@@ -197,6 +197,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Controls\IMDbUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IMDbUserControl.Designer.cs">
+      <DependentUpon>IMDbUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ExportDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -225,6 +231,9 @@
     </Compile>
     <EmbeddedResource Include="TraktRater.resx">
       <DependentUpon>TraktRater.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\IMDbUserControl.resx">
+      <DependentUpon>IMDbUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ExportDialog.resx">
       <DependentUpon>ExportDialog.cs</DependentUpon>
