@@ -57,12 +57,12 @@ We also cache any data we get from [TVDb](http://thetvdb.com) so that subsequent
 The [TMDb](http://themoviedb.org) provider supports movie/show ratings and watchlists. TraktRater requires access to your account information. To allow Trakt Rater access to your account info follow these steps:
 
  * Click on the **Start Request Process** in the Trakt Rater application.
- * When a valid request token is recieved from [TMDb](http://themoviedb.org) you will be re-directed in a webbrowser to approve or deny Trakt Rater.
- * Click on the **Allow Button** in webbrowser.
+ * When a valid request token is received from [TMDb](http://themoviedb.org) you will be re-directed in a web-browser to approve or deny Trakt Rater.
+ * Click on the **Allow Button** in web-browser.
  * Enable or disable the **Sync Watchlist* button. Ratings are done by default.
  * You are now ready to import ratings from [TMDb](http://themoviedb.org), exit the browser and return to the application. If you do not start importing with-in 60 minutes or restart the application before importing then you will need to repeat process.
  
-If at any time you want to disable access or request persmission again you can click on the **Disable TMDb Support** link and then repeat steps above. 
+If at any time you want to disable access or request permission again you can click on the **Disable TMDb Support** link and then repeat steps above. 
  
 ### Listal ###
 The [Listal](http://www.listal.com) provider supports tv shows and movie ratings. TraktRater also supports import of your wanted list from Listal, it converts this into a watchlist. Once you login to the listal website, you can follow the link provided in the UI to download the respective XML files for Shows and Movies.
@@ -95,15 +95,15 @@ The [Criticker](http://www.letterboxd.com) provider supports movie ratings and w
  * You're now ready to Import!.
  
 ### Flixster ###
-The [Flixster](http://www.flixster.com) provider supports movie ratings from multiple sources such as Facebook and Rotten Tomotoes.
+The [Flixster](http://www.flixster.com) provider supports movie ratings from multiple sources such as Facebook and Rotten Tomatoes.
 
  * Logon to www.flixster.com if you haven't already.
  * Open Settings page with your export data [Export](http://letterboxd.com/settings/data/)
  * Copy your numeric User ID from the URL in the address bar
  * You're now ready to Import!.
 
- ### iCheckMovies ###
- The [iCheckMovies](http://www.movies.com) provider supports watchlists, toplists and lists of watched movies.
+### iCheckMovies ###
+The [iCheckMovies](http://www.movies.com) provider supports watchlists, toplists and lists of watched movies.
 
  * Logon to www.icheckmovies.com
  * Go to the list you want to import
@@ -112,6 +112,18 @@ The [Flixster](http://www.flixster.com) provider supports movie ratings from mul
  * Select the file in the TraktRater application
  * You're now ready to import!.
  
+### MovieLens ###
+The [MovieLens](https://movielens.org/) provider supports movie ratings and watchlists (aka wishlist).
+
+ * Logon to www.movielens.org
+ * Go to your account settings page
+ * Click on the **import or export** menu item
+ * Export your ratings, watchlist and activity log (as csv) to disk
+ * Select the corresponding file(s) in the TraktRater application
+ * You're now ready to import!.
+
+NB: the activity file is optional and only used to get the date/time a movie was rated/watched.
+
 Contributing
 ------------
 
