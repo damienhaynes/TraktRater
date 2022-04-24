@@ -357,10 +357,40 @@
         /// <returns>Records of type T</returns>
         private List<T> ParseCsvFile<T>( string aFilename )
         {
-            using ( var reader = new StreamReader( aFilename ) )
+            int lStartLine = 0;
+            bool lValidCsv = true;
+            using (var reader = new StreamReader(aFilename))
             {
-                // skip over the first 4 records to where the list records start
-                for ( var i = 0; i < 4; i++ )
+                // skip over the first few records until the list records start
+                string lLine = string.Empty;
+                do
+                {
+                    lLine = reader.ReadLine();
+                    lStartLine++;
+
+                    // protect against dodgy file
+                    // typically there is 4 rows of meta data
+                    if (lStartLine > 50)
+                    {
+                        lValidCsv = false;
+                        break;
+                    }
+                }
+                while (!lLine.Contains("Position,Name,Year,URL,Description"));
+            }
+
+            if (!lValidCsv)
+            {
+                FileLog.Info($"Unable to find header row of custom list after {lStartLine} rows");
+                return null;
+            }
+
+            FileLog.Info($"Found column headers on row {lStartLine}");
+
+            using (var reader = new StreamReader(aFilename))
+            {
+                // get to relavent part of file
+                for (int i = 0; i < lStartLine - 1; i++)
                 {
                     reader.ReadLine();
                 }
