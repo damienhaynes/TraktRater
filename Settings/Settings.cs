@@ -39,6 +39,7 @@
         const string cLetterboxdRatingsFilename = "LetterboxdRatingsFilename";
         const string cLetterboxdWatchedFilename = "LetterboxdWatchedFilename";
         const string cLetterboxdDiaryFilename = "LetterboxdDiaryFilename";
+        const string cLetterboxdWatchlistFilename = "LetterboxdWatchlistFilename";
         const string cLetterboxdCustomLists = "LetterboxdCustomLists";
         const string cFlixsterUserId = "FlixsterUserId";
         const string cFlixsterSyncWantToSee = "FlixsterSyncWantToSee";
@@ -114,6 +115,8 @@
         public static string LetterboxdRatingsFilename { get; set; }
         
         public static string LetterboxdWatchedFilename { get; set; }
+
+        public static string LetterboxdWatchlistFilename { get; set; }
 
         public static string LetterboxdDiaryFilename { get; set; }
 
@@ -209,6 +212,7 @@
                 ToDoMovieFilename = xmlReader.GetSettingValueAsString(cToDoMovieFilename, string.Empty);
                 LetterboxdRatingsFilename = xmlReader.GetSettingValueAsString(cLetterboxdRatingsFilename, string.Empty);
                 LetterboxdWatchedFilename = xmlReader.GetSettingValueAsString(cLetterboxdWatchedFilename, string.Empty);
+                LetterboxdWatchlistFilename = xmlReader.GetSettingValueAsString(cLetterboxdWatchlistFilename, string.Empty);
                 LetterboxdDiaryFilename = xmlReader.GetSettingValueAsString(cLetterboxdDiaryFilename, string.Empty);
                 LetterboxdCustomLists = xmlReader.GetSettingValueAsString( cLetterboxdCustomLists, string.Empty ).FromJSONArray<string>().ToList();
                 MovieLensRatingsFilename = xmlReader.GetSettingValueAsString(cMovieLensRatingsFilename, string.Empty);
@@ -290,6 +294,7 @@
             xmlWriter.WriteSetting(cToDoMovieFilename, ToDoMovieFilename);
             xmlWriter.WriteSetting(cLetterboxdRatingsFilename, LetterboxdRatingsFilename);
             xmlWriter.WriteSetting(cLetterboxdWatchedFilename, LetterboxdWatchedFilename);
+            xmlWriter.WriteSetting(cLetterboxdWatchlistFilename, LetterboxdWatchlistFilename);
             xmlWriter.WriteSetting(cLetterboxdDiaryFilename, LetterboxdDiaryFilename);
             xmlWriter.WriteSetting(cLetterboxdCustomLists, LetterboxdCustomLists.ToJSON());
             xmlWriter.WriteSetting(cMovieLensRatingsFilename, MovieLensRatingsFilename);

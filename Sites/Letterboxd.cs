@@ -28,11 +28,13 @@
 
         readonly bool mImportRatings = false;
         readonly bool mImportWatched = false;
+        readonly bool mImportWatchlist = false;
         readonly bool mImportDiary = false;
         readonly bool mImportCustomLists = false;
 
         readonly string mLetterboxdRatingsFile = null;
         readonly string mLetterboxdWatchedFile = null;
+        readonly string mLetterboxdWatchlistFile = null;
         readonly string mLetterboxdDiaryFile = null;
 
         readonly List<string> mCustomListsCsvs = null;
@@ -41,19 +43,21 @@
 
         #region Constructor
 
-        public Letterboxd(string aRatingsFile, string aWatchedFile, string aDiaryFile, List<string> aCustomLists )
+        public Letterboxd(string aRatingsFile, string aWatchedFile, string aWatchlistFile, string aDiaryFile, List<string> aCustomLists )
         {
             mLetterboxdRatingsFile = aRatingsFile;
             mLetterboxdWatchedFile = aWatchedFile;
+            mLetterboxdWatchlistFile = aWatchlistFile;
             mLetterboxdDiaryFile = aDiaryFile;
             mCustomListsCsvs = aCustomLists;
             
             mImportRatings = File.Exists(mLetterboxdRatingsFile);
             mImportWatched = File.Exists(mLetterboxdWatchedFile);
+            mImportWatchlist = File.Exists(mLetterboxdWatchlistFile);
             mImportDiary = File.Exists(mLetterboxdDiaryFile);
             mImportCustomLists = aCustomLists.Count > 0;
 
-            Enabled = mImportRatings || mImportWatched || mImportDiary || mImportCustomLists;
+            Enabled = mImportRatings || mImportWatched || mImportWatchlist || mImportDiary || mImportCustomLists;
             SetCSVHelperOptions();
         }
 
@@ -69,8 +73,12 @@
         {
             var lRateItems = new List<Dictionary<string, string>>();
             var lWatchedItems = new List<Dictionary<string, string>>();
+            var lWatchlistItems = new List<Dictionary<string, string>>();
             var lDiaryItems = new List<Dictionary<string, string>>();
             var lCustomLists = new Dictionary<string, List<LetterboxdListItem>>();
+
+            int lPageSize = AppSettings.BatchSize;
+            int lPages = 0;
 
             mImportCancelled = false;
 
@@ -90,6 +98,17 @@
             if (mImportWatched && !ParseCSVFile(mLetterboxdWatchedFile, out lWatchedItems))
             {
                 UIUtils.UpdateStatus("Failed to parse Letterboxd watched file!", true);
+                Thread.Sleep(2000);
+                return;
+            }
+            if (mImportCancelled) return;
+            #endregion
+
+            #region Parse Watchlist CSV
+            UIUtils.UpdateStatus("Reading Letterboxd watchlist export...");
+            if (mImportWatchlist && !ParseCSVFile(mLetterboxdWatchlistFile, out lWatchlistItems))
+            {
+                UIUtils.UpdateStatus("Failed to parse Letterboxd watchlist file!", true);
                 Thread.Sleep(2000);
                 return;
             }
@@ -149,13 +168,12 @@
 
                 if (lRateItems.Count > 0)
                 {
-                    int pageSize = AppSettings.BatchSize;
-                    int pages = (int)Math.Ceiling((double)lRateItems.Count / pageSize);
-                    for (int i = 0; i < pages; i++)
+                    lPages = (int)Math.Ceiling((double)lRateItems.Count / lPageSize);
+                    for (int i = 0; i < lPages; i++)
                     {
-                        UIUtils.UpdateStatus("Importing page {0}/{1} Letterboxd rated movies...", i + 1, pages);
+                        UIUtils.UpdateStatus($"Importing page {i + 1}/{lPages} Letterboxd rated movies...");
 
-                        TraktSyncResponse response = TraktAPI.AddMoviesToRatings(GetRateMoviesData(lRateItems.Skip(i * pageSize).Take(pageSize)));
+                        TraktSyncResponse response = TraktAPI.AddMoviesToRatings(GetRateMoviesData(lRateItems.Skip(i * lPageSize).Take(lPageSize)));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Error importing Letterboxd movie ratings to trakt.tv", true);
@@ -209,13 +227,12 @@
 
                     UIUtils.UpdateStatus("Importing {0} Letterboxd movies as watched...", lDiaryItems.Count);
 
-                    int pageSize = AppSettings.BatchSize;
-                    int pages = (int)Math.Ceiling((double)lDiaryItems.Count / pageSize);
-                    for (int i = 0; i < pages; i++)
+                    lPages = (int)Math.Ceiling((double)lDiaryItems.Count / lPageSize);
+                    for (int i = 0; i < lPages; i++)
                     {
-                        UIUtils.UpdateStatus("Importing page {0}/{1} Letterboxd movies as watched...", i + 1, pages);
+                        UIUtils.UpdateStatus($"Importing page {i + 1}/{lPages} Letterboxd movies as watched...");
 
-                        var response = TraktAPI.AddMoviesToWatchedHistory(GetSyncWatchedMoviesData(lDiaryItems.Skip(i * pageSize).Take(pageSize).ToList()));
+                        var response = TraktAPI.AddMoviesToWatchedHistory(GetSyncWatchedMoviesData(lDiaryItems.Skip(i * lPages).Take(lPages).ToList()));
                         if (response == null)
                         {
                             UIUtils.UpdateStatus("Failed to send watched status for Letterboxd movies to trakt.tv", true);
@@ -230,6 +247,32 @@
                     }
                 }
             }
+            #endregion
+
+            #region Import Watchlist Movies
+            if (mImportCancelled) return;
+
+            UIUtils.UpdateStatus($"Importing {lWatchlistItems.Count} Letterboxd movies into watchlist...");
+
+            lPages = (int)Math.Ceiling((double)lWatchlistItems.Count / lPageSize);
+            for (int i = 0; i < lPages; i++)
+            {
+                UIUtils.UpdateStatus($"Importing page {i + 1}/{lPages} Letterboxd movies into watchlist...");
+
+                var lResponse = TraktAPI.AddMoviesToWatchlist(GetSyncWatchlistMoviesData(lWatchlistItems.Skip(i * lPageSize).Take(lPageSize).ToList()));
+                if (lResponse == null)
+                {
+                    UIUtils.UpdateStatus("Failed to send watchlist items from Letterboxd into trakt.tv", true);
+                    Thread.Sleep(2000);
+                }
+                else if (lResponse.NotFound.Movies.Count > 0)
+                {
+                    UIUtils.UpdateStatus("Unable to sync Letterboxd watchlist for {0} movies as they're not found on trakt.tv!", lResponse.NotFound.Movies.Count);
+                    Thread.Sleep(1000);
+                }
+                if (mImportCancelled) return;
+            }
+
             #endregion
 
             #region Import Custom Lists
@@ -299,8 +342,7 @@
 
                     var lLetterboxdCsvListMovies = list.Value.Select( m => m.ToTraktMovie() );
 
-                    int lPageSize = AppSettings.BatchSize;
-                    int lPages = ( int )Math.Ceiling( ( double )list.Value.Count / lPageSize );
+                    lPages = ( int )Math.Ceiling( ( double )list.Value.Count / lPageSize );
                     for ( int i = 0; i < lPages; i++ )
                     {
                         UIUtils.UpdateStatus( $"Importing page {i + 1}/{lPages} Letterboxd custom list movies..." );
@@ -491,6 +533,25 @@
                                  });
 
             var lMovieData = new TraktMovieWatchedSync
+            {
+                Movies = lTraktMovies
+            };
+
+            return lMovieData;
+        }
+
+        private TraktMovieSync GetSyncWatchlistMoviesData(List<Dictionary<string, string>> aMovies)
+        {
+            var lTraktMovies = new List<TraktMovie>();
+
+            lTraktMovies.AddRange(from movie in aMovies
+                                  select new TraktMovie
+                                  {
+                                      Title = movie[LetterboxdFieldMapping.cTitle],
+                                      Year = movie[LetterboxdFieldMapping.cYear].ToYear()
+                                  });
+
+            var lMovieData = new TraktMovieSync
             {
                 Movies = lTraktMovies
             };

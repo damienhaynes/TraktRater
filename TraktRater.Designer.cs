@@ -54,6 +54,7 @@
             this.chkCheckMoviesAddWatchedToWatchlist = new System.Windows.Forms.CheckBox();
             this.txtMovieLensActivity = new System.Windows.Forms.TextBox();
             this.txtMovieLensTags = new System.Windows.Forms.TextBox();
+            this.txtLetterboxdWatchlistFile = new System.Windows.Forms.TextBox();
             this.txtCheckMoviesCsvFile = new System.Windows.Forms.TextBox();
             this.txtLetterboxdRatingsFile = new System.Windows.Forms.TextBox();
             this.txtLetterboxdWatchedFile = new System.Windows.Forms.TextBox();
@@ -113,6 +114,8 @@
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.grbLetterboxd = new System.Windows.Forms.GroupBox();
+            this.lblLetterboxdWatchlist = new System.Windows.Forms.Label();
+            this.btnLetterboxdWatchlistBrowse = new System.Windows.Forms.Button();
             this.lblLetterboxdCustomList = new System.Windows.Forms.Label();
             this.btnLetterBoxRemoveList = new System.Windows.Forms.Button();
             this.btnLetterBoxAddList = new System.Windows.Forms.Button();
@@ -435,7 +438,7 @@
             this.txtLetterboxdDiaryFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtLetterboxdDiaryFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtLetterboxdDiaryFile.Enabled = false;
-            this.txtLetterboxdDiaryFile.Location = new System.Drawing.Point(20, 173);
+            this.txtLetterboxdDiaryFile.Location = new System.Drawing.Point(20, 155);
             this.txtLetterboxdDiaryFile.Name = "txtLetterboxdDiaryFile";
             this.txtLetterboxdDiaryFile.Size = new System.Drawing.Size(288, 20);
             this.txtLetterboxdDiaryFile.TabIndex = 0;
@@ -483,6 +486,19 @@
             this.txtMovieLensTags.Visible = false;
             this.txtMovieLensTags.TextChanged += new System.EventHandler(this.txtMovieLensTags_TextChanged);
             // 
+            // txtLetterboxdWatchlistFile
+            // 
+            this.txtLetterboxdWatchlistFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtLetterboxdWatchlistFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
+            this.txtLetterboxdWatchlistFile.Enabled = false;
+            this.txtLetterboxdWatchlistFile.Location = new System.Drawing.Point(20, 194);
+            this.txtLetterboxdWatchlistFile.Name = "txtLetterboxdWatchlistFile";
+            this.txtLetterboxdWatchlistFile.Size = new System.Drawing.Size(288, 20);
+            this.txtLetterboxdWatchlistFile.TabIndex = 17;
+            this.tipHelp.SetToolTip(this.txtLetterboxdWatchlistFile, "The Diary file includes everything marked as watched at a specified date, this da" +
+        "te will override any movies found in the Watched file");
+            this.txtLetterboxdWatchlistFile.TextChanged += new System.EventHandler(this.txtLetterboxdWatchlistFile_TextChanged);
+            // 
             // txtCheckMoviesCsvFile
             // 
             this.txtCheckMoviesCsvFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
@@ -510,7 +526,7 @@
             this.txtLetterboxdWatchedFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtLetterboxdWatchedFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.txtLetterboxdWatchedFile.Enabled = false;
-            this.txtLetterboxdWatchedFile.Location = new System.Drawing.Point(20, 122);
+            this.txtLetterboxdWatchedFile.Location = new System.Drawing.Point(20, 116);
             this.txtLetterboxdWatchedFile.Name = "txtLetterboxdWatchedFile";
             this.txtLetterboxdWatchedFile.Size = new System.Drawing.Size(288, 20);
             this.txtLetterboxdWatchedFile.TabIndex = 6;
@@ -1148,6 +1164,9 @@
             this.grbLetterboxd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grbLetterboxd.Controls.Add(this.lblLetterboxdWatchlist);
+            this.grbLetterboxd.Controls.Add(this.btnLetterboxdWatchlistBrowse);
+            this.grbLetterboxd.Controls.Add(this.txtLetterboxdWatchlistFile);
             this.grbLetterboxd.Controls.Add(this.lblLetterboxdCustomList);
             this.grbLetterboxd.Controls.Add(this.btnLetterBoxRemoveList);
             this.grbLetterboxd.Controls.Add(this.btnLetterBoxAddList);
@@ -1169,10 +1188,30 @@
             this.grbLetterboxd.TabStop = false;
             this.grbLetterboxd.Text = "Letterboxd";
             // 
+            // lblLetterboxdWatchlist
+            // 
+            this.lblLetterboxdWatchlist.AutoSize = true;
+            this.lblLetterboxdWatchlist.Location = new System.Drawing.Point(17, 178);
+            this.lblLetterboxdWatchlist.Name = "lblLetterboxdWatchlist";
+            this.lblLetterboxdWatchlist.Size = new System.Drawing.Size(73, 13);
+            this.lblLetterboxdWatchlist.TabIndex = 19;
+            this.lblLetterboxdWatchlist.Text = "Watchlist File:";
+            // 
+            // btnLetterboxdWatchlistBrowse
+            // 
+            this.btnLetterboxdWatchlistBrowse.Enabled = false;
+            this.btnLetterboxdWatchlistBrowse.Location = new System.Drawing.Point(313, 191);
+            this.btnLetterboxdWatchlistBrowse.Name = "btnLetterboxdWatchlistBrowse";
+            this.btnLetterboxdWatchlistBrowse.Size = new System.Drawing.Size(29, 23);
+            this.btnLetterboxdWatchlistBrowse.TabIndex = 18;
+            this.btnLetterboxdWatchlistBrowse.Text = "...";
+            this.btnLetterboxdWatchlistBrowse.UseVisualStyleBackColor = true;
+            this.btnLetterboxdWatchlistBrowse.Click += new System.EventHandler(this.btnLetterboxdWatchlistBrowse_Click);
+            // 
             // lblLetterboxdCustomList
             // 
             this.lblLetterboxdCustomList.AutoSize = true;
-            this.lblLetterboxdCustomList.Location = new System.Drawing.Point(17, 210);
+            this.lblLetterboxdCustomList.Location = new System.Drawing.Point(17, 223);
             this.lblLetterboxdCustomList.Name = "lblLetterboxdCustomList";
             this.lblLetterboxdCustomList.Size = new System.Drawing.Size(69, 13);
             this.lblLetterboxdCustomList.TabIndex = 13;
@@ -1180,7 +1219,7 @@
             // 
             // btnLetterBoxRemoveList
             // 
-            this.btnLetterBoxRemoveList.Location = new System.Drawing.Point(314, 258);
+            this.btnLetterBoxRemoveList.Location = new System.Drawing.Point(313, 271);
             this.btnLetterBoxRemoveList.Name = "btnLetterBoxRemoveList";
             this.btnLetterBoxRemoveList.Size = new System.Drawing.Size(28, 23);
             this.btnLetterBoxRemoveList.TabIndex = 16;
@@ -1190,7 +1229,7 @@
             // 
             // btnLetterBoxAddList
             // 
-            this.btnLetterBoxAddList.Location = new System.Drawing.Point(314, 226);
+            this.btnLetterBoxAddList.Location = new System.Drawing.Point(313, 239);
             this.btnLetterBoxAddList.Name = "btnLetterBoxAddList";
             this.btnLetterBoxAddList.Size = new System.Drawing.Size(28, 23);
             this.btnLetterBoxAddList.TabIndex = 15;
@@ -1201,15 +1240,15 @@
             // listLetterboxdCustomLists
             // 
             this.listLetterboxdCustomLists.FormattingEnabled = true;
-            this.listLetterboxdCustomLists.Location = new System.Drawing.Point(20, 226);
+            this.listLetterboxdCustomLists.Location = new System.Drawing.Point(20, 239);
             this.listLetterboxdCustomLists.Name = "listLetterboxdCustomLists";
-            this.listLetterboxdCustomLists.Size = new System.Drawing.Size(290, 121);
+            this.listLetterboxdCustomLists.Size = new System.Drawing.Size(290, 108);
             this.listLetterboxdCustomLists.TabIndex = 14;
             // 
             // lblLetterboxdWatched
             // 
             this.lblLetterboxdWatched.AutoSize = true;
-            this.lblLetterboxdWatched.Location = new System.Drawing.Point(17, 106);
+            this.lblLetterboxdWatched.Location = new System.Drawing.Point(17, 100);
             this.lblLetterboxdWatched.Name = "lblLetterboxdWatched";
             this.lblLetterboxdWatched.Size = new System.Drawing.Size(73, 13);
             this.lblLetterboxdWatched.TabIndex = 4;
@@ -1218,7 +1257,7 @@
             // btnLetterboxdWatchedBrowse
             // 
             this.btnLetterboxdWatchedBrowse.Enabled = false;
-            this.btnLetterboxdWatchedBrowse.Location = new System.Drawing.Point(313, 121);
+            this.btnLetterboxdWatchedBrowse.Location = new System.Drawing.Point(313, 115);
             this.btnLetterboxdWatchedBrowse.Name = "btnLetterboxdWatchedBrowse";
             this.btnLetterboxdWatchedBrowse.Size = new System.Drawing.Size(29, 23);
             this.btnLetterboxdWatchedBrowse.TabIndex = 7;
@@ -1229,7 +1268,7 @@
             // lblLetterboxdDiary
             // 
             this.lblLetterboxdDiary.AutoSize = true;
-            this.lblLetterboxdDiary.Location = new System.Drawing.Point(17, 157);
+            this.lblLetterboxdDiary.Location = new System.Drawing.Point(17, 139);
             this.lblLetterboxdDiary.Name = "lblLetterboxdDiary";
             this.lblLetterboxdDiary.Size = new System.Drawing.Size(53, 13);
             this.lblLetterboxdDiary.TabIndex = 8;
@@ -1238,7 +1277,7 @@
             // btnLetterboxdDiaryBrowse
             // 
             this.btnLetterboxdDiaryBrowse.Enabled = false;
-            this.btnLetterboxdDiaryBrowse.Location = new System.Drawing.Point(313, 170);
+            this.btnLetterboxdDiaryBrowse.Location = new System.Drawing.Point(313, 152);
             this.btnLetterboxdDiaryBrowse.Name = "btnLetterboxdDiaryBrowse";
             this.btnLetterboxdDiaryBrowse.Size = new System.Drawing.Size(29, 23);
             this.btnLetterboxdDiaryBrowse.TabIndex = 1;
@@ -1901,6 +1940,9 @@
         private System.Windows.Forms.Button btnMovieLensTags;
         private System.Windows.Forms.TextBox txtMovieLensTags;
         private System.Windows.Forms.Label lblMovieLensNote;
+        private System.Windows.Forms.Label lblLetterboxdWatchlist;
+        private System.Windows.Forms.Button btnLetterboxdWatchlistBrowse;
+        private System.Windows.Forms.TextBox txtLetterboxdWatchlistFile;
     }
 }
 
