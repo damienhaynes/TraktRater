@@ -5,7 +5,7 @@
     using System.IO;
     using System.Net;
     using System.Text;
-
+    using System.Threading;
     using global::TraktRater.Settings;
 
     public class ExtendedWebClient : WebClient
@@ -164,8 +164,7 @@
 
         public static string GetFromTrakt(string address, string method = "GET")
         {
-            WebHeaderCollection headerCollection;
-            return GetFromTrakt(address, out headerCollection, method);
+            return GetFromTrakt(address, out WebHeaderCollection headerCollection, method);
         }
 
         public static string GetFromTrakt(string address, out WebHeaderCollection headerCollection, string method = "GET")
@@ -206,9 +205,15 @@
 
                 return strResponse;
             }
-            catch (WebException e)
+            catch (WebException aException)
             {
-                OnDataErrorReceived?.Invoke(e.Message);
+                // check for rate limit and wait if required
+                if (WaitIfRateLimited(aException))
+                {
+                    return GetFromTrakt(address, out headerCollection, method);
+                }
+
+                OnDataErrorReceived?.Invoke(aException.Message);
                 return null;
             }
         }
@@ -257,11 +262,43 @@
 
                 return strResponse;
             }
-            catch (WebException e)
+            catch (WebException aException)
             {
-                OnDataErrorReceived?.Invoke(e.Message);
+                // check for rate limit and wait if required
+                if (WaitIfRateLimited(aException))
+                {
+                    return PostToTrakt(address, postData, logRequest);
+                }
+
+                OnDataErrorReceived?.Invoke(aException.Message);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Determines if a request error is due to being rated limited
+        /// If rate limited, will wait the corresponding number of seconds so request 
+        /// can be tried again.
+        /// Docs: https://trakt.docs.apiary.io/#introduction/rate-limiting
+        /// </summary>
+        /// <param name="aException">Exception raised from request</param>
+        /// <returns>True if rate limited</returns>
+        private static bool WaitIfRateLimited(WebException aException)
+        {
+            HttpWebResponse lErrorResponse = aException.Response as HttpWebResponse;
+
+            if (lErrorResponse == null) return false;
+
+            // check HTTP status code is 429 (rate limit reached)
+            if ((int)lErrorResponse.StatusCode != 429) return false;
+
+            // get retry after (in seconds)
+            int lRetryAfter = int.Parse(lErrorResponse.Headers["Retry-After"]);
+
+            // log informative error and sleep required time
+            OnDataErrorReceived?.Invoke($"{aException.Message} {lErrorResponse.Headers["X-Ratelimit"]}. Waiting {lRetryAfter} seconds before trying again.");
+            Thread.Sleep(lRetryAfter * 1000);
+            return true;
         }
     }
 }
