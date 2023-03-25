@@ -84,7 +84,7 @@ The [Criticker](http://www.criticker.com) provider supports movie ratings.
  
  
 ### Letterboxd ###
-The [Criticker](http://www.letterboxd.com) provider supports movie ratings and watched data.
+The [Letterboxd](http://www.letterboxd.com) provider supports movie ratings and watched data.
 
  * Logon to www.letterboxd.com if you haven't already.
  * Open your Profile page
