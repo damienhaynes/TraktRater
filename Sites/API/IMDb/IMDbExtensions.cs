@@ -13,7 +13,7 @@
         {
             IMDbType retValue = IMDbType.Unknown;
 
-            switch (itemType.ToLower())
+            switch (itemType.Replace(" ", "").ToLower())
             {
                 case "video":
                 case "documentary":
