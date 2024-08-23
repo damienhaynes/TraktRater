@@ -31,6 +31,7 @@
         static bool mImportRunning = false;
         static bool mImportCancelled = false;
         static string mPinCode = string.Empty;
+        static string mVersion = string.Empty;
         #endregion
 
         #region Constants
@@ -43,8 +44,7 @@
 
         #region Constructor
         public TraktRater()
-        {
-			FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
+        {	
             InitializeComponent();
         }
         #endregion
@@ -53,7 +53,12 @@
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Text = "TraktRater v" + Assembly.GetEntryAssembly().GetName().Version;
+            
+            mVersion = "TraktRater v" + Assembly.GetEntryAssembly().GetName().Version;
+            Text = mVersion;
+            
+            InitialiseLog();
+
             AppSettings.Load();
             ClearProgress();
 
@@ -712,8 +717,7 @@
             if (!CheckAccountDetails() || mImportRunning)
                 return;
 
-            // update file log with new name
-            FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
+            InitialiseLog();
 
             mSites.Clear();
 
@@ -806,8 +810,7 @@
             if (!CheckAccountDetails() || mMaintenanceRunning)
                 return;
 
-            // update file log with new name
-            FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
+            InitialiseLog();
 
             var maintThread = new Thread(o =>
             {
@@ -910,8 +913,7 @@
             if (!CheckAccountDetails() || mExportRunning)
                 return;
 
-            // update file log with new name
-            FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
+            InitialiseLog();
 
             var mainThread = new Thread(o =>
             {
@@ -1048,6 +1050,13 @@
         #endregion
 
         #region Private Methods
+
+        private void InitialiseLog()
+        {
+            // update file log with new name
+            FileLog.LogFileName = DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".log";
+            FileLog.Info(mVersion);
+        }
 
         private bool Login()
         {
