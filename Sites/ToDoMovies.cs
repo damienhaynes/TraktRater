@@ -5,6 +5,7 @@ using global::TraktRater.Sites.API.ToDoMovies;
 using global::TraktRater.TraktAPI.DataStructures;
 using global::TraktRater.UI;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -15,9 +16,9 @@ namespace TraktRater.Sites
     {
         #region Variables
 
-        private string ToDoMoviesFilename;
+        private readonly string ToDoMoviesFilename;
         private bool ImportCancelled;
-        private readonly CsvConfiguration csvConfiguration = new CsvConfiguration();
+        private readonly CsvConfiguration csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture);
 
         #endregion
 
@@ -189,12 +190,11 @@ namespace TraktRater.Sites
 
         private List<ToDoMoviesListItem> ParseToDoMoviesCsv()
         {
-            csvConfiguration.RegisterClassMap<CSVFileDefinitionMap>();
-
             UIUtils.UpdateStatus("Parsing ToDoMovies CSV file");
             var textReader = File.OpenText(ToDoMoviesFilename);
 
             var csv = new CsvReader(textReader, csvConfiguration);
+            csv.Context.RegisterClassMap<CSVFileDefinitionMap>();
             return csv.GetRecords<ToDoMoviesListItem>().ToList();
         }
 

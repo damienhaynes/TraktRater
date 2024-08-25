@@ -24,7 +24,7 @@
 
         bool mImportCancelled = false;
 
-        readonly CsvConfiguration mCsvConfiguration = new CsvConfiguration();
+        readonly CsvConfiguration mCsvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture);
 
         readonly bool mImportRatings = false;
         readonly bool mImportWatched = false;
@@ -130,8 +130,6 @@
             UIUtils.UpdateStatus( "Reading Letterboxd custom lists export..." );
             if ( mImportCustomLists )
             {
-                mCsvConfiguration.RegisterClassMap<LetterboxdListCsvMap>();
-
                 foreach ( var list in mCustomListsCsvs )
                 {
                     UIUtils.UpdateStatus( $"Reading Letterboxd custom list '{list}'" );
@@ -145,7 +143,6 @@
                     }
                     lCustomLists.Add( list, lListCsvItems );
                 }
-                mCsvConfiguration.UnregisterClassMap<LetterboxdListCsvMap>();
             }
             if ( mImportCancelled ) return;
             #endregion
@@ -383,11 +380,13 @@
 
         private void SetCSVHelperOptions()
         {
+            mCsvConfiguration.PrepareHeaderForMatch = args => args.Header.ToLowerInvariant();
+
             // if we're unable parse a row, log the details for analysis
-            mCsvConfiguration.IgnoreReadingExceptions = true;
-            mCsvConfiguration.ReadingExceptionCallback = ( ex, row ) =>
+            mCsvConfiguration.ReadingExceptionOccurred = args =>
             {
-                FileLog.Error( $"Error reading row '{ex.Data["CsvHelper"]}'" );
+                FileLog.Error($"Error reading row '{args.Exception}'");
+                return true;
             };
         }
 
@@ -439,6 +438,8 @@
 
                 using ( var csv = new CsvReader( reader, mCsvConfiguration ) )
                 {
+                    csv.Context.RegisterClassMap<LetterboxdListCsvMap>();
+
                     return csv.GetRecords<T>().ToList();
                 }
             }
@@ -573,21 +574,16 @@
 
         private string GetWatchedDate(Dictionary<string, string> aItem)
         {
-            var lResult = DateTime.UtcNow;
-
             // check if diary field exists for Watched Date
             if (aItem.ContainsKey(LetterboxdFieldMapping.cWatchedDate))
             {
-                DateTime.TryParse(aItem[LetterboxdFieldMapping.cWatchedDate], CultureInfo.InvariantCulture, DateTimeStyles.None, out lResult);
-            }
-            else
-            {
-                // fallback to the date it was added into the watched file
-                // use release day if setting is enabled
-                return AppSettings.WatchedOnReleaseDay ? "released" : GetDateAdded(aItem);
+                DateTime.TryParse(aItem[LetterboxdFieldMapping.cWatchedDate], CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime lResult);
+                return lResult.ToString().ToISO8601();
             }
 
-            return lResult.ToString().ToISO8601();
+            // fallback to the date it was added into the watched file
+            // use release day if setting is enabled
+            return AppSettings.WatchedOnReleaseDay ? "released" : GetDateAdded(aItem);
         }
 
         #endregion

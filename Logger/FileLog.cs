@@ -9,7 +9,7 @@
 
     internal static class FileLog
     {
-        private static Object lockObject = new object();
+        private static readonly object mLockObject = new object();
 
         internal static readonly string LogDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"TraktRater", @"Logs");
         internal static string LogFileName { private get; set; }
@@ -106,7 +106,7 @@
 
             try
             {
-                lock (lockObject)
+                lock (mLockObject)
                 {
                     StreamWriter sw = File.AppendText(filename);
                     sw.WriteLine(log);

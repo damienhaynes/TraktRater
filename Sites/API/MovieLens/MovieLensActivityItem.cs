@@ -4,7 +4,7 @@ using TraktRater.Extensions;
 
 namespace TraktRater.Sites.API.MovieLens
 {
-    sealed class CSVActivityFileDefinitionMap : CsvClassMap<MovieLensActivityItem>
+    sealed class CSVActivityFileDefinitionMap : ClassMap<MovieLensActivityItem>
     {
         public CSVActivityFileDefinitionMap()
         {

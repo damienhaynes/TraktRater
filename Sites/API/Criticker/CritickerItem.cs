@@ -6,7 +6,7 @@ using System;
 
 namespace TraktRater.Sites.API.Criticker
 {
-    sealed class CSVFileDefinitionMap : CsvClassMap<CritickerItem>
+    sealed class CSVFileDefinitionMap : ClassMap<CritickerItem>
     {
         public CSVFileDefinitionMap()
         {

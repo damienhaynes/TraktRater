@@ -3,7 +3,7 @@
     using CsvHelper.Configuration;
     using global::TraktRater.TraktAPI.DataStructures;
 
-    sealed class LetterboxdListCsvMap : CsvClassMap<LetterboxdListItem>
+    sealed class LetterboxdListCsvMap : ClassMap<LetterboxdListItem>
     {
         public LetterboxdListCsvMap()
         {

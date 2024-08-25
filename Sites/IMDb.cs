@@ -11,6 +11,7 @@
     using global::TraktRater.UI;
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -21,7 +22,7 @@
   
         internal static bool mImportCancelled = false;
 
-        readonly CsvConfiguration mCsvConfiguration = new CsvConfiguration();
+        readonly CsvConfiguration mCsvConfiguration = new CsvConfiguration(new CultureInfo("en-US"));
 
         readonly string mRatingsFileCsv = null;
         readonly string mWatchlistFileCsv = null;
@@ -72,16 +73,13 @@
             UIUtils.UpdateStatus("Reading IMDb ratings export...");
             if (mImportCsvRatings)
             {
-                mCsvConfiguration.RegisterClassMap<IMDbRatingCsvMap>();
-                
-                lRatedCsvItems = ParseCsvFile<IMDbRateItem>(mRatingsFileCsv);
+                lRatedCsvItems = ParseCsvFile<IMDbRateItem, IMDbRatingCsvMap>(mRatingsFileCsv);
                 if (lRatedCsvItems == null)
                 {
                     UIUtils.UpdateStatus("Failed to parse IMDb ratings file!", true);
                     Thread.Sleep(2000);
                     return;
                 }
-                mCsvConfiguration.UnregisterClassMap<IMDbRatingCsvMap>();
             }
             if (mImportCancelled) return;
             #endregion
@@ -90,16 +88,13 @@
             UIUtils.UpdateStatus("Reading IMDb watchlist export...");
             if (mImportCsvWatchlist)
             {
-                mCsvConfiguration.RegisterClassMap<IMDbListCsvMap>();
-
-                lWatchlistCsvItems = ParseCsvFile<IMDbListItem>(mWatchlistFileCsv);
+                lWatchlistCsvItems = ParseCsvFile<IMDbListItem, IMDbListCsvMap>(mWatchlistFileCsv);
                 if (lWatchlistCsvItems == null)
                 {
                     UIUtils.UpdateStatus("Failed to parse IMDb watchlist file!", true);
                     Thread.Sleep(2000);
                     return;
                 }
-                mCsvConfiguration.UnregisterClassMap<IMDbListCsvMap>();
             }
             if (mImportCancelled) return;
             #endregion
@@ -108,13 +103,11 @@
             UIUtils.UpdateStatus("Reading IMDb custom lists export...");
             if (mImportCsvCustomLists)
             {
-                mCsvConfiguration.RegisterClassMap<IMDbListCsvMap>();
-
                 foreach (var list in mCustomListsCsvs)
                 {
                     UIUtils.UpdateStatus($"Reading IMDb custom list '{list}'");
 
-                    var lListCsvItems = ParseCsvFile<IMDbListItem>(list);
+                    var lListCsvItems = ParseCsvFile<IMDbListItem, IMDbListCsvMap>(list);
                     if (lListCsvItems == null)
                     {
                         UIUtils.UpdateStatus("Failed to parse IMDb custom list file!", true);
@@ -123,7 +116,6 @@
                     }
                     lCustomLists.Add(list, lListCsvItems);
                 }
-                mCsvConfiguration.UnregisterClassMap<IMDbListCsvMap>();
             }
             if (mImportCancelled) return;
             #endregion
@@ -743,16 +735,13 @@
         
         private void SetCSVHelperOptions()
         {
-            mCsvConfiguration.IsHeaderCaseSensitive = false;
-
-            // IMDb use "." for decimal seperator so set culture to cater for this            
-            mCsvConfiguration.CultureInfo = new System.Globalization.CultureInfo("en-US");
+            mCsvConfiguration.PrepareHeaderForMatch = args => args.Header.ToLowerInvariant();
 
             // if we're unable parse a row, log the details for analysis
-            mCsvConfiguration.IgnoreReadingExceptions = true;
-            mCsvConfiguration.ReadingExceptionCallback = (ex, row) =>
+            mCsvConfiguration.ReadingExceptionOccurred = args =>
             {
-                FileLog.Error($"Error reading row '{ex.Data["CsvHelper"]}'");
+                FileLog.Error($"Error reading row '{args.Exception}'");
+                return true;
             };
         }
 
@@ -762,11 +751,14 @@
         /// <typeparam name="T">IMDbListItem or IMDbRateItem</typeparam>
         /// <param name="aFilename">Full path to CSV file to read</param>
         /// <returns>Records of type T</returns>
-        private List<T> ParseCsvFile<T>(string aFilename)
+        private List<T> ParseCsvFile<T, TMap>(string aFilename) 
+            where T : class
+            where TMap : ClassMap<T>, new()
         {
             using (var reader = new StreamReader(aFilename))
             using (var csv = new CsvReader(reader, mCsvConfiguration))
             {
+                csv.Context.RegisterClassMap<TMap>();
                 return csv.GetRecords<T>().ToList();
             }
         }

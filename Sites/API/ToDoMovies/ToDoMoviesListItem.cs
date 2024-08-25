@@ -6,7 +6,7 @@ using System;
 
 namespace TraktRater.Sites.API.ToDoMovies
 {
-    sealed class CSVFileDefinitionMap : CsvClassMap<ToDoMoviesListItem>
+    sealed class CSVFileDefinitionMap : ClassMap<ToDoMoviesListItem>
     {
         public CSVFileDefinitionMap()
         {
