@@ -1043,7 +1043,7 @@ namespace TraktRater
                 Directory.CreateDirectory(directory);
 
             using (var writer = new StreamWriter(filename))
-            using (var csv = new CsvWriter(writer))
+            using (var csv = new CsvWriter(writer, new System.Globalization.CultureInfo("en-US")))
             {
                 csv.WriteRecords(records);
             }

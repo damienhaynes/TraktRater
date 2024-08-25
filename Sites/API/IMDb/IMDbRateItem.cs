@@ -6,7 +6,7 @@
     using global::TraktRater.TraktAPI.DataStructures;
     using System;
 
-    sealed class IMDbRatingCsvMap : CsvClassMap<IMDbRateItem>
+    sealed class IMDbRatingCsvMap : ClassMap<IMDbRateItem>
     {
         public IMDbRatingCsvMap()
         {
@@ -95,13 +95,12 @@
         
         private string GetFormattedDate(string imdbDateTime)
         {
-            DateTime result;
             string createdDate = DateTime.Now.ToString().ToISO8601();
 
             if (!string.IsNullOrEmpty(imdbDateTime))
             {
                 // date is in the form 'YYYY-MM-DD' (but no guarantee for other locales)
-                if (DateTime.TryParse(imdbDateTime, out result))
+                if (DateTime.TryParse(imdbDateTime, out DateTime result))
                 {
                     createdDate = result.ToString().ToISO8601();
                 }

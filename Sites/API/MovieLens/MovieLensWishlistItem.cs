@@ -1,11 +1,9 @@
 ﻿using CsvHelper.Configuration;
-using System;
-using TraktRater.Extensions;
 using TraktRater.TraktAPI.DataStructures;
 
 namespace TraktRater.Sites.API.MovieLens
 {
-    sealed class CSVWishlistFileDefinitionMap : CsvClassMap<MovieLensWishlistItem>
+    sealed class CSVWishlistFileDefinitionMap : ClassMap<MovieLensWishlistItem>
     {
         public CSVWishlistFileDefinitionMap()
         {

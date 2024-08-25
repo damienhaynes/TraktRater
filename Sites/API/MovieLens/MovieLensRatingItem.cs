@@ -6,7 +6,7 @@ using System;
 
 namespace TraktRater.Sites.API.MovieLens
 {
-    sealed class CSVRatingsFileDefinitionMap : CsvClassMap<MovieLensRatingItem>
+    sealed class CSVRatingsFileDefinitionMap : ClassMap<MovieLensRatingItem>
     {
         public CSVRatingsFileDefinitionMap()
         {

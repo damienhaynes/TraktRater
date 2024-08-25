@@ -288,8 +288,7 @@
                     // we can also lookup by airDate if using a csv export file
                     if (episode[IMDbFieldMapping.cProvider].IsCSVExport())
                     {
-                        string episodeAirDate = null;
-                        episode.TryGetValue(IMDbFieldMapping.cReleaseDate, out episodeAirDate);
+                        episode.TryGetValue(IMDbFieldMapping.cReleaseDate, out string episodeAirDate);
                         if (!string.IsNullOrEmpty(episodeAirDate))
                         {
                             tvdbEpisodeInfo = tvdbShowInfo.Episodes.Find(e => e.AirDate == episodeAirDate);
@@ -507,13 +506,12 @@
 
         static string GetLastCreatedDate(string imdbDateTime)
         {
-            DateTime result;
             string createdDate = DateTime.Now.ToString().ToISO8601();
             
             if (!string.IsNullOrEmpty(imdbDateTime))
             {
                 // date is in the form 'YYYY-MM-DD' (but no guarantee for other locales)
-                if (DateTime.TryParse(imdbDateTime, out result))
+                if (DateTime.TryParse(imdbDateTime, out DateTime result))
                 {
                     createdDate = result.ToString().ToISO8601();
                 }

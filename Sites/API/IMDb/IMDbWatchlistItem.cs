@@ -3,7 +3,7 @@
     using CsvHelper.Configuration;
     using global::TraktRater.TraktAPI.DataStructures;
 
-    sealed class IMDbListCsvMap : CsvClassMap<IMDbListItem>
+    sealed class IMDbListCsvMap : ClassMap<IMDbListItem>
     {
         public IMDbListCsvMap()
         {

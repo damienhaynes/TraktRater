@@ -5,6 +5,7 @@ using global::TraktRater.Sites.API.Criticker;
 using global::TraktRater.TraktAPI.DataStructures;
 using global::TraktRater.UI;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -15,9 +16,9 @@ namespace TraktRater.Sites
     {
         #region Variables
 
-        private string CritickerFilename;
         private bool ImportCancelled;
-        private readonly CsvConfiguration csvConfiguration = new CsvConfiguration();
+        private readonly string CritickerFilename;
+        private readonly CsvConfiguration csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture);
 
         #endregion
 
@@ -254,12 +255,11 @@ namespace TraktRater.Sites
 
         private List<CritickerItem> ParseCritickerCsv()
         {
-            csvConfiguration.RegisterClassMap<CSVFileDefinitionMap>();
-
             UIUtils.UpdateStatus("Parsing Criticker CSV file");
             var textReader = File.OpenText(CritickerFilename);
 
             var csv = new CsvReader(textReader, csvConfiguration);
+            csv.Context.RegisterClassMap<CSVFileDefinitionMap>();
             return csv.GetRecords<CritickerItem>().ToList();
         }
 

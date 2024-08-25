@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -633,24 +634,22 @@
         /// <returns>Records of type T</returns>
         private List<T> ParseCsvFile<T>(StreamReader aFileStreamReader)
         {
-            CsvConfiguration csvConfiguration = new CsvConfiguration
+            CsvConfiguration csvConfiguration = new CsvConfiguration(new CultureInfo("en-US"))
             {
-                IsHeaderCaseSensitive = false,
-
-                // IMDb use "." for decimal seperator so set culture to cater for this            
-                CultureInfo = new System.Globalization.CultureInfo("en-US"),
+                PrepareHeaderForMatch = args => args.Header.ToLowerInvariant(),
 
                 // if we're unable parse a row, log the details for analysis
-                IgnoreReadingExceptions = true,
-                ReadingExceptionCallback = (ex, row) =>
+                ReadingExceptionOccurred = args =>
                 {
-                    FileLog.Error($"Error reading row '{ex.Data["CsvHelper"]}'");
+                    FileLog.Error($"Error reading row '{args.Exception}'");
+                    return true;
                 }
             };
-            csvConfiguration.RegisterClassMap<IMDbListCsvMap>();
 
             using (var csv = new CsvReader(aFileStreamReader, csvConfiguration))
             {
+                csv.Context.RegisterClassMap<IMDbListCsvMap>();
+
                 List<T> records = csv.GetRecords<T>().ToList();
                 aFileStreamReader.Close();
 

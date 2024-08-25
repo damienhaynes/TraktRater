@@ -13,13 +13,13 @@ namespace TraktRater.Sites
 {
     internal class CheckMovies : IRateSite
     {
-        private string CheckMoviesFilename;
-        private int DelimiterOption;
         private bool ImportCancelled;
-        private readonly CsvConfiguration csvConfiguration = new CsvConfiguration()
+        private readonly string CheckMoviesFilename;
+        private readonly int DelimiterOption;
+        
+        private readonly CsvConfiguration csvConfiguration = new CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture)
         {
             HasHeaderRecord = true,
-            IsHeaderCaseSensitive = false
         };
 
         public CheckMovies(string checkMoviesFilename, int delimiter)
