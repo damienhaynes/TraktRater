@@ -1,69 +1,166 @@
 ﻿namespace TraktRater.TraktAPI
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-
     using global::TraktRater.Extensions;
     using global::TraktRater.TraktAPI.DataStructures;
     using global::TraktRater.Web;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Object that communicates with the Trakt API
     /// </summary>
     public static class TraktAPI
     {
-        const string ApplicationId = "4feebb4e3791029816a401952c09fa5b446ed4a81b01d600031e422f0d3ae86d";
-        const string SecretId = "0d4557136b35ab6234ec3bb659bbcc5b04e7781c4019508496b2b0086cba1fa0";
-        const string RedirectUri = "urn:ietf:wg:oauth:2.0:oob";
-        const string PinUrlId = "365";
-        
-        public static string AppId { get { return PinUrlId; } }
-        
-        /// <summary>
-        /// Login to trakt to request a user access token for all subsequent requests              
-        /// </summary>
-        /// <param name="key">Set this to a PinCode for first time oAuth otherwise your previous Access Token</param>
-        /// <returns>If successfully an access token will be returned</returns>
-        public static TraktOAuthToken GetOAuthToken(string key)
+        private enum TraktDeviceAuthStatus
         {
-            // set our required headers now
+          Pending,
+          Authorised,
+          Denied,
+          Expired,
+          Invalid,
+          AlreadyUsed,
+          SlowDown
+        }
+
+        // TODO: convert to github secrets and request for another set
+        const string cClientId = "4feebb4e3791029816a401952c09fa5b446ed4a81b01d600031e422f0d3ae86d";
+        const string cClientSecret = "0d4557136b35ab6234ec3bb659bbcc5b04e7781c4019508496b2b0086cba1fa0";
+        const string cRedirectUri = "urn:ietf:wg:oauth:2.0:oob";
+
+        public static TraktDeviceCode GenerateDeviceCode()
+        {
+          TraktWeb.CustomRequestHeaders.Clear();
+
+          string lResponse = TraktWeb.PostToTrakt(
+            address: TraktURIs.DeviceCode,
+            postData: new TraktClientId { ClientId = cClientId }.ToJSON(),
+            logRequest: false );
+
+          if ( string.IsNullOrEmpty( lResponse ) )
+            return null;
+
+          return lResponse.FromJSON<TraktDeviceCode>();
+        }
+
+        public static async Task<TraktOAuthToken> WaitForDeviceAuthorisation( TraktDeviceCode aDeviceCode )
+        {
+          if ( aDeviceCode == null || string.IsNullOrEmpty( aDeviceCode.DeviceCode ) )
+            return null;
+
+          var lExpiryTime = DateTime.UtcNow.AddSeconds( aDeviceCode.ExpiresIn );
+
+          while ( DateTime.UtcNow < lExpiryTime )
+          {
+            await Task.Delay( aDeviceCode.Interval * 1_000 );
+
+            TraktDeviceAuthStatus lStatus = PollForDeviceToken( aDeviceCode.DeviceCode, out TraktOAuthToken lToken );
+
+            switch ( lStatus )
+            {
+              case TraktDeviceAuthStatus.Authorised:
+                // add authentication headers for future requests
+                SetAuthenticationHeaders( lToken.AccessToken );
+                return lToken;
+
+              case TraktDeviceAuthStatus.Pending:
+                continue;
+
+              case TraktDeviceAuthStatus.Denied:
+              case TraktDeviceAuthStatus.Expired:
+              case TraktDeviceAuthStatus.Invalid:
+              case TraktDeviceAuthStatus.AlreadyUsed:
+                return null;
+            }
+          }
+
+          return null;
+        }
+
+        private static TraktDeviceAuthStatus PollForDeviceToken( string aDeviceCode, out TraktOAuthToken aToken )
+        {
+          aToken = new TraktOAuthToken();
+
+          var lDeviceToken = new TraktDeviceToken
+          {
+            Code = aDeviceCode,
+            ClientId = cClientId,
+            ClientSecret = cClientSecret
+          };
+
+          string lTokenResponse = TraktWeb.PostToTraktWithStatus(
+            aAddress: TraktURIs.DeviceToken,
+            aPostData: lDeviceToken.ToJSON(),
+            aStatusCode: out HttpStatusCode lStatusCode,
+            aLogRequest: false );
+
+          switch ( lStatusCode )
+          {
+            // 200 (Success)
+            case HttpStatusCode.OK:
+              aToken = lTokenResponse.FromJSON<TraktOAuthToken>();
+              return TraktDeviceAuthStatus.Authorised;
+
+            // 400 (Pending)
+            case HttpStatusCode.BadRequest:
+              return TraktDeviceAuthStatus.Pending;
+
+            // 409 (Already Used)
+            case HttpStatusCode.Conflict:
+              return TraktDeviceAuthStatus.AlreadyUsed;
+
+            // 410 (Expired)
+            case HttpStatusCode.Gone:
+              return TraktDeviceAuthStatus.Expired;
+
+            // 418 (Denied)
+            case (HttpStatusCode)418:
+              return TraktDeviceAuthStatus.Denied;
+
+            // 429 (Slow Down) Handled in PostToTraktWithStatus
+
+            default:
+              return TraktDeviceAuthStatus.Invalid;
+          }
+        }
+
+        public static TraktOAuthToken RefreshToken(string aRefreshToken)
+        {
             TraktWeb.CustomRequestHeaders.Clear();
 
-            TraktWeb.CustomRequestHeaders.Add("trakt-api-key", ApplicationId);
-            TraktWeb.CustomRequestHeaders.Add("trakt-api-version", "2");
+            var lRefreshTokenData = new TraktRefreshToken
+            {
+              RefreshToken = aRefreshToken,
+              ClientId = cClientId,
+              ClientSecret = cClientSecret,
+              RedirectUrl = cRedirectUri,
+              GrantType = "refresh_token"
+            };
 
-            string response = TraktWeb.PostToTrakt(TraktURIs.LoginOAuth, GetOAuthLogin(key), true);
-            var loginResponse = response.FromJSON<TraktOAuthToken>();
+            string lResponse = TraktWeb.PostToTrakt(TraktURIs.LoginOAuth, lRefreshTokenData.ToJSON(), false);
+            if ( lResponse == null )
+              return null;
 
-            if (loginResponse == null || loginResponse.AccessToken == null)
-                return loginResponse;
+            var lLoginResponse = lResponse.FromJSON<TraktOAuthToken>();
 
-            // add the token for authenticated methods
-            TraktWeb.CustomRequestHeaders.Add("Authorization", string.Format("Bearer {0}", loginResponse.AccessToken));
+            if (lLoginResponse == null || lLoginResponse.AccessToken == null)
+                return null;
 
-            return loginResponse;
+            // add authentication headers for future requests
+            SetAuthenticationHeaders( lLoginResponse.AccessToken );
+
+            return lLoginResponse;
         }
 
-        /// <summary>
-        /// Gets a oAuth Login object
-        /// </summary>
-        private static string GetOAuthLogin(string key)
+        private static void SetAuthenticationHeaders( string aAccessToken )
         {
-            bool isPinCode = key.Length == 8;
-
-            return new TraktOAuthLogin
-                        {
-                            Code = isPinCode ? key : null,
-                            RefreshToken = isPinCode ? null : key,
-                            ClientId = ApplicationId, 
-                            ClientSecret = SecretId, 
-                            RedirectUri = RedirectUri, 
-                            GrantType = isPinCode ? "authorization_code" : "refresh_token"
-                        }
-                        .ToJSON();
+          TraktWeb.CustomRequestHeaders.Add( "Authorization", $"Bearer {aAccessToken}" );
+          TraktWeb.CustomRequestHeaders.Add( "trakt-api-version", "2" );
+          TraktWeb.CustomRequestHeaders.Add( "trakt-api-key", cClientId );
         }
-        
+
         #region Sync to Trakt
 
         #region Watchlist

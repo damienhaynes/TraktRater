@@ -275,6 +275,73 @@
             }
         }
 
+        public static string PostToTraktWithStatus( string aAddress, string aPostData, out HttpStatusCode aStatusCode, bool aLogRequest = true )
+        {
+          aStatusCode = 0;
+
+          if ( OnDataSend != null && aLogRequest )
+            OnDataSend( aAddress, aPostData );
+
+          byte[] lData = new UTF8Encoding().GetBytes( aPostData );
+
+          var lRequest = WebRequest.Create( aAddress ) as HttpWebRequest;
+          lRequest.KeepAlive = true;
+
+          lRequest.Method = "POST";
+          lRequest.ContentLength = lData.Length;
+          lRequest.Timeout = 120000;
+          lRequest.ContentType = "application/json";
+          lRequest.UserAgent = AppSettings.UserAgent;
+          foreach ( var header in CustomRequestHeaders )
+          {
+            lRequest.Headers.Add( header.Key, header.Value );
+          }
+
+          try
+          {
+            // post to trakt
+            using ( Stream lPostStream = lRequest.GetRequestStream() )
+            {
+              lPostStream.Write( lData, 0, lData.Length );
+            }
+
+            // get the response
+            using ( HttpWebResponse lResponse = (HttpWebResponse)lRequest.GetResponse() )
+            {
+              aStatusCode = lResponse.StatusCode;
+
+              using ( Stream lResponseStream = lResponse.GetResponseStream() )
+              using ( var lReader = new StreamReader( lResponseStream ) )
+              {
+                string lResponseString = lReader.ReadToEnd();
+
+                OnDataReceived?.Invoke( lResponseString );
+
+                return lResponseString;
+              }
+            }
+          }
+          catch ( WebException aException )
+          {
+            if ( aException.Response is HttpWebResponse lErrorResponse )
+            {
+              aStatusCode = lErrorResponse.StatusCode;
+
+              // 429 is handled internally so we will retry when allowed
+              if ( (int)aStatusCode == 429 )
+              {
+                if ( WaitIfRateLimited( aException ) )
+                {
+                  return PostToTraktWithStatus( aAddress, aPostData, out aStatusCode, aLogRequest );
+                }
+              }
+            }
+
+            OnDataErrorReceived?.Invoke( aException.Message );
+            return null;
+          }
+        }
+    
         /// <summary>
         /// Determines if a request error is due to being rated limited
         /// If rate limited, will wait the corresponding number of seconds so request 
@@ -285,9 +352,8 @@
         /// <returns>True if rate limited</returns>
         private static bool WaitIfRateLimited(WebException aException)
         {
-            HttpWebResponse lErrorResponse = aException.Response as HttpWebResponse;
-
-            if (lErrorResponse == null) return false;
+            if ( !( aException.Response is HttpWebResponse lErrorResponse ) )
+              return false;
 
             // check HTTP status code is 429 (rate limit reached)
             if ((int)lErrorResponse.StatusCode != 429) return false;

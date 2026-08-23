@@ -1,5 +1,12 @@
 ﻿namespace TraktRater
 {
+    using global::TraktRater.Logger;
+    using global::TraktRater.Settings;
+    using global::TraktRater.Sites;
+    using global::TraktRater.TraktAPI;
+    using global::TraktRater.TraktAPI.DataStructures;
+    using global::TraktRater.UI;
+    using QRCoder;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -10,11 +17,6 @@
     using System.Threading;
     using System.Windows.Forms;
 
-    using global::TraktRater.Logger;
-    using global::TraktRater.Settings;
-    using global::TraktRater.Sites;
-    using global::TraktRater.UI;
-    
     public partial class TraktRater : Form
     {
         #region UI Invoke Delegates
@@ -30,7 +32,6 @@
         static bool mExportRunning = false;
         static bool mImportRunning = false;
         static bool mImportCancelled = false;
-        static string mPinCode = string.Empty;
         static string mVersion = string.Empty;
         #endregion
 
@@ -39,7 +40,6 @@
         const string cCancelText = "Cancel";
         const string cTraktAuthorise = "Click to authorise access to your account";
         const string cTraktUnAuthorise = "Click to remove current access token";
-        const string cTraktPinCodeWaterMark = "Authorise and then enter pin code here...";
         #endregion
 
         #region Constructor
@@ -162,47 +162,58 @@
             Process.Start( @"https://www.paypal.me/damienlhaynes" );
         }
 
-        private void lnkTraktOAuth_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private async void lnkTraktOAuth_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
         {
-            // if we have already authorised, un-register so can sign-in and authorise again
-            if (!string.IsNullOrEmpty(AppSettings.TraktOAuthToken))
+          // if we have already authorised, un-register so can sign-in and authorise again
+          if ( !string.IsNullOrEmpty( AppSettings.TraktAccessToken ) )
+          {
+            // TODO: optionally revoke existing token
+
+            AppSettings.TraktAccessToken = null;
+            AppSettings.TraktRefreshToken = null;
+
+            lnkTraktOAuth.Text = cTraktAuthorise;
+
+            lblTraktAuthPrompt.Visible = false;
+            lnkTraktActivate.Visible = false;
+            pictureBoxTraktQRCode.Visible = false;
+          }
+          else
+          {
+            // generate a device and user code and present QR code / link to user for authorisation/activation
+            TraktDeviceCode lDeviceCode = TraktAPI.TraktAPI.GenerateDeviceCode();
+            if (lDeviceCode == null || string.IsNullOrEmpty(lDeviceCode.UserCode))
             {
-                AppSettings.TraktOAuthToken = null;
+              MessageBox.Show( "Failed to generate device code for trakt.tv authorisation. Please check your internet connection and try again.", "Trakt.tv Authorisation", MessageBoxButtons.OK, MessageBoxIcon.Error );
+              return;
+            }
 
-                lnkTraktOAuth.Text = cTraktAuthorise;
-                txtTraktPinCode.Visible = true;
-                txtTraktPinCode.Text = cTraktPinCodeWaterMark;
-                txtTraktPinCode.ForeColor = SystemColors.GrayText;
-                mPinCode = string.Empty;
+            // update UI controls to show QR code and link for user to authorise TraktRater
+            lblTraktAuthPrompt.Text = "Scan the QR code on your mobile device to authorise TraktRater or click link below";
+            lnkTraktActivate.Text = string.Format( TraktURIs.ActivateDevice, lDeviceCode.UserCode );
+            pictureBoxTraktQRCode.Image = GenerateTraktActivationQrCode( lDeviceCode.UserCode );
 
-                lblWarnPeriod.Visible = false;
+            // display the QR code and link to user so they can authorise TraktRater
+            lblTraktAuthPrompt.Visible = true;
+            lnkTraktActivate.Visible = true;
+            pictureBoxTraktQRCode.Visible = true;
+
+            // now wait until activated or timeout
+            TraktOAuthToken lToken = await TraktAPI.TraktAPI.WaitForDeviceAuthorisation( lDeviceCode );
+            if ( lToken == null )
+            {
+              MessageBox.Show( "Failed to authorise TraktRater with trakt.tv account", "Trakt.tv Authorisation", MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
             else
             {
-                // sign-in to authorise
-                Process.Start(string.Format(TraktAPI.TraktURIs.PinUrl, TraktAPI.TraktAPI.AppId));
+              // persist token auth details (access token is only valid for 24 hours)
+              AppSettings.TraktAccessToken = lToken.AccessToken;
+              AppSettings.TraktRefreshToken = lToken.RefreshToken;
+              AppSettings.TraktTokenExpiresAt = ( lToken.ExpiresIn + lToken.CreatedAt ).ToString();
+            }
 
-                lblWarnPeriod.Visible = true;
-            }
-        }
-        
-        private void txtTraktPinCode_Click(object sender, EventArgs e)
-        {
-            if (txtTraktPinCode.Text == cTraktPinCodeWaterMark)
-            {
-                txtTraktPinCode.Text = string.Empty;
-                txtTraktPinCode.ForeColor = SystemColors.WindowText;
-                mPinCode = string.Empty;
-            }
-        }
-
-        private void txtTraktPinCode_TextChanged(object sender, EventArgs e)
-        {
-            if (txtTraktPinCode.Text != cTraktPinCodeWaterMark)
-            {
-                mPinCode = txtTraktPinCode.Text;
-                txtTraktPinCode.ForeColor = SystemColors.WindowText;
-            }
+            HideShowTraktAuthControls();
+          }
         }
 
         private void chkMarkAsWatched_Click(object sender, EventArgs e)
@@ -709,6 +720,10 @@
             StartExport(exportDlg.ItemsToExport);
         }
 
+        private void lnkTraktActivate_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
+        {
+          Process.Start( lnkTraktActivate.Text );
+        }
         #endregion
 
         #region Import Actions
@@ -1060,52 +1075,52 @@
 
         private bool Login()
         {
-            // exchange pin-code for access token or refresh existing token
-            UIUtils.UpdateStatus("Exchanging {0} for access-token...", mPinCode.Length == 8 ? "pin-code" : "refresh-token");
-            var response = TraktAPI.TraktAPI.GetOAuthToken(mPinCode.Length == 8 ? mPinCode : AppSettings.TraktOAuthToken);
-            if (response == null || string.IsNullOrEmpty(response.AccessToken))
+          // if the access token has expired then refresh
+          long.TryParse( AppSettings.TraktTokenExpiresAt, out long lTokenExpiresAt );
+
+          if ( DateTimeOffset.UtcNow.ToUnixTimeSeconds() >= lTokenExpiresAt )
+          {
+            UIUtils.UpdateStatus( "Access token expired, refreshing...", false );
+            TraktOAuthToken lResponse = TraktAPI.TraktAPI.RefreshToken( AppSettings.TraktRefreshToken );
+            if ( lResponse == null || string.IsNullOrEmpty( lResponse.AccessToken ) )
             {
-                UIUtils.UpdateStatus("Unable to login to trakt, check log for details", true);
-                SetControlState(true);
-                mImportRunning = false;
-                mImportCancelled = false;
-                mMaintenanceRunning = false;
-                mPinCode = string.Empty;
-                return false;
+              UIUtils.UpdateStatus( "Unable to login to trakt, check log for details", true );
+              SetControlState( true );
+              mImportRunning = false;
+              mImportCancelled = false;
+              mMaintenanceRunning = false;
+              return false;
             }
 
             // save the refresh-token for next time
-            AppSettings.TraktOAuthToken = response.RefreshToken;
-            mPinCode = string.Empty;
+            AppSettings.TraktAccessToken = lResponse.AccessToken;
+            AppSettings.TraktRefreshToken = lResponse.RefreshToken;
+            AppSettings.TraktTokenExpiresAt = ( lResponse.ExpiresIn + lResponse.CreatedAt ).ToString();
+          }
 
-            return true;
+          return true;
         }
 
         private bool CheckAccountDetails()
         {
-            if (string.IsNullOrEmpty(AppSettings.TraktOAuthToken))
-            {
-                if (string.IsNullOrEmpty(mPinCode) || mPinCode.Length != 8)
-                {
-                    UIUtils.UpdateStatus("You must authorise TraktRater to access your trakt.tv account and enter the 8 character pin code with-in 15 minutes of starting an import", true);
-                    return false;
-                }
-            }
-            return true;
+          if ( string.IsNullOrEmpty( AppSettings.TraktAccessToken ) || 
+               string.IsNullOrEmpty( AppSettings.TraktRefreshToken ) )
+          {
+            UIUtils.UpdateStatus( "You must first authorise TraktRater to access your trakt.tv account before starting an import", true );
+            return false;
+          }
+          return true;
         }
 
         private void HideShowTraktAuthControls()
         {
-            // if we have a access token then allow user un-register
-            lnkTraktOAuth.Text = string.IsNullOrEmpty(AppSettings.TraktOAuthToken) ? cTraktAuthorise : cTraktUnAuthorise;
+          // if we have a access token then allow user to un-register
+          lnkTraktOAuth.Text = string.IsNullOrEmpty( AppSettings.TraktAccessToken ) ? cTraktAuthorise : cTraktUnAuthorise;
 
-            // show pin code text box if we have not authorised yet
-            txtTraktPinCode.Text = cTraktPinCodeWaterMark;
-            txtTraktPinCode.ForeColor = SystemColors.GrayText;
-            txtTraktPinCode.Visible = string.IsNullOrEmpty(AppSettings.TraktOAuthToken);
-
-            // only show 15min warning when pin code is entered
-            lblWarnPeriod.Visible = false;
+          // only show prompts when starting the approval process
+          lblTraktAuthPrompt.Visible = false;
+          lnkTraktActivate.Visible = false;
+          pictureBoxTraktQRCode.Visible = false;
         }
 
         private void SetControlState(bool aEnabled)
@@ -1148,6 +1163,15 @@
             
             lblStatusMessage.Text = "Ready for anything!";
             lblStatusMessage.ForeColor = Color.Black;
+        }
+
+        private Bitmap GenerateTraktActivationQrCode( string aUserCode )
+        {
+          using var lGenerator = new QRCodeGenerator();
+          using var lData = lGenerator.CreateQrCode( string.Format(TraktURIs.ActivateDevice, aUserCode), QRCodeGenerator.ECCLevel.Q );
+
+          var lQrCode = new QRCode( lData );
+          return lQrCode.GetGraphic( pixelsPerModule: 10 );
         }
 
         private void SetTMDbControlState()
@@ -1322,6 +1346,6 @@
             EnableToDoMoviesControls(AppSettings.EnableToDoMovies);
             EnableMovieLensControls(AppSettings.EnableMovieLens);
         }
-        #endregion
-    }
+    #endregion
+  }
 }
