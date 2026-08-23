@@ -13,6 +13,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <LangVersion>8.0</LangVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -50,6 +51,11 @@
       <HintPath>packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.8.0.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>packages\QRCoder.1.8.0\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -78,6 +84,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Export.cs" />
@@ -149,6 +156,8 @@
     <Compile Include="TraktAPI\DataStructures\TraktComment.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktCommentItem.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktComments.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktClientId.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktDeviceToken.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisode.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeEx.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeId.cs" />
@@ -179,11 +188,12 @@
     <Compile Include="TraktAPI\DataStructures\TraktMovieWatchedSync.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktMovieWatchlist.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktOAuthError.cs" />
-    <Compile Include="TraktAPI\DataStructures\TraktOAuthLogin.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktDeviceCode.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktOAuthToken.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktPagination.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktPerson.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktPersonId.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktRefreshToken.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeason.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeasonEx.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktSeasonId.cs" />
