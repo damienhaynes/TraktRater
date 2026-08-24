@@ -1097,6 +1097,12 @@
             AppSettings.TraktRefreshToken = lResponse.RefreshToken;
             AppSettings.TraktTokenExpiresAt = ( lResponse.ExpiresIn + lResponse.CreatedAt ).ToString();
           }
+          else
+          {
+            // set authorisation headers
+            TraktAPI.TraktAPI.SetAuthenticationHeaders( AppSettings.TraktAccessToken );
+            // TODO: retrieve user profile or stats to confirm working
+          }
 
           return true;
         }
