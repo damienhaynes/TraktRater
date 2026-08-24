@@ -154,8 +154,10 @@
             return lLoginResponse;
         }
 
-        private static void SetAuthenticationHeaders( string aAccessToken )
+        public static void SetAuthenticationHeaders( string aAccessToken )
         {
+          TraktWeb.CustomRequestHeaders.Clear();
+
           TraktWeb.CustomRequestHeaders.Add( "Authorization", $"Bearer {aAccessToken}" );
           TraktWeb.CustomRequestHeaders.Add( "trakt-api-version", "2" );
           TraktWeb.CustomRequestHeaders.Add( "trakt-api-key", cClientId );
