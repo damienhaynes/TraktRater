@@ -11,21 +11,21 @@
     public const string DeviceToken = @"https://api.trakt.tv/oauth/device/token";
     public const string ActivateDevice = @"https://trakt.tv/activate/{0}";
 
-    public const string RatedMovies = @"https://api.trakt.tv/sync/ratings/movies";
-    public const string RatedShows = @"https://api.trakt.tv/sync/ratings/shows";
-    public const string RatedEpisodes = @"https://api.trakt.tv/sync/ratings/episodes";
-    public const string RatedSeasons = @"https://api.trakt.tv/sync/ratings/seasons";
+    public const string RatedMovies = @"https://api.trakt.tv/sync/ratings/movies?page={0}&limit={1}";
+    public const string RatedShows = @"https://api.trakt.tv/sync/ratings/shows?page={0}&limit={1}";
+    public const string RatedEpisodes = @"https://api.trakt.tv/sync/ratings/episodes?page={0}&limit={1}";
+    public const string RatedSeasons = @"https://api.trakt.tv/sync/ratings/seasons?page={0}&limit={1}";
 
-    public const string WatchedMovies = @"https://api.trakt.tv/sync/watched/movies";
-    public const string WatchedShows = @"https://api.trakt.tv/sync/watched/shows";
+    public const string WatchedMovies = @"https://api.trakt.tv/sync/watched/movies?page={0}&limit={1}";
+    public const string WatchedShows = @"https://api.trakt.tv/sync/watched/shows?page={0}&limit={1}";
 
-    public const string CollectedMovies = @"https://api.trakt.tv/sync/collection/movies";
-    public const string CollectedShows = @"https://api.trakt.tv/sync/collection/shows";
+    public const string CollectedMovies = @"https://api.trakt.tv/sync/collection/movies?page={0}&limit={1}";
+    public const string CollectedShows = @"https://api.trakt.tv/sync/collection/shows?page={0}&limit={1}";
 
-    public const string WatchlistMovies = @"https://api.trakt.tv/sync/watchlist/movies";
-    public const string WatchlistShows = @"https://api.trakt.tv/sync/watchlist/shows";
-    public const string WatchlistEpisodes = @"https://api.trakt.tv/sync/watchlist/episodes";
-    public const string WatchlistSeasons = @"https://api.trakt.tv/sync/watchlist/seasons";
+    public const string WatchlistMovies = @"https://api.trakt.tv/sync/watchlist/movies?page={0}&limit={1}";
+    public const string WatchlistShows = @"https://api.trakt.tv/sync/watchlist/shows?page={0}&limit={1}";
+    public const string WatchlistEpisodes = @"https://api.trakt.tv/sync/watchlist/episodes?page={0}&limit={1}";
+    public const string WatchlistSeasons = @"https://api.trakt.tv/sync/watchlist/seasons?page={0}&limit={1}";
 
     public const string SyncRatings = @"https://api.trakt.tv/sync/ratings";
     public const string SyncWatchlist = @"https://api.trakt.tv/sync/watchlist";
@@ -42,7 +42,7 @@
     public const string UserListAdd = @"https://api.trakt.tv/users/{0}/lists";
     public const string UserListDelete = @"https://api.trakt.tv/users/{0}/lists/{1}";
 
-    public const string UserListItems = @"https://api.trakt.tv/users/{0}/lists/{1}/items?extended={2}";
+    public const string UserListItems = @"https://api.trakt.tv/users/{0}/lists/{1}/items?extended={2}&page={3}&limit={4}";
     public const string UserListItemsAdd = @"https://api.trakt.tv/users/{0}/lists/{1}/items";
     public const string UserListItemsRemove = @"https://api.trakt.tv/users/{0}/lists/{1}/items/remove";
 

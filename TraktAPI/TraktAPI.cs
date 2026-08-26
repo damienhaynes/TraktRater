@@ -497,7 +497,7 @@
 
         #endregion
 
-        #region Pausesd State
+        #region Paused State
 
         public static bool RemovePausedState(uint id)
         {
@@ -517,12 +517,35 @@
         /// </summary>
         public static IEnumerable<TraktUserMovieRating> GetRatedMovies()
         {
-            string ratedMovies = TraktWeb.GetFromTrakt(TraktURIs.RatedMovies);
-            var result = ratedMovies.FromJSONArray<TraktUserMovieRating>();
-            if (result == null) return null;
+          const int limit = 100;
+          var allRatings = new List<TraktUserMovieRating>();
 
-            // filter out anything invalid
-            return result.Where(r => r.Movie.Title != null && r.Movie.Ids != null);
+          int pageCount = 1;
+
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string ratedMovies = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.RatedMovies, page, limit ),
+                out WebHeaderCollection headers );
+
+            var result = ratedMovies.FromJSONArray<TraktUserMovieRating>();
+
+            if ( result == null )
+              break;
+
+            // Filter out anything invalid
+            allRatings.AddRange(
+                result.Where( r => r.Movie?.Title != null && r.Movie.Ids != null ) );
+
+            // Only need to get this from the first response
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allRatings;
         }
 
         /// <summary>
@@ -530,12 +553,33 @@
         /// </summary>
         public static IEnumerable<TraktUserShowRating> GetRatedShows()
         {
-            string ratedShows = TraktWeb.GetFromTrakt(TraktURIs.RatedShows);
-            var result = ratedShows.FromJSONArray<TraktUserShowRating>();
-            if (result == null) return null;
+          const int limit = 100;
+          var allRatings = new List<TraktUserShowRating>();
+          int pageCount = 1;
 
-            // filter out anything invalid
-            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string ratedShows = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.RatedShows, page, limit ),
+                out WebHeaderCollection headers );
+
+            var result = ratedShows.FromJSONArray<TraktUserShowRating>();
+
+            if ( result == null )
+              break;
+
+            // Filter out anything invalid
+            allRatings.AddRange(
+                result.Where( r => r.Show?.Title != null && r.Show.Ids != null ) );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allRatings;
         }
 
         /// <summary>
@@ -543,12 +587,33 @@
         /// </summary>
         public static IEnumerable<TraktUserEpisodeRating> GetRatedEpisodes()
         {
-            string ratedEpisodes = TraktWeb.GetFromTrakt(TraktURIs.RatedEpisodes);
-            var result = ratedEpisodes.FromJSONArray<TraktUserEpisodeRating>();
-            if (result == null) return null;
+          const int limit = 100;
+          var allRatings = new List<TraktUserEpisodeRating>();
+          int pageCount = 1;
 
-            // filter out anything invalid
-            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string ratedEpisodes = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.RatedEpisodes, page, limit ),
+                out WebHeaderCollection headers );
+
+            var result = ratedEpisodes.FromJSONArray<TraktUserEpisodeRating>();
+
+            if ( result == null )
+              break;
+
+            // Filter out anything invalid
+            allRatings.AddRange(
+                result.Where( r => r.Show?.Title != null && r.Show.Ids != null ) );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allRatings;
         }
 
         /// <summary>
@@ -556,12 +621,33 @@
         /// </summary>
         public static IEnumerable<TraktUserSeasonRating> GetRatedSeasons()
         {
-            string ratedSeasons = TraktWeb.GetFromTrakt(TraktURIs.RatedSeasons);
-            var result = ratedSeasons.FromJSONArray<TraktUserSeasonRating>();
-            if (result == null) return null;
+          const int limit = 100;
+          var allRatings = new List<TraktUserSeasonRating>();
+          int pageCount = 1;
 
-            // filter out anything invalid
-            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string ratedSeasons = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.RatedSeasons, page, limit ),
+                out WebHeaderCollection headers );
+
+            var result = ratedSeasons.FromJSONArray<TraktUserSeasonRating>();
+
+            if ( result == null )
+              break;
+
+            // Filter out anything invalid
+            allRatings.AddRange(
+                result.Where( r => r.Show?.Title != null && r.Show.Ids != null ) );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allRatings;
         }
 
         #endregion
@@ -573,12 +659,33 @@
         /// </summary>
         public static IEnumerable<TraktMoviePlays> GetWatchedMovies()
         {
-            string watchedMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchedMovies);
-            var result = watchedMovies.FromJSONArray<TraktMoviePlays>();
-            if (result == null) return null;
+          const int limit = 100;
+          var allMovies = new List<TraktMoviePlays>();
+          int pageCount = 1;
 
-            // filter out anything invalid
-            return result.Where(r => r.Movie.Title != null && r.Movie.Ids != null);
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string watchedMovies = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.WatchedMovies, page, limit ),
+                out WebHeaderCollection headers );
+
+            var result = watchedMovies.FromJSONArray<TraktMoviePlays>();
+
+            if ( result == null )
+              break;
+
+            // Filter out anything invalid
+            allMovies.AddRange(
+                result.Where( r => r.Movie?.Title != null && r.Movie.Ids != null ) );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allMovies;
         }
 
         /// <summary>
@@ -586,12 +693,33 @@
         /// </summary>
         public static IEnumerable<TraktShowPlays> GetWatchedShows()
         {
-            string watchedShows = TraktWeb.GetFromTrakt(TraktURIs.WatchedShows);
-            var result = watchedShows.FromJSONArray<TraktShowPlays>();
-            if (result == null) return null;
+          const int limit = 100;
+          var allShows = new List<TraktShowPlays>();
+          int pageCount = 1;
 
-            // filter out anything invalid
-            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string watchedShows = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.WatchedShows, page, limit ),
+                out WebHeaderCollection headers );
+
+            var result = watchedShows.FromJSONArray<TraktShowPlays>();
+
+            if ( result == null )
+              break;
+
+            // Filter out anything invalid
+            allShows.AddRange(
+                result.Where( r => r.Show?.Title != null && r.Show.Ids != null ) );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allShows;
         }
 
         #endregion
@@ -603,12 +731,33 @@
         /// </summary>
         public static IEnumerable<TraktMovieWatchlist> GetWatchlistMovies()
         {
-            string watchlistMovies = TraktWeb.GetFromTrakt(TraktURIs.WatchlistMovies);
-            var result = watchlistMovies.FromJSONArray<TraktMovieWatchlist>();
-            if (result == null) return null;
+          const int limit = 100;
+          var allMovies = new List<TraktMovieWatchlist>();
+          int pageCount = 1;
 
-            // filter out anything invalid
-            return result.Where(r => r.Movie.Title != null && r.Movie.Ids != null);
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string watchlistMovies = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.WatchlistMovies, page, limit ),
+                out WebHeaderCollection headers );
+
+            var result = watchlistMovies.FromJSONArray<TraktMovieWatchlist>();
+
+            if ( result == null )
+              break;
+
+            // Filter out anything invalid
+            allMovies.AddRange(
+                result.Where( r => r.Movie?.Title != null && r.Movie.Ids != null ) );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allMovies;
         }
 
         /// <summary>
@@ -616,12 +765,33 @@
         /// </summary>
         public static IEnumerable<TraktShowWatchlist> GetWatchlistShows()
         {
-            string watchlistShows = TraktWeb.GetFromTrakt(TraktURIs.WatchlistShows);
-            var result = watchlistShows.FromJSONArray<TraktShowWatchlist>();
-            if (result == null) return null;
+          const int limit = 100;
+          var allShows = new List<TraktShowWatchlist>();
+          int pageCount = 1;
 
-            // filter out anything invalid
-            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string watchlistShows = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.WatchlistShows, page, limit ),
+                out WebHeaderCollection headers );
+
+            var result = watchlistShows.FromJSONArray<TraktShowWatchlist>();
+
+            if ( result == null )
+              break;
+
+            // Filter out anything invalid
+            allShows.AddRange(
+                result.Where( r => r.Show?.Title != null && r.Show.Ids != null ) );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allShows;
         }
 
         /// <summary>
@@ -629,13 +799,33 @@
         /// </summary>
         public static IEnumerable<TraktEpisodeWatchlist> GetWatchlistEpisodes()
         {
-            string watchlistEpisodes = TraktWeb.GetFromTrakt(TraktURIs.WatchlistEpisodes);
+          const int limit = 100;
+          var allEpisodes = new List<TraktEpisodeWatchlist>();
+          int pageCount = 1;
+
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string watchlistEpisodes = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.WatchlistEpisodes, page, limit ),
+                out WebHeaderCollection headers );
+
             var result = watchlistEpisodes.FromJSONArray<TraktEpisodeWatchlist>();
 
-            if (result == null) return null;
+            if ( result == null )
+              break;
 
-            // filter out anything invalid
-            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
+            // Filter out anything invalid
+            allEpisodes.AddRange(
+                result.Where( r => r.Show?.Title != null && r.Show.Ids != null ) );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allEpisodes;
         }
 
         /// <summary>
@@ -643,13 +833,33 @@
         /// </summary>
         public static IEnumerable<TraktSeasonWatchlist> GetWatchlistSeasons()
         {
-            string watchlistSeasons = TraktWeb.GetFromTrakt(TraktURIs.WatchlistSeasons);
+          const int limit = 100;
+          var allSeasons = new List<TraktSeasonWatchlist>();
+          int pageCount = 1;
+
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string watchlistSeasons = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.WatchlistSeasons, page, limit ),
+                out WebHeaderCollection headers );
+
             var result = watchlistSeasons.FromJSONArray<TraktSeasonWatchlist>();
 
-            if (result == null) return null;
+            if ( result == null )
+              break;
 
-            // filter out anything invalid
-            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
+            // Filter out anything invalid
+            allSeasons.AddRange(
+                result.Where( r => r.Show?.Title != null && r.Show.Ids != null ) );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allSeasons;
         }
 
         #endregion
@@ -661,25 +871,67 @@
         /// </summary>
         public static IEnumerable<TraktMovieCollected> GetCollectedMovies()
         {
-            string collectedMovies = TraktWeb.GetFromTrakt(TraktURIs.CollectedMovies);
-            var result = collectedMovies.FromJSONArray<TraktMovieCollected>();
-            if (result == null) return null;
+          const int limit = 100;
+          var allMovies = new List<TraktMovieCollected>();
+          int pageCount = 1;
 
-            // filter out anything invalid
-            return result.Where(r => r.Movie.Title != null && r.Movie.Ids != null);
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string collectedMovies = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.CollectedMovies, page, limit ),
+                out WebHeaderCollection headers );
+
+            var result = collectedMovies.FromJSONArray<TraktMovieCollected>();
+
+            if ( result == null )
+              break;
+
+            // Filter out anything invalid
+            allMovies.AddRange(
+                result.Where( r => r.Movie?.Title != null && r.Movie.Ids != null ) );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allMovies;
         }
 
         /// <summary>
-        /// Returns the current users collected episodes
+        /// Returns the current users collected shows
         /// </summary>
         public static IEnumerable<TraktShowCollected> GetCollectedShows()
         {
-            string collectedShows = TraktWeb.GetFromTrakt(TraktURIs.CollectedShows);
-            var result = collectedShows.FromJSONArray<TraktShowCollected>();
-            if (result == null) return null;
+          const int limit = 100;
+          var allShows = new List<TraktShowCollected>();
+          int pageCount = 1;
 
-            // filter out anything invalid
-            return result.Where(r => r.Show.Title != null && r.Show.Ids != null);
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string collectedShows = TraktWeb.GetFromTrakt(
+                string.Format( TraktURIs.CollectedShows, page, limit ),
+                out WebHeaderCollection headers );
+
+            var result = collectedShows.FromJSONArray<TraktShowCollected>();
+
+            if ( result == null )
+              break;
+
+            // Filter out anything invalid
+            allShows.AddRange(
+                result.Where( r => r.Show?.Title != null && r.Show.Ids != null ) );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allShows;
         }
 
         #endregion
@@ -707,10 +959,42 @@
             return response.FromJSON<TraktListDetail>();
         }
 
-        public static IEnumerable<TraktListItem> GetCustomListItems(string listId, string username = "me", string extendedInfoParams = "min")
+        public static IEnumerable<TraktListItem> GetCustomListItems(
+            string listId,
+            string username = "me",
+            string extendedInfoParams = "min" )
         {
-            var response = TraktWeb.GetFromTrakt(string.Format(TraktURIs.UserListItems, username, listId, extendedInfoParams));
-            return response.FromJSONArray<TraktListItem>();
+          const int limit = 100;
+          var allItems = new List<TraktListItem>();
+          int pageCount = 1;
+
+          for ( int page = 1; page <= pageCount; page++ )
+          {
+            string response = TraktWeb.GetFromTrakt(
+                string.Format(
+                    TraktURIs.UserListItems,
+                    username,
+                    listId,
+                    extendedInfoParams,
+                    page,
+                    limit ),
+                out WebHeaderCollection headers );
+
+            var result = response.FromJSONArray<TraktListItem>();
+
+            if ( result == null )
+              break;
+
+            allItems.AddRange( result );
+
+            if ( page == 1 &&
+                int.TryParse( headers[ "X-Pagination-Page-Count" ], out int parsedPageCount ) )
+            {
+              pageCount = parsedPageCount;
+            }
+          }
+
+          return allItems;
         }
 
         public static TraktSyncResponse AddItemsToList(string id, TraktSyncAll items, string username = "me")
