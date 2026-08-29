@@ -17,7 +17,7 @@
     public const string RatedSeasons = @"https://api.trakt.tv/sync/ratings/seasons?page={0}&limit={1}";
 
     public const string WatchedMovies = @"https://api.trakt.tv/sync/watched/movies?page={0}&limit={1}";
-    public const string WatchedShows = @"https://api.trakt.tv/sync/watched/shows?page={0}&limit={1}";
+    public const string WatchedShows = @"https://api.trakt.tv/sync/watched/shows?extended=progress&page={0}&limit={1}";
 
     public const string CollectedMovies = @"https://api.trakt.tv/sync/collection/movies?page={0}&limit={1}";
     public const string CollectedShows = @"https://api.trakt.tv/sync/collection/shows?page={0}&limit={1}";

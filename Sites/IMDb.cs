@@ -651,7 +651,7 @@
                         // filter out existing items from CSV so we don't send again
                         FileLog.Info($"Filtering out existing items from IMDb list '{lListName}' so we don't send again to trakt.tv");
                         lImdbCsvListMovies.RemoveAll(i => lTraktListItems.FirstOrDefault(l => l.Movie.Ids.ImdbId == i.Ids.ImdbId) != null);
-                        lImdbCsvListShows.RemoveAll(i => lTraktListItems.FirstOrDefault(l => l.Show.Ids.ImdbId == i.Ids.ImdbId) != null);
+                        lImdbCsvListShows.RemoveAll(i => lTraktListItems.FirstOrDefault(l => l.Show?.Ids.ImdbId == i.Ids.ImdbId) != null);
                     }
 
                     #region Movies
