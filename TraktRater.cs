@@ -180,6 +180,10 @@
           }
           else
           {
+            // If this app is not compliled by author then check app credentials have been set            
+            if ( !CheckAppCredentials() )
+              return;
+
             // generate a device and user code and present QR code / link to user for authorisation/activation
             TraktDeviceCode lDeviceCode = TraktAPI.TraktAPI.GenerateDeviceCode();
             if (lDeviceCode == null || string.IsNullOrEmpty(lDeviceCode.UserCode))
@@ -1073,8 +1077,37 @@
             FileLog.Info(mVersion);
         }
 
+        private bool CheckAppCredentials()
+        {
+          // App is open source so if someone compile their own release 
+          // then ensure they have created an app under their own account
+
+          if ( string.IsNullOrWhiteSpace( TraktAPI.TraktAPI.AppClientId ) )
+          {
+              UIUtils.UpdateStatus(
+                "Trakt OAuth Client ID is missing. Please enter your Client ID from https://app.trakt.tv/settings/apps.", 
+                error: true );
+
+            return false;
+          }
+
+          if ( string.IsNullOrWhiteSpace( TraktAPI.TraktAPI.AppClientSecret ) )
+          {
+              UIUtils.UpdateStatus(
+                "Trakt OAuth Client Secret is missing. Please enter your Client Secret from https://app.trakt.tv/settings/apps.", 
+                error: true );
+
+            return false;
+          }
+
+          return true;
+        }
+
         private bool Login()
         {
+          if ( !CheckAppCredentials() )
+            return false;
+
           // if the access token has expired then refresh
           long.TryParse( AppSettings.TraktTokenExpiresAt, out long lTokenExpiresAt );
 
@@ -1352,6 +1385,6 @@
             EnableToDoMoviesControls(AppSettings.EnableToDoMovies);
             EnableMovieLensControls(AppSettings.EnableMovieLens);
         }
-    #endregion
+        #endregion
   }
 }

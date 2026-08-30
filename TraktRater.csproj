@@ -220,6 +220,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktUserShowRating.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktUserStats.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktUserToken.cs" />
+    <Compile Include="TraktAPI\TraktAPISecret.cs" />
     <Compile Include="TraktAPI\TraktAPI.cs" />
     <Compile Include="TraktAPI\TraktURIs.cs" />
     <Compile Include="TraktRater.cs">

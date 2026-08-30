@@ -12,7 +12,7 @@
     /// <summary>
     /// Object that communicates with the Trakt API
     /// </summary>
-    public static class TraktAPI
+    public static partial class TraktAPI
     {
         private enum TraktDeviceAuthStatus
         {
@@ -25,18 +25,13 @@
           SlowDown
         }
 
-        // TODO: convert to github secrets and request for another set
-        const string cClientId = "4feebb4e3791029816a401952c09fa5b446ed4a81b01d600031e422f0d3ae86d";
-        const string cClientSecret = "0d4557136b35ab6234ec3bb659bbcc5b04e7781c4019508496b2b0086cba1fa0";
-        const string cRedirectUri = "urn:ietf:wg:oauth:2.0:oob";
-
         public static TraktDeviceCode GenerateDeviceCode()
         {
           TraktWeb.CustomRequestHeaders.Clear();
 
           string lResponse = TraktWeb.PostToTrakt(
             address: TraktURIs.DeviceCode,
-            postData: new TraktClientId { ClientId = cClientId }.ToJSON() );
+            postData: new TraktClientId { ClientId = AppClientId }.ToJSON() );
 
           if ( string.IsNullOrEmpty( lResponse ) )
             return null;
@@ -85,8 +80,8 @@
           var lDeviceToken = new TraktDeviceToken
           {
             Code = aDeviceCode,
-            ClientId = cClientId,
-            ClientSecret = cClientSecret
+            ClientId = AppClientId,
+            ClientSecret = AppClientSecret
           };
 
           string lTokenResponse = TraktWeb.PostToTraktWithStatus(
@@ -131,9 +126,9 @@
             var lRefreshTokenData = new TraktRefreshToken
             {
               RefreshToken = aRefreshToken,
-              ClientId = cClientId,
-              ClientSecret = cClientSecret,
-              RedirectUrl = cRedirectUri,
+              ClientId = AppClientId,
+              ClientSecret = AppClientSecret,
+              RedirectUrl = AppirectUri,
               GrantType = "refresh_token"
             };
 
@@ -158,7 +153,7 @@
 
           TraktWeb.CustomRequestHeaders.Add( "Authorization", $"Bearer {aAccessToken}" );
           TraktWeb.CustomRequestHeaders.Add( "trakt-api-version", "2" );
-          TraktWeb.CustomRequestHeaders.Add( "trakt-api-key", cClientId );
+          TraktWeb.CustomRequestHeaders.Add( "trakt-api-key", AppClientId );
         }
 
         #region Sync to Trakt
