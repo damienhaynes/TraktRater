@@ -9,7 +9,7 @@
   using global::TraktRater.Settings;
   using global::TraktRater.Sites.API.IMDb;
   using global::TraktRater.Sites.API.TVDb;
-  using global::TraktRater.TraktAPI.DataStructures;
+  using global::TraktRater.TraktAPI.DataModels;
   using global::TraktRater.UI;
 
   public class Helper

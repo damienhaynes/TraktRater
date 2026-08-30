@@ -1,7 +1,7 @@
 ﻿namespace TraktRater.TraktAPI
 {
   using global::TraktRater.Extensions;
-  using global::TraktRater.TraktAPI.DataStructures;
+  using global::TraktRater.TraktAPI.DataModels;
   using global::TraktRater.Web;
   using System;
   using System.Collections.Generic;

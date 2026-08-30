@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using TraktRater.TraktAPI.DataStructures;
+using TraktRater.TraktAPI.DataModels;
 
 namespace TraktRater.Sites.API.iCheckMovies
 {

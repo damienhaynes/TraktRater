@@ -2,7 +2,7 @@
 using CsvHelper.Configuration;
 using global::TraktRater.Settings;
 using global::TraktRater.Sites.API.Criticker;
-using global::TraktRater.TraktAPI.DataStructures;
+using global::TraktRater.TraktAPI.DataModels;
 using global::TraktRater.UI;
 using System.Collections.Generic;
 using System.Globalization;

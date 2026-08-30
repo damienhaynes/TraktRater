@@ -6,7 +6,7 @@
   using System.Threading;
 
   using global::TraktRater.Settings;
-  using global::TraktRater.TraktAPI.DataStructures;
+  using global::TraktRater.TraktAPI.DataModels;
   using global::TraktRater.UI;
 
   static class Maintenance

@@ -15,7 +15,7 @@
   using global::TraktRater.Settings;
   using global::TraktRater.Sites.API.Letterboxd;
   using global::TraktRater.TraktAPI;
-  using global::TraktRater.TraktAPI.DataStructures;
+  using global::TraktRater.TraktAPI.DataModels;
   using global::TraktRater.UI;
 
   internal class Letterboxd : IRateSite

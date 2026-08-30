@@ -8,7 +8,7 @@ using System.Threading;
 using TraktRater.Logger;
 using TraktRater.Settings;
 using TraktRater.Sites.API.MovieLens;
-using TraktRater.TraktAPI.DataStructures;
+using TraktRater.TraktAPI.DataModels;
 using TraktRater.UI;
 
 namespace TraktRater.Sites

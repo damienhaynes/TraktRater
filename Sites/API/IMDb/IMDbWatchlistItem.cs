@@ -1,7 +1,7 @@
 ﻿namespace TraktRater.Sites.API.IMDb
 {
   using CsvHelper.Configuration;
-  using global::TraktRater.TraktAPI.DataStructures;
+  using global::TraktRater.TraktAPI.DataModels;
 
   sealed class IMDbListCsvMap : ClassMap<IMDbListItem>
   {

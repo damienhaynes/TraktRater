@@ -6,7 +6,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using TraktRater.Settings;
 using TraktRater.Sites.API.iCheckMovies;
-using TraktRater.TraktAPI.DataStructures;
+using TraktRater.TraktAPI.DataModels;
 using TraktRater.UI;
 
 namespace TraktRater.Sites

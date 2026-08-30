@@ -4,7 +4,7 @@
   using global::TraktRater.Settings;
   using global::TraktRater.Sites;
   using global::TraktRater.TraktAPI;
-  using global::TraktRater.TraktAPI.DataStructures;
+  using global::TraktRater.TraktAPI.DataModels;
   using global::TraktRater.UI;
   using QRCoder;
   using System;

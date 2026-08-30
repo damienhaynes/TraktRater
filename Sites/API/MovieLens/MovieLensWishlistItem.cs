@@ -1,5 +1,5 @@
 ﻿using CsvHelper.Configuration;
-using TraktRater.TraktAPI.DataStructures;
+using TraktRater.TraktAPI.DataModels;
 
 namespace TraktRater.Sites.API.MovieLens
 {

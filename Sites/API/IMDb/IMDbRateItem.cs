@@ -3,7 +3,7 @@
   using CsvHelper.Configuration;
   using global::TraktRater.Extensions;
   using global::TraktRater.Settings;
-  using global::TraktRater.TraktAPI.DataStructures;
+  using global::TraktRater.TraktAPI.DataModels;
   using System;
 
   sealed class IMDbRatingCsvMap : ClassMap<IMDbRateItem>
