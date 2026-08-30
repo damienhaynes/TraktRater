@@ -517,7 +517,7 @@
         /// </summary>
         public static IEnumerable<TraktUserMovieRating> GetRatedMovies()
         {
-          const int limit = 100;
+          const int limit = 250;
           var allRatings = new List<TraktUserMovieRating>();
 
           int pageCount = 1;
@@ -553,7 +553,7 @@
         /// </summary>
         public static IEnumerable<TraktUserShowRating> GetRatedShows()
         {
-          const int limit = 100;
+          const int limit = 250;
           var allRatings = new List<TraktUserShowRating>();
           int pageCount = 1;
 
@@ -587,7 +587,7 @@
         /// </summary>
         public static IEnumerable<TraktUserEpisodeRating> GetRatedEpisodes()
         {
-          const int limit = 100;
+          const int limit = 250;
           var allRatings = new List<TraktUserEpisodeRating>();
           int pageCount = 1;
 
@@ -621,7 +621,7 @@
         /// </summary>
         public static IEnumerable<TraktUserSeasonRating> GetRatedSeasons()
         {
-          const int limit = 100;
+          const int limit = 250;
           var allRatings = new List<TraktUserSeasonRating>();
           int pageCount = 1;
 
@@ -659,7 +659,7 @@
         /// </summary>
         public static IEnumerable<TraktMoviePlays> GetWatchedMovies()
         {
-          const int limit = 100;
+          const int limit = 250;
           var allMovies = new List<TraktMoviePlays>();
           int pageCount = 1;
 
@@ -693,7 +693,7 @@
         /// </summary>
         public static IEnumerable<TraktShowPlays> GetWatchedShows()
         {
-          const int limit = 100;
+          const int limit = 250;
           var allShows = new List<TraktShowPlays>();
           int pageCount = 1;
 
@@ -1064,7 +1064,7 @@
         /// <param name="extendedInfoParams">Extended Info: min, full, images (comma separated)</param>
         /// <param name="page">Page Number</param>
         /// <param name="maxItems">Maximum number of items to request per page (this should be consistent per page request)</param>
-        public static TraktLikes GetLikedItems(string type = "all", string extendedInfoParams = "min", int page = 1, int maxItems = 10)
+        public static TraktLikes GetLikedItems(string type = "all", string extendedInfoParams = "min", int page = 1, int maxItems = 100)
         {
             var headers = new WebHeaderCollection();
 

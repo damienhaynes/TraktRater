@@ -945,7 +945,7 @@ namespace TraktRater
 
             int i = 0;
             UIUtils.UpdateStatus($"Getting liked lists from trakt.tv, Page: {++i}");
-            var firstPage = TraktAPI.TraktAPI.GetLikedItems(type: "lists");
+            var firstPage = TraktAPI.TraktAPI.GetLikedItems(type: "lists", extendedInfoParams: "full" );
             if (firstPage != null)
             {
                 int pageCount = firstPage.TotalPages;
@@ -956,7 +956,7 @@ namespace TraktRater
                 for (i = 2; i <= firstPage.TotalPages; i++)
                 {
                     UIUtils.UpdateStatus($"Getting commented lists from trakt.tv, Page: {i}/{pageCount}");
-                    var nextPage = TraktAPI.TraktAPI.GetLikedItems(type: "lists", page: i);
+                    var nextPage = TraktAPI.TraktAPI.GetLikedItems(type: "lists", extendedInfoParams: "full", page: i);
                     if (nextPage == null) break;
 
                     // add the next page of items to the collection
@@ -992,22 +992,22 @@ namespace TraktRater
 
             int i = 0;
             UIUtils.UpdateStatus($"Getting liked comments from trakt.tv, Page: {++i}");
-            var firstPage = TraktAPI.TraktAPI.GetLikedItems(type: "comments");
+            var firstPage = TraktAPI.TraktAPI.GetLikedItems(type: "comments", extendedInfoParams: "comments");
             if (firstPage != null)
             {
                 int pageCount = firstPage.TotalPages;
 
                 // store the results from the first page request
-                var pagedItems = firstPage.Likes;
+                var pagedItems = firstPage.Likes.Where( l => l.Comment != null );
 
                 for (i = 2; i <= firstPage.TotalPages; i++)
                 {
                     UIUtils.UpdateStatus($"Getting liked comments from trakt.tv, Page: {i}/{pageCount}");
-                    var nextPage = TraktAPI.TraktAPI.GetLikedItems(type: "comments", page: i);
+                    var nextPage = TraktAPI.TraktAPI.GetLikedItems(type: "comments", extendedInfoParams: "comments", page: i);
                     if (nextPage == null) break;
 
                     // add the next page of items to the collection
-                    pagedItems = pagedItems.Union(nextPage.Likes);
+                    pagedItems = pagedItems.Union( nextPage.Likes.Where( l => l.Comment != null ) );
                 }
 
                 var commentsLiked = new List<object>();
