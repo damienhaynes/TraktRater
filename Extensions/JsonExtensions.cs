@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Runtime.Serialization.Json;
     using System.Text;
@@ -14,31 +15,24 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="jsonArray"></param>
         /// <returns></returns>
-        public static IEnumerable<T> FromJSONArray<T>(this string jsonArray)
+        public static List<T> FromJSONArray<T>( this string jsonArray )
         {
-            if (string.IsNullOrEmpty(jsonArray)) return new List<T>();
+          if ( string.IsNullOrEmpty( jsonArray ) )
+            return new List<T>();
 
-            try
+          try
+          {
+            using ( var ms = new MemoryStream( Encoding.UTF8.GetBytes( jsonArray ) ) )
             {
-                using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(jsonArray)))
-                {
-                    var ser = new DataContractJsonSerializer(typeof(IEnumerable<T>));
-                    var result = (IEnumerable<T>)ser.ReadObject(ms);
-
-                    if (result == null)
-                    {
-                        return new List<T>();
-                    }
-                    else
-                    {
-                        return result;
-                    }
-                }
+              var ser = new DataContractJsonSerializer( typeof( List<T> ) );
+              return (List<T>)ser.ReadObject( ms ) ?? new List<T>();
             }
-            catch (Exception)
-            {
-                return new List<T>();
-            }
+          }
+          catch ( Exception ex )
+          {
+            Debug.WriteLine( ex );
+            throw;
+          }
         }
 
         /// <summary>

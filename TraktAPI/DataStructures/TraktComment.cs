@@ -43,8 +43,5 @@ namespace TraktRater.TraktAPI.DataStructures
 
     [DataMember( Name = "user_stats" )]
     public TraktUserStats UserStats { get; set; }
-
-    [DataMember( Name = "comment_type" )]
-    public string CommentType { get; set; }
   }
 }

@@ -6,7 +6,7 @@
   public class TraktUserStats
   {
     [DataMember( Name = "rating" )]
-    public uint Rating { get; set; }
+    public uint? Rating { get; set; }
 
     [DataMember( Name = "play_count" )]
     public uint PlayCount { get; set; }

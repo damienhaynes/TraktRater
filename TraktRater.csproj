@@ -159,6 +159,7 @@
     <Compile Include="TraktAPI\DataStructures\TraktClientId.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktDeviceToken.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisode.cs" />
+    <Compile Include="TraktAPI\DataStructures\TraktEpisodeLike.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeEx.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeId.cs" />
     <Compile Include="TraktAPI\DataStructures\TraktEpisodeSummary.cs" />
