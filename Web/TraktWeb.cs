@@ -337,7 +337,13 @@
               }
             }
 
-            OnDataErrorReceived?.Invoke( aException.Message );
+            // A 400 from the device token endpoint is expected while
+            // waiting for the user to complete authorization.
+            if ( !( aAddress.EndsWith( "/oauth/device/token", StringComparison.OrdinalIgnoreCase ) &&
+                    aStatusCode == HttpStatusCode.BadRequest ) )
+            {
+              OnDataErrorReceived?.Invoke( aException.Message );
+            }
             return null;
           }
         }

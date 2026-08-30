@@ -36,8 +36,7 @@
 
           string lResponse = TraktWeb.PostToTrakt(
             address: TraktURIs.DeviceCode,
-            postData: new TraktClientId { ClientId = cClientId }.ToJSON(),
-            logRequest: false );
+            postData: new TraktClientId { ClientId = cClientId }.ToJSON() );
 
           if ( string.IsNullOrEmpty( lResponse ) )
             return null;
@@ -93,8 +92,7 @@
           string lTokenResponse = TraktWeb.PostToTraktWithStatus(
             aAddress: TraktURIs.DeviceToken,
             aPostData: lDeviceToken.ToJSON(),
-            aStatusCode: out HttpStatusCode lStatusCode,
-            aLogRequest: false );
+            aStatusCode: out HttpStatusCode lStatusCode );
 
           switch ( lStatusCode )
           {
@@ -139,7 +137,7 @@
               GrantType = "refresh_token"
             };
 
-            string lResponse = TraktWeb.PostToTrakt(TraktURIs.LoginOAuth, lRefreshTokenData.ToJSON(), false);
+            string lResponse = TraktWeb.PostToTrakt(TraktURIs.LoginOAuth, lRefreshTokenData.ToJSON());
             if ( lResponse == null )
               return null;
 
