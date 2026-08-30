@@ -2,8 +2,8 @@
 
 namespace TraktRater.TraktAPI.DataStructures
 {
-    public class TraktLikes : TraktPagination
-    {
-        public IEnumerable<TraktLike> Likes { get; set; }
-    }
+  public class TraktLikes : TraktPagination
+  {
+    public IEnumerable<TraktLike> Likes { get; set; }
+  }
 }

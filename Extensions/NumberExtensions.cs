@@ -1,11 +1,11 @@
 ﻿namespace TraktRater.Extensions
 {
-    public static class NumberExtensions
+  public static class NumberExtensions
+  {
+    public static bool IsFloat( this string value )
     {
-        public static bool IsFloat(this string value)
-        {
-            float fvalue;
-            return float.TryParse(value, out fvalue);
-        }
+      float fvalue;
+      return float.TryParse( value, out fvalue );
     }
+  }
 }

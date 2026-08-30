@@ -1,17 +1,17 @@
 ﻿namespace TraktRater.TraktAPI.DataStructures
 {
-    using System.Runtime.Serialization;
+  using System.Runtime.Serialization;
 
-    [DataContract]
-    public class TraktSeasonId
-    {
-        [DataMember(Name = "tmdb")]
-        public int? TmdbId { get; set; }
+  [DataContract]
+  public class TraktSeasonId
+  {
+    [DataMember( Name = "tmdb" )]
+    public int? TmdbId { get; set; }
 
-        [DataMember(Name = "tvdb")]
-        public int? TvdbId { get; set; }
+    [DataMember( Name = "tvdb" )]
+    public int? TvdbId { get; set; }
 
-        [DataMember(Name = "trakt")]
-        public int? Trakt { get; set; }
-    }
+    [DataMember( Name = "trakt" )]
+    public int? Trakt { get; set; }
+  }
 }
